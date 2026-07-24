@@ -2,6 +2,7 @@ const $ = (selector) => document.querySelector(selector);
 const formatSigned = (value, suffix = "%") => `${Number(value) > 0 ? "+" : ""}${value}${suffix}`;
 const impactClass = (impact) => impact === "positive" ? "positive-text" : impact === "negative" ? "negative-text" : "neutral-text";
 const cardClass = (direction) => direction === "偏强" ? "positive" : direction === "偏弱" ? "negative" : "neutral";
+const riskClass = (risk) => risk === "极高" ? "extreme" : risk === "高" ? "high" : risk === "中" ? "medium" : "low";
 
 function showToast(message) {
   const toast = $("#toast");
@@ -19,7 +20,10 @@ function renderDays(days) {
       <article class="day-card panel ${cardClass(day.direction)}">
         <div class="day-date">
           <span>${day.date.slice(5)} · 周${day.weekday}</span>
-          <span class="confidence">${day.confidence}置信</span>
+          <span class="day-badges">
+            <span class="confidence">${day.confidence}置信</span>
+            ${day.event_count ? `<span class="event-mini ${riskClass(day.event_risk)}">事件${day.event_risk}</span>` : ""}
+          </span>
         </div>
         <h3>${day.direction}</h3>
         <span class="day-prob">上涨概率 ${day.up_probability}%</span>
@@ -158,6 +162,7 @@ function renderSectorForecast(forecast) {
               <strong>${day.direction}</strong>
               <span>涨 ${day.up_probability}%</span>
               <span>胜 ${day.outperform_probability}%</span>
+              ${day.event_count ? `<span class="sector-event-flag ${riskClass(day.event_risk)}">事件${day.event_risk}</span>` : ""}
             </div>`).join("")}
           <div class="sector-evidence-cell">
             <strong class="${validationEdge >= 2 ? "positive-text" : "negative-text"}">${sector.validation.accuracy}%</strong>
@@ -196,6 +201,55 @@ function renderWatchlist(rows) {
       <p class="stock-reason">${stock.reason}</p>
       <div class="stock-rule"><span>观察条件：${stock.trigger}</span><span>失效条件：${stock.invalid}</span></div>
     </article>`).join("");
+}
+
+function renderEventRadar(radar, playbook) {
+  if (!radar?.events?.length) {
+    $("#event-risk-days").innerHTML = "";
+    $("#events").innerHTML = `<article class="watchlist-empty panel">当前预测窗口没有已确认的重大日程事件；仍需关注突发公告。</article>`;
+    return;
+  }
+
+  $("#event-risk-days").innerHTML = radar.daily_risk.map((day) => `
+    <article class="event-day-summary ${riskClass(day.risk)}">
+      <span>${day.date.slice(5)} · 周${day.weekday}</span>
+      <strong>${day.risk}风险</strong>
+      <small>${day.count ? `${day.count}个已确认事件` : "无已知重大日程"}</small>
+    </article>`).join("");
+
+  $("#events").innerHTML = radar.events.map((event) => `
+    <article class="event-card panel ${riskClass(event.risk)}">
+      <div class="event-card-top">
+        <div>
+          <span class="event-date">${event.date} · 周${event.weekday}</span>
+          <span class="event-time">${event.release_time}</span>
+        </div>
+        <span class="event-risk">${event.risk}风险 · ${event.risk_score}/5</span>
+      </div>
+      <span class="event-category">${event.category} · ${event.status} · ${event.source_tier}</span>
+      <h3>${event.title}</h3>
+      <div class="event-tags">${event.affected_labels.map((label) => `<span>${label}</span>`).join("")}</div>
+      <p class="event-mechanism">${event.mechanism}</p>
+      <div class="event-scenarios">
+        <p><strong>偏强条件</strong>${event.bull_case}</p>
+        <p><strong>偏弱条件</strong>${event.bear_case}</p>
+      </div>
+      <div class="event-confirm"><strong>盘中确认</strong><span>${event.confirmation}</span></div>
+      <a href="${event.url}" target="_blank" rel="noreferrer">${event.source_name} ↗</a>
+    </article>`).join("");
+
+  $("#shock-watch").innerHTML = radar.unscheduled_watch.map((item) => `
+    <div class="shock-watch-item">
+      <div><strong>${item.title}</strong><span>${item.risk}风险</span></div>
+      <p>${item.monitor}</p>
+      <small>${item.rule}</small>
+      <a href="${item.url}" target="_blank" rel="noreferrer">监控来源 ↗</a>
+    </div>`).join("");
+  $("#event-method-note").textContent = radar.method;
+
+  const playbookLabels = { base: "基础", bull: "转强", bear: "失效", neutral: "观望", event: "事件" };
+  $("#playbook").innerHTML = Object.entries(playbook).map(([key, value]) => `
+    <div class="playbook-item"><span>${playbookLabels[key] || key}</span><p>${value}</p></div>`).join("");
 }
 
 function render(data) {
@@ -240,17 +294,7 @@ function render(data) {
   renderHorizonValidation(data.horizon_validation || []);
   renderSectorForecast(data.sector_forecast);
   renderWatchlist(data.watchlist || []);
-
-  $("#events").innerHTML = data.events.map((event) => `
-    <a class="event-item" href="${event.url}" target="_blank" rel="noreferrer">
-      <span class="event-date">${event.date}</span>
-      <div><h3>${event.title}</h3><p>${event.detail}</p></div>
-      <span class="event-risk">${event.risk}风险</span>
-    </a>`).join("");
-
-  const playbookLabels = { base: "基础", bull: "转强", bear: "失效", neutral: "观望" };
-  $("#playbook").innerHTML = Object.entries(data.playbook).map(([key, value]) => `
-    <div class="playbook-item"><span>${playbookLabels[key]}</span><p>${value}</p></div>`).join("");
+  renderEventRadar(data.event_radar, data.playbook);
 
   const guardLabels = { capital_rule: "资金来源", position_cap: "仓位上限", loss_rule: "停止线", human_rule: "生命优先" };
   $("#risk-guard").innerHTML = Object.entries(data.risk_guard).map(([key, value]) => `
@@ -258,6 +302,7 @@ function render(data) {
 
   $("#sources").innerHTML = data.sources.map((source) => `<a href="${source.url}" target="_blank" rel="noreferrer" title="${source.detail}">${source.name} ↗</a>`).join("");
   $("#disclaimer").textContent = data.disclaimer;
+  $("#app-version").textContent = `版本 ${meta.release || meta.version} · Research only`;
 }
 
 async function loadForecast() {

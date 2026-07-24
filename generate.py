@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 from market_forecast.data import fetch_market_breadth, fetch_market_data
+from market_forecast.events import enrich_forecast_with_events
 from market_forecast.model import generate_forecast
 from market_forecast.sectors import fetch_sector_data, generate_sector_forecast
 from market_forecast.watchlist import generate_watchlist
@@ -30,12 +31,21 @@ def main() -> None:
         fetch_sector_data(),
         forecast["days"],
     )
-    forecast["meta"]["version"] = "1.1.0"
+    enrich_forecast_with_events(forecast)
+    forecast["meta"]["version"] = "1.2.0"
+    forecast["meta"]["release"] = "6"
     forecast["sources"].append(
         {
             "name": "申万行业指数",
             "detail": "申万一级行业历史行情与行业分类口径",
             "url": "https://www.swsresearch.com/institute_sw/allIndex/releasedIndex",
+        }
+    )
+    forecast["sources"].append(
+        {
+            "name": "短线事件日历",
+            "detail": "交易所、央行、统计机构及公司投资者关系官方日程",
+            "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
         }
     )
     output_path.write_text(

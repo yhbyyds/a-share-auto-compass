@@ -152,6 +152,9 @@ body {
 .day-card.negative { border-color: var(--red); }
 .day-date { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); }
 .confidence { padding: 3px 7px; border-radius: 999px; background: rgba(23,33,28,.06); }
+.day-badges { display: flex; gap: 5px; align-items: center; }
+.event-mini, .sector-event-flag { padding: 3px 6px; border-radius: 999px; color: #7f511d; background: var(--amber-soft); font-size: 8px; font-weight: 700; }
+.event-mini.extreme, .event-mini.high, .sector-event-flag.extreme, .sector-event-flag.high { color: var(--red); background: var(--red-soft); }
 .day-card h3 { margin: 24px 0 4px; font-size: 28px; }
 .day-prob { color: var(--muted); font-size: 12px; }
 .range-track { position: relative; height: 4px; margin: 24px 0 9px; border-radius: 4px; background: linear-gradient(90deg, var(--red-soft), var(--amber-soft), var(--green-soft)); }
@@ -227,6 +230,8 @@ body {
 .sector-day-cell.negative { border-top-color: var(--red); }
 .sector-day-cell strong { display: block; font-size: 11px; }
 .sector-day-cell span, .sector-evidence-cell span { display: block; margin-top: 4px; color: var(--muted); font-size: 8px; }
+.sector-day-cell .sector-event-flag { display: inline-block; margin-top: 6px; color: #7f511d; }
+.sector-day-cell .sector-event-flag.extreme, .sector-day-cell .sector-event-flag.high { color: var(--red); }
 .sector-evidence-cell strong { display: block; font-size: 12px; }
 
 .evidence-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
@@ -274,18 +279,46 @@ body {
 .stock-rule span + span { margin-top: 6px; color: var(--red); }
 .watchlist-empty { grid-column: 1 / -1; padding: 22px; color: var(--muted); font-size: 11px; }
 
-.event-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 52px; }
-.event-list { border-top: 1px solid var(--line); }
-.event-item { display: grid; grid-template-columns: 66px 1fr auto; gap: 18px; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--line); color: inherit; text-decoration: none; }
+.event-risk-days { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 16px; }
+.event-day-summary { padding: 15px; border: 1px solid var(--line); border-radius: 14px; background: rgba(255,255,255,.45); }
+.event-day-summary.high, .event-day-summary.extreme { border-color: rgba(187,62,53,.28); background: rgba(243,223,218,.55); }
+.event-day-summary span, .event-day-summary small { display: block; color: var(--muted); font-size: 9px; }
+.event-day-summary strong { display: block; margin: 7px 0 4px; font-size: 16px; }
+.event-day-summary.high strong, .event-day-summary.extreme strong { color: var(--red); }
+.event-layout { display: grid; grid-template-columns: 1.35fr .65fr; gap: 16px; align-items: start; }
+.event-cards { display: grid; gap: 12px; }
+.event-card { padding: 24px; border-left: 3px solid var(--amber); }
+.event-card.high, .event-card.extreme { border-left-color: var(--red); }
+.event-card-top { display: flex; justify-content: space-between; gap: 20px; align-items: flex-start; }
 .event-date { color: var(--green); font-size: 14px; font-weight: 700; }
-.event-item h3 { margin: 0; font-size: 14px; }
-.event-item p { margin: 4px 0 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+.event-time { display: block; margin-top: 3px; color: var(--muted); font-size: 9px; }
 .event-risk { padding: 5px 8px; border-radius: 999px; background: var(--red-soft); color: var(--red); font-size: 9px; font-weight: 700; }
+.event-category { display: block; margin-top: 18px; color: var(--muted); font-size: 9px; letter-spacing: .04em; }
+.event-card h3 { margin: 5px 0 0; font-size: 24px; letter-spacing: -.03em; }
+.event-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 13px; }
+.event-tags span { padding: 4px 7px; border-radius: 999px; color: var(--green); background: var(--green-soft); font-size: 8px; }
+.event-mechanism { margin: 16px 0 0; color: var(--muted); font-size: 11px; line-height: 1.65; }
+.event-scenarios { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+.event-scenarios p { margin: 0; padding: 12px; border-radius: 9px; background: rgba(23,33,28,.035); color: var(--muted); font-size: 9px; line-height: 1.6; }
+.event-scenarios strong { display: block; margin-bottom: 4px; color: var(--ink); font-size: 9px; }
+.event-confirm { display: grid; grid-template-columns: 55px 1fr; gap: 10px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 9px; line-height: 1.55; }
+.event-confirm span { color: var(--muted); }
+.event-card > a, .shock-watch-item a { display: inline-block; margin-top: 13px; color: var(--green); font-size: 9px; text-decoration: none; }
+.event-side { display: grid; gap: 14px; }
 .playbook-panel { align-self: start; }
 .playbook { margin-top: 22px; }
 .playbook-item { display: grid; grid-template-columns: 42px 1fr; gap: 13px; padding: 15px 0; border-top: 1px solid var(--line); }
 .playbook-item span { width: 34px; height: 22px; display: grid; place-items: center; border-radius: 4px; color: white; background: var(--ink); font-size: 9px; font-weight: 700; }
 .playbook-item p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+.shock-watch-panel { padding: 28px; }
+.shock-watch-panel h2 { margin: 0; font-size: 28px; letter-spacing: -.04em; }
+.shock-watch { margin-top: 18px; }
+.shock-watch-item { padding: 16px 0; border-top: 1px solid var(--line); }
+.shock-watch-item > div { display: flex; justify-content: space-between; gap: 10px; }
+.shock-watch-item > div strong { font-size: 11px; }
+.shock-watch-item > div span { color: var(--red); font-size: 9px; font-weight: 700; }
+.shock-watch-item p { margin: 7px 0 0; color: var(--muted); font-size: 9px; line-height: 1.5; }
+.shock-watch-item small { display: block; margin-top: 5px; color: #8c3c34; font-size: 8px; line-height: 1.5; }
 
 .guard-section { display: grid; grid-template-columns: .65fr 1.35fr; gap: 55px; padding: 46px; margin-top: 76px; border-radius: 24px; color: #e7eee9; background: var(--ink); }
 .guard-copy p:last-child { color: #aeb8b2; max-width: 270px; font-size: 12px; line-height: 1.6; }
@@ -312,7 +345,8 @@ footer p { max-width: 840px; margin: 0; }
   .hero-copy h1 { font-size: 78px; }
   .day-grid { grid-template-columns: repeat(2, 1fr); }
   .day-card:last-child { grid-column: span 2; }
-  .chart-grid, .event-grid { grid-template-columns: 1fr; }
+  .chart-grid, .event-layout { grid-template-columns: 1fr; }
+  .event-risk-days { grid-template-columns: repeat(3, 1fr); }
   .breadth-stats { grid-template-columns: repeat(3, 1fr); row-gap: 24px; }
   .breadth-stat:nth-child(3) { border: 0; }
   .guard-section { grid-template-columns: 1fr; }
@@ -337,6 +371,8 @@ footer p { max-width: 840px; margin: 0; }
   .section-heading > p { margin-top: 10px; text-align: left; }
   .day-grid { grid-template-columns: 1fr; }
   .day-card:last-child { grid-column: auto; }
+  .event-risk-days { grid-template-columns: 1fr; }
+  .event-scenarios { grid-template-columns: 1fr; }
   .evidence-grid, .model-list { grid-template-columns: 1fr; }
   .horizon-grid, .watchlist-grid { grid-template-columns: 1fr; }
   .sector-leaders { grid-template-columns: 1fr; }

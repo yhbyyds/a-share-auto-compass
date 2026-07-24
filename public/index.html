@@ -216,21 +216,31 @@
       <p class="section-footnote warning">个股评分尚未完成无幸存者偏差的历史横截面回测，因此不应用于自动下单、追涨或重仓。</p>
     </section>
 
-    <section class="event-grid section-block">
-      <article>
-        <div class="section-heading compact">
-          <div>
-            <p class="eyebrow">EVENT RISK</p>
-            <h2>下周风险日历</h2>
-          </div>
+    <section class="event-section section-block">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">EVENT SHOCK LAYER</p>
+          <h2>短线事件雷达</h2>
         </div>
-        <div id="events" class="event-list"></div>
-      </article>
-      <article class="panel playbook-panel">
-        <p class="eyebrow">CONDITIONAL PLAYBOOK</p>
-        <h2>条件式应对</h2>
-        <div id="playbook" class="playbook"></div>
-      </article>
+        <p>按A股实际反应日聚合事件，不把“利好/利空”标题直接换算成上涨概率。</p>
+      </div>
+      <div id="event-risk-days" class="event-risk-days"></div>
+      <div class="event-layout">
+        <div id="events" class="event-cards"></div>
+        <aside class="event-side">
+          <article class="panel playbook-panel">
+            <p class="eyebrow">CONDITIONAL PLAYBOOK</p>
+            <h2>条件式应对</h2>
+            <div id="playbook" class="playbook"></div>
+          </article>
+          <article class="panel shock-watch-panel">
+            <p class="eyebrow">UNSCHEDULED WATCH</p>
+            <h2>突发监控清单</h2>
+            <div id="shock-watch" class="shock-watch"></div>
+          </article>
+        </aside>
+      </div>
+      <p id="event-method-note" class="section-footnote"></p>
     </section>
 
     <section class="section-block guard-section">
@@ -255,7 +265,7 @@
 
     <footer>
       <p id="disclaimer"></p>
-      <span>v1.0 · Research only</span>
+      <span id="app-version">Research only</span>
     </footer>
   </main>
 
