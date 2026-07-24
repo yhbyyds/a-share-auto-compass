@@ -1,12 +1,11 @@
-import { cp, mkdir, rm } from "node:fs/promises";
+import { cp, mkdir } from "node:fs/promises";
 import { resolve } from "node:path";
 
-const source = resolve("public");
-const target = resolve("dist");
+const source = resolve(".openai", "hosting.json");
+const targetDirectory = resolve("dist", ".openai");
+const target = resolve(targetDirectory, "hosting.json");
 
-await rm(target, { recursive: true, force: true });
-await mkdir(target, { recursive: true });
-await cp(source, target, { recursive: true });
+await mkdir(targetDirectory, { recursive: true });
+await cp(source, target);
 
-console.log("Prepared static deployment in dist/");
-
+console.log("Copied Sites metadata into dist/");
