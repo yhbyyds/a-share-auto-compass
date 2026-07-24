@@ -1,0 +1,562 @@
+{
+  "meta": {
+    "generated_at": "2026-07-24T23:09:16.635371+08:00",
+    "data_through": "2026-07-24",
+    "forecast_window": "2026-07-27 至 2026-07-31",
+    "version": "1.0.0",
+    "data_source": "腾讯证券主源 / 东方财富备用"
+  },
+  "market": {
+    "name": "上证指数",
+    "last_close": 3814.2,
+    "last_change": -1.61,
+    "weekly_direction": "震荡",
+    "weekly_up_probability": 46.1,
+    "weekly_expected_return": 0.04,
+    "weekly_range": [
+      -1.64,
+      2.27
+    ],
+    "risk_level": "较高"
+  },
+  "days": [
+    {
+      "date": "2026-07-27",
+      "weekday": "一",
+      "direction": "震荡",
+      "up_probability": 54.0,
+      "expected_return": 0.16,
+      "low_return": -0.99,
+      "high_return": 0.8,
+      "path_close": 3820.46,
+      "confidence": "低"
+    },
+    {
+      "date": "2026-07-28",
+      "weekday": "二",
+      "direction": "震荡",
+      "up_probability": 46.8,
+      "expected_return": -0.0,
+      "low_return": -0.69,
+      "high_return": 0.94,
+      "path_close": 3820.34,
+      "confidence": "低"
+    },
+    {
+      "date": "2026-07-29",
+      "weekday": "三",
+      "direction": "震荡",
+      "up_probability": 49.0,
+      "expected_return": 0.03,
+      "low_return": -0.6,
+      "high_return": 1.15,
+      "path_close": 3821.39,
+      "confidence": "低"
+    },
+    {
+      "date": "2026-07-30",
+      "weekday": "四",
+      "direction": "震荡",
+      "up_probability": 47.1,
+      "expected_return": -0.2,
+      "low_return": -0.62,
+      "high_return": 0.77,
+      "path_close": 3813.69,
+      "confidence": "低"
+    },
+    {
+      "date": "2026-07-31",
+      "weekday": "五",
+      "direction": "震荡",
+      "up_probability": 55.6,
+      "expected_return": 0.06,
+      "low_return": -0.59,
+      "high_return": 0.96,
+      "path_close": 3815.9,
+      "confidence": "低"
+    }
+  ],
+  "drivers": [
+    {
+      "name": "20日动量",
+      "value": "-5.29%",
+      "impact": "negative",
+      "detail": "中期趋势转弱"
+    },
+    {
+      "name": "均线位置",
+      "value": "-3.55%",
+      "impact": "negative",
+      "detail": "收盘跌至20日均线下方"
+    },
+    {
+      "name": "成交活跃度",
+      "value": "-1.51σ",
+      "impact": "negative",
+      "detail": "量能明显收缩"
+    },
+    {
+      "name": "大小盘风格",
+      "value": "-5.06%",
+      "impact": "negative",
+      "detail": "大盘权重相对占优"
+    }
+  ],
+  "breadth": {
+    "stocks": 0,
+    "advancers": 0,
+    "decliners": 0,
+    "flat": 0,
+    "limit_up_proxy": 0,
+    "limit_down_proxy": 0,
+    "median_change": 0,
+    "turnover_yi": 0,
+    "advance_ratio": 0
+  },
+  "models": [
+    {
+      "name": "逻辑回归",
+      "probability": 45.1,
+      "weight": 41.1
+    },
+    {
+      "name": "梯度提升",
+      "probability": 34.3,
+      "weight": 34.4
+    },
+    {
+      "name": "随机森林",
+      "probability": 57.8,
+      "weight": 24.6
+    }
+  ],
+  "validation": {
+    "daily_direction_accuracy": 53.8,
+    "weekly_direction_accuracy": 53.9,
+    "baseline_accuracy": 52.7,
+    "auc": 0.542,
+    "brier": 0.253,
+    "samples": 805,
+    "strategy_annual_return": 9.0,
+    "strategy_max_drawdown": -9.5,
+    "benchmark_annual_return": 5.4,
+    "benchmark_max_drawdown": -20.4,
+    "active_days": 75.4,
+    "method": "5折扩展窗口时序验证；预测与实盘收益错开一日；单边成本3bp"
+  },
+  "recent_chart": [
+    {
+      "date": "03-16",
+      "close": 4084.79
+    },
+    {
+      "date": "03-17",
+      "close": 4049.91
+    },
+    {
+      "date": "03-18",
+      "close": 4062.98
+    },
+    {
+      "date": "03-19",
+      "close": 4006.55
+    },
+    {
+      "date": "03-20",
+      "close": 3957.05
+    },
+    {
+      "date": "03-23",
+      "close": 3813.28
+    },
+    {
+      "date": "03-24",
+      "close": 3881.28
+    },
+    {
+      "date": "03-25",
+      "close": 3931.84
+    },
+    {
+      "date": "03-26",
+      "close": 3889.08
+    },
+    {
+      "date": "03-27",
+      "close": 3913.72
+    },
+    {
+      "date": "03-30",
+      "close": 3923.29
+    },
+    {
+      "date": "03-31",
+      "close": 3891.86
+    },
+    {
+      "date": "04-01",
+      "close": 3948.55
+    },
+    {
+      "date": "04-02",
+      "close": 3919.29
+    },
+    {
+      "date": "04-03",
+      "close": 3880.1
+    },
+    {
+      "date": "04-07",
+      "close": 3890.16
+    },
+    {
+      "date": "04-08",
+      "close": 3995.0
+    },
+    {
+      "date": "04-09",
+      "close": 3966.17
+    },
+    {
+      "date": "04-10",
+      "close": 3986.22
+    },
+    {
+      "date": "04-13",
+      "close": 3988.56
+    },
+    {
+      "date": "04-14",
+      "close": 4026.63
+    },
+    {
+      "date": "04-15",
+      "close": 4027.21
+    },
+    {
+      "date": "04-16",
+      "close": 4055.55
+    },
+    {
+      "date": "04-17",
+      "close": 4051.43
+    },
+    {
+      "date": "04-20",
+      "close": 4082.13
+    },
+    {
+      "date": "04-21",
+      "close": 4085.08
+    },
+    {
+      "date": "04-22",
+      "close": 4106.26
+    },
+    {
+      "date": "04-23",
+      "close": 4093.25
+    },
+    {
+      "date": "04-24",
+      "close": 4079.9
+    },
+    {
+      "date": "04-27",
+      "close": 4086.34
+    },
+    {
+      "date": "04-28",
+      "close": 4078.64
+    },
+    {
+      "date": "04-29",
+      "close": 4107.51
+    },
+    {
+      "date": "04-30",
+      "close": 4112.16
+    },
+    {
+      "date": "05-06",
+      "close": 4160.17
+    },
+    {
+      "date": "05-07",
+      "close": 4180.09
+    },
+    {
+      "date": "05-08",
+      "close": 4179.95
+    },
+    {
+      "date": "05-11",
+      "close": 4225.02
+    },
+    {
+      "date": "05-12",
+      "close": 4214.49
+    },
+    {
+      "date": "05-13",
+      "close": 4242.57
+    },
+    {
+      "date": "05-14",
+      "close": 4177.92
+    },
+    {
+      "date": "05-15",
+      "close": 4135.39
+    },
+    {
+      "date": "05-18",
+      "close": 4131.53
+    },
+    {
+      "date": "05-19",
+      "close": 4169.54
+    },
+    {
+      "date": "05-20",
+      "close": 4162.18
+    },
+    {
+      "date": "05-21",
+      "close": 4077.28
+    },
+    {
+      "date": "05-22",
+      "close": 4112.9
+    },
+    {
+      "date": "05-25",
+      "close": 4152.57
+    },
+    {
+      "date": "05-26",
+      "close": 4145.37
+    },
+    {
+      "date": "05-27",
+      "close": 4093.73
+    },
+    {
+      "date": "05-28",
+      "close": 4098.64
+    },
+    {
+      "date": "05-29",
+      "close": 4068.57
+    },
+    {
+      "date": "06-01",
+      "close": 4057.74
+    },
+    {
+      "date": "06-02",
+      "close": 4075.1
+    },
+    {
+      "date": "06-03",
+      "close": 4083.97
+    },
+    {
+      "date": "06-04",
+      "close": 4057.78
+    },
+    {
+      "date": "06-05",
+      "close": 4027.74
+    },
+    {
+      "date": "06-08",
+      "close": 3959.34
+    },
+    {
+      "date": "06-09",
+      "close": 4010.03
+    },
+    {
+      "date": "06-10",
+      "close": 3993.23
+    },
+    {
+      "date": "06-11",
+      "close": 3987.01
+    },
+    {
+      "date": "06-12",
+      "close": 4031.51
+    },
+    {
+      "date": "06-15",
+      "close": 4096.47
+    },
+    {
+      "date": "06-16",
+      "close": 4091.89
+    },
+    {
+      "date": "06-17",
+      "close": 4108.08
+    },
+    {
+      "date": "06-18",
+      "close": 4090.48
+    },
+    {
+      "date": "06-22",
+      "close": 4163.1
+    },
+    {
+      "date": "06-23",
+      "close": 4106.25
+    },
+    {
+      "date": "06-24",
+      "close": 4110.81
+    },
+    {
+      "date": "06-25",
+      "close": 4120.28
+    },
+    {
+      "date": "06-26",
+      "close": 4027.26
+    },
+    {
+      "date": "06-29",
+      "close": 4073.9
+    },
+    {
+      "date": "06-30",
+      "close": 4094.4
+    },
+    {
+      "date": "07-01",
+      "close": 4112.45
+    },
+    {
+      "date": "07-02",
+      "close": 4028.9
+    },
+    {
+      "date": "07-03",
+      "close": 4043.64
+    },
+    {
+      "date": "07-06",
+      "close": 4041.24
+    },
+    {
+      "date": "07-07",
+      "close": 3990.24
+    },
+    {
+      "date": "07-08",
+      "close": 3970.88
+    },
+    {
+      "date": "07-09",
+      "close": 4036.59
+    },
+    {
+      "date": "07-10",
+      "close": 3996.16
+    },
+    {
+      "date": "07-13",
+      "close": 3913.79
+    },
+    {
+      "date": "07-14",
+      "close": 3967.13
+    },
+    {
+      "date": "07-15",
+      "close": 3955.58
+    },
+    {
+      "date": "07-16",
+      "close": 3882.41
+    },
+    {
+      "date": "07-17",
+      "close": 3764.15
+    },
+    {
+      "date": "07-20",
+      "close": 3796.28
+    },
+    {
+      "date": "07-21",
+      "close": 3864.37
+    },
+    {
+      "date": "07-22",
+      "close": 3867.03
+    },
+    {
+      "date": "07-23",
+      "close": 3876.78
+    },
+    {
+      "date": "07-24",
+      "close": 3814.2
+    }
+  ],
+  "events": [
+    {
+      "date": "07-29",
+      "title": "美联储议息会议",
+      "risk": "高",
+      "detail": "FOMC 7月28–29日会议，结果在北京时间周四凌晨传导。",
+      "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
+    },
+    {
+      "date": "07-30",
+      "title": "美国二季度GDP / PCE",
+      "risk": "高",
+      "detail": "美国BEA于7月30日发布初值，可能影响全球风险偏好。",
+      "url": "https://www.bea.gov/news/schedule"
+    },
+    {
+      "date": "07-31",
+      "title": "中国官方PMI",
+      "risk": "高",
+      "detail": "7月采购经理指数月度报告，关注内需与制造业景气。",
+      "url": "https://www.stats.gov.cn/xw/tjxw/tzgg/202512/t20251224_1962137.html"
+    }
+  ],
+  "playbook": {
+    "base": "只用宽基指数工具，分批而非一次性押注；不使用杠杆。",
+    "bull": "若沪指重新站回20日均线且两市量能同步放大，可将宽基仓位提高10%–15%。",
+    "bear": "若放量跌破本周低点，模型信号视为失效，优先降仓并保留现金。",
+    "neutral": "当上涨概率处于45%–55%，保持观望，等待方向确认。"
+  },
+  "risk_guard": {
+    "capital_rule": "只使用即使全部亏损也不影响生活的闲置资金；禁止借贷、融资和杠杆。",
+    "position_cap": "模型置信度为低时建议0%–20%观察仓；中等时宽基总仓位也不超过50%。",
+    "loss_rule": "单周账户回撤达到2%即停止新增交易，重新评估；不要用加仓摊薄代替止损。",
+    "human_rule": "若交易结果与生命安全、房租、债务或基本生活绑定，系统自动建议停止交易并寻求现实支持。"
+  },
+  "sources": [
+    {
+      "name": "Microsoft Qlib",
+      "detail": "参考其数据—训练—回测完整研究流程",
+      "url": "https://github.com/microsoft/qlib"
+    },
+    {
+      "name": "Darts",
+      "detail": "参考其模型集成与历史回测方法",
+      "url": "https://github.com/unit8co/darts"
+    },
+    {
+      "name": "AKShare",
+      "detail": "开源中文财经数据生态参考",
+      "url": "https://github.com/akfamily/akshare"
+    }
+  ],
+  "disclaimer": "本系统是研究与风险管理工具，不构成投资建议。样本外回测不等于未来表现，交易成本、滑点、政策与突发事件均可能使预测失效；不存在可承诺的稳定盈利模型。"
+}

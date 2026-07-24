@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="基于滚动时序验证的A股下周大盘方向研究系统">
+  <title>A股下周罗盘</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="noise"></div>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="A股下周罗盘首页">
+      <span class="brand-mark">北</span>
+      <span>
+        <strong>A股下周罗盘</strong>
+        <small>WEEKLY MARKET COMPASS</small>
+      </span>
+    </a>
+    <div class="topbar-meta">
+      <span class="status-dot"></span>
+      <span id="data-status">正在读取收盘数据</span>
+      <button id="refresh-button" class="ghost-button" type="button">重新计算</button>
+    </div>
+  </header>
+
+  <main id="top" class="page-shell">
+    <section class="safety-note" aria-label="重要风险提示">
+      <span class="safety-icon">!</span>
+      <div>
+        <strong>先保住生活，再谈收益。</strong>
+        <p>若交易资金涉及借贷、房租、债务或基本生活，请停止交易。本系统不会也不能承诺盈利。</p>
+      </div>
+    </section>
+
+    <section class="hero-grid">
+      <article class="hero-copy">
+        <p class="eyebrow">NEXT WEEK · SSE DIRECTION</p>
+        <h1>下周不是一道<br><em>必答题</em></h1>
+        <p class="hero-summary" id="hero-summary">用概率表达不确定性，用纪律控制预测错误。</p>
+        <div class="hero-meta">
+          <span id="forecast-window">—</span>
+          <span class="divider"></span>
+          <span>更新于 <time id="generated-time">—</time></span>
+        </div>
+      </article>
+
+      <article class="signal-card panel">
+        <div class="signal-top">
+          <div>
+            <span class="label">本周主判断</span>
+            <h2 id="weekly-direction">—</h2>
+          </div>
+          <span id="risk-badge" class="risk-badge">风险 —</span>
+        </div>
+        <div class="gauge-row">
+          <div id="gauge" class="gauge" style="--probability: 50">
+            <div class="gauge-inner">
+              <strong id="weekly-probability">—</strong>
+              <span>上涨概率</span>
+            </div>
+          </div>
+          <div class="signal-stats">
+            <div>
+              <span>模型路径</span>
+              <strong id="weekly-return">—</strong>
+            </div>
+            <div>
+              <span>历史相似区间</span>
+              <strong id="weekly-range">—</strong>
+            </div>
+            <div>
+              <span>最新收盘</span>
+              <strong id="last-close">—</strong>
+            </div>
+          </div>
+        </div>
+        <p class="signal-caption">概率已按样本外准确率向 50% 收缩，不把噪声伪装成信心。</p>
+      </article>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">MON — FRI</p>
+          <h2>逐日路径</h2>
+        </div>
+        <p>区间来自历史相似状态的 20%–80% 分位，不是价格承诺。</p>
+      </div>
+      <div id="day-grid" class="day-grid"></div>
+    </section>
+
+    <section class="chart-grid section-block">
+      <article class="panel chart-panel">
+        <div class="panel-heading">
+          <div>
+            <span class="label">近 90 个交易日</span>
+            <h3>趋势与预测路径</h3>
+          </div>
+          <div class="legend">
+            <span><i class="legend-line history"></i>历史</span>
+            <span><i class="legend-line forecast"></i>模型路径</span>
+          </div>
+        </div>
+        <div id="price-chart" class="price-chart" aria-label="上证指数历史与预测路径图"></div>
+      </article>
+
+      <article class="panel drivers-panel">
+        <div class="panel-heading">
+          <div>
+            <span class="label">CURRENT REGIME</span>
+            <h3>当前市场状态</h3>
+          </div>
+        </div>
+        <div id="drivers" class="drivers"></div>
+      </article>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">MARKET BREADTH</p>
+          <h2>全市场体温</h2>
+        </div>
+        <p>仅作当日状态确认，不参与历史训练，避免前视偏差。</p>
+      </div>
+      <div id="breadth-panel" class="breadth-panel panel"></div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">OUT-OF-SAMPLE</p>
+          <h2>先看证据，再看预测</h2>
+        </div>
+        <p>所有数字均来自时间顺序不打乱的样本外区间。</p>
+      </div>
+      <div class="evidence-grid">
+        <article class="panel validation-card">
+          <span class="label">周方向准确率</span>
+          <strong id="weekly-accuracy">—</strong>
+          <p id="accuracy-context">—</p>
+        </article>
+        <article class="panel validation-card">
+          <span class="label">策略年化 / 最大回撤</span>
+          <strong><span id="strategy-return">—</span> <i>/</i> <span id="strategy-dd">—</span></strong>
+          <p>仅做多/现金，含单边 3bp 成本</p>
+        </article>
+        <article class="panel validation-card">
+          <span class="label">同期指数年化 / 最大回撤</span>
+          <strong><span id="benchmark-return">—</span> <i>/</i> <span id="benchmark-dd">—</span></strong>
+          <p id="sample-context">—</p>
+        </article>
+      </div>
+      <article class="panel model-panel">
+        <div class="panel-heading">
+          <div>
+            <span class="label">ENSEMBLE VOTE</span>
+            <h3>模型分歧是真实信息</h3>
+          </div>
+          <p>样本外表现越好的模型，投票权重越高。</p>
+        </div>
+        <div id="model-list" class="model-list"></div>
+      </article>
+    </section>
+
+    <section class="event-grid section-block">
+      <article>
+        <div class="section-heading compact">
+          <div>
+            <p class="eyebrow">EVENT RISK</p>
+            <h2>下周风险日历</h2>
+          </div>
+        </div>
+        <div id="events" class="event-list"></div>
+      </article>
+      <article class="panel playbook-panel">
+        <p class="eyebrow">CONDITIONAL PLAYBOOK</p>
+        <h2>条件式应对</h2>
+        <div id="playbook" class="playbook"></div>
+      </article>
+    </section>
+
+    <section class="section-block guard-section">
+      <div class="guard-copy">
+        <p class="eyebrow">CAPITAL SAFETY GATE</p>
+        <h2>资金安全闸门</h2>
+        <p>模型最重要的输出不是“买”，而是何时不该交易。</p>
+      </div>
+      <div id="risk-guard" class="guard-grid"></div>
+    </section>
+
+    <section class="method-section section-block">
+      <div>
+        <p class="eyebrow">METHODOLOGY</p>
+        <h2>可审计，不神化</h2>
+      </div>
+      <div class="method-copy">
+        <p>系统使用上证50、沪深300、中证500、中证1000、创业板指与上证指数的量价特征。逻辑回归、梯度提升、随机森林分别建模，再按滚动样本外准确率加权。历史相似状态用于校准收益区间。</p>
+        <div id="sources" class="source-links"></div>
+      </div>
+    </section>
+
+    <footer>
+      <p id="disclaimer"></p>
+      <span>v1.0 · Research only</span>
+    </footer>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="/app.js" defer></script>
+</body>
+</html>
+
