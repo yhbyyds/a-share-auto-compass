@@ -13,6 +13,7 @@ from market_forecast.data import (
     fetch_market_data,
 )
 from market_forecast.model import generate_forecast
+from market_forecast.watchlist import generate_watchlist
 
 
 ROOT = Path(__file__).parent
@@ -32,7 +33,12 @@ def get_forecast() -> dict:
 @app.post("/api/refresh")
 def refresh_forecast() -> dict:
     try:
-        forecast = generate_forecast(fetch_market_data(), fetch_market_breadth())
+        data = fetch_market_data()
+        forecast = generate_forecast(
+            data,
+            fetch_market_breadth(),
+            generate_watchlist(data),
+        )
     except MarketDataError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
     FORECAST_FILE.parent.mkdir(parents=True, exist_ok=True)

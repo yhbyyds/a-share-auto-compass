@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-07-24T23:09:16.635371+08:00",
+    "generated_at": "2026-07-25T00:23:34.635849+08:00",
     "data_through": "2026-07-24",
     "forecast_window": "2026-07-27 至 2026-07-31",
     "version": "1.0.0",
@@ -11,11 +11,11 @@
     "last_close": 3814.2,
     "last_change": -1.61,
     "weekly_direction": "震荡",
-    "weekly_up_probability": 46.1,
-    "weekly_expected_return": 0.04,
+    "weekly_up_probability": 52.7,
+    "weekly_expected_return": 0.17,
     "weekly_range": [
-      -1.64,
-      2.27
+      -1.65,
+      1.81
     ],
     "risk_level": "较高"
   },
@@ -23,57 +23,72 @@
     {
       "date": "2026-07-27",
       "weekday": "一",
-      "direction": "震荡",
-      "up_probability": 54.0,
-      "expected_return": 0.16,
-      "low_return": -0.99,
-      "high_return": 0.8,
-      "path_close": 3820.46,
-      "confidence": "低"
+      "direction": "偏强",
+      "up_probability": 57.6,
+      "expected_return": 0.3,
+      "low_return": -1.01,
+      "high_return": 0.82,
+      "path_close": 3825.67,
+      "confidence": "中",
+      "model_spread": 6.9,
+      "validation_accuracy": 57.5,
+      "validation_edge": 4.2
     },
     {
       "date": "2026-07-28",
       "weekday": "二",
       "direction": "震荡",
-      "up_probability": 46.8,
-      "expected_return": -0.0,
-      "low_return": -0.69,
-      "high_return": 0.94,
-      "path_close": 3820.34,
-      "confidence": "低"
+      "up_probability": 50.2,
+      "expected_return": 0.02,
+      "low_return": -0.77,
+      "high_return": 0.81,
+      "path_close": 3826.3,
+      "confidence": "低",
+      "model_spread": 3.6,
+      "validation_accuracy": 43.3,
+      "validation_edge": -10.0
     },
     {
       "date": "2026-07-29",
       "weekday": "三",
       "direction": "震荡",
-      "up_probability": 49.0,
-      "expected_return": 0.03,
-      "low_return": -0.6,
-      "high_return": 1.15,
-      "path_close": 3821.39,
-      "confidence": "低"
+      "up_probability": 50.2,
+      "expected_return": -0.05,
+      "low_return": -0.78,
+      "high_return": 0.78,
+      "path_close": 3824.4,
+      "confidence": "低",
+      "model_spread": 2.1,
+      "validation_accuracy": 45.0,
+      "validation_edge": -8.3
     },
     {
       "date": "2026-07-30",
       "weekday": "四",
       "direction": "震荡",
-      "up_probability": 47.1,
-      "expected_return": -0.2,
-      "low_return": -0.62,
+      "up_probability": 49.1,
+      "expected_return": -0.12,
+      "low_return": -0.53,
       "high_return": 0.77,
-      "path_close": 3813.69,
-      "confidence": "低"
+      "path_close": 3819.97,
+      "confidence": "低",
+      "model_spread": 0.7,
+      "validation_accuracy": 52.5,
+      "validation_edge": -0.8
     },
     {
       "date": "2026-07-31",
       "weekday": "五",
       "direction": "震荡",
-      "up_probability": 55.6,
-      "expected_return": 0.06,
-      "low_return": -0.59,
-      "high_return": 0.96,
-      "path_close": 3815.9,
-      "confidence": "低"
+      "up_probability": 57.5,
+      "expected_return": 0.02,
+      "low_return": -0.56,
+      "high_return": 0.95,
+      "path_close": 3820.81,
+      "confidence": "低",
+      "model_spread": 6.8,
+      "validation_accuracy": 51.7,
+      "validation_edge": -1.7
     }
   ],
   "drivers": [
@@ -116,32 +131,94 @@
   "models": [
     {
       "name": "逻辑回归",
-      "probability": 45.1,
-      "weight": 41.1
+      "probability": 57.4,
+      "weight": 64.6
     },
     {
       "name": "梯度提升",
-      "probability": 34.3,
-      "weight": 34.4
+      "probability": 46.8,
+      "weight": 16.5
     },
     {
       "name": "随机森林",
-      "probability": 57.8,
-      "weight": 24.6
+      "probability": 59.0,
+      "weight": 18.9
+    }
+  ],
+  "horizon_validation": [
+    {
+      "horizon": 1,
+      "label": "第1个交易日",
+      "accuracy": 54.6,
+      "recent_accuracy": 57.5,
+      "baseline": 53.3,
+      "full_baseline": 52.5,
+      "auc": 0.563,
+      "brier": 0.249,
+      "high_conf_accuracy": 57.3,
+      "high_conf_coverage": 54.8
+    },
+    {
+      "horizon": 2,
+      "label": "第2个交易日",
+      "accuracy": 51.1,
+      "recent_accuracy": 43.3,
+      "baseline": 53.3,
+      "full_baseline": 52.5,
+      "auc": 0.516,
+      "brier": 0.252,
+      "high_conf_accuracy": 53.0,
+      "high_conf_coverage": 27.5
+    },
+    {
+      "horizon": 3,
+      "label": "第3个交易日",
+      "accuracy": 51.7,
+      "recent_accuracy": 45.0,
+      "baseline": 53.3,
+      "full_baseline": 52.5,
+      "auc": 0.519,
+      "brier": 0.253,
+      "high_conf_accuracy": 51.1,
+      "high_conf_coverage": 28.8
+    },
+    {
+      "horizon": 4,
+      "label": "第4个交易日",
+      "accuracy": 53.3,
+      "recent_accuracy": 52.5,
+      "baseline": 53.3,
+      "full_baseline": 52.5,
+      "auc": 0.533,
+      "brier": 0.251,
+      "high_conf_accuracy": 54.0,
+      "high_conf_coverage": 30.1
+    },
+    {
+      "horizon": 5,
+      "label": "第5个交易日",
+      "accuracy": 52.5,
+      "recent_accuracy": 51.7,
+      "baseline": 53.3,
+      "full_baseline": 52.4,
+      "auc": 0.528,
+      "brier": 0.25,
+      "high_conf_accuracy": 52.6,
+      "high_conf_coverage": 27.0
     }
   ],
   "validation": {
-    "daily_direction_accuracy": 53.8,
-    "weekly_direction_accuracy": 53.9,
-    "baseline_accuracy": 52.7,
-    "auc": 0.542,
-    "brier": 0.253,
-    "samples": 805,
-    "strategy_annual_return": 9.0,
-    "strategy_max_drawdown": -9.5,
-    "benchmark_annual_return": 5.4,
+    "daily_direction_accuracy": 54.6,
+    "weekly_direction_accuracy": 51.8,
+    "baseline_accuracy": 52.0,
+    "auc": 0.524,
+    "brier": 0.259,
+    "samples": 790,
+    "strategy_annual_return": 15.9,
+    "strategy_max_drawdown": -9.2,
+    "benchmark_annual_return": 4.9,
     "benchmark_max_drawdown": -20.4,
-    "active_days": 75.4,
+    "active_days": 72.6,
     "method": "5折扩展窗口时序验证；预测与实盘收益错开一日；单边成本3bp"
   },
   "recent_chart": [
@@ -504,6 +581,108 @@
     {
       "date": "07-24",
       "close": 3814.2
+    }
+  ],
+  "watchlist": [
+    {
+      "code": "000977",
+      "name": "浪潮信息",
+      "price": 85.31,
+      "change": -3.01,
+      "score": 84.8,
+      "momentum_5d": 10.22,
+      "momentum_20d": 33.53,
+      "relative_20d": 38.03,
+      "rsi_14": 65.4,
+      "volatility_20d": 5.3,
+      "turnover": 6.55,
+      "amount_yi": 83.1,
+      "ma20": 78.94,
+      "invalid_level": 77.76,
+      "data_date": "2026-07-24",
+      "reason": "20日动量+33.5%，跑赢沪深300 +38.0%，成交额83亿元",
+      "trigger": "仅在大盘未出现放量破位、个股维持20日线上方时观察",
+      "invalid": "收盘跌破约77.76元则量价结构失效"
+    },
+    {
+      "code": "603893",
+      "name": "瑞芯微",
+      "price": 221.8,
+      "change": 3.65,
+      "score": 72.4,
+      "momentum_5d": 9.8,
+      "momentum_20d": 21.87,
+      "relative_20d": 26.37,
+      "rsi_14": 67.2,
+      "volatility_20d": 4.82,
+      "turnover": 7.78,
+      "amount_yi": 73.4,
+      "ma20": 202.31,
+      "invalid_level": 199.27,
+      "data_date": "2026-07-24",
+      "reason": "20日动量+21.9%，跑赢沪深300 +26.4%，成交额73亿元",
+      "trigger": "仅在大盘未出现放量破位、个股维持20日线上方时观察",
+      "invalid": "收盘跌破约199.27元则量价结构失效"
+    },
+    {
+      "code": "688072",
+      "name": "拓荆科技",
+      "price": 791.0,
+      "change": 6.46,
+      "score": 56.0,
+      "momentum_5d": 13.15,
+      "momentum_20d": 20.71,
+      "relative_20d": 22.26,
+      "rsi_14": 53.8,
+      "volatility_20d": 6.97,
+      "turnover": 3.2,
+      "amount_yi": 70.0,
+      "ma20": 752.72,
+      "invalid_level": 741.43,
+      "data_date": "2026-07-24",
+      "reason": "20日动量+20.7%，跑赢沪深300 +22.3%，成交额70亿元",
+      "trigger": "仅在大盘未出现放量破位、个股维持20日线上方时观察",
+      "invalid": "收盘跌破约741.43元则量价结构失效"
+    },
+    {
+      "code": "600036",
+      "name": "招商银行",
+      "price": 39.2,
+      "change": 0.74,
+      "score": 38.0,
+      "momentum_5d": 3.1,
+      "momentum_20d": 12.01,
+      "relative_20d": 16.51,
+      "rsi_14": 71.4,
+      "volatility_20d": 1.39,
+      "turnover": 0.48,
+      "amount_yi": 38.5,
+      "ma20": 37.07,
+      "invalid_level": 36.71,
+      "data_date": "2026-07-24",
+      "reason": "20日动量+12.0%，跑赢沪深300 +16.5%，成交额38亿元",
+      "trigger": "仅在大盘未出现放量破位、个股维持20日线上方时观察",
+      "invalid": "收盘跌破约36.71元则量价结构失效"
+    },
+    {
+      "code": "603259",
+      "name": "药明康德",
+      "price": 125.0,
+      "change": -1.92,
+      "score": 28.8,
+      "momentum_5d": 6.03,
+      "momentum_20d": 5.77,
+      "relative_20d": 10.27,
+      "rsi_14": 51.8,
+      "volatility_20d": 3.72,
+      "turnover": 1.79,
+      "amount_yi": 55.7,
+      "ma20": 123.78,
+      "invalid_level": 121.92,
+      "data_date": "2026-07-24",
+      "reason": "20日动量+5.8%，跑赢沪深300 +10.3%，成交额56亿元",
+      "trigger": "仅在大盘未出现放量破位、个股维持20日线上方时观察",
+      "invalid": "收盘跌破约121.92元则量价结构失效"
     }
   ],
   "events": [

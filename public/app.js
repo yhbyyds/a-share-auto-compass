@@ -23,6 +23,7 @@ function renderDays(days) {
         </div>
         <h3>${day.direction}</h3>
         <span class="day-prob">上涨概率 ${day.up_probability}%</span>
+        <span class="day-prob"> · 近120次验证 ${day.validation_accuracy}%</span>
         <div class="range-track"><i class="range-dot" style="left:${position}%"></i></div>
         <div class="day-range"><span>${day.low_return}%</span><span>${formatSigned(day.high_return)}</span></div>
         <div class="day-return">
@@ -87,6 +88,54 @@ function renderBreadth(breadth) {
   $("#breadth-panel").innerHTML = `<div class="breadth-stats">${items.map(([name, value, cls]) => `<div class="breadth-stat"><span>${name}</span><strong class="${cls}">${value}</strong></div>`).join("")}</div>`;
 }
 
+function renderHorizonValidation(rows) {
+  $("#horizon-validation").innerHTML = rows.map((row) => {
+    const edge = row.recent_accuracy - row.baseline;
+    const edgeClass = edge >= 2 ? "" : "weak";
+    const highConfidence = row.high_conf_accuracy == null ? "无样本" : `${row.high_conf_accuracy}%`;
+    return `
+      <article class="horizon-card panel">
+        <span class="horizon-label">${row.label}</span>
+        <strong>${row.recent_accuracy}%</strong>
+        <span class="horizon-edge ${edgeClass}">${edge >= 0 ? "+" : ""}${edge.toFixed(1)}pp 对基线</span>
+        <div class="horizon-details">
+          <div><span>全样本准确率</span><strong>${row.accuracy}%</strong></div>
+          <div><span>高置信命中率</span><strong>${highConfidence}</strong></div>
+          <div><span>高置信覆盖</span><strong>${row.high_conf_coverage}%</strong></div>
+          <div><span>AUC / Brier</span><strong>${row.auc} / ${row.brier}</strong></div>
+        </div>
+      </article>`;
+  }).join("");
+}
+
+function renderWatchlist(rows) {
+  if (!rows || !rows.length) {
+    $("#watchlist").innerHTML = `<article class="watchlist-empty panel">当前没有股票同时通过流动性、趋势、过热和波动过滤；空观察池也是有效结果。</article>`;
+    return;
+  }
+  $("#watchlist").innerHTML = rows.map((stock) => `
+    <article class="stock-card panel">
+      <div class="stock-head">
+        <div><span class="stock-code">${stock.code} · 数据 ${stock.data_date}</span><h3>${stock.name}</h3></div>
+        <div class="stock-score"><strong>${stock.score}</strong><span>量价分</span></div>
+      </div>
+      <div class="stock-price">
+        <strong>¥${stock.price}</strong>
+        <span class="${stock.change >= 0 ? "positive-text" : "negative-text"}">${formatSigned(stock.change)}</span>
+      </div>
+      <div class="stock-metrics">
+        <div class="stock-metric"><span>5日动量</span><strong>${formatSigned(stock.momentum_5d)}</strong></div>
+        <div class="stock-metric"><span>20日动量</span><strong>${formatSigned(stock.momentum_20d)}</strong></div>
+        <div class="stock-metric"><span>RSI 14</span><strong>${stock.rsi_14}</strong></div>
+        <div class="stock-metric"><span>相对沪深300</span><strong>${formatSigned(stock.relative_20d)}</strong></div>
+        <div class="stock-metric"><span>20日波动</span><strong>${stock.volatility_20d}%</strong></div>
+        <div class="stock-metric"><span>成交额</span><strong>${stock.amount_yi}亿</strong></div>
+      </div>
+      <p class="stock-reason">${stock.reason}</p>
+      <div class="stock-rule"><span>观察条件：${stock.trigger}</span><span>失效条件：${stock.invalid}</span></div>
+    </article>`).join("");
+}
+
 function render(data) {
   const { meta, market, days, validation } = data;
   $("#data-status").textContent = `数据截至 ${meta.data_through}`;
@@ -126,6 +175,8 @@ function render(data) {
       <div class="model-bar"><i style="width:${model.probability}%"></i></div>
       <div class="model-numbers"><span>看涨概率</span><strong>${model.probability}%</strong></div>
     </div>`).join("");
+  renderHorizonValidation(data.horizon_validation || []);
+  renderWatchlist(data.watchlist || []);
 
   $("#events").innerHTML = data.events.map((event) => `
     <a class="event-item" href="${event.url}" target="_blank" rel="noreferrer">

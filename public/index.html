@@ -167,6 +167,30 @@
       </article>
     </section>
 
+    <section class="section-block">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">DAY-BY-DAY VALIDATION</p>
+          <h2>每天到底准不准</h2>
+        </div>
+        <p>“第N日”是用当前收盘信息预测未来第N个交易日；越远的不确定性通常越高。</p>
+      </div>
+      <div id="horizon-validation" class="horizon-grid"></div>
+      <p class="section-footnote">短线使用方式：每个交易日收盘后重新训练，优先使用新的“第1日”预测，不要在周五一次生成后机械持有整周。</p>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">RESEARCH WATCHLIST</p>
+          <h2>短线量价观察池</h2>
+        </div>
+        <p>从当日成交额靠前股票中筛选趋势、相对强弱与波动；这是候选研究池，不是买入推荐。</p>
+      </div>
+      <div id="watchlist" class="watchlist-grid"></div>
+      <p class="section-footnote warning">个股评分尚未完成无幸存者偏差的历史横截面回测，因此不应用于自动下单、追涨或重仓。</p>
+    </section>
+
     <section class="event-grid section-block">
       <article>
         <div class="section-heading compact">
@@ -214,4 +238,3 @@
   <script src="/app.js" defer></script>
 </body>
 </html>
-

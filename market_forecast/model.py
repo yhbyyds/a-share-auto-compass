@@ -19,6 +19,8 @@ from sklearn.model_selection import TimeSeriesSplit
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
+from market_forecast.data import DOMESTIC_KEYS, GLOBAL_KEYS
+
 
 RANDOM_STATE = 20260724
 
@@ -83,7 +85,9 @@ def build_features(data: dict[str, pd.DataFrame]) -> tuple[pd.DataFrame, pd.Seri
                 aligned_close / aligned_close.rolling(20).mean() - 1
             )
 
-    return_frame = pd.DataFrame(index_returns)
+    return_frame = pd.DataFrame(
+        {key: value for key, value in index_returns.items() if key in DOMESTIC_KEYS}
+    )
     features["market_dispersion"] = return_frame.std(axis=1)
     features["breadth_proxy"] = (return_frame > 0).mean(axis=1) - 0.5
     features["small_vs_large_5d"] = (
@@ -92,6 +96,12 @@ def build_features(data: dict[str, pd.DataFrame]) -> tuple[pd.DataFrame, pd.Seri
     )
     features["weekday_sin"] = np.sin(2 * np.pi * features.index.dayofweek / 5)
     features["weekday_cos"] = np.cos(2 * np.pi * features.index.dayofweek / 5)
+    global_returns = pd.DataFrame(
+        {key: value for key, value in index_returns.items() if key in GLOBAL_KEYS}
+    )
+    if not global_returns.empty:
+        features["global_risk_on_1d"] = global_returns.mean(axis=1)
+        features["global_risk_dispersion"] = global_returns.std(axis=1)
 
     features = features.replace([np.inf, -np.inf], np.nan).dropna()
     return features, close.reindex(features.index)
@@ -211,11 +221,18 @@ def fit_horizon(
         model_probs[name] = float(fitted.predict_proba(X.iloc[[-1]])[0, 1])
     raw_probability = sum(model_probs[name] * weights[name] for name in weights)
 
-    ensemble_oof = sum(oof[name] * weights[name] for name in weights)
+    # Use equal weights for validation so the same OOF period is not reused to
+    # optimize weights and then score itself. OOF-derived weights are only used
+    # for the live forecast above.
+    ensemble_oof = oof.mean(axis=1)
     actual_oof = binary.loc[oof.index]
     ensemble_accuracy = float(accuracy_score(actual_oof, ensemble_oof >= 0.5))
     baseline_accuracy = float(max(actual_oof.mean(), 1 - actual_oof.mean()))
-    skill = float(np.clip((ensemble_accuracy - 0.5) / 0.08, 0, 1))
+    # Directional accuracy must beat the majority-class baseline, not merely
+    # 50%, before the live probability is allowed to move farther from neutral.
+    skill = float(
+        np.clip((ensemble_accuracy - baseline_accuracy) / 0.05, 0, 1)
+    )
     probability = 0.5 + (raw_probability - 0.5) * (0.45 + 0.55 * skill)
     probability = float(np.clip(probability, 0.35, 0.65))
 
@@ -251,6 +268,29 @@ def fit_horizon(
         "oof_probability": ensemble_oof,
         "oof_actual": actual_oof,
     }
+    confidence_mask = (ensemble_oof >= 0.57) | (ensemble_oof <= 0.43)
+    if confidence_mask.any():
+        diagnostics["high_conf_accuracy"] = float(
+            accuracy_score(
+                actual_oof.loc[confidence_mask],
+                ensemble_oof.loc[confidence_mask] >= 0.5,
+            )
+        )
+        diagnostics["high_conf_count"] = int(confidence_mask.sum())
+    else:
+        diagnostics["high_conf_accuracy"] = None
+        diagnostics["high_conf_count"] = 0
+    recent_index = ensemble_oof.index[-min(120, len(ensemble_oof)) :]
+    recent_actual = actual_oof.loc[recent_index]
+    diagnostics["recent_accuracy"] = float(
+        accuracy_score(
+            recent_actual,
+            ensemble_oof.loc[recent_index] >= 0.5,
+        )
+    )
+    diagnostics["recent_baseline"] = float(
+        max(recent_actual.mean(), 1 - recent_actual.mean())
+    )
     return (
         ModelResult(
             probability=probability,
@@ -358,7 +398,9 @@ def _drivers(features: pd.DataFrame) -> list[dict[str, str]]:
 
 
 def generate_forecast(
-    data: dict[str, pd.DataFrame], breadth: dict[str, Any] | None = None
+    data: dict[str, pd.DataFrame],
+    breadth: dict[str, Any] | None = None,
+    watchlist: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     features, close = build_features(data)
     last_date = features.index[-1]
@@ -377,18 +419,49 @@ def generate_forecast(
     path = last_close
     days: list[dict[str, Any]] = []
     for date_value, result in zip(forecast_dates, day_results):
+        diagnostics = day_diagnostics[len(days)]
+        high_conf_accuracy = diagnostics.get("high_conf_accuracy")
+        quality_ok = (
+            diagnostics["recent_accuracy"]
+            >= diagnostics["recent_baseline"] + 0.02
+            and high_conf_accuracy is not None
+            and high_conf_accuracy >= 0.54
+        )
+        direction = (
+            _direction(result.probability, result.expected_return)
+            if quality_ok
+            else "震荡"
+        )
         path *= 1 + result.expected_return
         days.append(
             {
                 "date": date_value.strftime("%Y-%m-%d"),
                 "weekday": "一二三四五"[date_value.weekday()],
-                "direction": _direction(result.probability, result.expected_return),
+                "direction": direction,
                 "up_probability": round(result.probability * 100, 1),
                 "expected_return": _pct(result.expected_return),
                 "low_return": _pct(result.low_return),
                 "high_return": _pct(result.high_return),
                 "path_close": round(path, 2),
-                "confidence": "中" if abs(result.probability - 0.5) >= 0.07 else "低",
+                "confidence": (
+                    "中"
+                    if quality_ok and abs(result.probability - 0.5) >= 0.07
+                    else "低"
+                ),
+                "model_spread": round(
+                    np.std(list(result.model_probabilities.values())) * 100, 1
+                ),
+                "validation_accuracy": round(
+                    diagnostics["recent_accuracy"] * 100, 1
+                ),
+                "validation_edge": round(
+                    (
+                        diagnostics["recent_accuracy"]
+                        - diagnostics["recent_baseline"]
+                    )
+                    * 100,
+                    1,
+                ),
             }
         )
 
@@ -435,6 +508,40 @@ def generate_forecast(
         "drivers": _drivers(features),
         "breadth": breadth or {},
         "models": model_details,
+        "horizon_validation": [
+            {
+                "horizon": horizon,
+                "label": f"第{horizon}个交易日",
+                "accuracy": round(day_results[horizon - 1].accuracy * 100, 1),
+                "recent_accuracy": round(
+                    day_diagnostics[horizon - 1]["recent_accuracy"] * 100, 1
+                ),
+                "baseline": round(
+                    day_diagnostics[horizon - 1]["recent_baseline"] * 100, 1
+                ),
+                "full_baseline": round(
+                    day_diagnostics[horizon - 1]["baseline_accuracy"] * 100, 1
+                ),
+                "auc": round(day_diagnostics[horizon - 1]["auc"], 3),
+                "brier": round(day_diagnostics[horizon - 1]["brier"], 3),
+                "high_conf_accuracy": (
+                    round(
+                        day_diagnostics[horizon - 1]["high_conf_accuracy"] * 100,
+                        1,
+                    )
+                    if day_diagnostics[horizon - 1]["high_conf_accuracy"]
+                    is not None
+                    else None
+                ),
+                "high_conf_coverage": round(
+                    day_diagnostics[horizon - 1]["high_conf_count"]
+                    / day_diagnostics[horizon - 1]["oof_count"]
+                    * 100,
+                    1,
+                ),
+            }
+            for horizon in range(1, 6)
+        ],
         "validation": {
             "daily_direction_accuracy": round(day_results[0].accuracy * 100, 1),
             "weekly_direction_accuracy": round(weekly.accuracy * 100, 1),
@@ -456,6 +563,7 @@ def generate_forecast(
             "method": "5折扩展窗口时序验证；预测与实盘收益错开一日；单边成本3bp",
         },
         "recent_chart": recent_chart,
+        "watchlist": watchlist or [],
         "events": [
             {
                 "date": forecast_dates[2].strftime("%m-%d"),

@@ -23,6 +23,7 @@ class IndexSpec:
     name: str
     secid: str
     tencent: str
+    domestic: bool = True
 
 
 INDEXES: tuple[IndexSpec, ...] = (
@@ -32,7 +33,14 @@ INDEXES: tuple[IndexSpec, ...] = (
     IndexSpec("csi500", "中证500", "1.000905", "sh000905"),
     IndexSpec("csi1000", "中证1000", "1.000852", "sh000852"),
     IndexSpec("chinext", "创业板指", "0.399006", "sz399006"),
+    IndexSpec("hsi", "恒生指数", "", "hkHSI", False),
+    IndexSpec("sp500", "标普500", "", "us.INX", False),
+    IndexSpec("nasdaq", "纳斯达克", "", "us.IXIC", False),
+    IndexSpec("dow", "道琼斯", "", "us.DJI", False),
 )
+
+DOMESTIC_KEYS = frozenset(spec.key for spec in INDEXES if spec.domestic)
+GLOBAL_KEYS = frozenset(spec.key for spec in INDEXES if not spec.domestic)
 
 SPOT_URL = "https://push2.eastmoney.com/api/qt/clist/get"
 TENCENT_KLINE_URL = "https://web.ifzq.gtimg.cn/appstock/app/kline/kline"
@@ -57,6 +65,8 @@ def _session() -> requests.Session:
 
 
 def _fetch_one(spec: IndexSpec, start: str = "20100101") -> pd.DataFrame:
+    if not spec.secid:
+        raise MarketDataError(f"{spec.name}没有东方财富备用代码")
     params = {
         "secid": spec.secid,
         "fields1": "f1,f2,f3,f4,f5,f6",
@@ -118,7 +128,8 @@ def _fetch_one_tencent(spec: IndexSpec) -> pd.DataFrame:
         )
         response.raise_for_status()
         payload = response.json()
-        rows = (payload.get("data", {}).get(spec.tencent, {}) or {}).get("day", [])
+        item = payload.get("data", {}).get(spec.tencent, {}) or {}
+        rows = item.get("day", []) or item.get("qfqday", [])
     except (requests.RequestException, ValueError, AttributeError) as exc:
         raise MarketDataError(f"{spec.name}备用数据获取失败: {exc}") from exc
     if len(rows) < 500:

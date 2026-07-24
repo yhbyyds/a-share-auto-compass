@@ -6,6 +6,7 @@ from pathlib import Path
 
 from market_forecast.data import fetch_market_breadth, fetch_market_data
 from market_forecast.model import generate_forecast
+from market_forecast.watchlist import generate_watchlist
 
 
 def main() -> None:
@@ -18,7 +19,11 @@ def main() -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     data = fetch_market_data()
-    forecast = generate_forecast(data, fetch_market_breadth())
+    forecast = generate_forecast(
+        data,
+        fetch_market_breadth(),
+        generate_watchlist(data),
+    )
     output_path.write_text(
         json.dumps(forecast, ensure_ascii=False, indent=2), encoding="utf-8"
     )
