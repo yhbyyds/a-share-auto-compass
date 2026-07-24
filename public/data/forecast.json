@@ -1,9 +1,9 @@
 {
   "meta": {
-    "generated_at": "2026-07-25T00:23:34.635849+08:00",
+    "generated_at": "2026-07-25T01:02:28.067876+08:00",
     "data_through": "2026-07-24",
     "forecast_window": "2026-07-27 至 2026-07-31",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "data_source": "腾讯证券主源 / 东方财富备用"
   },
   "market": {
@@ -735,7 +735,1057 @@
       "name": "AKShare",
       "detail": "开源中文财经数据生态参考",
       "url": "https://github.com/akfamily/akshare"
+    },
+    {
+      "name": "申万行业指数",
+      "detail": "申万一级行业历史行情与行业分类口径",
+      "url": "https://www.swsresearch.com/institute_sw/allIndex/releasedIndex"
     }
   ],
-  "disclaimer": "本系统是研究与风险管理工具，不构成投资建议。样本外回测不等于未来表现，交易成本、滑点、政策与突发事件均可能使预测失效；不存在可承诺的稳定盈利模型。"
+  "disclaimer": "本系统是研究与风险管理工具，不构成投资建议。样本外回测不等于未来表现，交易成本、滑点、政策与突发事件均可能使预测失效；不存在可承诺的稳定盈利模型。",
+  "sector_forecast": {
+    "benchmark": "沪深300",
+    "data_source": "申万宏源研究·申万一级行业指数",
+    "data_through": "2026-07-24",
+    "method": "行业绝对方向使用逻辑回归与梯度提升的滚动样本外集成；行业相对强弱使用独立梯度提升模型；收益预测为行业相对沪深300的回归结果叠加大盘路径。",
+    "sectors": [
+      {
+        "key": "electronics",
+        "name": "电子",
+        "code": "801080",
+        "group": "科技",
+        "is_composite": false,
+        "days": [
+          {
+            "date": "2026-07-27",
+            "weekday": "一",
+            "direction": "偏强",
+            "up_probability": 58.3,
+            "outperform_probability": 48.3,
+            "expected_return": 0.42,
+            "expected_excess": 0.12,
+            "confidence": "中"
+          },
+          {
+            "date": "2026-07-28",
+            "weekday": "二",
+            "direction": "震荡",
+            "up_probability": 48.7,
+            "outperform_probability": 50.7,
+            "expected_return": 0.08,
+            "expected_excess": 0.06,
+            "confidence": "中"
+          },
+          {
+            "date": "2026-07-29",
+            "weekday": "三",
+            "direction": "震荡",
+            "up_probability": 49.7,
+            "outperform_probability": 48.6,
+            "expected_return": 0.02,
+            "expected_excess": 0.07,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-30",
+            "weekday": "四",
+            "direction": "震荡",
+            "up_probability": 49.2,
+            "outperform_probability": 52.1,
+            "expected_return": 0.13,
+            "expected_excess": 0.25,
+            "confidence": "中"
+          },
+          {
+            "date": "2026-07-31",
+            "weekday": "五",
+            "direction": "震荡",
+            "up_probability": 46.6,
+            "outperform_probability": 55.8,
+            "expected_return": 0.09,
+            "expected_excess": 0.07,
+            "confidence": "中"
+          }
+        ],
+        "drivers": [
+          "20日动量 -24.2%",
+          "20日相对沪深300 -19.7%",
+          "20日波动 72.2%年化"
+        ],
+        "invalidation": "若行业收盘跌破20日均线且相对沪深300的5日强弱转负，则领先判断失效；反向信号同理。",
+        "validation": {
+          "is_proxy": false,
+          "accuracy": 62.5,
+          "baseline": 51.7,
+          "auc": 0.615,
+          "brier": 0.24,
+          "relative_accuracy": 52.5,
+          "relative_baseline": 55.8,
+          "samples": 120
+        },
+        "weekly_expected_return": 0.74,
+        "weekly_expected_excess": 0.57,
+        "outperform_probability": 51.1,
+        "weekly_outlook": "相对中性",
+        "rank": 1
+      },
+      {
+        "key": "telecom",
+        "name": "通信",
+        "code": "801770",
+        "group": "科技",
+        "is_composite": false,
+        "days": [
+          {
+            "date": "2026-07-27",
+            "weekday": "一",
+            "direction": "偏强",
+            "up_probability": 57.9,
+            "outperform_probability": 48.6,
+            "expected_return": 0.35,
+            "expected_excess": 0.05,
+            "confidence": "中"
+          },
+          {
+            "date": "2026-07-28",
+            "weekday": "二",
+            "direction": "震荡",
+            "up_probability": 49.0,
+            "outperform_probability": 50.7,
+            "expected_return": -0.0,
+            "expected_excess": -0.02,
+            "confidence": "中"
+          },
+          {
+            "date": "2026-07-29",
+            "weekday": "三",
+            "direction": "震荡",
+            "up_probability": 49.8,
+            "outperform_probability": 48.2,
+            "expected_return": 0.05,
+            "expected_excess": 0.1,
+            "confidence": "中"
+          },
+          {
+            "date": "2026-07-30",
+            "weekday": "四",
+            "direction": "震荡",
+            "up_probability": 48.6,
+            "outperform_probability": 52.1,
+            "expected_return": 0.15,
+            "expected_excess": 0.27,
+            "confidence": "中"
+          },
+          {
+            "date": "2026-07-31",
+            "weekday": "五",
+            "direction": "震荡",
+            "up_probability": 47.7,
+            "outperform_probability": 54.1,
+            "expected_return": 0.09,
+            "expected_excess": 0.07,
+            "confidence": "中"
+          }
+        ],
+        "drivers": [
+          "20日动量 -22.5%",
+          "20日相对沪深300 -18.0%",
+          "20日波动 68.4%年化"
+        ],
+        "invalidation": "若行业收盘跌破20日均线且相对沪深300的5日强弱转负，则领先判断失效；反向信号同理。",
+        "validation": {
+          "is_proxy": false,
+          "accuracy": 55.8,
+          "baseline": 50.0,
+          "auc": 0.604,
+          "brier": 0.243,
+          "relative_accuracy": 52.5,
+          "relative_baseline": 50.0,
+          "samples": 120
+        },
+        "weekly_expected_return": 0.64,
+        "weekly_expected_excess": 0.47,
+        "outperform_probability": 50.7,
+        "weekly_outlook": "相对中性",
+        "rank": 2
+      },
+      {
+        "key": "technology",
+        "name": "科技综合",
+        "code": "电子+计算机+通信",
+        "group": "科技",
+        "is_composite": true,
+        "days": [
+          {
+            "date": "2026-07-27",
+            "weekday": "一",
+            "direction": "偏强",
+            "up_probability": 57.7,
+            "outperform_probability": 47.8,
+            "expected_return": 0.36,
+            "expected_excess": 0.06,
+            "confidence": "中"
+          },
+          {
+            "date": "2026-07-28",
+            "weekday": "二",
+            "direction": "震荡",
+            "up_probability": 49.3,
+            "outperform_probability": 50.2,
+            "expected_return": 0.02,
+            "expected_excess": -0.0,
+            "confidence": "中"
+          },
+          {
+            "date": "2026-07-29",
+            "weekday": "三",
+            "direction": "震荡",
+            "up_probability": 50.0,
+            "outperform_probability": 48.8,
+            "expected_return": 0.0,
+            "expected_excess": 0.05,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-30",
+            "weekday": "四",
+            "direction": "震荡",
+            "up_probability": 48.9,
+            "outperform_probability": 50.9,
+            "expected_return": 0.07,
+            "expected_excess": 0.19,
+            "confidence": "中"
+          },
+          {
+            "date": "2026-07-31",
+            "weekday": "五",
+            "direction": "震荡",
+            "up_probability": 47.5,
+            "outperform_probability": 53.4,
+            "expected_return": 0.1,
+            "expected_excess": 0.08,
+            "confidence": "中"
+          }
+        ],
+        "drivers": [
+          "由申万电子、计算机、通信三个一级行业等权合成",
+          "用于判断科技主线，不代表任一只科技股"
+        ],
+        "invalidation": "若三大子行业中两个以上跌破20日均线，科技综合信号失效。",
+        "validation": {
+          "is_proxy": true,
+          "accuracy": 60.8,
+          "baseline": 51.1,
+          "relative_accuracy": 53.3,
+          "samples": 120
+        },
+        "weekly_expected_return": 0.55,
+        "weekly_expected_excess": 0.38,
+        "outperform_probability": 50.2,
+        "weekly_outlook": "相对中性",
+        "rank": 3
+      },
+      {
+        "key": "food_beverage",
+        "name": "食品饮料",
+        "code": "801120",
+        "group": "消费",
+        "is_composite": false,
+        "days": [
+          {
+            "date": "2026-07-27",
+            "weekday": "一",
+            "direction": "震荡",
+            "up_probability": 52.2,
+            "outperform_probability": 50.3,
+            "expected_return": 0.3,
+            "expected_excess": -0.0,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-28",
+            "weekday": "二",
+            "direction": "震荡",
+            "up_probability": 50.7,
+            "outperform_probability": 49.6,
+            "expected_return": 0.06,
+            "expected_excess": 0.04,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-29",
+            "weekday": "三",
+            "direction": "震荡",
+            "up_probability": 50.5,
+            "outperform_probability": 50.5,
+            "expected_return": -0.0,
+            "expected_excess": 0.05,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-30",
+            "weekday": "四",
+            "direction": "震荡",
+            "up_probability": 48.1,
+            "outperform_probability": 49.2,
+            "expected_return": -0.07,
+            "expected_excess": 0.05,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-31",
+            "weekday": "五",
+            "direction": "震荡",
+            "up_probability": 48.7,
+            "outperform_probability": 53.3,
+            "expected_return": 0.09,
+            "expected_excess": 0.07,
+            "confidence": "低"
+          }
+        ],
+        "drivers": [
+          "20日动量 +6.3%",
+          "20日相对沪深300 +10.8%",
+          "20日波动 24.0%年化"
+        ],
+        "invalidation": "若行业收盘跌破20日均线且相对沪深300的5日强弱转负，则领先判断失效；反向信号同理。",
+        "validation": {
+          "is_proxy": false,
+          "accuracy": 49.2,
+          "baseline": 57.5,
+          "auc": 0.505,
+          "brier": 0.255,
+          "relative_accuracy": 52.5,
+          "relative_baseline": 56.7,
+          "samples": 120
+        },
+        "weekly_expected_return": 0.38,
+        "weekly_expected_excess": 0.21,
+        "outperform_probability": 50.6,
+        "weekly_outlook": "相对中性",
+        "rank": 4
+      },
+      {
+        "key": "bank",
+        "name": "银行",
+        "code": "801780",
+        "group": "金融",
+        "is_composite": false,
+        "days": [
+          {
+            "date": "2026-07-27",
+            "weekday": "一",
+            "direction": "震荡",
+            "up_probability": 52.0,
+            "outperform_probability": 50.4,
+            "expected_return": 0.29,
+            "expected_excess": -0.01,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-28",
+            "weekday": "二",
+            "direction": "震荡",
+            "up_probability": 50.7,
+            "outperform_probability": 50.8,
+            "expected_return": 0.08,
+            "expected_excess": 0.06,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-29",
+            "weekday": "三",
+            "direction": "震荡",
+            "up_probability": 50.8,
+            "outperform_probability": 50.6,
+            "expected_return": -0.03,
+            "expected_excess": 0.02,
+            "confidence": "中"
+          },
+          {
+            "date": "2026-07-30",
+            "weekday": "四",
+            "direction": "震荡",
+            "up_probability": 47.9,
+            "outperform_probability": 50.4,
+            "expected_return": -0.09,
+            "expected_excess": 0.03,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-31",
+            "weekday": "五",
+            "direction": "震荡",
+            "up_probability": 48.6,
+            "outperform_probability": 54.9,
+            "expected_return": 0.06,
+            "expected_excess": 0.04,
+            "confidence": "低"
+          }
+        ],
+        "drivers": [
+          "20日动量 +6.5%",
+          "20日相对沪深300 +10.9%",
+          "20日波动 19.2%年化"
+        ],
+        "invalidation": "若行业收盘跌破20日均线且相对沪深300的5日强弱转负，则领先判断失效；反向信号同理。",
+        "validation": {
+          "is_proxy": false,
+          "accuracy": 48.3,
+          "baseline": 51.7,
+          "auc": 0.461,
+          "brier": 0.259,
+          "relative_accuracy": 50.0,
+          "relative_baseline": 50.8,
+          "samples": 120
+        },
+        "weekly_expected_return": 0.31,
+        "weekly_expected_excess": 0.14,
+        "outperform_probability": 51.4,
+        "weekly_outlook": "相对中性",
+        "rank": 5
+      },
+      {
+        "key": "power_equipment",
+        "name": "电力设备",
+        "code": "801730",
+        "group": "制造",
+        "is_composite": false,
+        "days": [
+          {
+            "date": "2026-07-27",
+            "weekday": "一",
+            "direction": "震荡",
+            "up_probability": 52.4,
+            "outperform_probability": 48.7,
+            "expected_return": 0.35,
+            "expected_excess": 0.05,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-28",
+            "weekday": "二",
+            "direction": "震荡",
+            "up_probability": 49.6,
+            "outperform_probability": 49.3,
+            "expected_return": -0.06,
+            "expected_excess": -0.08,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-29",
+            "weekday": "三",
+            "direction": "震荡",
+            "up_probability": 49.9,
+            "outperform_probability": 50.4,
+            "expected_return": -0.04,
+            "expected_excess": 0.01,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-30",
+            "weekday": "四",
+            "direction": "震荡",
+            "up_probability": 48.3,
+            "outperform_probability": 50.1,
+            "expected_return": -0.01,
+            "expected_excess": 0.11,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-31",
+            "weekday": "五",
+            "direction": "震荡",
+            "up_probability": 48.4,
+            "outperform_probability": 54.1,
+            "expected_return": 0.04,
+            "expected_excess": 0.02,
+            "confidence": "低"
+          }
+        ],
+        "drivers": [
+          "20日动量 -14.4%",
+          "20日相对沪深300 -9.9%",
+          "20日波动 36.3%年化"
+        ],
+        "invalidation": "若行业收盘跌破20日均线且相对沪深300的5日强弱转负，则领先判断失效；反向信号同理。",
+        "validation": {
+          "is_proxy": false,
+          "accuracy": 55.0,
+          "baseline": 56.7,
+          "auc": 0.594,
+          "brier": 0.246,
+          "relative_accuracy": 48.3,
+          "relative_baseline": 55.8,
+          "samples": 120
+        },
+        "weekly_expected_return": 0.28,
+        "weekly_expected_excess": 0.11,
+        "outperform_probability": 50.5,
+        "weekly_outlook": "相对中性",
+        "rank": 6
+      },
+      {
+        "key": "healthcare",
+        "name": "医药生物",
+        "code": "801150",
+        "group": "消费",
+        "is_composite": false,
+        "days": [
+          {
+            "date": "2026-07-27",
+            "weekday": "一",
+            "direction": "震荡",
+            "up_probability": 52.4,
+            "outperform_probability": 47.8,
+            "expected_return": 0.27,
+            "expected_excess": -0.03,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-28",
+            "weekday": "二",
+            "direction": "震荡",
+            "up_probability": 50.5,
+            "outperform_probability": 49.5,
+            "expected_return": 0.03,
+            "expected_excess": 0.01,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-29",
+            "weekday": "三",
+            "direction": "震荡",
+            "up_probability": 50.7,
+            "outperform_probability": 50.7,
+            "expected_return": 0.04,
+            "expected_excess": 0.09,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-30",
+            "weekday": "四",
+            "direction": "震荡",
+            "up_probability": 48.5,
+            "outperform_probability": 49.2,
+            "expected_return": -0.09,
+            "expected_excess": 0.03,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-31",
+            "weekday": "五",
+            "direction": "震荡",
+            "up_probability": 48.7,
+            "outperform_probability": 51.5,
+            "expected_return": 0.09,
+            "expected_excess": 0.07,
+            "confidence": "低"
+          }
+        ],
+        "drivers": [
+          "20日动量 +6.4%",
+          "20日相对沪深300 +10.9%",
+          "20日波动 43.0%年化"
+        ],
+        "invalidation": "若行业收盘跌破20日均线且相对沪深300的5日强弱转负，则领先判断失效；反向信号同理。",
+        "validation": {
+          "is_proxy": false,
+          "accuracy": 52.5,
+          "baseline": 55.8,
+          "auc": 0.556,
+          "brier": 0.251,
+          "relative_accuracy": 60.8,
+          "relative_baseline": 55.8,
+          "samples": 120
+        },
+        "weekly_expected_return": 0.34,
+        "weekly_expected_excess": 0.17,
+        "outperform_probability": 49.7,
+        "weekly_outlook": "相对中性",
+        "rank": 7
+      },
+      {
+        "key": "utilities",
+        "name": "公用事业（含电力）",
+        "code": "801160",
+        "group": "能源",
+        "is_composite": false,
+        "days": [
+          {
+            "date": "2026-07-27",
+            "weekday": "一",
+            "direction": "震荡",
+            "up_probability": 55.1,
+            "outperform_probability": 50.0,
+            "expected_return": 0.25,
+            "expected_excess": -0.05,
+            "confidence": "中"
+          },
+          {
+            "date": "2026-07-28",
+            "weekday": "二",
+            "direction": "震荡",
+            "up_probability": 51.2,
+            "outperform_probability": 49.6,
+            "expected_return": 0.03,
+            "expected_excess": 0.01,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-29",
+            "weekday": "三",
+            "direction": "震荡",
+            "up_probability": 53.1,
+            "outperform_probability": 50.5,
+            "expected_return": -0.01,
+            "expected_excess": 0.04,
+            "confidence": "中"
+          },
+          {
+            "date": "2026-07-30",
+            "weekday": "四",
+            "direction": "震荡",
+            "up_probability": 48.8,
+            "outperform_probability": 49.3,
+            "expected_return": -0.09,
+            "expected_excess": 0.03,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-31",
+            "weekday": "五",
+            "direction": "震荡",
+            "up_probability": 49.6,
+            "outperform_probability": 51.1,
+            "expected_return": 0.13,
+            "expected_excess": 0.11,
+            "confidence": "低"
+          }
+        ],
+        "drivers": [
+          "20日动量 -0.0%",
+          "20日相对沪深300 +4.5%",
+          "20日波动 23.2%年化",
+          "公用事业指数同时包含电力等公用板块"
+        ],
+        "invalidation": "若行业收盘跌破20日均线且相对沪深300的5日强弱转负，则领先判断失效；反向信号同理。",
+        "validation": {
+          "is_proxy": false,
+          "accuracy": 56.7,
+          "baseline": 54.2,
+          "auc": 0.578,
+          "brier": 0.247,
+          "relative_accuracy": 46.7,
+          "relative_baseline": 50.8,
+          "samples": 120
+        },
+        "weekly_expected_return": 0.31,
+        "weekly_expected_excess": 0.14,
+        "outperform_probability": 50.1,
+        "weekly_outlook": "相对中性",
+        "rank": 8
+      },
+      {
+        "key": "nonferrous",
+        "name": "有色金属",
+        "code": "801050",
+        "group": "周期",
+        "is_composite": false,
+        "days": [
+          {
+            "date": "2026-07-27",
+            "weekday": "一",
+            "direction": "震荡",
+            "up_probability": 52.6,
+            "outperform_probability": 47.3,
+            "expected_return": 0.33,
+            "expected_excess": 0.03,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-28",
+            "weekday": "二",
+            "direction": "震荡",
+            "up_probability": 50.3,
+            "outperform_probability": 49.2,
+            "expected_return": -0.04,
+            "expected_excess": -0.06,
+            "confidence": "中"
+          },
+          {
+            "date": "2026-07-29",
+            "weekday": "三",
+            "direction": "震荡",
+            "up_probability": 51.6,
+            "outperform_probability": 50.5,
+            "expected_return": 0.02,
+            "expected_excess": 0.07,
+            "confidence": "中"
+          },
+          {
+            "date": "2026-07-30",
+            "weekday": "四",
+            "direction": "震荡",
+            "up_probability": 48.4,
+            "outperform_probability": 49.3,
+            "expected_return": -0.08,
+            "expected_excess": 0.04,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-31",
+            "weekday": "五",
+            "direction": "震荡",
+            "up_probability": 48.7,
+            "outperform_probability": 50.6,
+            "expected_return": 0.13,
+            "expected_excess": 0.11,
+            "confidence": "中"
+          }
+        ],
+        "drivers": [
+          "20日动量 -8.5%",
+          "20日相对沪深300 -4.0%",
+          "20日波动 44.6%年化"
+        ],
+        "invalidation": "若行业收盘跌破20日均线且相对沪深300的5日强弱转负，则领先判断失效；反向信号同理。",
+        "validation": {
+          "is_proxy": false,
+          "accuracy": 48.3,
+          "baseline": 52.5,
+          "auc": 0.541,
+          "brier": 0.251,
+          "relative_accuracy": 58.3,
+          "relative_baseline": 55.0,
+          "samples": 120
+        },
+        "weekly_expected_return": 0.36,
+        "weekly_expected_excess": 0.19,
+        "outperform_probability": 49.4,
+        "weekly_outlook": "相对中性",
+        "rank": 9
+      },
+      {
+        "key": "defense",
+        "name": "国防军工",
+        "code": "801740",
+        "group": "制造",
+        "is_composite": false,
+        "days": [
+          {
+            "date": "2026-07-27",
+            "weekday": "一",
+            "direction": "震荡",
+            "up_probability": 55.9,
+            "outperform_probability": 48.8,
+            "expected_return": 0.34,
+            "expected_excess": 0.04,
+            "confidence": "中"
+          },
+          {
+            "date": "2026-07-28",
+            "weekday": "二",
+            "direction": "震荡",
+            "up_probability": 49.6,
+            "outperform_probability": 49.5,
+            "expected_return": -0.07,
+            "expected_excess": -0.09,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-29",
+            "weekday": "三",
+            "direction": "震荡",
+            "up_probability": 49.6,
+            "outperform_probability": 50.4,
+            "expected_return": -0.08,
+            "expected_excess": -0.03,
+            "confidence": "中"
+          },
+          {
+            "date": "2026-07-30",
+            "weekday": "四",
+            "direction": "震荡",
+            "up_probability": 48.3,
+            "outperform_probability": 50.5,
+            "expected_return": -0.04,
+            "expected_excess": 0.08,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-31",
+            "weekday": "五",
+            "direction": "震荡",
+            "up_probability": 47.5,
+            "outperform_probability": 54.0,
+            "expected_return": 0.05,
+            "expected_excess": 0.03,
+            "confidence": "中"
+          }
+        ],
+        "drivers": [
+          "20日动量 -13.5%",
+          "20日相对沪深300 -9.0%",
+          "20日波动 44.2%年化"
+        ],
+        "invalidation": "若行业收盘跌破20日均线且相对沪深300的5日强弱转负，则领先判断失效；反向信号同理。",
+        "validation": {
+          "is_proxy": false,
+          "accuracy": 61.7,
+          "baseline": 50.8,
+          "auc": 0.64,
+          "brier": 0.24,
+          "relative_accuracy": 54.2,
+          "relative_baseline": 58.3,
+          "samples": 120
+        },
+        "weekly_expected_return": 0.2,
+        "weekly_expected_excess": 0.03,
+        "outperform_probability": 50.6,
+        "weekly_outlook": "相对中性",
+        "rank": 10
+      },
+      {
+        "key": "nonbank",
+        "name": "非银金融",
+        "code": "801790",
+        "group": "金融",
+        "is_composite": false,
+        "days": [
+          {
+            "date": "2026-07-27",
+            "weekday": "一",
+            "direction": "震荡",
+            "up_probability": 55.2,
+            "outperform_probability": 50.4,
+            "expected_return": 0.27,
+            "expected_excess": -0.03,
+            "confidence": "中"
+          },
+          {
+            "date": "2026-07-28",
+            "weekday": "二",
+            "direction": "震荡",
+            "up_probability": 50.3,
+            "outperform_probability": 49.5,
+            "expected_return": 0.01,
+            "expected_excess": -0.01,
+            "confidence": "中"
+          },
+          {
+            "date": "2026-07-29",
+            "weekday": "三",
+            "direction": "震荡",
+            "up_probability": 50.1,
+            "outperform_probability": 50.3,
+            "expected_return": -0.03,
+            "expected_excess": 0.02,
+            "confidence": "中"
+          },
+          {
+            "date": "2026-07-30",
+            "weekday": "四",
+            "direction": "震荡",
+            "up_probability": 45.5,
+            "outperform_probability": 49.6,
+            "expected_return": -0.12,
+            "expected_excess": 0.0,
+            "confidence": "中"
+          },
+          {
+            "date": "2026-07-31",
+            "weekday": "五",
+            "direction": "震荡",
+            "up_probability": 47.6,
+            "outperform_probability": 52.2,
+            "expected_return": 0.06,
+            "expected_excess": 0.04,
+            "confidence": "低"
+          }
+        ],
+        "drivers": [
+          "20日动量 +3.0%",
+          "20日相对沪深300 +7.5%",
+          "20日波动 28.9%年化"
+        ],
+        "invalidation": "若行业收盘跌破20日均线且相对沪深300的5日强弱转负，则领先判断失效；反向信号同理。",
+        "validation": {
+          "is_proxy": false,
+          "accuracy": 61.7,
+          "baseline": 56.7,
+          "auc": 0.641,
+          "brier": 0.236,
+          "relative_accuracy": 60.0,
+          "relative_baseline": 61.7,
+          "samples": 120
+        },
+        "weekly_expected_return": 0.19,
+        "weekly_expected_excess": 0.02,
+        "outperform_probability": 50.4,
+        "weekly_outlook": "相对中性",
+        "rank": 11
+      },
+      {
+        "key": "computer",
+        "name": "计算机",
+        "code": "801750",
+        "group": "科技",
+        "is_composite": false,
+        "days": [
+          {
+            "date": "2026-07-27",
+            "weekday": "一",
+            "direction": "偏强",
+            "up_probability": 56.9,
+            "outperform_probability": 46.5,
+            "expected_return": 0.31,
+            "expected_excess": 0.01,
+            "confidence": "中"
+          },
+          {
+            "date": "2026-07-28",
+            "weekday": "二",
+            "direction": "震荡",
+            "up_probability": 50.3,
+            "outperform_probability": 49.3,
+            "expected_return": -0.03,
+            "expected_excess": -0.05,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-29",
+            "weekday": "三",
+            "direction": "震荡",
+            "up_probability": 50.6,
+            "outperform_probability": 49.5,
+            "expected_return": -0.06,
+            "expected_excess": -0.01,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-30",
+            "weekday": "四",
+            "direction": "震荡",
+            "up_probability": 48.8,
+            "outperform_probability": 48.5,
+            "expected_return": -0.08,
+            "expected_excess": 0.04,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-31",
+            "weekday": "五",
+            "direction": "震荡",
+            "up_probability": 48.1,
+            "outperform_probability": 50.2,
+            "expected_return": 0.11,
+            "expected_excess": 0.09,
+            "confidence": "中"
+          }
+        ],
+        "drivers": [
+          "20日动量 -5.3%",
+          "20日相对沪深300 -0.8%",
+          "20日波动 38.8%年化"
+        ],
+        "invalidation": "若行业收盘跌破20日均线且相对沪深300的5日强弱转负，则领先判断失效；反向信号同理。",
+        "validation": {
+          "is_proxy": false,
+          "accuracy": 64.2,
+          "baseline": 51.7,
+          "auc": 0.697,
+          "brier": 0.231,
+          "relative_accuracy": 55.0,
+          "relative_baseline": 51.7,
+          "samples": 120
+        },
+        "weekly_expected_return": 0.25,
+        "weekly_expected_excess": 0.08,
+        "outperform_probability": 48.8,
+        "weekly_outlook": "相对中性",
+        "rank": 12
+      },
+      {
+        "key": "auto",
+        "name": "汽车",
+        "code": "801880",
+        "group": "制造",
+        "is_composite": false,
+        "days": [
+          {
+            "date": "2026-07-27",
+            "weekday": "一",
+            "direction": "震荡",
+            "up_probability": 54.6,
+            "outperform_probability": 47.3,
+            "expected_return": 0.32,
+            "expected_excess": 0.02,
+            "confidence": "中"
+          },
+          {
+            "date": "2026-07-28",
+            "weekday": "二",
+            "direction": "震荡",
+            "up_probability": 50.2,
+            "outperform_probability": 49.6,
+            "expected_return": -0.02,
+            "expected_excess": -0.04,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-29",
+            "weekday": "三",
+            "direction": "震荡",
+            "up_probability": 50.0,
+            "outperform_probability": 50.5,
+            "expected_return": -0.07,
+            "expected_excess": -0.02,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-30",
+            "weekday": "四",
+            "direction": "震荡",
+            "up_probability": 48.4,
+            "outperform_probability": 49.1,
+            "expected_return": -0.11,
+            "expected_excess": 0.01,
+            "confidence": "低"
+          },
+          {
+            "date": "2026-07-31",
+            "weekday": "五",
+            "direction": "震荡",
+            "up_probability": 48.4,
+            "outperform_probability": 50.2,
+            "expected_return": 0.01,
+            "expected_excess": -0.01,
+            "confidence": "低"
+          }
+        ],
+        "drivers": [
+          "20日动量 -5.0%",
+          "20日相对沪深300 -0.5%",
+          "20日波动 33.3%年化"
+        ],
+        "invalidation": "若行业收盘跌破20日均线且相对沪深300的5日强弱转负，则领先判断失效；反向信号同理。",
+        "validation": {
+          "is_proxy": false,
+          "accuracy": 56.7,
+          "baseline": 54.2,
+          "auc": 0.653,
+          "brier": 0.238,
+          "relative_accuracy": 54.2,
+          "relative_baseline": 59.2,
+          "samples": 120
+        },
+        "weekly_expected_return": 0.13,
+        "weekly_expected_excess": -0.04,
+        "outperform_probability": 49.3,
+        "weekly_outlook": "相对中性",
+        "rank": 13
+      }
+    ]
+  }
 }

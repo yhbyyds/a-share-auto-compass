@@ -108,6 +108,68 @@ function renderHorizonValidation(rows) {
   }).join("");
 }
 
+function renderSectorForecast(forecast) {
+  if (!forecast || !forecast.sectors?.length) {
+    $("#sector-leaders").innerHTML = `<article class="watchlist-empty panel">行业数据暂不可用，大盘模型仍可单独使用。</article>`;
+    $("#sector-matrix").innerHTML = "";
+    return;
+  }
+
+  const sectors = [...forecast.sectors].sort((a, b) => a.rank - b.rank);
+  const leaders = sectors.slice(0, 3);
+  $("#sector-leaders").innerHTML = leaders.map((sector) => {
+    const validationEdge = sector.validation.accuracy - sector.validation.baseline;
+    return `
+      <article class="sector-leader panel">
+        <div class="sector-leader-top">
+          <span class="sector-rank">#${sector.rank}</span>
+          <span class="sector-outlook ${sector.weekly_outlook === "相对领先" ? "positive-text" : sector.weekly_outlook === "相对落后" ? "negative-text" : "neutral-text"}">${sector.weekly_outlook}</span>
+        </div>
+        <span class="stock-code">${sector.code} · ${sector.group}</span>
+        <h3>${sector.name}</h3>
+        <div class="sector-leader-metrics">
+          <div><span>周路径</span><strong>${formatSigned(sector.weekly_expected_return)}</strong></div>
+          <div><span>相对基准</span><strong>${formatSigned(sector.weekly_expected_excess)}</strong></div>
+          <div><span>跑赢概率</span><strong>${sector.outperform_probability}%</strong></div>
+        </div>
+        <p>${sector.drivers.slice(0, 2).join(" · ")}</p>
+        <span class="sector-validation ${validationEdge >= 2 ? "" : "weak"}">${sector.validation.is_proxy ? "第1日子行业均值" : "第1日验证"} ${sector.validation.accuracy}% / 基线 ${sector.validation.baseline}%</span>
+      </article>`;
+  }).join("");
+
+  const headers = forecast.sectors[0].days.map((day) => `<div class="sector-column-head">${day.date.slice(5)}<span>周${day.weekday}</span></div>`).join("");
+  $("#sector-matrix").innerHTML = `
+    <div class="sector-matrix-row sector-matrix-header">
+      <div>行业 / 周判断</div>
+      ${headers}
+      <div>第1日验证</div>
+    </div>
+    ${sectors.map((sector) => {
+      const validationEdge = sector.validation.accuracy - sector.validation.baseline;
+      return `
+        <div class="sector-matrix-row ${sector.key === "technology" || sector.key === "utilities" ? "featured" : ""}">
+          <div class="sector-name-cell">
+            <span class="sector-mini-rank">#${sector.rank}</span>
+            <strong>${sector.name}</strong>
+            <small>${sector.weekly_outlook} · 周${formatSigned(sector.weekly_expected_return)}</small>
+          </div>
+          ${sector.days.map((day) => `
+            <div class="sector-day-cell ${cardClass(day.direction)}">
+              <strong>${day.direction}</strong>
+              <span>涨 ${day.up_probability}%</span>
+              <span>胜 ${day.outperform_probability}%</span>
+            </div>`).join("")}
+          <div class="sector-evidence-cell">
+            <strong class="${validationEdge >= 2 ? "positive-text" : "negative-text"}">${sector.validation.accuracy}%</strong>
+            <span>${sector.validation.is_proxy ? "子行业均值" : `基线 ${sector.validation.baseline}%`}</span>
+            <span>${sector.validation.samples} 样本</span>
+          </div>
+        </div>`;
+    }).join("")}`;
+
+  $("#sector-method-note").textContent = `${forecast.data_source}，数据截至 ${forecast.data_through}。${forecast.method}`;
+}
+
 function renderWatchlist(rows) {
   if (!rows || !rows.length) {
     $("#watchlist").innerHTML = `<article class="watchlist-empty panel">当前没有股票同时通过流动性、趋势、过热和波动过滤；空观察池也是有效结果。</article>`;
@@ -176,6 +238,7 @@ function render(data) {
       <div class="model-numbers"><span>看涨概率</span><strong>${model.probability}%</strong></div>
     </div>`).join("");
   renderHorizonValidation(data.horizon_validation || []);
+  renderSectorForecast(data.sector_forecast);
   renderWatchlist(data.watchlist || []);
 
   $("#events").innerHTML = data.events.map((event) => `

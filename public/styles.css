@@ -194,6 +194,41 @@ body {
 .breadth-stat strong { display: block; margin-top: 5px; font-size: 23px; }
 .breadth-unavailable { margin: 0; color: var(--muted); font-size: 12px; }
 
+.sector-leaders { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.sector-leader { padding: 25px; }
+.sector-leader-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+.sector-rank { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; color: white; background: var(--ink); font-size: 11px; font-weight: 700; }
+.sector-outlook { font-size: 11px; font-weight: 700; }
+.sector-leader h3 { margin: 5px 0 0; font-size: 25px; letter-spacing: -.04em; }
+.sector-leader-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 22px; padding: 16px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.sector-leader-metrics span { display: block; color: var(--muted); font-size: 8px; }
+.sector-leader-metrics strong { display: block; margin-top: 4px; font-size: 15px; }
+.sector-leader > p { min-height: 34px; margin: 16px 0 12px; color: var(--muted); font-size: 10px; line-height: 1.65; }
+.sector-validation { display: inline-block; padding: 5px 8px; border-radius: 999px; color: var(--green); background: var(--green-soft); font-size: 9px; }
+.sector-validation.weak { color: var(--red); background: var(--red-soft); }
+.sector-matrix-panel { margin-top: 14px; padding: 28px; }
+.sector-matrix-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 28px; }
+.sector-matrix-head h3 { margin: 6px 0 0; font-size: 22px; letter-spacing: -.03em; }
+.sector-matrix-head > p { max-width: 330px; margin: 0; color: var(--muted); font-size: 11px; text-align: right; }
+.sector-matrix-scroll { overflow-x: auto; margin-top: 24px; }
+.sector-matrix { min-width: 1040px; border-top: 1px solid var(--line); }
+.sector-matrix-row { display: grid; grid-template-columns: 190px repeat(5, minmax(112px, 1fr)) 110px; border-bottom: 1px solid var(--line); }
+.sector-matrix-row > div { min-width: 0; padding: 13px 11px; border-right: 1px solid var(--line); }
+.sector-matrix-row > div:last-child { border-right: 0; }
+.sector-matrix-header { color: var(--muted); background: rgba(23,33,28,.025); font-size: 9px; font-weight: 700; }
+.sector-column-head span { display: block; margin-top: 2px; font-weight: 400; }
+.sector-matrix-row.featured { background: rgba(12,107,79,.045); }
+.sector-name-cell { position: relative; }
+.sector-name-cell strong { display: block; font-size: 12px; }
+.sector-name-cell small { display: block; margin-top: 5px; color: var(--muted); font-size: 9px; }
+.sector-mini-rank { float: right; color: var(--muted); font-size: 9px; }
+.sector-day-cell { border-top: 2px solid var(--amber); }
+.sector-day-cell.positive { border-top-color: var(--green); }
+.sector-day-cell.negative { border-top-color: var(--red); }
+.sector-day-cell strong { display: block; font-size: 11px; }
+.sector-day-cell span, .sector-evidence-cell span { display: block; margin-top: 4px; color: var(--muted); font-size: 8px; }
+.sector-evidence-cell strong { display: block; font-size: 12px; }
+
 .evidence-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
 .validation-card { padding: 25px; }
 .validation-card > strong { display: block; margin-top: 13px; font-size: 35px; letter-spacing: -.05em; }
@@ -283,6 +318,8 @@ footer p { max-width: 840px; margin: 0; }
   .guard-section { grid-template-columns: 1fr; }
   .horizon-grid { grid-template-columns: repeat(2, 1fr); }
   .watchlist-grid { grid-template-columns: repeat(2, 1fr); }
+  .sector-leaders { grid-template-columns: repeat(2, 1fr); }
+  .sector-leader:last-child { grid-column: span 2; }
 }
 
 @media (max-width: 680px) {
@@ -302,6 +339,11 @@ footer p { max-width: 840px; margin: 0; }
   .day-card:last-child { grid-column: auto; }
   .evidence-grid, .model-list { grid-template-columns: 1fr; }
   .horizon-grid, .watchlist-grid { grid-template-columns: 1fr; }
+  .sector-leaders { grid-template-columns: 1fr; }
+  .sector-leader:last-child { grid-column: auto; }
+  .sector-matrix-panel { padding: 22px 14px; }
+  .sector-matrix-head { display: block; }
+  .sector-matrix-head > p { margin-top: 8px; text-align: left; }
   .breadth-stats { grid-template-columns: repeat(2, 1fr); }
   .breadth-stat:nth-child(2n) { border: 0; }
   .guard-section { padding: 30px 22px; margin-top: 54px; }

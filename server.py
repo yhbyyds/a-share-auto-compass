@@ -13,6 +13,7 @@ from market_forecast.data import (
     fetch_market_data,
 )
 from market_forecast.model import generate_forecast
+from market_forecast.sectors import fetch_sector_data, generate_sector_forecast
 from market_forecast.watchlist import generate_watchlist
 
 
@@ -38,6 +39,22 @@ def refresh_forecast() -> dict:
             data,
             fetch_market_breadth(),
             generate_watchlist(data),
+        )
+        forecast["sector_forecast"] = generate_sector_forecast(
+            data,
+            fetch_sector_data(),
+            forecast["days"],
+        )
+        forecast["meta"]["version"] = "1.1.0"
+        forecast["sources"].append(
+            {
+                "name": "申万行业指数",
+                "detail": "申万一级行业历史行情与行业分类口径",
+                "url": (
+                    "https://www.swsresearch.com/institute_sw/allIndex/"
+                    "releasedIndex"
+                ),
+            }
         )
     except MarketDataError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc

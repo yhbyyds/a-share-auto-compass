@@ -133,6 +133,31 @@
     <section class="section-block">
       <div class="section-heading">
         <div>
+          <p class="eyebrow">SECTOR ROTATION · SW LEVEL 1</p>
+          <h2>行业方向雷达</h2>
+        </div>
+        <p>同时预测行业自身涨跌与相对沪深300强弱；排名代表相对机会，不等于买入指令。</p>
+      </div>
+      <div id="sector-leaders" class="sector-leaders"></div>
+      <article class="panel sector-matrix-panel">
+        <div class="sector-matrix-head">
+          <div>
+            <span class="label">MON — FRI MATRIX</span>
+            <h3>科技、电力与核心行业逐日拆分</h3>
+          </div>
+          <p>每格依次显示方向、上涨概率、跑赢沪深300概率。</p>
+        </div>
+        <div class="sector-matrix-scroll">
+          <div id="sector-matrix" class="sector-matrix"></div>
+        </div>
+      </article>
+      <p id="sector-method-note" class="section-footnote"></p>
+      <p class="section-footnote warning">行业预测也会失效。若样本外准确率没有超过多数类基线，系统会收缩概率并标记低置信；不要因行业排名追高或重仓。</p>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div>
           <p class="eyebrow">OUT-OF-SAMPLE</p>
           <h2>先看证据，再看预测</h2>
         </div>
@@ -223,7 +248,7 @@
         <h2>可审计，不神化</h2>
       </div>
       <div class="method-copy">
-        <p>系统使用上证50、沪深300、中证500、中证1000、创业板指与上证指数的量价特征。逻辑回归、梯度提升、随机森林分别建模，再按滚动样本外准确率加权。历史相似状态用于校准收益区间。</p>
+        <p>大盘模型使用上证50、沪深300、中证500、中证1000、创业板指、海外指数与上证指数的量价特征。行业模型另使用申万一级行业历史序列，分别估计行业绝对方向和相对沪深300强弱。全部模型按时间滚动验证，历史相似状态用于校准收益区间。</p>
         <div id="sources" class="source-links"></div>
       </div>
     </section>
