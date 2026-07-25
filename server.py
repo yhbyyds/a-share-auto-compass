@@ -1,21 +1,13 @@
 from __future__ import annotations
 
-import json
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from market_forecast.data import (
-    MarketDataError,
-    fetch_market_breadth,
-    fetch_market_data,
-)
-from market_forecast.events import enrich_forecast_with_events
-from market_forecast.model import generate_forecast
-from market_forecast.sectors import fetch_sector_data, generate_sector_forecast
-from market_forecast.watchlist import generate_watchlist
+from automation import run_update
+from market_forecast.data import MarketDataError
 
 
 ROOT = Path(__file__).parent
@@ -29,52 +21,17 @@ app = FastAPI(title="A股下周罗盘", version="1.0.0")
 def get_forecast() -> dict:
     if not FORECAST_FILE.exists():
         raise HTTPException(status_code=404, detail="尚未生成预测")
+    import json
+
     return json.loads(FORECAST_FILE.read_text(encoding="utf-8"))
 
 
 @app.post("/api/refresh")
 def refresh_forecast() -> dict:
     try:
-        data = fetch_market_data()
-        forecast = generate_forecast(
-            data,
-            fetch_market_breadth(),
-            generate_watchlist(data),
-        )
-        forecast["sector_forecast"] = generate_sector_forecast(
-            data,
-            fetch_sector_data(),
-            forecast["days"],
-        )
-        enrich_forecast_with_events(forecast)
-        forecast["meta"]["version"] = "1.2.0"
-        forecast["meta"]["release"] = "6"
-        forecast["sources"].append(
-            {
-                "name": "申万行业指数",
-                "detail": "申万一级行业历史行情与行业分类口径",
-                "url": (
-                    "https://www.swsresearch.com/institute_sw/allIndex/"
-                    "releasedIndex"
-                ),
-            }
-        )
-        forecast["sources"].append(
-            {
-                "name": "短线事件日历",
-                "detail": "交易所、央行、统计机构及公司投资者关系官方日程",
-                "url": (
-                    "https://www.federalreserve.gov/monetarypolicy/"
-                    "fomccalendars.htm"
-                ),
-            }
-        )
-    except MarketDataError as exc:
+        forecast, _ = run_update()
+    except (MarketDataError, RuntimeError) as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
-    FORECAST_FILE.parent.mkdir(parents=True, exist_ok=True)
-    FORECAST_FILE.write_text(
-        json.dumps(forecast, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
     return forecast
 
 

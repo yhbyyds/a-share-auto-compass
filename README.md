@@ -20,11 +20,45 @@
 
 ```powershell
 py -m pip install -r requirements.txt
-py generate.py
+py automation.py --build
 py -m uvicorn server:app --reload
 ```
 
-然后打开 <http://127.0.0.1:8000>。页面右上角“重新计算”会重新拉取数据、训练模型并写入 `public/data/forecast.json`。首次加入行业模型后，完整训练通常需要约 2–3 分钟。
+然后打开 <http://127.0.0.1:8000>。页面右上角“重新计算”会调用同一套自动更新流水线。首次加入行业模型后，完整训练通常需要约 2–3 分钟。
+
+## 版本7自动更新
+
+自动更新入口为：
+
+```powershell
+py automation.py --build
+```
+
+流水线依次执行：
+
+1. 抓取最新宽基、外围市场、行业、市场宽度和观察池数据。
+2. 重新训练大盘与行业模型并运行滚动样本外验证。
+3. 合并仅标记为“已确认”且带官方来源的短期事件。
+4. 检查数据日期、5日结构、行业覆盖、验证样本、异常数值和日期倒退。
+5. 门禁通过后原子替换 `public/data/forecast.json`；失败时保留上一版。
+6. 写入 `data/automation/last_run.json` 和轮转日志，便于排错。
+
+仅测试流程而不覆盖正式预测：
+
+```powershell
+py automation.py --dry-run
+```
+
+安装 Windows 定时任务：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/install_windows_task.ps1
+```
+
+默认周一至周五 18:35、周日 20:30 执行。任务只在当前用户登录时运行；错过时间后会在系统可用时补跑。
+任务在 Windows 任务计划程序中的名称是 `AShareCompass_AutoUpdate`。
+
+> 当前公开站点是静态部署。定时任务会自动生成、校验并构建发布包，但不会持久保存短期部署令牌，因此线上更新仍需把通过门禁的版本发布到 Sites。这样可以避免把部署密钥写入磁盘。
 
 ## 测试
 

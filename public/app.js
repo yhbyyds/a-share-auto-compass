@@ -254,7 +254,13 @@ function renderEventRadar(radar, playbook) {
 
 function render(data) {
   const { meta, market, days, validation } = data;
-  $("#data-status").textContent = `数据截至 ${meta.data_through}`;
+  const automation = meta.automation;
+  const automationLabel = automation?.quality_gate?.passed
+    ? "自动更新已校验"
+    : automation?.status === "manual"
+      ? "手动更新已校验"
+      : "发布快照";
+  $("#data-status").textContent = `数据截至 ${meta.data_through} · ${automationLabel}`;
   $("#forecast-window").textContent = meta.forecast_window;
   $("#generated-time").textContent = new Date(meta.generated_at).toLocaleString("zh-CN", { hour12: false, month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" });
   $("#weekly-direction").textContent = market.weekly_direction;
@@ -324,7 +330,7 @@ $("#refresh-button").addEventListener("click", async () => {
     render(await response.json());
     showToast("已用最新收盘数据重新训练并更新");
   } catch (error) {
-    showToast(`${error.message}；可在本机运行 py generate.py 更新。`);
+    showToast(`${error.message}；可在本机运行 py automation.py --build 更新。`);
   } finally {
     button.disabled = false;
     button.textContent = "重新计算";

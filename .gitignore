@@ -6,4 +6,5 @@ node_modules/
 .next/
 dist/
 data/cache/
+data/automation/
 .worktrees/
