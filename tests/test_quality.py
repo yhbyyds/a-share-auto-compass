@@ -94,3 +94,13 @@ def test_unconfirmed_event_blocks_publication() -> None:
 
     assert not result.passed
     assert any("事件未确认" in error for error in result.errors)
+
+
+def test_expired_forecast_window_blocks_publication() -> None:
+    result = validate_forecast(
+        valid_forecast(),
+        today=date(2026, 7, 27),
+    )
+
+    assert not result.passed
+    assert any("预测窗口已过期" in error for error in result.errors)

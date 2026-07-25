@@ -112,6 +112,10 @@ def validate_forecast(
             result.errors.append(f"上涨概率越界: {probability}")
     if day_dates != sorted(set(day_dates)):
         result.errors.append("逐日预测日期未严格递增或存在重复")
+    if day_dates and day_dates[0] <= today:
+        result.errors.append(
+            f"预测窗口已过期: 首日 {day_dates[0]} 不晚于当前日期 {today}"
+        )
 
     validation = forecast["validation"]
     samples = int(validation.get("samples", 0) or 0)

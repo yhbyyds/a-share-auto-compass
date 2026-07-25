@@ -60,6 +60,20 @@ powershell -ExecutionPolicy Bypass -File scripts/install_windows_task.ps1
 
 > 当前公开站点是静态部署。定时任务会自动生成、校验并构建发布包，但不会持久保存短期部署令牌，因此线上更新仍需把通过门禁的版本发布到 Sites。这样可以避免把部署密钥写入磁盘。
 
+## 与 ChatGPT 账号解耦的云端发布
+
+项目包含 `.github/workflows/update-forecast-pages.yml`。把仓库放到 GitHub 并在
+`Settings → Pages → Build and deployment` 中选择 `GitHub Actions` 后，云端会：
+
+1. 工作日北京时间 18:35、周日 20:30 自动抓取、重训和运行质量门禁。
+2. 门禁通过后发布 `public/` 到 GitHub Pages，并在线核验版本、5日结构和行业覆盖。
+3. 把通过门禁的预测 JSON 提交回仓库，供下一次日期倒退检查使用。
+4. 失败时停止发布，保留上一版 Pages，并保存 14 天诊断日志。
+
+GitHub Pages 与 ChatGPT 账号无关；以后切换 ChatGPT 账号不需要更改站点项目编号。
+首次推送到 GitHub 后，可在 `Actions` 页面手动运行一次
+`Update forecast and deploy Pages`。公开仓库使用 GitHub Free 即可。
+
 ## 测试
 
 ```powershell

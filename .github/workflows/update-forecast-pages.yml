@@ -1,0 +1,126 @@
+name: Update forecast and deploy Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - public/data/forecast.json
+  schedule:
+    - cron: "35 10 * * 1-5"
+    - cron: "30 12 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Restore market-data cache
+        uses: actions/cache@v4
+        with:
+          path: data/cache
+          key: market-data-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: |
+            market-data-${{ runner.os }}-
+
+      - name: Install forecast dependencies
+        run: python -m pip install --requirement requirements.txt pytest
+
+      - name: Run tests
+        run: python -m pytest -q
+
+      - name: Fetch, retrain, and validate
+        run: python automation.py --max-data-age-days 5
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: public
+
+      - name: Preserve the accepted forecast in Git
+        continue-on-error: true
+        shell: bash
+        run: |
+          git config user.name "a-share-forecast-bot"
+          git config user.email "a-share-forecast-bot@users.noreply.github.com"
+          git add public/data/forecast.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update accepted forecast"
+            git push
+          fi
+
+      - name: Upload diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: forecast-diagnostics-${{ github.run_id }}
+          path: |
+            data/automation/last_run.json
+            data/automation/automation.log
+          if-no-files-found: ignore
+          retention-days: 14
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: update
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Verify the published forecast
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import time
+          from urllib.request import urlopen
+
+          url = os.environ["PAGE_URL"].rstrip("/") + "/data/forecast.json"
+          last_error = None
+          for _ in range(10):
+              try:
+                  with urlopen(url, timeout=20) as response:
+                      payload = json.load(response)
+                  assert payload["meta"]["release"] == "7"
+                  assert payload["meta"]["automation"]["status"] == "passed"
+                  assert len(payload["days"]) == 5
+                  assert len(payload["sector_forecast"]["sectors"]) >= 10
+                  print("Published forecast verified:", url)
+                  break
+              except Exception as exc:
+                  last_error = exc
+                  time.sleep(6)
+          else:
+              raise SystemExit(f"Published forecast verification failed: {last_error}")
+          PY

@@ -312,7 +312,7 @@ function render(data) {
 }
 
 async function loadForecast() {
-  const response = await fetch("/data/forecast.json", { cache: "no-store" });
+  const response = await fetch("./data/forecast.json", { cache: "no-store" });
   if (!response.ok) throw new Error("预测文件读取失败");
   const data = await response.json();
   render(data);
@@ -322,18 +322,16 @@ async function loadForecast() {
 $("#refresh-button").addEventListener("click", async () => {
   const button = $("#refresh-button");
   button.disabled = true;
-  button.textContent = "计算中…";
+  button.textContent = "检查中…";
   document.body.classList.add("loading");
   try {
-    const response = await fetch("/api/refresh", { method: "POST" });
-    if (!response.ok) throw new Error("当前页面为静态版本或行情源暂不可用");
-    render(await response.json());
-    showToast("已用最新收盘数据重新训练并更新");
+    await loadForecast();
+    showToast("已读取自动化系统发布的最新预测");
   } catch (error) {
-    showToast(`${error.message}；可在本机运行 py automation.py --build 更新。`);
+    showToast(`${error.message}；上一版页面内容已保留。`);
   } finally {
     button.disabled = false;
-    button.textContent = "重新计算";
+    button.textContent = "检查最新数据";
     document.body.classList.remove("loading");
   }
 });
