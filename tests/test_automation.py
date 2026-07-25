@@ -55,6 +55,13 @@ def test_failed_gate_preserves_previous_output(tmp_path, monkeypatch) -> None:
 def test_build_uses_node_directly(tmp_path, monkeypatch) -> None:
     monkeypatch.setattr(automation, "build_forecast", valid_forecast)
     monkeypatch.setattr(automation, "_find_node", lambda: "node.exe")
+    vinext_cli = tmp_path / "node_modules" / "vinext" / "dist" / "cli.js"
+    vinext_cli.parent.mkdir(parents=True)
+    vinext_cli.touch()
+    prepare_script = tmp_path / "scripts" / "prepare-dist.mjs"
+    prepare_script.parent.mkdir()
+    prepare_script.touch()
+    monkeypatch.setattr(automation, "ROOT", tmp_path)
     calls = []
     monkeypatch.setattr(
         automation.subprocess,
