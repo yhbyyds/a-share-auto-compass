@@ -1,11 +1,11 @@
 {
   "meta": {
-    "generated_at": "2026-07-26T08:47:37.152962+08:00",
+    "generated_at": "2026-07-26T09:19:18.768090+08:00",
     "data_through": "2026-07-24",
     "forecast_window": "2026-07-27 至 2026-07-31",
-    "version": "1.4.0",
+    "version": "1.5.0",
     "data_source": "腾讯证券主源 / 东方财富备用",
-    "release": "8",
+    "release": "9",
     "trading_calendar": {
       "name": "XSHG",
       "source": "上海证券交易所年度休市安排（版本化官方清单）",
@@ -17,13 +17,13 @@
       "update_warnings": []
     },
     "automation": {
-      "run_id": "20260726T084613",
+      "run_id": "20260726T091712",
       "status": "passed",
       "quality_gate": {
         "passed": true,
         "errors": [],
         "warnings": [
-          "全市场宽度样本不足: 0；该模块降级展示，不阻止历史模型发布"
+          "样本外周模型未超过门限，预测已自动降级"
         ],
         "metrics": {
           "data_through": "2026-07-24",
@@ -31,14 +31,14 @@
           "forecast_days": 5,
           "validation_samples": 790,
           "sector_count": 13,
-          "breadth_stocks": 0,
+          "breadth_stocks": 5530,
           "event_collection_status": "live",
           "performance_status": "collecting",
           "live_evaluated_samples": 0,
           "event_count": 7
         }
       },
-      "updated_at": "2026-07-26T08:46:13.251709+08:00",
+      "updated_at": "2026-07-26T09:17:12.245983+08:00",
       "mode": "automatic"
     }
   },
@@ -54,19 +54,21 @@
       1.88
     ],
     "risk_level": "较高",
+    "breadth_guard": "healthy",
+    "validation_guard": "degraded",
     "model_health_guard": "collecting"
   },
   "days": [
     {
       "date": "2026-07-27",
       "weekday": "一",
-      "direction": "偏强",
-      "up_probability": 59.7,
+      "direction": "震荡",
+      "up_probability": 55.8,
       "expected_return": 0.2,
       "low_return": -1.06,
       "high_return": 0.82,
       "path_close": 3821.72,
-      "confidence": "中",
+      "confidence": "低",
       "model_spread": 6.9,
       "validation_accuracy": 56.7,
       "validation_edge": 3.3,
@@ -97,15 +99,15 @@
       "date": "2026-07-29",
       "weekday": "三",
       "direction": "震荡",
-      "up_probability": 49.3,
+      "up_probability": 51.0,
       "expected_return": -0.1,
       "low_return": -0.74,
       "high_return": 0.81,
       "path_close": 3818.83,
       "confidence": "低",
-      "model_spread": 3.2,
-      "validation_accuracy": 49.2,
-      "validation_edge": -4.2,
+      "model_spread": 0.1,
+      "validation_accuracy": 50.8,
+      "validation_edge": -2.5,
       "event_risk": "低",
       "event_count": 0,
       "event_titles": []
@@ -135,7 +137,7 @@
       "date": "2026-07-31",
       "weekday": "五",
       "direction": "震荡",
-      "up_probability": 57.1,
+      "up_probability": 55.5,
       "expected_return": 0.04,
       "low_return": -0.59,
       "high_return": 0.96,
@@ -180,15 +182,21 @@
     }
   ],
   "breadth": {
-    "stocks": 0,
-    "advancers": 0,
-    "decliners": 0,
-    "flat": 0,
-    "limit_up_proxy": 0,
-    "limit_down_proxy": 0,
-    "median_change": 0,
-    "turnover_yi": 0,
-    "advance_ratio": 0
+    "stocks": 5530,
+    "advancers": 534,
+    "decliners": 4926,
+    "flat": 70,
+    "limit_up_proxy": 53,
+    "limit_down_proxy": 32,
+    "median_change": -2.89,
+    "turnover_yi": 19442.0,
+    "advance_ratio": 9.7,
+    "source": "新浪财经全A快照",
+    "status": "live",
+    "fetched_at": "2026-07-26T09:18:20.827646+08:00",
+    "failures": [
+      "_fetch_breadth_eastmoney: RetryError"
+    ]
   },
   "models": [
     {
@@ -211,77 +219,96 @@
     {
       "horizon": 1,
       "label": "第1个交易日",
-      "accuracy": 55.7,
+      "accuracy": 55.1,
       "recent_accuracy": 56.7,
       "baseline": 53.3,
-      "full_baseline": 52.5,
-      "auc": 0.565,
-      "brier": 0.249,
-      "high_conf_accuracy": 57.2,
-      "high_conf_coverage": 53.2
+      "full_baseline": 54.7,
+      "auc": 0.552,
+      "brier": 0.251,
+      "raw_brier": 0.251,
+      "calibrated_brier": 0.252,
+      "calibration_applied": false,
+      "high_conf_accuracy": 55.7,
+      "high_conf_coverage": 38.6
     },
     {
       "horizon": 2,
       "label": "第2个交易日",
-      "accuracy": 51.6,
+      "accuracy": 49.7,
       "recent_accuracy": 45.8,
       "baseline": 53.3,
-      "full_baseline": 52.5,
-      "auc": 0.518,
+      "full_baseline": 54.7,
+      "auc": 0.51,
       "brier": 0.252,
-      "high_conf_accuracy": 50.2,
-      "high_conf_coverage": 27.3
+      "raw_brier": 0.252,
+      "calibrated_brier": 0.252,
+      "calibration_applied": false,
+      "high_conf_accuracy": 50.6,
+      "high_conf_coverage": 20.1
     },
     {
       "horizon": 3,
       "label": "第3个交易日",
-      "accuracy": 51.2,
-      "recent_accuracy": 49.2,
+      "accuracy": 51.3,
+      "recent_accuracy": 50.8,
       "baseline": 53.3,
-      "full_baseline": 52.5,
-      "auc": 0.524,
+      "full_baseline": 54.7,
+      "auc": 0.528,
       "brier": 0.252,
-      "high_conf_accuracy": 53.3,
-      "high_conf_coverage": 28.8
+      "raw_brier": 0.253,
+      "calibrated_brier": 0.252,
+      "calibration_applied": true,
+      "high_conf_accuracy": 40.7,
+      "high_conf_coverage": 6.8
     },
     {
       "horizon": 4,
       "label": "第4个交易日",
-      "accuracy": 52.8,
+      "accuracy": 52.5,
       "recent_accuracy": 51.7,
       "baseline": 53.3,
-      "full_baseline": 52.4,
-      "auc": 0.532,
+      "full_baseline": 54.5,
+      "auc": 0.53,
       "brier": 0.252,
-      "high_conf_accuracy": 53.5,
-      "high_conf_coverage": 31.0
+      "raw_brier": 0.252,
+      "calibrated_brier": 0.252,
+      "calibration_applied": false,
+      "high_conf_accuracy": 53.4,
+      "high_conf_coverage": 23.9
     },
     {
       "horizon": 5,
       "label": "第5个交易日",
-      "accuracy": 53.5,
+      "accuracy": 53.1,
       "recent_accuracy": 51.7,
       "baseline": 53.3,
-      "full_baseline": 52.4,
-      "auc": 0.53,
+      "full_baseline": 54.5,
+      "auc": 0.527,
       "brier": 0.25,
-      "high_conf_accuracy": 53.5,
-      "high_conf_coverage": 29.1
+      "raw_brier": 0.25,
+      "calibrated_brier": 0.251,
+      "calibration_applied": false,
+      "high_conf_accuracy": 53.2,
+      "high_conf_coverage": 19.7
     }
   ],
   "validation": {
-    "daily_direction_accuracy": 55.7,
-    "weekly_direction_accuracy": 51.6,
-    "baseline_accuracy": 52.0,
-    "auc": 0.525,
-    "brier": 0.259,
+    "daily_direction_accuracy": 55.1,
+    "weekly_direction_accuracy": 49.1,
+    "baseline_accuracy": 55.8,
+    "auc": 0.495,
+    "brier": 0.265,
+    "raw_brier": 0.265,
+    "calibrated_brier": 0.27,
+    "calibration_applied": false,
     "samples": 790,
-    "strategy_annual_return": 14.8,
+    "strategy_annual_return": 21.8,
     "strategy_max_drawdown": -9.2,
-    "benchmark_annual_return": 4.9,
-    "benchmark_max_drawdown": -20.4,
-    "active_days": 71.8,
-    "method": "5折扩展窗口时序验证；预测与实盘收益错开一日；单边成本3bp"
+    "benchmark_annual_return": 15.4,
+    "benchmark_max_drawdown": -14.7,
+    "active_days": 68.5,
+    "calibration": "扩展窗口样本外预测 + 时间顺序Sigmoid校准",
+    "method": "5折扩展窗口时序验证；独立时间段概率校准；预测与实盘收益错开一日；单边成本3bp"
   },
   "recent_chart": [
     {
@@ -650,7 +677,7 @@
       "code": "000977",
       "name": "浪潮信息",
       "price": 85.31,
-      "change": -3.01,
+      "change": -3.02,
       "score": 84.8,
       "momentum_5d": 10.22,
       "momentum_20d": 33.53,
@@ -710,7 +737,7 @@
       "code": "600036",
       "name": "招商银行",
       "price": 39.2,
-      "change": 0.74,
+      "change": 0.69,
       "score": 38.0,
       "momentum_5d": 3.1,
       "momentum_20d": 12.01,
@@ -730,7 +757,7 @@
       "code": "603259",
       "name": "药明康德",
       "price": 125.0,
-      "change": -1.92,
+      "change": -1.93,
       "score": 28.8,
       "momentum_5d": 6.03,
       "momentum_20d": 5.77,
@@ -2690,7 +2717,7 @@
     },
     "collection": {
       "status": "live",
-      "fetched_at": "2026-07-26T08:48:36.847519+08:00",
+      "fetched_at": "2026-07-26T09:20:18.809982+08:00",
       "cache_used": false,
       "event_count": 2,
       "sources": [
@@ -2715,7 +2742,7 @@
     "status": "collecting",
     "label": "实盘样本积累中",
     "evaluated_samples": 0,
-    "pending_samples": 5,
+    "pending_samples": 1,
     "recent_window": 0,
     "accuracy": null,
     "baseline": null,
@@ -2723,6 +2750,55 @@
     "brier": null,
     "last_evaluated_date": null,
     "degraded": false,
-    "reason": "版本8开始记录逐日预测，至少积累20个已实现样本后判断失效。"
+    "effective_sample": "第1日预测的唯一目标交易日",
+    "all_evaluated_predictions": 0,
+    "horizon_metrics": {
+      "1": {
+        "samples": 0,
+        "window": 0,
+        "accuracy": null,
+        "baseline": null,
+        "edge_pp": null,
+        "brier": null,
+        "last_date": null
+      },
+      "2": {
+        "samples": 0,
+        "window": 0,
+        "accuracy": null,
+        "baseline": null,
+        "edge_pp": null,
+        "brier": null,
+        "last_date": null
+      },
+      "3": {
+        "samples": 0,
+        "window": 0,
+        "accuracy": null,
+        "baseline": null,
+        "edge_pp": null,
+        "brier": null,
+        "last_date": null
+      },
+      "4": {
+        "samples": 0,
+        "window": 0,
+        "accuracy": null,
+        "baseline": null,
+        "edge_pp": null,
+        "brier": null,
+        "last_date": null
+      },
+      "5": {
+        "samples": 0,
+        "window": 0,
+        "accuracy": null,
+        "baseline": null,
+        "edge_pp": null,
+        "brier": null,
+        "last_date": null
+      }
+    },
+    "reason": "版本9按第1日唯一目标日统计，至少积累60日后判断有效性。"
   }
 }

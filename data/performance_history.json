@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "predictions": [
     {
       "id": "2026-07-24:2026-07-27:h1",
@@ -62,12 +62,12 @@
       "status": "pending"
     }
   ],
-  "updated_at": "2026-07-26T08:48:37.417061+08:00",
+  "updated_at": "2026-07-26T09:20:19.028955+08:00",
   "monitor": {
     "status": "collecting",
     "label": "实盘样本积累中",
     "evaluated_samples": 0,
-    "pending_samples": 5,
+    "pending_samples": 1,
     "recent_window": 0,
     "accuracy": null,
     "baseline": null,
@@ -75,6 +75,55 @@
     "brier": null,
     "last_evaluated_date": null,
     "degraded": false,
-    "reason": "版本8开始记录逐日预测，至少积累20个已实现样本后判断失效。"
+    "effective_sample": "第1日预测的唯一目标交易日",
+    "all_evaluated_predictions": 0,
+    "horizon_metrics": {
+      "1": {
+        "samples": 0,
+        "window": 0,
+        "accuracy": null,
+        "baseline": null,
+        "edge_pp": null,
+        "brier": null,
+        "last_date": null
+      },
+      "2": {
+        "samples": 0,
+        "window": 0,
+        "accuracy": null,
+        "baseline": null,
+        "edge_pp": null,
+        "brier": null,
+        "last_date": null
+      },
+      "3": {
+        "samples": 0,
+        "window": 0,
+        "accuracy": null,
+        "baseline": null,
+        "edge_pp": null,
+        "brier": null,
+        "last_date": null
+      },
+      "4": {
+        "samples": 0,
+        "window": 0,
+        "accuracy": null,
+        "baseline": null,
+        "edge_pp": null,
+        "brier": null,
+        "last_date": null
+      },
+      "5": {
+        "samples": 0,
+        "window": 0,
+        "accuracy": null,
+        "baseline": null,
+        "edge_pp": null,
+        "brier": null,
+        "last_date": null
+      }
+    },
+    "reason": "版本9按第1日唯一目标日统计，至少积累60日后判断有效性。"
   }
 }
