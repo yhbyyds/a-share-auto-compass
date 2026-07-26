@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, datetime
 import json
 import math
 from pathlib import Path
 from typing import Iterable
+from zoneinfo import ZoneInfo
 
 import numpy as np
 import pandas as pd
@@ -43,6 +44,10 @@ DOMESTIC_KEYS = frozenset(spec.key for spec in INDEXES if spec.domestic)
 GLOBAL_KEYS = frozenset(spec.key for spec in INDEXES if not spec.domestic)
 
 SPOT_URL = "https://push2.eastmoney.com/api/qt/clist/get"
+SINA_SPOT_URL = (
+    "https://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/"
+    "Market_Center.getHQNodeData"
+)
 TENCENT_KLINE_URL = "https://web.ifzq.gtimg.cn/appstock/app/kline/kline"
 
 
@@ -178,11 +183,38 @@ def fetch_market_data(
     return output
 
 
-def fetch_market_breadth(cache_dir: str | Path = "data/cache") -> dict:
-    """Fetch a point-in-time breadth snapshot for context, not model training."""
-    cache_path = Path(cache_dir)
-    cache_path.mkdir(parents=True, exist_ok=True)
-    cache_file = cache_path / "breadth.json"
+def _summarize_breadth(
+    rows: list[dict],
+    *,
+    change_key: str,
+    amount_key: str,
+    source: str,
+) -> dict:
+    changes = pd.Series(
+        [row.get(change_key) for row in rows], dtype="float64"
+    ).dropna()
+    amounts = pd.Series(
+        [row.get(amount_key) for row in rows], dtype="float64"
+    ).fillna(0)
+    if len(changes) < 4000:
+        raise MarketDataError(f"{source}全市场宽度数据不足: {len(changes)}")
+    return {
+        "stocks": int(len(changes)),
+        "advancers": int((changes > 0.05).sum()),
+        "decliners": int((changes < -0.05).sum()),
+        "flat": int((changes.abs() <= 0.05).sum()),
+        "limit_up_proxy": int((changes >= 9.8).sum()),
+        "limit_down_proxy": int((changes <= -9.8).sum()),
+        "median_change": round(float(changes.median()), 2),
+        "turnover_yi": round(float(amounts.sum() / 1e8), 0),
+        "advance_ratio": round(float((changes > 0.05).mean() * 100), 1),
+        "source": source,
+        "status": "live",
+        "fetched_at": datetime.now(ZoneInfo("Asia/Shanghai")).isoformat(),
+    }
+
+
+def _fetch_breadth_eastmoney(session: requests.Session) -> dict:
     fields = "f3,f6,f12,f14,f20"
     base_params = {
         "pz": "500",
@@ -198,61 +230,114 @@ def fetch_market_breadth(cache_dir: str | Path = "data/cache") -> dict:
         "User-Agent": "Mozilla/5.0 (compatible; AShareCompass/1.0)",
         "Referer": "https://quote.eastmoney.com/",
     }
-    try:
-        session = _session()
-        stocks: list[dict] = []
-        total = 1
-        page = 1
-        while len(stocks) < total:
-            params = {**base_params, "pn": str(page)}
-            response = session.get(
-                SPOT_URL, params=params, headers=headers, timeout=20
-            )
-            response.raise_for_status()
-            payload = response.json().get("data") or {}
-            total = int(payload.get("total", 0))
-            rows = payload.get("diff") or []
-            if not rows:
-                break
-            stocks.extend(rows)
-            page += 1
-            if page > math.ceil(max(total, 1) / 500) + 1:
-                break
-
-        changes = pd.Series(
-            [row.get("f3") for row in stocks], dtype="float64"
-        ).dropna()
-        amounts = pd.Series(
-            [row.get("f6") for row in stocks], dtype="float64"
-        ).fillna(0)
-        if len(changes) < 1000:
-            raise MarketDataError("全市场广度数据不足")
-        breadth = {
-            "stocks": int(len(changes)),
-            "advancers": int((changes > 0.05).sum()),
-            "decliners": int((changes < -0.05).sum()),
-            "flat": int((changes.abs() <= 0.05).sum()),
-            "limit_up_proxy": int((changes >= 9.8).sum()),
-            "limit_down_proxy": int((changes <= -9.8).sum()),
-            "median_change": round(float(changes.median()), 2),
-            "turnover_yi": round(float(amounts.sum() / 1e8), 0),
-            "advance_ratio": round(float((changes > 0.05).mean() * 100), 1),
-        }
-        cache_file.write_text(
-            json.dumps(breadth, ensure_ascii=False, indent=2), encoding="utf-8"
+    stocks: list[dict] = []
+    total = 1
+    page = 1
+    while len(stocks) < total:
+        params = {**base_params, "pn": str(page)}
+        response = session.get(
+            SPOT_URL, params=params, headers=headers, timeout=20
         )
-        return breadth
-    except (requests.RequestException, ValueError, MarketDataError):
-        if cache_file.exists():
-            return json.loads(cache_file.read_text(encoding="utf-8"))
-        return {
-            "stocks": 0,
-            "advancers": 0,
-            "decliners": 0,
-            "flat": 0,
-            "limit_up_proxy": 0,
-            "limit_down_proxy": 0,
-            "median_change": 0,
-            "turnover_yi": 0,
-            "advance_ratio": 0,
-        }
+        response.raise_for_status()
+        payload = response.json().get("data") or {}
+        total = int(payload.get("total", 0))
+        rows = payload.get("diff") or []
+        if not rows:
+            break
+        stocks.extend(rows)
+        page += 1
+        if page > math.ceil(max(total, 1) / 500) + 1:
+            break
+    return _summarize_breadth(
+        stocks,
+        change_key="f3",
+        amount_key="f6",
+        source="东方财富全A快照",
+    )
+
+
+def _fetch_breadth_sina(session: requests.Session) -> dict:
+    stocks: list[dict] = []
+    seen: set[str] = set()
+    for page in range(1, 81):
+        response = session.get(
+            SINA_SPOT_URL,
+            params={
+                "page": page,
+                "num": 100,
+                "sort": "changepercent",
+                "asc": 0,
+                "node": "hs_a",
+                "symbol": "",
+                "_s_r_a": "page",
+            },
+            headers={
+                "User-Agent": "Mozilla/5.0 (compatible; AShareCompass/9.0)",
+                "Referer": "https://finance.sina.com.cn/",
+            },
+            timeout=20,
+        )
+        response.raise_for_status()
+        rows = response.json() or []
+        if not rows:
+            break
+        for row in rows:
+            symbol = str(row.get("symbol", ""))
+            if symbol and symbol not in seen:
+                seen.add(symbol)
+                stocks.append(row)
+        if len(rows) < 100:
+            break
+    return _summarize_breadth(
+        stocks,
+        change_key="changepercent",
+        amount_key="amount",
+        source="新浪财经全A快照",
+    )
+
+
+def fetch_market_breadth(cache_dir: str | Path = "data/cache") -> dict:
+    """Fetch a dual-source point-in-time breadth snapshot."""
+    cache_path = Path(cache_dir)
+    cache_path.mkdir(parents=True, exist_ok=True)
+    cache_file = cache_path / "breadth.json"
+    failures: list[str] = []
+    session = _session()
+    for fetcher in (_fetch_breadth_eastmoney, _fetch_breadth_sina):
+        try:
+            breadth = fetcher(session)
+            breadth["failures"] = failures
+            cache_file.write_text(
+                json.dumps(breadth, ensure_ascii=False, indent=2),
+                encoding="utf-8",
+            )
+            return breadth
+        except (requests.RequestException, ValueError, MarketDataError) as exc:
+            failures.append(f"{fetcher.__name__}: {type(exc).__name__}")
+
+    if cache_file.exists():
+        try:
+            cached = json.loads(cache_file.read_text(encoding="utf-8"))
+            fetched_at = datetime.fromisoformat(cached["fetched_at"])
+            age = datetime.now(ZoneInfo("Asia/Shanghai")) - fetched_at
+            if age.days <= 3 and int(cached.get("stocks", 0)) >= 4000:
+                cached["status"] = "cached"
+                cached["failures"] = failures
+                return cached
+        except (KeyError, TypeError, ValueError, json.JSONDecodeError):
+            pass
+    return {
+        "stocks": 0,
+        "advancers": 0,
+        "decliners": 0,
+        "flat": 0,
+        "limit_up_proxy": 0,
+        "limit_down_proxy": 0,
+        "median_change": 0,
+        "turnover_yi": 0,
+        "advance_ratio": 0,
+        "source": "东方财富 / 新浪财经双源",
+        "status": "failed",
+        "fetched_at": datetime.now(ZoneInfo("Asia/Shanghai")).isoformat(),
+        "failures": failures,
+    }

@@ -42,6 +42,8 @@ def valid_forecast() -> dict:
             "weekly_up_probability": 52,
             "weekly_direction": "震荡",
             "last_close": 3500.0,
+            "breadth_guard": "degraded",
+            "validation_guard": "healthy",
         },
         "days": days,
         "recent_chart": [
@@ -52,6 +54,8 @@ def valid_forecast() -> dict:
             "daily_direction_accuracy": 54,
             "weekly_direction_accuracy": 53,
             "baseline_accuracy": 52,
+            "brier": 0.24,
+            "calibration": "扩展窗口样本外预测 + 时间顺序Sigmoid校准",
         },
         "sector_forecast": {
             "data_through": "2026-07-24",
@@ -73,6 +77,7 @@ def valid_forecast() -> dict:
             "status": "collecting",
             "evaluated_samples": 0,
             "degraded": False,
+            "effective_sample": "第1日预测的唯一目标交易日",
         },
     }
 
@@ -143,3 +148,14 @@ def test_calendar_verification_range_blocks_publication() -> None:
 
     assert not result.passed
     assert any("超过交易日历官方核验范围" in error for error in result.errors)
+
+
+def test_missing_breadth_requires_confidence_degradation() -> None:
+    forecast = valid_forecast()
+    forecast["market"]["breadth_guard"] = "healthy"
+    forecast["days"][0]["confidence"] = "中"
+
+    result = validate_forecast(forecast, today=date(2026, 7, 26))
+
+    assert not result.passed
+    assert any("市场宽度不足" in error for error in result.errors)

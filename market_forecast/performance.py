@@ -8,14 +8,58 @@ from zoneinfo import ZoneInfo
 import numpy as np
 
 
-HISTORY_VERSION = 1
+HISTORY_VERSION = 2
+MINIMUM_LIVE_DAYS = 60
+
+
+def _metrics(rows: list[dict[str, Any]], window: int = 60) -> dict[str, Any]:
+    recent = sorted(rows, key=lambda row: row["target_date"])[-window:]
+    if not recent:
+        return {
+            "samples": 0,
+            "window": 0,
+            "accuracy": None,
+            "baseline": None,
+            "edge_pp": None,
+            "brier": None,
+            "last_date": None,
+        }
+    actual_up = np.array([bool(row["actual_up"]) for row in recent])
+    correct = np.array([bool(row["correct"]) for row in recent])
+    probabilities = np.array(
+        [float(row["up_probability"]) / 100 for row in recent]
+    )
+    accuracy = float(correct.mean())
+    up_rate = float(actual_up.mean())
+    baseline = max(up_rate, 1 - up_rate)
+    brier = float(np.mean((probabilities - actual_up.astype(float)) ** 2))
+    return {
+        "samples": len(rows),
+        "window": len(recent),
+        "accuracy": round(accuracy * 100, 1),
+        "baseline": round(baseline * 100, 1),
+        "edge_pp": round((accuracy - baseline) * 100, 1),
+        "brier": round(brier, 3),
+        "last_date": recent[-1]["target_date"],
+    }
 
 
 def _monitor(records: list[dict[str, Any]]) -> dict[str, Any]:
-    evaluated = [row for row in records if row.get("status") == "evaluated"]
-    pending = sum(row.get("status") == "pending" for row in records)
-    recent = sorted(evaluated, key=lambda row: row["target_date"])[-20:]
-    if not recent:
+    evaluated_all = [
+        row for row in records if row.get("status") == "evaluated"
+    ]
+    horizon_metrics = {
+        str(horizon): _metrics(
+            [row for row in evaluated_all if int(row.get("horizon", 0)) == horizon]
+        )
+        for horizon in range(1, 6)
+    }
+    primary = horizon_metrics["1"]
+    pending = sum(
+        row.get("status") == "pending" and int(row.get("horizon", 0)) == 1
+        for row in records
+    )
+    if not primary["samples"]:
         return {
             "status": "collecting",
             "label": "实盘样本积累中",
@@ -28,57 +72,57 @@ def _monitor(records: list[dict[str, Any]]) -> dict[str, Any]:
             "brier": None,
             "last_evaluated_date": None,
             "degraded": False,
-            "reason": "版本8开始记录逐日预测，至少积累20个已实现样本后判断失效。",
+            "effective_sample": "第1日预测的唯一目标交易日",
+            "all_evaluated_predictions": len(evaluated_all),
+            "horizon_metrics": horizon_metrics,
+            "reason": "版本9按第1日唯一目标日统计，至少积累60日后判断有效性。",
         }
 
-    actual_up = np.array([bool(row["actual_up"]) for row in recent])
-    correct = np.array([bool(row["correct"]) for row in recent])
-    probabilities = np.array(
-        [float(row["up_probability"]) / 100 for row in recent]
-    )
-    accuracy = float(correct.mean())
-    up_rate = float(actual_up.mean())
-    baseline = max(up_rate, 1 - up_rate)
-    brier = float(np.mean((probabilities - actual_up.astype(float)) ** 2))
-    edge = accuracy - baseline
-
-    if len(recent) < 20:
+    edge = float(primary["edge_pp"]) / 100
+    brier = float(primary["brier"])
+    if primary["samples"] < MINIMUM_LIVE_DAYS:
         status = "collecting"
         label = "实盘样本积累中"
-        reason = f"已实现 {len(recent)} 个样本，达到20个后启用自动降级。"
-    elif edge < 0 or brier > 0.27:
+        reason = (
+            f"第1日预测已实现 {primary['samples']} 个唯一目标日，"
+            "达到60日后启用有效性判定。"
+        )
+    elif edge < 0 or brier > 0.26:
         status = "degraded"
         label = "模型近期失效"
         reason = (
-            f"近20次命中率相对多数类基线 {edge * 100:+.1f}pp，"
+            f"近60个第1日目标命中率相对基线 {edge * 100:+.1f}pp，"
             f"Brier {brier:.3f}；当前信号自动降为低置信。"
         )
-    elif edge >= 0.02 and brier <= 0.25:
+    elif edge >= 0.03 and brier < 0.25:
         status = "healthy"
         label = "模型近期有效"
         reason = (
-            f"近20次命中率相对多数类基线 {edge * 100:+.1f}pp，"
+            f"近60个第1日目标命中率相对基线 {edge * 100:+.1f}pp，"
             f"Brier {brier:.3f}。"
         )
     else:
         status = "watch"
         label = "模型优势偏弱"
         reason = (
-            f"近20次命中率相对多数类基线 {edge * 100:+.1f}pp，"
+            f"近60个第1日目标命中率相对基线 {edge * 100:+.1f}pp，"
             "仅保留低至中等置信。"
         )
     return {
         "status": status,
         "label": label,
-        "evaluated_samples": len(evaluated),
+        "evaluated_samples": primary["samples"],
         "pending_samples": pending,
-        "recent_window": len(recent),
-        "accuracy": round(accuracy * 100, 1),
-        "baseline": round(baseline * 100, 1),
-        "edge_pp": round(edge * 100, 1),
-        "brier": round(brier, 3),
-        "last_evaluated_date": recent[-1]["target_date"],
+        "recent_window": primary["window"],
+        "accuracy": primary["accuracy"],
+        "baseline": primary["baseline"],
+        "edge_pp": primary["edge_pp"],
+        "brier": primary["brier"],
+        "last_evaluated_date": primary["last_date"],
         "degraded": status == "degraded",
+        "effective_sample": "第1日预测的唯一目标交易日",
+        "all_evaluated_predictions": len(evaluated_all),
+        "horizon_metrics": horizon_metrics,
         "reason": reason,
     }
 

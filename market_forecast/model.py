@@ -183,6 +183,42 @@ def _weights_from_accuracy(accuracies: dict[str, float]) -> dict[str, float]:
     return {name: value / total for name, value in raw.items()}
 
 
+def _sigmoid_calibrate(
+    train_probability: pd.Series,
+    train_actual: pd.Series,
+    probability: pd.Series | np.ndarray,
+) -> np.ndarray:
+    clipped = np.clip(train_probability.to_numpy(dtype=float), 1e-4, 1 - 1e-4)
+    train_logit = np.log(clipped / (1 - clipped)).reshape(-1, 1)
+    target = train_actual.loc[train_probability.index].to_numpy(dtype=int)
+    requested = np.asarray(probability, dtype=float)
+    requested = np.clip(requested, 1e-4, 1 - 1e-4)
+    if len(np.unique(target)) < 2:
+        return requested
+    calibrator = LogisticRegression(C=1.0, max_iter=1000)
+    calibrator.fit(train_logit, target)
+    requested_logit = np.log(requested / (1 - requested)).reshape(-1, 1)
+    return calibrator.predict_proba(requested_logit)[:, 1]
+
+
+def _cross_calibrate(
+    raw: pd.DataFrame,
+    actual: pd.Series,
+) -> pd.DataFrame:
+    calibrated = pd.DataFrame(index=raw.index, columns=raw.columns, dtype=float)
+    splitter = TimeSeriesSplit(n_splits=3)
+    for train_idx, test_idx in splitter.split(raw):
+        for name in raw.columns:
+            calibrated.iloc[test_idx, calibrated.columns.get_loc(name)] = (
+                _sigmoid_calibrate(
+                    raw[name].iloc[train_idx],
+                    actual,
+                    raw[name].iloc[test_idx],
+                )
+            )
+    return calibrated.dropna()
+
+
 def _nearest_analogs(
     X: pd.DataFrame, target: pd.Series, neighbors: int = 80
 ) -> np.ndarray:
@@ -215,17 +251,39 @@ def fit_horizon(
     classifiers = _classifiers()
     oof, accuracies = _walk_forward_predictions(train_X, binary, classifiers)
     weights = _weights_from_accuracy(accuracies)
-    model_probs: dict[str, float] = {}
+    raw_model_probs: dict[str, float] = {}
+    calibrated_model_probs: dict[str, float] = {}
+    actual_raw_oof = binary.loc[oof.index]
     for name, model in classifiers.items():
         fitted = clone(model).fit(train_X, binary)
-        model_probs[name] = float(fitted.predict_proba(X.iloc[[-1]])[0, 1])
-    raw_probability = sum(model_probs[name] * weights[name] for name in weights)
+        raw_live = float(fitted.predict_proba(X.iloc[[-1]])[0, 1])
+        raw_model_probs[name] = raw_live
+        calibrated_model_probs[name] = float(
+            _sigmoid_calibrate(
+                oof[name],
+                actual_raw_oof,
+                np.array([raw_live]),
+            )[0]
+        )
 
-    # Use equal weights for validation so the same OOF period is not reused to
-    # optimize weights and then score itself. OOF-derived weights are only used
-    # for the live forecast above.
-    ensemble_oof = oof.mean(axis=1)
-    actual_oof = binary.loc[oof.index]
+    calibrated_oof = _cross_calibrate(oof, actual_raw_oof)
+    actual_oof = binary.loc[calibrated_oof.index]
+    raw_ensemble_oof = oof.loc[calibrated_oof.index].mean(axis=1)
+    calibrated_ensemble_oof = calibrated_oof.mean(axis=1)
+    raw_brier = float(brier_score_loss(actual_oof, raw_ensemble_oof))
+    calibrated_brier = float(
+        brier_score_loss(actual_oof, calibrated_ensemble_oof)
+    )
+    calibration_applied = calibrated_brier < raw_brier - 0.001
+    if calibration_applied:
+        model_probs = calibrated_model_probs
+        ensemble_oof = calibrated_ensemble_oof
+    else:
+        model_probs = raw_model_probs
+        ensemble_oof = raw_ensemble_oof
+    raw_probability = sum(
+        model_probs[name] * weights[name] for name in weights
+    )
     ensemble_accuracy = float(accuracy_score(actual_oof, ensemble_oof >= 0.5))
     baseline_accuracy = float(max(actual_oof.mean(), 1 - actual_oof.mean()))
     # Directional accuracy must beat the majority-class baseline, not merely
@@ -263,10 +321,18 @@ def fit_horizon(
     diagnostics = {
         "baseline_accuracy": baseline_accuracy,
         "brier": float(brier_score_loss(actual_oof, ensemble_oof)),
+        "raw_brier": raw_brier,
+        "calibrated_brier": calibrated_brier,
+        "calibration_applied": calibration_applied,
         "auc": auc,
         "oof_count": int(len(oof)),
         "oof_probability": ensemble_oof,
         "oof_actual": actual_oof,
+        "calibration": (
+            "expanding-window sigmoid applied"
+            if calibration_applied
+            else "expanding-window sigmoid rejected"
+        ),
     }
     confidence_mask = (ensemble_oof >= 0.57) | (ensemble_oof <= 0.43)
     if confidence_mask.any():
@@ -461,6 +527,17 @@ def generate_forecast(
 
     total_expected = path / last_close - 1
     weekly_direction = _direction(weekly.probability, total_expected)
+    validation_degraded = (
+        weekly.accuracy <= weekly_diagnostics["baseline_accuracy"]
+        or weekly_diagnostics["brier"] >= 0.25
+    )
+    breadth_stocks = int((breadth or {}).get("stocks", 0) or 0)
+    breadth_degraded = breadth_stocks < 4000
+    if breadth_degraded or validation_degraded:
+        weekly_direction = "震荡"
+        for day in days:
+            day["direction"] = "震荡"
+            day["confidence"] = "低"
     h1_backtest = _backtest(day_diagnostics[0], close)
     recent = data["sse"].loc[:last_date].tail(90)
     recent_chart = [
@@ -497,6 +574,12 @@ def generate_forecast(
                 _pct(weekly.high_return),
             ],
             "risk_level": "较高" if features.iloc[-1]["volatility_20"] > features["volatility_20"].quantile(0.7) else "中等",
+            "breadth_guard": (
+                "degraded" if breadth_degraded else "healthy"
+            ),
+            "validation_guard": (
+                "degraded" if validation_degraded else "healthy"
+            ),
         },
         "days": days,
         "drivers": _drivers(features),
@@ -518,6 +601,15 @@ def generate_forecast(
                 ),
                 "auc": round(day_diagnostics[horizon - 1]["auc"], 3),
                 "brier": round(day_diagnostics[horizon - 1]["brier"], 3),
+                "raw_brier": round(
+                    day_diagnostics[horizon - 1]["raw_brier"], 3
+                ),
+                "calibrated_brier": round(
+                    day_diagnostics[horizon - 1]["calibrated_brier"], 3
+                ),
+                "calibration_applied": day_diagnostics[horizon - 1][
+                    "calibration_applied"
+                ],
                 "high_conf_accuracy": (
                     round(
                         day_diagnostics[horizon - 1]["high_conf_accuracy"] * 100,
@@ -544,6 +636,13 @@ def generate_forecast(
             ),
             "auc": round(weekly_diagnostics["auc"], 3),
             "brier": round(weekly_diagnostics["brier"], 3),
+            "raw_brier": round(weekly_diagnostics["raw_brier"], 3),
+            "calibrated_brier": round(
+                weekly_diagnostics["calibrated_brier"], 3
+            ),
+            "calibration_applied": weekly_diagnostics[
+                "calibration_applied"
+            ],
             "samples": weekly_diagnostics["oof_count"],
             "strategy_annual_return": round(h1_backtest["annual_return"] * 100, 1),
             "strategy_max_drawdown": round(h1_backtest["max_drawdown"] * 100, 1),
@@ -554,7 +653,8 @@ def generate_forecast(
                 h1_backtest["benchmark_max_drawdown"] * 100, 1
             ),
             "active_days": round(h1_backtest["active_days"] * 100, 1),
-            "method": "5折扩展窗口时序验证；预测与实盘收益错开一日；单边成本3bp",
+            "calibration": "扩展窗口样本外预测 + 时间顺序Sigmoid校准",
+            "method": "5折扩展窗口时序验证；独立时间段概率校准；预测与实盘收益错开一日；单边成本3bp",
         },
         "recent_chart": recent_chart,
         "watchlist": watchlist or [],

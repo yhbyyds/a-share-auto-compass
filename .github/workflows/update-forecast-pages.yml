@@ -115,13 +115,17 @@ jobs:
               try:
                   with urlopen(url, timeout=20) as response:
                       payload = json.load(response)
-                  assert payload["meta"]["release"] == "8"
+                  assert payload["meta"]["release"] == "9"
                   assert payload["meta"]["automation"]["status"] == "passed"
                   assert payload["meta"]["trading_calendar"]["name"] == "XSHG"
                   assert payload["meta"]["trading_calendar"]["verified_through"]
                   assert payload["performance_monitor"]["status"] in {
                       "collecting", "healthy", "watch", "degraded"
                   }
+                  assert payload["performance_monitor"]["effective_sample"] == (
+                      "第1日预测的唯一目标交易日"
+                  )
+                  assert payload["validation"]["calibration"]
                   assert len(payload["days"]) == 5
                   assert len(payload["sector_forecast"]["sectors"]) >= 10
                   print("Published forecast verified:", url)

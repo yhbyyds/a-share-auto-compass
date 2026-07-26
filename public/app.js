@@ -88,8 +88,9 @@ function renderBreadth(breadth) {
     ["上涨占比", `${breadth.advance_ratio}%`, breadth.advance_ratio >= 50 ? "positive-text" : "negative-text"],
     ["中位涨跌", formatSigned(breadth.median_change), breadth.median_change >= 0 ? "positive-text" : "negative-text"],
     ["成交额", `${breadth.turnover_yi}亿`, ""],
+    ["数据状态", breadth.status === "live" ? "实时" : "缓存", ""],
   ];
-  $("#breadth-panel").innerHTML = `<div class="breadth-stats">${items.map(([name, value, cls]) => `<div class="breadth-stat"><span>${name}</span><strong class="${cls}">${value}</strong></div>`).join("")}</div>`;
+  $("#breadth-panel").innerHTML = `<div class="breadth-stats">${items.map(([name, value, cls]) => `<div class="breadth-stat"><span>${name}</span><strong class="${cls}">${value}</strong></div>`).join("")}</div><p class="breadth-source">来源：${breadth.source || "全A快照"}</p>`;
 }
 
 function renderHorizonValidation(rows) {
@@ -326,7 +327,7 @@ function render(data) {
 
 async function loadForecast() {
   const response = await fetch(
-    "./data/forecast.json?v=1.4.0",
+    "./data/forecast.json?v=1.5.0",
     { cache: "no-store" },
   );
   if (!response.ok) throw new Error("预测文件读取失败");

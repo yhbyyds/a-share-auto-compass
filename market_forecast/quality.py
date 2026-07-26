@@ -49,7 +49,7 @@ def validate_forecast(
     max_data_age_days: int = 5,
     minimum_sectors: int = 10,
     minimum_validation_samples: int = 100,
-    minimum_breadth_stocks: int = 1000,
+    minimum_breadth_stocks: int = 4000,
 ) -> QualityResult:
     result = QualityResult()
     today = today or datetime.now(ZoneInfo("Asia/Shanghai")).date()
@@ -141,6 +141,10 @@ def validate_forecast(
         )
 
     validation = forecast["validation"]
+    if validation.get("calibration") != (
+        "扩展窗口样本外预测 + 时间顺序Sigmoid校准"
+    ):
+        result.errors.append("缺少独立时间顺序概率校准")
     samples = int(validation.get("samples", 0) or 0)
     result.metrics["validation_samples"] = samples
     if samples < minimum_validation_samples:
@@ -155,6 +159,12 @@ def validate_forecast(
         value = float(validation.get(key, -1))
         if not 0 <= value <= 100:
             result.errors.append(f"验证指标 {key} 越界: {value}")
+    if forecast["market"].get("validation_guard") == "degraded":
+        if forecast["market"].get("weekly_direction") != "震荡":
+            result.errors.append("样本外验证失效时周方向必须降为震荡")
+        if any(day.get("confidence") != "低" for day in days):
+            result.errors.append("样本外验证失效时逐日置信度必须全部降为低")
+        result.warnings.append("样本外周模型未超过门限，预测已自动降级")
 
     sector_block = forecast["sector_forecast"]
     sectors = sector_block.get("sectors", [])
@@ -183,9 +193,14 @@ def validate_forecast(
     result.metrics["breadth_stocks"] = breadth_stocks
     if breadth_stocks < minimum_breadth_stocks:
         result.warnings.append(
-            f"全市场宽度样本不足: {breadth_stocks}；该模块降级展示，"
-            "不阻止历史模型发布"
+            f"全市场宽度样本不足: {breadth_stocks}；方向与置信度必须降级"
         )
+        if forecast["market"].get("breadth_guard") != "degraded":
+            result.errors.append("市场宽度不足但未触发模型降级")
+        if forecast["market"].get("weekly_direction") != "震荡":
+            result.errors.append("市场宽度不足时周方向必须降为震荡")
+        if any(day.get("confidence") != "低" for day in days):
+            result.errors.append("市场宽度不足时逐日置信度必须全部降为低")
 
     for event in forecast.get("events", []):
         if event.get("status") != "已确认":
@@ -220,6 +235,8 @@ def validate_forecast(
     )
     if monitor_status not in {"collecting", "healthy", "watch", "degraded"}:
         result.errors.append("缺少有效的实盘预测效果监控")
+    if monitor.get("effective_sample") != "第1日预测的唯一目标交易日":
+        result.errors.append("实盘监控未使用第1日唯一目标日口径")
     if monitor_status == "degraded":
         if forecast["market"].get("weekly_direction") != "震荡":
             result.errors.append("模型失效时周方向未自动降级为震荡")
