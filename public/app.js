@@ -428,10 +428,21 @@ function render(data) {
 }
 
 async function loadForecast() {
+  const protectedHost = window.location.hostname.endsWith(".chatgpt.site");
+  const forecastUrl = protectedHost
+    ? "/api/forecast"
+    : "./data/forecast.json?v=1.7.0";
   const response = await fetch(
-    "./data/forecast.json?v=1.7.0",
+    forecastUrl,
     { cache: "no-store" },
   );
+  if (response.status === 401 && protectedHost) {
+    const next = encodeURIComponent(
+      `${window.location.pathname}${window.location.search}`,
+    );
+    window.location.replace(`/login.html?next=${next}`);
+    throw new Error("登录已失效，正在返回登录页");
+  }
   if (!response.ok) throw new Error("预测文件读取失败");
   const data = await response.json();
   render(data);
@@ -470,7 +481,7 @@ if (
         headers: { "Content-Type": "application/json" },
       });
     } finally {
-      window.location.replace("/login");
+      window.location.replace("/login.html");
     }
   });
 }

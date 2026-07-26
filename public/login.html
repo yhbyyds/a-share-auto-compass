@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>登录 · A股下周罗盘</title>
+  <link rel="stylesheet" href="/login.css">
+</head>
+<body>
+  <main class="login-shell">
+    <section class="login-copy">
+      <div class="login-brand">
+        <span>北</span>
+        <div>
+          <strong>A股下周罗盘</strong>
+          <small>PRIVATE RESEARCH WORKSPACE</small>
+        </div>
+      </div>
+      <p class="login-eyebrow">SECURE ACCESS · VERSION 11</p>
+      <h1>把判断留在<br><em>安全边界内</em></h1>
+      <p class="login-intro">
+        预测数据、行业曲线与自动更新结果仅在通过认证后加载。
+        登录不会提高模型准确率，也不构成收益保证。
+      </p>
+      <div class="login-points">
+        <span>12小时安全会话</span>
+        <span>HttpOnly Cookie</span>
+        <span>服务端密码校验</span>
+      </div>
+    </section>
+
+    <section class="login-card" aria-labelledby="login-title">
+      <div class="login-card-head">
+        <span class="login-lock" aria-hidden="true">↗</span>
+        <div>
+          <p>ACCOUNT ACCESS</p>
+          <h2 id="login-title">登录研究系统</h2>
+        </div>
+      </div>
+      <form id="login-form">
+        <label>
+          <span>账号</span>
+          <input name="username" type="text" autocomplete="username" maxlength="80" required autofocus>
+        </label>
+        <label>
+          <span>密码</span>
+          <div class="password-field">
+            <input name="password" type="password" autocomplete="current-password" maxlength="256" required>
+            <button id="password-toggle" type="button" aria-label="显示密码">显示</button>
+          </div>
+        </label>
+        <p id="login-error" class="login-error" role="alert" hidden></p>
+        <button id="login-submit" class="login-submit" type="submit">进入罗盘</button>
+      </form>
+      <p class="login-footnote">
+        连续输错会触发临时限制。请勿使用银行卡、邮箱或其他网站的相同密码。
+      </p>
+    </section>
+  </main>
+  <script src="/login.js" defer></script>
+</body>
+</html>
