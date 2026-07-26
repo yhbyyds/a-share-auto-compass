@@ -52,6 +52,9 @@ jobs:
       - name: Run tests
         run: python -m pytest -q
 
+      - name: Run authentication tests
+        run: node --test tests/auth.test.mjs
+
       - name: Fetch, retrain, and validate
         run: python automation.py --max-data-age-days 5
 
@@ -115,7 +118,7 @@ jobs:
               try:
                   with urlopen(url, timeout=20) as response:
                       payload = json.load(response)
-                  assert payload["meta"]["release"] == "10"
+                  assert payload["meta"]["release"] == "11"
                   assert payload["meta"]["automation"]["status"] == "passed"
                   assert payload["meta"]["trading_calendar"]["name"] == "XSHG"
                   assert payload["meta"]["trading_calendar"]["verified_through"]

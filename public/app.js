@@ -429,7 +429,7 @@ function render(data) {
 
 async function loadForecast() {
   const response = await fetch(
-    "./data/forecast.json?v=1.6.0",
+    "./data/forecast.json?v=1.7.0",
     { cache: "no-store" },
   );
   if (!response.ok) throw new Error("预测文件读取失败");
@@ -454,6 +454,26 @@ $("#refresh-button").addEventListener("click", async () => {
     document.body.classList.remove("loading");
   }
 });
+
+const logoutButton = $("#logout-button");
+if (
+  window.location.hostname.endsWith(".chatgpt.site")
+  || ["localhost", "127.0.0.1"].includes(window.location.hostname)
+) {
+  logoutButton.hidden = false;
+  logoutButton.addEventListener("click", async () => {
+    logoutButton.disabled = true;
+    logoutButton.textContent = "正在退出…";
+    try {
+      await fetch("/api/auth/logout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+    } finally {
+      window.location.replace("/login");
+    }
+  });
+}
 
 loadForecast().catch((error) => {
   $("#data-status").textContent = "数据读取失败";

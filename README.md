@@ -116,10 +116,34 @@ GitHub Pages 与 ChatGPT 账号无关；以后切换 ChatGPT 账号不需要更�
 4. 发布门禁要求每个行业至少包含50个交易日历史，并更新到大盘行情
    截止日；缺失或滞后时拒绝覆盖线上有效版本。
 
+## 版本11：账号密码保护
+
+版本11在支持服务端路由的 Sites 正式站点启用认证：
+
+1. 密码使用 PBKDF2-SHA256（310,000次迭代）保存为哈希，仓库不保存
+   明文密码；会话签名密钥也只配置在生产环境变量中。
+2. 登录成功后签发12小时、HttpOnly、Secure、SameSite=Lax Cookie；
+   修改 Cookie、超过有效期或退出账号后都无法继续读取预测数据。
+3. 页面、静态预测 JSON 与其他受保护资源统一经过服务端 Proxy；
+   未登录的页面请求跳转登录页，未登录的API请求返回401。
+4. 登录接口执行同源检查、通用错误提示和临时失败次数限制，并配置
+   禁止嵌入、禁止MIME嗅探等安全响应头。
+
+生产环境需要配置：
+
+- `AUTH_USERNAME`
+- `AUTH_PASSWORD_HASH`
+- `AUTH_SESSION_SECRET`
+
+GitHub Pages 不支持服务端认证，因此它只能作为静态公开镜像，不能代替
+受保护的 Sites 正式入口。若需要连源代码和历史预测数据也完全私有，
+还需要将 GitHub 仓库改为私有，并调整自动更新的数据存储。
+
 ## 测试
 
 ```powershell
 py -m pytest
+node --test tests/auth.test.mjs
 ```
 
 如果没有安装 pytest：

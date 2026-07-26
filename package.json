@@ -1,12 +1,13 @@
 {
   "name": "a-share-weekly-compass",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "vinext dev",
     "build": "vinext build && node scripts/prepare-dist.mjs",
-    "start": "vinext start"
+    "start": "vinext start",
+    "test:auth": "node --test tests/auth.test.mjs"
   },
   "dependencies": {
     "next": "16.2.11",

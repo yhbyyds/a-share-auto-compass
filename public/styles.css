@@ -82,6 +82,7 @@ body {
 }
 .ghost-button:hover { background: white; transform: translateY(-1px); }
 .ghost-button:disabled { cursor: wait; opacity: .55; }
+.auth-button { color: var(--red); border-color: rgba(187,62,53,.22); }
 
 .page-shell { width: min(1240px, calc(100% - 40px)); margin: 0 auto; }
 .safety-note {
