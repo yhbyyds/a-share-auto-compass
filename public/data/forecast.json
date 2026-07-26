@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-07-26T08:40:43.986324+08:00",
+    "generated_at": "2026-07-26T08:47:37.152962+08:00",
     "data_through": "2026-07-24",
     "forecast_window": "2026-07-27 至 2026-07-31",
     "version": "1.4.0",
@@ -17,7 +17,7 @@
       "update_warnings": []
     },
     "automation": {
-      "run_id": "20260726T083924",
+      "run_id": "20260726T084613",
       "status": "passed",
       "quality_gate": {
         "passed": true,
@@ -38,7 +38,7 @@
           "event_count": 7
         }
       },
-      "updated_at": "2026-07-26T08:39:24.690170+08:00",
+      "updated_at": "2026-07-26T08:46:13.251709+08:00",
       "mode": "automatic"
     }
   },
@@ -2690,7 +2690,7 @@
     },
     "collection": {
       "status": "live",
-      "fetched_at": "2026-07-26T08:41:43.090451+08:00",
+      "fetched_at": "2026-07-26T08:48:36.847519+08:00",
       "cache_used": false,
       "event_count": 2,
       "sources": [
