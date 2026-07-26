@@ -3,9 +3,9 @@
     "generated_at": "2026-07-26T10:54:17.742341+08:00",
     "data_through": "2026-07-24",
     "forecast_window": "2026-07-27 至 2026-07-31",
-    "version": "1.7.0",
+    "version": "1.8.0",
     "data_source": "腾讯证券主源 / 东方财富备用",
-    "release": "11",
+    "release": "12",
     "trading_calendar": {
       "name": "XSHG",
       "source": "上海证券交易所年度休市安排（版本化官方清单）",

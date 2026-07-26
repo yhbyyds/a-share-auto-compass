@@ -425,6 +425,7 @@ function render(data) {
   $("#sources").innerHTML = data.sources.map((source) => `<a href="${source.url}" target="_blank" rel="noreferrer" title="${source.detail}">${source.name} ↗</a>`).join("");
   $("#disclaimer").textContent = data.disclaimer;
   $("#app-version").textContent = `版本 ${meta.release || meta.version} · Research only`;
+  window.dispatchEvent(new CustomEvent("forecast:loaded", { detail: data }));
 }
 
 async function loadForecast() {
@@ -443,7 +444,7 @@ async function loadForecast() {
     }
   }
   const response = await fetch(
-    "./data/forecast.json?v=1.7.0",
+    "./data/forecast.json?v=1.8.0",
     { cache: "no-store" },
   );
   if (!response.ok) throw new Error("预测文件读取失败");

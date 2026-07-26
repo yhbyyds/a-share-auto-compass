@@ -1,13 +1,14 @@
 {
   "name": "a-share-weekly-compass",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "vinext dev",
     "build": "node scripts/encrypt-forecast.mjs && vinext build && node scripts/prepare-dist.mjs",
     "start": "vinext start",
-    "verify:encrypted": "node scripts/verify-encrypted-build.mjs"
+    "verify:encrypted": "node scripts/verify-encrypted-build.mjs",
+    "verify:portfolio": "node scripts/verify-portfolio.mjs"
   },
   "dependencies": {
     "next": "16.2.11",

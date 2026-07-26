@@ -1,6 +1,9 @@
 (() => {
   const STORAGE_KEY = "a_share_v11_access_key";
-  const ENCRYPTED_URL = "/data/forecast.enc.json?v=1.7.0";
+  const PERSONAL_SESSION_KEY = "a_share_personal_session_key_v1";
+  const PERSONAL_STORAGE_KEY = "a_share_personal_portfolio_v1";
+  const DEVICE_KEY = "a_share_personal_device_key_v1";
+  const ENCRYPTED_URL = "/data/forecast.enc.json?v=1.8.0";
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
 
@@ -44,17 +47,39 @@
       material,
       { name: "AES-GCM", length: 256 },
       true,
-      ["decrypt"],
+      ["encrypt", "decrypt"],
     );
   }
 
-  async function importKey(encoded) {
+  async function derivePersonalKey(password) {
+    const material = await crypto.subtle.importKey(
+      "raw",
+      encoder.encode(password),
+      "PBKDF2",
+      false,
+      ["deriveKey"],
+    );
+    return crypto.subtle.deriveKey(
+      {
+        name: "PBKDF2",
+        hash: "SHA-256",
+        salt: encoder.encode("a-share-auto-compass-personal-v1"),
+        iterations: 310000,
+      },
+      material,
+      { name: "AES-GCM", length: 256 },
+      true,
+      ["encrypt", "decrypt"],
+    );
+  }
+
+  async function importKey(encoded, usages = ["encrypt", "decrypt"]) {
     return crypto.subtle.importKey(
       "raw",
       decodeBase64Url(encoded),
       { name: "AES-GCM", length: 256 },
       false,
-      ["decrypt"],
+      usages,
     );
   }
 
@@ -79,10 +104,19 @@
       const key = await deriveKey(String(password), payload);
       const data = await decrypt(payload, key);
       const rawKey = new Uint8Array(await crypto.subtle.exportKey("raw", key));
+      const personalKey = await derivePersonalKey(String(password));
+      const rawPersonalKey = new Uint8Array(
+        await crypto.subtle.exportKey("raw", personalKey),
+      );
       sessionStorage.setItem(STORAGE_KEY, encodeBase64Url(rawKey));
+      sessionStorage.setItem(
+        PERSONAL_SESSION_KEY,
+        encodeBase64Url(rawPersonalKey),
+      );
       return data;
     } catch {
       sessionStorage.removeItem(STORAGE_KEY);
+      sessionStorage.removeItem(PERSONAL_SESSION_KEY);
       throw new Error("账号或密码不正确");
     }
   }
@@ -104,7 +138,81 @@
 
   function logout() {
     sessionStorage.removeItem(STORAGE_KEY);
+    sessionStorage.removeItem(PERSONAL_SESSION_KEY);
   }
 
-  window.SecureForecast = { load, logout, unlock };
+  async function personalKey() {
+    const secureHost = window.location.hostname.endsWith(".chatgpt.site");
+    const sessionKey = sessionStorage.getItem(PERSONAL_SESSION_KEY);
+    if (sessionKey) return importKey(sessionKey);
+    if (secureHost) throw new Error("PERSONAL_LOGIN_REQUIRED");
+
+    let deviceKey = localStorage.getItem(DEVICE_KEY);
+    if (!deviceKey) {
+      deviceKey = encodeBase64Url(crypto.getRandomValues(new Uint8Array(32)));
+      localStorage.setItem(DEVICE_KEY, deviceKey);
+    }
+    return importKey(deviceKey);
+  }
+
+  async function savePersonalData(value) {
+    const key = await personalKey();
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const plaintext = encoder.encode(JSON.stringify(value));
+    const ciphertext = await crypto.subtle.encrypt(
+      {
+        name: "AES-GCM",
+        iv,
+        additionalData: encoder.encode("portfolio-v1"),
+      },
+      key,
+      plaintext,
+    );
+    localStorage.setItem(
+      PERSONAL_STORAGE_KEY,
+      JSON.stringify({
+        schema: 1,
+        iv: encodeBase64Url(iv),
+        ciphertext: encodeBase64Url(new Uint8Array(ciphertext)),
+      }),
+    );
+  }
+
+  async function loadPersonalData() {
+    const stored = localStorage.getItem(PERSONAL_STORAGE_KEY);
+    if (!stored) return null;
+    const payload = JSON.parse(stored);
+    if (payload.schema !== 1) throw new Error("PERSONAL_SCHEMA_UNSUPPORTED");
+    const key = await personalKey();
+    const plaintext = await crypto.subtle.decrypt(
+      {
+        name: "AES-GCM",
+        iv: decodeBase64Url(payload.iv),
+        additionalData: encoder.encode("portfolio-v1"),
+      },
+      key,
+      decodeBase64Url(payload.ciphertext),
+    );
+    return JSON.parse(decoder.decode(plaintext));
+  }
+
+  function clearPersonalData() {
+    localStorage.removeItem(PERSONAL_STORAGE_KEY);
+  }
+
+  function personalStorageMode() {
+    return window.location.hostname.endsWith(".chatgpt.site")
+      ? "account"
+      : "device";
+  }
+
+  window.SecureForecast = {
+    load,
+    logout,
+    unlock,
+    savePersonalData,
+    loadPersonalData,
+    clearPersonalData,
+    personalStorageMode,
+  };
 })();

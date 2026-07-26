@@ -248,6 +248,116 @@
       <p class="section-footnote warning">个股评分尚未完成无幸存者偏差的历史横截面回测，因此不应用于自动下单、追涨或重仓。</p>
     </section>
 
+    <section id="portfolio-daily" class="section-block portfolio-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">PRIVATE PORTFOLIO · DAILY BRIEF</p>
+          <h2>我的持仓日报</h2>
+        </div>
+        <p>把个人仓位映射到大盘、行业与事件信号，生成可执行的观察清单；不连接券商、不自动交易。</p>
+      </div>
+
+      <div class="portfolio-privacy panel">
+        <div class="privacy-icon" aria-hidden="true">锁</div>
+        <div>
+          <strong>持仓只保存在当前浏览器</strong>
+          <p id="portfolio-storage-note">安全站点使用独立会话密钥加密；退出账号后其他人无法直接读取。</p>
+        </div>
+        <button id="portfolio-clear" class="text-button danger" type="button">清空本机持仓</button>
+      </div>
+
+      <div class="portfolio-layout">
+        <article class="panel portfolio-editor">
+          <div class="portfolio-editor-head">
+            <div>
+              <span class="label">POSITION INPUT</span>
+              <h3>录入持仓</h3>
+            </div>
+            <div class="portfolio-actions">
+              <input id="portfolio-csv" type="file" accept=".csv,text/csv" hidden>
+              <button id="portfolio-import" class="secondary-button" type="button">导入 CSV</button>
+              <button id="portfolio-add" class="secondary-button" type="button">＋ 添加一行</button>
+            </div>
+          </div>
+          <p class="portfolio-help">字段：股票代码、名称、所属行业、成本价、现价、股数。现价需要你按最新收盘或盘中价格更新。</p>
+          <div class="portfolio-table-scroll">
+            <table class="portfolio-table">
+              <thead>
+                <tr>
+                  <th>代码 / 名称</th>
+                  <th>行业</th>
+                  <th>成本价</th>
+                  <th>现价</th>
+                  <th>股数</th>
+                  <th>市值 / 盈亏</th>
+                  <th><span class="sr-only">操作</span></th>
+                </tr>
+              </thead>
+              <tbody id="portfolio-rows"></tbody>
+            </table>
+          </div>
+          <div class="portfolio-editor-footer">
+            <label class="cash-input">
+              <span>可用现金（元）</span>
+              <input id="portfolio-cash" type="number" min="0" step="100" inputmode="decimal" value="0">
+            </label>
+            <div class="portfolio-totals" id="portfolio-live-totals">
+              <span>持仓市值 <strong>¥0</strong></span>
+              <span>总资产 <strong>¥0</strong></span>
+            </div>
+          </div>
+          <div class="portfolio-generate-row">
+            <p>生成时读取当前页面的预测快照。模型数据不是实时行情，盘中使用前请先更新现价。</p>
+            <button id="portfolio-generate" class="primary-button" type="button">生成今日投资日报</button>
+          </div>
+        </article>
+
+        <aside class="panel portfolio-guide">
+          <span class="label">HOW IT WORKS</span>
+          <h3>日报会检查什么</h3>
+          <ol>
+            <li><strong>仓位结构</strong><span>总仓位、单票集中度、行业集中度</span></li>
+            <li><strong>模型匹配</strong><span>持仓行业与五日相对强弱是否同向</span></li>
+            <li><strong>事件暴露</strong><span>下周事件是否直接影响持仓板块</span></li>
+            <li><strong>失效条件</strong><span>需要盯住的价格、指数与风险阈值</span></li>
+          </ol>
+          <p>它提供条件式预案，不会给出“保证上涨”或满仓指令。</p>
+        </aside>
+      </div>
+
+      <article id="portfolio-report" class="portfolio-report panel" hidden>
+        <div class="report-head">
+          <div>
+            <span class="label">GENERATED LOCALLY</span>
+            <h3>个人投资日报</h3>
+            <p id="report-meta"></p>
+          </div>
+          <button id="portfolio-export" class="secondary-button" type="button">导出单文件报告</button>
+        </div>
+        <div id="report-summary" class="report-summary"></div>
+        <div class="report-grid">
+          <section>
+            <div class="report-section-title"><span>01</span><h4>风险体检</h4></div>
+            <div id="report-risks" class="report-list"></div>
+          </section>
+          <section>
+            <div class="report-section-title"><span>02</span><h4>行业与事件暴露</h4></div>
+            <div id="report-exposure" class="report-list"></div>
+          </section>
+        </div>
+        <section class="report-holdings-section">
+          <div class="report-section-title"><span>03</span><h4>逐项持仓诊断</h4></div>
+          <div id="report-holdings" class="holding-diagnosis-grid"></div>
+        </section>
+        <section class="report-plan-section">
+          <div class="report-section-title"><span>04</span><h4>下周一至周五观察计划</h4></div>
+          <div id="report-plan" class="report-plan"></div>
+        </section>
+        <div id="report-change" class="report-change"></div>
+        <p class="report-disclaimer">本日报基于你录入的持仓与页面所示研究模型自动生成，不构成投资建议。价格可能滞后，预测可能失效；请勿使用借贷或生活必需资金交易。</p>
+      </article>
+    </section>
+
     <section class="event-section section-block">
       <div class="section-heading">
         <div>
@@ -304,5 +414,6 @@
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="./secure-data.js" defer></script>
   <script src="./app.js" defer></script>
+  <script src="./portfolio.js" defer></script>
 </body>
 </html>
