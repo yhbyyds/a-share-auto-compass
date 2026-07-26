@@ -325,7 +325,10 @@ function render(data) {
 }
 
 async function loadForecast() {
-  const response = await fetch("./data/forecast.json", { cache: "no-store" });
+  const response = await fetch(
+    "./data/forecast.json?v=1.4.0",
+    { cache: "no-store" },
+  );
   if (!response.ok) throw new Error("预测文件读取失败");
   const data = await response.json();
   render(data);
