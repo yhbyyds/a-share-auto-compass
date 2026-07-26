@@ -115,7 +115,7 @@ jobs:
               try:
                   with urlopen(url, timeout=20) as response:
                       payload = json.load(response)
-                  assert payload["meta"]["release"] == "9"
+                  assert payload["meta"]["release"] == "10"
                   assert payload["meta"]["automation"]["status"] == "passed"
                   assert payload["meta"]["trading_calendar"]["name"] == "XSHG"
                   assert payload["meta"]["trading_calendar"]["verified_through"]
@@ -128,6 +128,10 @@ jobs:
                   assert payload["validation"]["calibration"]
                   assert len(payload["days"]) == 5
                   assert len(payload["sector_forecast"]["sectors"]) >= 10
+                  assert all(
+                      len(sector["history"]) >= 50
+                      for sector in payload["sector_forecast"]["sectors"]
+                  )
                   print("Published forecast verified:", url)
                   break
               except Exception as exc:

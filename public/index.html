@@ -138,6 +138,32 @@
         </div>
         <p>同时预测行业自身涨跌与相对沪深300强弱；排名代表相对机会，不等于买入指令。</p>
       </div>
+      <div class="sector-visual-grid">
+        <article class="panel sector-heatmap-panel">
+          <div class="visual-panel-head">
+            <div><span class="label">ROTATION MAP</span><h3>行业预期热力图</h3></div>
+            <p>颜色表示模型周路径，不代表确定涨跌</p>
+          </div>
+          <div id="sector-heatmap" class="sector-heatmap"></div>
+        </article>
+        <article class="panel sector-distribution-panel">
+          <div class="visual-panel-head">
+            <div><span class="label">MARKET DISTRIBUTION</span><h3>行业方向分布</h3></div>
+          </div>
+          <div id="sector-distribution" class="sector-distribution"></div>
+        </article>
+      </div>
+      <article class="panel sector-detail-panel">
+        <div class="sector-detail-head">
+          <div><span class="label">60 TRADING DAYS</span><h3 id="sector-detail-title">行业趋势详情</h3></div>
+          <select id="sector-select" aria-label="选择行业"></select>
+        </div>
+        <div class="sector-detail-layout">
+          <div id="sector-detail-chart" class="sector-detail-chart"></div>
+          <div id="sector-detail-metrics" class="sector-detail-metrics"></div>
+        </div>
+        <p class="chart-data-note">收盘快照 · 行业与沪深300均以区间首日归一为100 · 不提供伪实时资金流</p>
+      </article>
       <div id="sector-leaders" class="sector-leaders"></div>
       <article class="panel sector-matrix-panel">
         <div class="sector-matrix-head">

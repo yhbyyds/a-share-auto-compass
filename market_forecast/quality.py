@@ -188,6 +188,17 @@ def validate_forecast(
                 f"行业 {sector.get('name', sector.get('key'))} "
                 "与大盘交易日不一致"
             )
+        history = sector.get("history", [])
+        if len(history) < 50:
+            result.errors.append(
+                f"行业 {sector.get('name', sector.get('key'))} "
+                f"历史走势不足50个交易日: {len(history)}"
+            )
+        elif history[-1].get("date") != meta.get("data_through"):
+            result.errors.append(
+                f"行业 {sector.get('name', sector.get('key'))} "
+                "历史走势未更新到行情截止日"
+            )
 
     breadth_stocks = int((forecast.get("breadth") or {}).get("stocks", 0) or 0)
     result.metrics["breadth_stocks"] = breadth_stocks

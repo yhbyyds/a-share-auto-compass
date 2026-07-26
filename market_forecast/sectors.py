@@ -420,6 +420,36 @@ def _drivers(
     return items
 
 
+def _recent_history(
+    frame: pd.DataFrame,
+    benchmark: pd.Series,
+    count: int = 60,
+) -> list[dict[str, Any]]:
+    aligned = pd.concat(
+        [
+            frame["close"].rename("sector"),
+            benchmark.rename("benchmark"),
+        ],
+        axis=1,
+    ).dropna().tail(count)
+    if aligned.empty:
+        return []
+    sector_index = aligned["sector"] / aligned["sector"].iloc[0] * 100
+    benchmark_index = (
+        aligned["benchmark"] / aligned["benchmark"].iloc[0] * 100
+    )
+    relative_index = sector_index / benchmark_index * 100
+    return [
+        {
+            "date": date_value.strftime("%Y-%m-%d"),
+            "sector": round(float(sector_index.loc[date_value]), 2),
+            "benchmark": round(float(benchmark_index.loc[date_value]), 2),
+            "relative": round(float(relative_index.loc[date_value]), 2),
+        }
+        for date_value in aligned.index
+    ]
+
+
 def _composite_technology(
     sectors: list[dict[str, Any]],
 ) -> dict[str, Any]:
@@ -451,6 +481,26 @@ def _composite_technology(
                 "confidence": "中" if quality else "低",
             }
         )
+    history_length = min(len(item.get("history", [])) for item in members)
+    composite_history = []
+    if history_length:
+        aligned_histories = [
+            item["history"][-history_length:] for item in members
+        ]
+        for index in range(history_length):
+            rows = [history[index] for history in aligned_histories]
+            composite_history.append(
+                {
+                    "date": rows[0]["date"],
+                    "sector": round(
+                        float(np.mean([row["sector"] for row in rows])), 2
+                    ),
+                    "benchmark": rows[0]["benchmark"],
+                    "relative": round(
+                        float(np.mean([row["relative"] for row in rows])), 2
+                    ),
+                }
+            )
     return {
         "key": "technology",
         "name": "科技综合",
@@ -458,6 +508,7 @@ def _composite_technology(
         "group": "科技",
         "is_composite": True,
         "days": days,
+        "history": composite_history,
         "drivers": [
             "由申万电子、计算机、通信三个一级行业等权合成",
             "用于判断科技主线，不代表任一只科技股",
@@ -549,6 +600,10 @@ def generate_sector_forecast(
                 "group": spec.group,
                 "is_composite": False,
                 "days": days,
+                "history": _recent_history(
+                    sector_data[spec.key],
+                    benchmark,
+                ),
                 "drivers": _drivers(
                     spec, sector_data[spec.key], benchmark
                 ),

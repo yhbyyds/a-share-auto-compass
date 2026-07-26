@@ -25,7 +25,20 @@ def valid_forecast() -> dict:
         for index, item in enumerate(dates)
     ]
     sectors = [
-        {"key": f"sector_{index}", "name": f"行业{index}", "days": deepcopy(days)}
+        {
+            "key": f"sector_{index}",
+            "name": f"行业{index}",
+            "days": deepcopy(days),
+            "history": [
+                {
+                    "date": "2026-07-24",
+                    "sector": 100.0,
+                    "benchmark": 100.0,
+                    "relative": 100.0,
+                }
+                for _ in range(60)
+            ],
+        }
         for index in range(10)
     ]
     return {
@@ -159,3 +172,13 @@ def test_missing_breadth_requires_confidence_degradation() -> None:
 
     assert not result.passed
     assert any("市场宽度不足" in error for error in result.errors)
+
+
+def test_missing_sector_history_blocks_publication() -> None:
+    forecast = valid_forecast()
+    forecast["sector_forecast"]["sectors"][0]["history"] = []
+
+    result = validate_forecast(forecast, today=date(2026, 7, 26))
+
+    assert not result.passed
+    assert any("历史走势不足50个交易日" in error for error in result.errors)

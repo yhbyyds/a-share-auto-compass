@@ -113,6 +113,106 @@ function renderHorizonValidation(rows) {
   }).join("");
 }
 
+function linePath(values, width = 280, height = 72, padding = 4) {
+  if (!values?.length) return "";
+  const low = Math.min(...values);
+  const high = Math.max(...values);
+  const extent = Math.max(high - low, .01);
+  return values.map((value, index) => {
+    const x = padding + index / Math.max(values.length - 1, 1) * (width - padding * 2);
+    const y = padding + (high - value) / extent * (height - padding * 2);
+    return `${index ? "L" : "M"}${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(" ");
+}
+
+function sectorSparkline(sector) {
+  const values = (sector.history || []).slice(-30).map((row) => row.sector);
+  if (values.length < 2) return "";
+  const positive = values.at(-1) >= values[0];
+  return `<svg class="sector-sparkline" viewBox="0 0 280 72" aria-label="${sector.name}近30日趋势">
+    <path d="${linePath(values)}" class="${positive ? "spark-positive" : "spark-negative"}"/>
+    <circle cx="276" cy="${(() => {
+      const low = Math.min(...values); const high = Math.max(...values);
+      return (4 + (high - values.at(-1)) / Math.max(high - low, .01) * 64).toFixed(1);
+    })()}" r="3.5"/>
+  </svg>`;
+}
+
+function renderSectorDetail(sector) {
+  const history = sector.history || [];
+  $("#sector-detail-title").textContent = `${sector.name} · 趋势与相对强弱`;
+  if (history.length < 2) {
+    $("#sector-detail-chart").innerHTML = `<p class="breadth-unavailable">历史走势暂不可用。</p>`;
+    $("#sector-detail-metrics").innerHTML = "";
+    return;
+  }
+  const width = 720;
+  const height = 280;
+  const pad = { top: 25, right: 24, bottom: 30, left: 42 };
+  const allValues = history.flatMap((row) => [row.sector, row.benchmark]);
+  const low = Math.min(...allValues) - 1;
+  const high = Math.max(...allValues) + 1;
+  const x = (i) => pad.left + i / (history.length - 1) * (width - pad.left - pad.right);
+  const y = (v) => pad.top + (high - v) / Math.max(high - low, .01) * (height - pad.top - pad.bottom);
+  const path = (key) => history.map((row, index) => `${index ? "L" : "M"}${x(index).toFixed(1)},${y(row[key]).toFixed(1)}`).join(" ");
+  const ticks = [low, (low + high) / 2, high];
+  $("#sector-detail-chart").innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${sector.name}与沪深300近60日走势">
+    ${ticks.map((tick) => `<line class="sector-chart-grid" x1="${pad.left}" x2="${width-pad.right}" y1="${y(tick)}" y2="${y(tick)}"/><text class="sector-chart-label" x="4" y="${y(tick)+4}">${tick.toFixed(1)}</text>`).join("")}
+    <line class="sector-chart-baseline" x1="${pad.left}" x2="${width-pad.right}" y1="${y(100)}" y2="${y(100)}"/>
+    <path class="sector-chart-benchmark" d="${path("benchmark")}"/>
+    <path class="sector-chart-main" d="${path("sector")}"/>
+    <circle class="sector-chart-dot" cx="${x(history.length-1)}" cy="${y(history.at(-1).sector)}" r="5"/>
+    <text class="sector-chart-label" x="${pad.left}" y="${height-7}">${history[0].date.slice(5)}</text>
+    <text class="sector-chart-label" x="${width-pad.right-34}" y="${height-7}">${history.at(-1).date.slice(5)}</text>
+  </svg>`;
+  const sectorChange = history.at(-1).sector - 100;
+  const benchmarkChange = history.at(-1).benchmark - 100;
+  const relative = history.at(-1).relative - 100;
+  $("#sector-detail-metrics").innerHTML = `
+    <div><span>行业60日</span><strong class="${sectorChange >= 0 ? "positive-text" : "negative-text"}">${formatSigned(sectorChange.toFixed(2))}</strong></div>
+    <div><span>沪深300同期</span><strong>${formatSigned(benchmarkChange.toFixed(2))}</strong></div>
+    <div><span>相对强弱</span><strong class="${relative >= 0 ? "positive-text" : "negative-text"}">${formatSigned(relative.toFixed(2))}</strong></div>
+    <div><span>模型周路径</span><strong>${formatSigned(sector.weekly_expected_return)}</strong></div>
+    <div><span>跑赢概率</span><strong>${sector.outperform_probability}%</strong></div>
+    <div><span>第1日验证</span><strong>${sector.validation.accuracy}%</strong></div>
+    <div class="sector-chart-legend"><span><i class="legend-sector"></i>行业</span><span><i class="legend-benchmark"></i>沪深300</span></div>`;
+}
+
+function renderSectorVisuals(sectors) {
+  $("#sector-heatmap").innerHTML = sectors.map((sector) => {
+    const value = Number(sector.weekly_expected_return);
+    const intensity = Math.min(Math.abs(value) / 1.2, 1);
+    const tone = value > .1 ? "heat-positive" : value < -.1 ? "heat-negative" : "heat-neutral";
+    return `<button class="sector-heat-cell ${tone}" data-sector="${sector.key}" style="--heat:${intensity.toFixed(2)}">
+      <span>${sector.name}</span><strong>${formatSigned(value)}</strong><small>#${sector.rank} · 胜${sector.outperform_probability}%</small>
+    </button>`;
+  }).join("");
+  const positive = sectors.filter((sector) => sector.weekly_expected_return > .1).length;
+  const negative = sectors.filter((sector) => sector.weekly_expected_return < -.1).length;
+  const neutral = sectors.length - positive - negative;
+  const total = Math.max(sectors.length, 1);
+  $("#sector-distribution").innerHTML = `
+    <div class="distribution-numbers"><span><strong class="positive-text">${positive}</strong>偏强</span><span><strong>${neutral}</strong>中性</span><span><strong class="negative-text">${negative}</strong>偏弱</span></div>
+    <div class="distribution-bar"><i class="dist-positive" style="width:${positive/total*100}%"></i><i class="dist-neutral" style="width:${neutral/total*100}%"></i><i class="dist-negative" style="width:${negative/total*100}%"></i></div>
+    <p>共 ${sectors.length} 个行业方向 · 基于五日模型路径</p>`;
+  const select = $("#sector-select");
+  select.innerHTML = sectors.map((sector) => `<option value="${sector.key}">#${sector.rank} ${sector.name}</option>`).join("");
+  const selectSector = (key) => {
+    const sector = sectors.find((item) => item.key === key) || sectors[0];
+    select.value = sector.key;
+    renderSectorDetail(sector);
+  };
+  select.onchange = () => selectSector(select.value);
+  $("#sector-heatmap").onclick = (event) => {
+    const cell = event.target.closest("[data-sector]");
+    if (cell) {
+      selectSector(cell.dataset.sector);
+      $("#sector-detail-title").scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  };
+  selectSector(sectors[0].key);
+}
+
 function renderSectorForecast(forecast) {
   if (!forecast || !forecast.sectors?.length) {
     $("#sector-leaders").innerHTML = `<article class="watchlist-empty panel">行业数据暂不可用，大盘模型仍可单独使用。</article>`;
@@ -121,6 +221,7 @@ function renderSectorForecast(forecast) {
   }
 
   const sectors = [...forecast.sectors].sort((a, b) => a.rank - b.rank);
+  renderSectorVisuals(sectors);
   const leaders = sectors.slice(0, 3);
   $("#sector-leaders").innerHTML = leaders.map((sector) => {
     const validationEdge = sector.validation.accuracy - sector.validation.baseline;
@@ -132,6 +233,7 @@ function renderSectorForecast(forecast) {
         </div>
         <span class="stock-code">${sector.code} · ${sector.group}</span>
         <h3>${sector.name}</h3>
+        ${sectorSparkline(sector)}
         <div class="sector-leader-metrics">
           <div><span>周路径</span><strong>${formatSigned(sector.weekly_expected_return)}</strong></div>
           <div><span>相对基准</span><strong>${formatSigned(sector.weekly_expected_excess)}</strong></div>
@@ -327,7 +429,7 @@ function render(data) {
 
 async function loadForecast() {
   const response = await fetch(
-    "./data/forecast.json?v=1.5.0",
+    "./data/forecast.json?v=1.6.0",
     { cache: "no-store" },
   );
   if (!response.ok) throw new Error("预测文件读取失败");

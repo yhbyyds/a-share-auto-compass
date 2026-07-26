@@ -1,11 +1,11 @@
 {
   "meta": {
-    "generated_at": "2026-07-26T09:19:18.768090+08:00",
+    "generated_at": "2026-07-26T09:49:25.055028+08:00",
     "data_through": "2026-07-24",
     "forecast_window": "2026-07-27 至 2026-07-31",
-    "version": "1.5.0",
+    "version": "1.6.0",
     "data_source": "腾讯证券主源 / 东方财富备用",
-    "release": "9",
+    "release": "10",
     "trading_calendar": {
       "name": "XSHG",
       "source": "上海证券交易所年度休市安排（版本化官方清单）",
@@ -17,7 +17,7 @@
       "update_warnings": []
     },
     "automation": {
-      "run_id": "20260726T091712",
+      "run_id": "20260726T094737",
       "status": "passed",
       "quality_gate": {
         "passed": true,
@@ -38,7 +38,7 @@
           "event_count": 7
         }
       },
-      "updated_at": "2026-07-26T09:17:12.245983+08:00",
+      "updated_at": "2026-07-26T09:47:37.165940+08:00",
       "mode": "automatic"
     }
   },
@@ -183,19 +183,19 @@
   ],
   "breadth": {
     "stocks": 5530,
-    "advancers": 534,
-    "decliners": 4926,
-    "flat": 70,
-    "limit_up_proxy": 53,
-    "limit_down_proxy": 32,
-    "median_change": -2.89,
+    "advancers": 549,
+    "decliners": 4934,
+    "flat": 47,
+    "limit_up_proxy": 54,
+    "limit_down_proxy": 57,
+    "median_change": -2.86,
     "turnover_yi": 19442.0,
-    "advance_ratio": 9.7,
+    "advance_ratio": 9.9,
     "source": "新浪财经全A快照",
     "status": "live",
-    "fetched_at": "2026-07-26T09:18:20.827646+08:00",
+    "fetched_at": "2026-07-26T09:48:16.289596+08:00",
     "failures": [
-      "_fetch_breadth_eastmoney: RetryError"
+      "_fetch_breadth_eastmoney: ProxyError"
     ]
   },
   "models": [
@@ -677,7 +677,7 @@
       "code": "000977",
       "name": "浪潮信息",
       "price": 85.31,
-      "change": -3.02,
+      "change": -3.01,
       "score": 84.8,
       "momentum_5d": 10.22,
       "momentum_20d": 33.53,
@@ -737,7 +737,7 @@
       "code": "600036",
       "name": "招商银行",
       "price": 39.2,
-      "change": 0.69,
+      "change": 0.74,
       "score": 38.0,
       "momentum_5d": 3.1,
       "momentum_20d": 12.01,
@@ -757,7 +757,7 @@
       "code": "603259",
       "name": "药明康德",
       "price": 125.0,
-      "change": -1.93,
+      "change": -1.92,
       "score": 28.8,
       "momentum_5d": 6.03,
       "momentum_20d": 5.77,
@@ -1142,6 +1142,368 @@
             ]
           }
         ],
+        "history": [
+          {
+            "date": "2026-04-28",
+            "sector": 100.0,
+            "benchmark": 100.0,
+            "relative": 100.0
+          },
+          {
+            "date": "2026-04-29",
+            "sector": 100.3,
+            "benchmark": 101.1,
+            "relative": 99.22
+          },
+          {
+            "date": "2026-04-30",
+            "sector": 102.52,
+            "benchmark": 101.03,
+            "relative": 101.47
+          },
+          {
+            "date": "2026-05-06",
+            "sector": 106.54,
+            "benchmark": 102.5,
+            "relative": 103.95
+          },
+          {
+            "date": "2026-05-07",
+            "sector": 109.46,
+            "benchmark": 102.99,
+            "relative": 106.28
+          },
+          {
+            "date": "2026-05-08",
+            "sector": 108.7,
+            "benchmark": 102.39,
+            "relative": 106.16
+          },
+          {
+            "date": "2026-05-11",
+            "sector": 113.85,
+            "benchmark": 104.07,
+            "relative": 109.4
+          },
+          {
+            "date": "2026-05-12",
+            "sector": 114.01,
+            "benchmark": 103.99,
+            "relative": 109.63
+          },
+          {
+            "date": "2026-05-13",
+            "sector": 117.93,
+            "benchmark": 105.05,
+            "relative": 112.26
+          },
+          {
+            "date": "2026-05-14",
+            "sector": 115.1,
+            "benchmark": 103.29,
+            "relative": 111.44
+          },
+          {
+            "date": "2026-05-15",
+            "sector": 113.81,
+            "benchmark": 102.13,
+            "relative": 111.44
+          },
+          {
+            "date": "2026-05-18",
+            "sector": 115.59,
+            "benchmark": 101.58,
+            "relative": 113.79
+          },
+          {
+            "date": "2026-05-19",
+            "sector": 118.17,
+            "benchmark": 101.99,
+            "relative": 115.87
+          },
+          {
+            "date": "2026-05-20",
+            "sector": 120.74,
+            "benchmark": 101.94,
+            "relative": 118.44
+          },
+          {
+            "date": "2026-05-21",
+            "sector": 116.28,
+            "benchmark": 100.52,
+            "relative": 115.68
+          },
+          {
+            "date": "2026-05-22",
+            "sector": 121.27,
+            "benchmark": 101.83,
+            "relative": 119.1
+          },
+          {
+            "date": "2026-05-25",
+            "sector": 127.08,
+            "benchmark": 103.43,
+            "relative": 122.86
+          },
+          {
+            "date": "2026-05-26",
+            "sector": 126.09,
+            "benchmark": 103.99,
+            "relative": 121.26
+          },
+          {
+            "date": "2026-05-27",
+            "sector": 124.31,
+            "benchmark": 103.15,
+            "relative": 120.51
+          },
+          {
+            "date": "2026-05-28",
+            "sector": 126.47,
+            "benchmark": 103.28,
+            "relative": 122.45
+          },
+          {
+            "date": "2026-05-29",
+            "sector": 120.85,
+            "benchmark": 102.81,
+            "relative": 117.54
+          },
+          {
+            "date": "2026-06-01",
+            "sector": 115.81,
+            "benchmark": 101.81,
+            "relative": 113.75
+          },
+          {
+            "date": "2026-06-02",
+            "sector": 118.84,
+            "benchmark": 103.29,
+            "relative": 115.06
+          },
+          {
+            "date": "2026-06-03",
+            "sector": 121.57,
+            "benchmark": 103.8,
+            "relative": 117.13
+          },
+          {
+            "date": "2026-06-04",
+            "sector": 124.33,
+            "benchmark": 103.08,
+            "relative": 120.61
+          },
+          {
+            "date": "2026-06-05",
+            "sector": 119.87,
+            "benchmark": 101.23,
+            "relative": 118.4
+          },
+          {
+            "date": "2026-06-08",
+            "sector": 114.67,
+            "benchmark": 99.06,
+            "relative": 115.76
+          },
+          {
+            "date": "2026-06-09",
+            "sector": 120.93,
+            "benchmark": 100.92,
+            "relative": 119.83
+          },
+          {
+            "date": "2026-06-10",
+            "sector": 118.23,
+            "benchmark": 99.8,
+            "relative": 118.47
+          },
+          {
+            "date": "2026-06-11",
+            "sector": 118.93,
+            "benchmark": 99.25,
+            "relative": 119.83
+          },
+          {
+            "date": "2026-06-12",
+            "sector": 117.63,
+            "benchmark": 100.4,
+            "relative": 117.16
+          },
+          {
+            "date": "2026-06-15",
+            "sector": 125.36,
+            "benchmark": 102.81,
+            "relative": 121.94
+          },
+          {
+            "date": "2026-06-16",
+            "sector": 128.1,
+            "benchmark": 102.65,
+            "relative": 124.8
+          },
+          {
+            "date": "2026-06-17",
+            "sector": 134.12,
+            "benchmark": 103.64,
+            "relative": 129.41
+          },
+          {
+            "date": "2026-06-18",
+            "sector": 138.19,
+            "benchmark": 103.85,
+            "relative": 133.07
+          },
+          {
+            "date": "2026-06-22",
+            "sector": 140.65,
+            "benchmark": 106.34,
+            "relative": 132.27
+          },
+          {
+            "date": "2026-06-23",
+            "sector": 137.12,
+            "benchmark": 103.39,
+            "relative": 132.62
+          },
+          {
+            "date": "2026-06-24",
+            "sector": 142.8,
+            "benchmark": 103.88,
+            "relative": 137.46
+          },
+          {
+            "date": "2026-06-25",
+            "sector": 148.42,
+            "benchmark": 105.5,
+            "relative": 140.68
+          },
+          {
+            "date": "2026-06-26",
+            "sector": 145.64,
+            "benchmark": 102.31,
+            "relative": 142.35
+          },
+          {
+            "date": "2026-06-29",
+            "sector": 148.11,
+            "benchmark": 103.55,
+            "relative": 143.04
+          },
+          {
+            "date": "2026-06-30",
+            "sector": 154.36,
+            "benchmark": 104.65,
+            "relative": 147.51
+          },
+          {
+            "date": "2026-07-01",
+            "sector": 151.29,
+            "benchmark": 104.22,
+            "relative": 145.16
+          },
+          {
+            "date": "2026-07-02",
+            "sector": 140.48,
+            "benchmark": 101.14,
+            "relative": 138.9
+          },
+          {
+            "date": "2026-07-03",
+            "sector": 139.38,
+            "benchmark": 101.76,
+            "relative": 136.96
+          },
+          {
+            "date": "2026-07-06",
+            "sector": 137.36,
+            "benchmark": 101.76,
+            "relative": 134.98
+          },
+          {
+            "date": "2026-07-07",
+            "sector": 136.42,
+            "benchmark": 100.72,
+            "relative": 135.45
+          },
+          {
+            "date": "2026-07-08",
+            "sector": 134.88,
+            "benchmark": 99.94,
+            "relative": 134.96
+          },
+          {
+            "date": "2026-07-09",
+            "sector": 144.77,
+            "benchmark": 102.48,
+            "relative": 141.26
+          },
+          {
+            "date": "2026-07-10",
+            "sector": 137.06,
+            "benchmark": 100.47,
+            "relative": 136.42
+          },
+          {
+            "date": "2026-07-13",
+            "sector": 129.13,
+            "benchmark": 98.68,
+            "relative": 130.86
+          },
+          {
+            "date": "2026-07-14",
+            "sector": 132.65,
+            "benchmark": 100.8,
+            "relative": 131.59
+          },
+          {
+            "date": "2026-07-15",
+            "sector": 126.54,
+            "benchmark": 100.6,
+            "relative": 125.79
+          },
+          {
+            "date": "2026-07-16",
+            "sector": 121.16,
+            "benchmark": 98.74,
+            "relative": 122.7
+          },
+          {
+            "date": "2026-07-17",
+            "sector": 111.23,
+            "benchmark": 95.18,
+            "relative": 116.86
+          },
+          {
+            "date": "2026-07-20",
+            "sector": 105.88,
+            "benchmark": 96.64,
+            "relative": 109.56
+          },
+          {
+            "date": "2026-07-21",
+            "sector": 116.4,
+            "benchmark": 99.6,
+            "relative": 116.87
+          },
+          {
+            "date": "2026-07-22",
+            "sector": 114.12,
+            "benchmark": 99.14,
+            "relative": 115.11
+          },
+          {
+            "date": "2026-07-23",
+            "sector": 111.31,
+            "benchmark": 99.37,
+            "relative": 112.02
+          },
+          {
+            "date": "2026-07-24",
+            "sector": 110.46,
+            "benchmark": 97.71,
+            "relative": 113.05
+          }
+        ],
         "drivers": [
           "20日动量 -24.2%",
           "20日相对沪深300 -19.7%",
@@ -1243,6 +1605,368 @@
               "亚马逊2026年二季度业绩",
               "中国7月官方PMI"
             ]
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-04-28",
+            "sector": 100.0,
+            "benchmark": 100.0,
+            "relative": 100.0
+          },
+          {
+            "date": "2026-04-29",
+            "sector": 100.69,
+            "benchmark": 101.1,
+            "relative": 99.6
+          },
+          {
+            "date": "2026-04-30",
+            "sector": 100.48,
+            "benchmark": 101.03,
+            "relative": 99.46
+          },
+          {
+            "date": "2026-05-06",
+            "sector": 102.59,
+            "benchmark": 102.5,
+            "relative": 100.09
+          },
+          {
+            "date": "2026-05-07",
+            "sector": 107.06,
+            "benchmark": 102.99,
+            "relative": 103.96
+          },
+          {
+            "date": "2026-05-08",
+            "sector": 108.39,
+            "benchmark": 102.39,
+            "relative": 105.86
+          },
+          {
+            "date": "2026-05-11",
+            "sector": 111.94,
+            "benchmark": 104.07,
+            "relative": 107.56
+          },
+          {
+            "date": "2026-05-12",
+            "sector": 114.95,
+            "benchmark": 103.99,
+            "relative": 110.54
+          },
+          {
+            "date": "2026-05-13",
+            "sector": 118.48,
+            "benchmark": 105.05,
+            "relative": 112.79
+          },
+          {
+            "date": "2026-05-14",
+            "sector": 118.44,
+            "benchmark": 103.29,
+            "relative": 114.67
+          },
+          {
+            "date": "2026-05-15",
+            "sector": 115.73,
+            "benchmark": 102.13,
+            "relative": 113.31
+          },
+          {
+            "date": "2026-05-18",
+            "sector": 116.63,
+            "benchmark": 101.58,
+            "relative": 114.81
+          },
+          {
+            "date": "2026-05-19",
+            "sector": 115.94,
+            "benchmark": 101.99,
+            "relative": 113.68
+          },
+          {
+            "date": "2026-05-20",
+            "sector": 116.21,
+            "benchmark": 101.94,
+            "relative": 113.99
+          },
+          {
+            "date": "2026-05-21",
+            "sector": 110.03,
+            "benchmark": 100.52,
+            "relative": 109.45
+          },
+          {
+            "date": "2026-05-22",
+            "sector": 114.6,
+            "benchmark": 101.83,
+            "relative": 112.55
+          },
+          {
+            "date": "2026-05-25",
+            "sector": 118.92,
+            "benchmark": 103.43,
+            "relative": 114.97
+          },
+          {
+            "date": "2026-05-26",
+            "sector": 118.41,
+            "benchmark": 103.99,
+            "relative": 113.87
+          },
+          {
+            "date": "2026-05-27",
+            "sector": 117.49,
+            "benchmark": 103.15,
+            "relative": 113.9
+          },
+          {
+            "date": "2026-05-28",
+            "sector": 122.88,
+            "benchmark": 103.28,
+            "relative": 118.98
+          },
+          {
+            "date": "2026-05-29",
+            "sector": 120.98,
+            "benchmark": 102.81,
+            "relative": 117.67
+          },
+          {
+            "date": "2026-06-01",
+            "sector": 117.02,
+            "benchmark": 101.81,
+            "relative": 114.94
+          },
+          {
+            "date": "2026-06-02",
+            "sector": 123.7,
+            "benchmark": 103.29,
+            "relative": 119.77
+          },
+          {
+            "date": "2026-06-03",
+            "sector": 129.61,
+            "benchmark": 103.8,
+            "relative": 124.87
+          },
+          {
+            "date": "2026-06-04",
+            "sector": 129.7,
+            "benchmark": 103.08,
+            "relative": 125.83
+          },
+          {
+            "date": "2026-06-05",
+            "sector": 125.66,
+            "benchmark": 101.23,
+            "relative": 124.13
+          },
+          {
+            "date": "2026-06-08",
+            "sector": 121.78,
+            "benchmark": 99.06,
+            "relative": 122.93
+          },
+          {
+            "date": "2026-06-09",
+            "sector": 127.69,
+            "benchmark": 100.92,
+            "relative": 126.53
+          },
+          {
+            "date": "2026-06-10",
+            "sector": 124.17,
+            "benchmark": 99.8,
+            "relative": 124.42
+          },
+          {
+            "date": "2026-06-11",
+            "sector": 121.51,
+            "benchmark": 99.25,
+            "relative": 122.43
+          },
+          {
+            "date": "2026-06-12",
+            "sector": 120.32,
+            "benchmark": 100.4,
+            "relative": 119.84
+          },
+          {
+            "date": "2026-06-15",
+            "sector": 128.14,
+            "benchmark": 102.81,
+            "relative": 124.65
+          },
+          {
+            "date": "2026-06-16",
+            "sector": 131.33,
+            "benchmark": 102.65,
+            "relative": 127.94
+          },
+          {
+            "date": "2026-06-17",
+            "sector": 133.24,
+            "benchmark": 103.64,
+            "relative": 128.56
+          },
+          {
+            "date": "2026-06-18",
+            "sector": 138.28,
+            "benchmark": 103.85,
+            "relative": 133.15
+          },
+          {
+            "date": "2026-06-22",
+            "sector": 140.61,
+            "benchmark": 106.34,
+            "relative": 132.23
+          },
+          {
+            "date": "2026-06-23",
+            "sector": 136.14,
+            "benchmark": 103.39,
+            "relative": 131.68
+          },
+          {
+            "date": "2026-06-24",
+            "sector": 137.38,
+            "benchmark": 103.88,
+            "relative": 132.25
+          },
+          {
+            "date": "2026-06-25",
+            "sector": 141.13,
+            "benchmark": 105.5,
+            "relative": 133.76
+          },
+          {
+            "date": "2026-06-26",
+            "sector": 131.99,
+            "benchmark": 102.31,
+            "relative": 129.0
+          },
+          {
+            "date": "2026-06-29",
+            "sector": 128.41,
+            "benchmark": 103.55,
+            "relative": 124.01
+          },
+          {
+            "date": "2026-06-30",
+            "sector": 134.69,
+            "benchmark": 104.65,
+            "relative": 128.71
+          },
+          {
+            "date": "2026-07-01",
+            "sector": 129.91,
+            "benchmark": 104.22,
+            "relative": 124.65
+          },
+          {
+            "date": "2026-07-02",
+            "sector": 120.35,
+            "benchmark": 101.14,
+            "relative": 119.0
+          },
+          {
+            "date": "2026-07-03",
+            "sector": 119.88,
+            "benchmark": 101.76,
+            "relative": 117.8
+          },
+          {
+            "date": "2026-07-06",
+            "sector": 116.22,
+            "benchmark": 101.76,
+            "relative": 114.21
+          },
+          {
+            "date": "2026-07-07",
+            "sector": 116.17,
+            "benchmark": 100.72,
+            "relative": 115.34
+          },
+          {
+            "date": "2026-07-08",
+            "sector": 115.96,
+            "benchmark": 99.94,
+            "relative": 116.03
+          },
+          {
+            "date": "2026-07-09",
+            "sector": 122.18,
+            "benchmark": 102.48,
+            "relative": 119.22
+          },
+          {
+            "date": "2026-07-10",
+            "sector": 117.89,
+            "benchmark": 100.47,
+            "relative": 117.34
+          },
+          {
+            "date": "2026-07-13",
+            "sector": 114.19,
+            "benchmark": 98.68,
+            "relative": 115.72
+          },
+          {
+            "date": "2026-07-14",
+            "sector": 120.19,
+            "benchmark": 100.8,
+            "relative": 119.23
+          },
+          {
+            "date": "2026-07-15",
+            "sector": 117.83,
+            "benchmark": 100.6,
+            "relative": 117.13
+          },
+          {
+            "date": "2026-07-16",
+            "sector": 113.58,
+            "benchmark": 98.74,
+            "relative": 115.03
+          },
+          {
+            "date": "2026-07-17",
+            "sector": 102.41,
+            "benchmark": 95.18,
+            "relative": 107.59
+          },
+          {
+            "date": "2026-07-20",
+            "sector": 102.69,
+            "benchmark": 96.64,
+            "relative": 106.26
+          },
+          {
+            "date": "2026-07-21",
+            "sector": 111.02,
+            "benchmark": 99.6,
+            "relative": 111.46
+          },
+          {
+            "date": "2026-07-22",
+            "sector": 106.09,
+            "benchmark": 99.14,
+            "relative": 107.02
+          },
+          {
+            "date": "2026-07-23",
+            "sector": 105.61,
+            "benchmark": 99.37,
+            "relative": 106.28
+          },
+          {
+            "date": "2026-07-24",
+            "sector": 102.36,
+            "benchmark": 97.71,
+            "relative": 104.76
           }
         ],
         "drivers": [
@@ -1350,6 +2074,368 @@
             ]
           }
         ],
+        "history": [
+          {
+            "date": "2026-04-28",
+            "sector": 100.0,
+            "benchmark": 100.0,
+            "relative": 100.0
+          },
+          {
+            "date": "2026-04-29",
+            "sector": 100.62,
+            "benchmark": 101.1,
+            "relative": 99.53
+          },
+          {
+            "date": "2026-04-30",
+            "sector": 101.48,
+            "benchmark": 101.03,
+            "relative": 100.44
+          },
+          {
+            "date": "2026-05-06",
+            "sector": 104.67,
+            "benchmark": 102.5,
+            "relative": 102.12
+          },
+          {
+            "date": "2026-05-07",
+            "sector": 107.78,
+            "benchmark": 102.99,
+            "relative": 104.66
+          },
+          {
+            "date": "2026-05-08",
+            "sector": 108.14,
+            "benchmark": 102.39,
+            "relative": 105.61
+          },
+          {
+            "date": "2026-05-11",
+            "sector": 111.24,
+            "benchmark": 104.07,
+            "relative": 106.89
+          },
+          {
+            "date": "2026-05-12",
+            "sector": 111.67,
+            "benchmark": 103.99,
+            "relative": 107.38
+          },
+          {
+            "date": "2026-05-13",
+            "sector": 114.78,
+            "benchmark": 105.05,
+            "relative": 109.26
+          },
+          {
+            "date": "2026-05-14",
+            "sector": 112.53,
+            "benchmark": 103.29,
+            "relative": 108.95
+          },
+          {
+            "date": "2026-05-15",
+            "sector": 110.82,
+            "benchmark": 102.13,
+            "relative": 108.51
+          },
+          {
+            "date": "2026-05-18",
+            "sector": 112.11,
+            "benchmark": 101.58,
+            "relative": 110.37
+          },
+          {
+            "date": "2026-05-19",
+            "sector": 113.47,
+            "benchmark": 101.99,
+            "relative": 111.26
+          },
+          {
+            "date": "2026-05-20",
+            "sector": 113.81,
+            "benchmark": 101.94,
+            "relative": 111.64
+          },
+          {
+            "date": "2026-05-21",
+            "sector": 108.97,
+            "benchmark": 100.52,
+            "relative": 108.4
+          },
+          {
+            "date": "2026-05-22",
+            "sector": 112.6,
+            "benchmark": 101.83,
+            "relative": 110.59
+          },
+          {
+            "date": "2026-05-25",
+            "sector": 116.21,
+            "benchmark": 103.43,
+            "relative": 112.35
+          },
+          {
+            "date": "2026-05-26",
+            "sector": 115.07,
+            "benchmark": 103.99,
+            "relative": 110.66
+          },
+          {
+            "date": "2026-05-27",
+            "sector": 113.14,
+            "benchmark": 103.15,
+            "relative": 109.69
+          },
+          {
+            "date": "2026-05-28",
+            "sector": 115.7,
+            "benchmark": 103.28,
+            "relative": 112.03
+          },
+          {
+            "date": "2026-05-29",
+            "sector": 112.02,
+            "benchmark": 102.81,
+            "relative": 108.95
+          },
+          {
+            "date": "2026-06-01",
+            "sector": 109.65,
+            "benchmark": 101.81,
+            "relative": 107.7
+          },
+          {
+            "date": "2026-06-02",
+            "sector": 112.64,
+            "benchmark": 103.29,
+            "relative": 109.06
+          },
+          {
+            "date": "2026-06-03",
+            "sector": 115.24,
+            "benchmark": 103.8,
+            "relative": 111.03
+          },
+          {
+            "date": "2026-06-04",
+            "sector": 115.63,
+            "benchmark": 103.08,
+            "relative": 112.17
+          },
+          {
+            "date": "2026-06-05",
+            "sector": 112.63,
+            "benchmark": 101.23,
+            "relative": 111.26
+          },
+          {
+            "date": "2026-06-08",
+            "sector": 108.71,
+            "benchmark": 99.06,
+            "relative": 109.74
+          },
+          {
+            "date": "2026-06-09",
+            "sector": 113.29,
+            "benchmark": 100.92,
+            "relative": 112.26
+          },
+          {
+            "date": "2026-06-10",
+            "sector": 110.68,
+            "benchmark": 99.8,
+            "relative": 110.9
+          },
+          {
+            "date": "2026-06-11",
+            "sector": 109.09,
+            "benchmark": 99.25,
+            "relative": 109.91
+          },
+          {
+            "date": "2026-06-12",
+            "sector": 108.6,
+            "benchmark": 100.4,
+            "relative": 108.17
+          },
+          {
+            "date": "2026-06-15",
+            "sector": 114.66,
+            "benchmark": 102.81,
+            "relative": 111.53
+          },
+          {
+            "date": "2026-06-16",
+            "sector": 116.85,
+            "benchmark": 102.65,
+            "relative": 113.83
+          },
+          {
+            "date": "2026-06-17",
+            "sector": 119.58,
+            "benchmark": 103.64,
+            "relative": 115.38
+          },
+          {
+            "date": "2026-06-18",
+            "sector": 122.82,
+            "benchmark": 103.85,
+            "relative": 118.27
+          },
+          {
+            "date": "2026-06-22",
+            "sector": 125.06,
+            "benchmark": 106.34,
+            "relative": 117.61
+          },
+          {
+            "date": "2026-06-23",
+            "sector": 121.78,
+            "benchmark": 103.39,
+            "relative": 117.79
+          },
+          {
+            "date": "2026-06-24",
+            "sector": 124.06,
+            "benchmark": 103.88,
+            "relative": 119.42
+          },
+          {
+            "date": "2026-06-25",
+            "sector": 126.98,
+            "benchmark": 105.5,
+            "relative": 120.35
+          },
+          {
+            "date": "2026-06-26",
+            "sector": 121.68,
+            "benchmark": 102.31,
+            "relative": 118.93
+          },
+          {
+            "date": "2026-06-29",
+            "sector": 121.22,
+            "benchmark": 103.55,
+            "relative": 117.07
+          },
+          {
+            "date": "2026-06-30",
+            "sector": 126.41,
+            "benchmark": 104.65,
+            "relative": 120.8
+          },
+          {
+            "date": "2026-07-01",
+            "sector": 124.22,
+            "benchmark": 104.22,
+            "relative": 119.19
+          },
+          {
+            "date": "2026-07-02",
+            "sector": 116.58,
+            "benchmark": 101.14,
+            "relative": 115.27
+          },
+          {
+            "date": "2026-07-03",
+            "sector": 116.14,
+            "benchmark": 101.76,
+            "relative": 114.12
+          },
+          {
+            "date": "2026-07-06",
+            "sector": 113.94,
+            "benchmark": 101.76,
+            "relative": 111.97
+          },
+          {
+            "date": "2026-07-07",
+            "sector": 112.9,
+            "benchmark": 100.72,
+            "relative": 112.09
+          },
+          {
+            "date": "2026-07-08",
+            "sector": 113.01,
+            "benchmark": 99.94,
+            "relative": 113.08
+          },
+          {
+            "date": "2026-07-09",
+            "sector": 119.16,
+            "benchmark": 102.48,
+            "relative": 116.27
+          },
+          {
+            "date": "2026-07-10",
+            "sector": 115.52,
+            "benchmark": 100.47,
+            "relative": 114.98
+          },
+          {
+            "date": "2026-07-13",
+            "sector": 110.45,
+            "benchmark": 98.68,
+            "relative": 111.93
+          },
+          {
+            "date": "2026-07-14",
+            "sector": 113.32,
+            "benchmark": 100.8,
+            "relative": 112.42
+          },
+          {
+            "date": "2026-07-15",
+            "sector": 110.46,
+            "benchmark": 100.6,
+            "relative": 109.8
+          },
+          {
+            "date": "2026-07-16",
+            "sector": 107.45,
+            "benchmark": 98.74,
+            "relative": 108.82
+          },
+          {
+            "date": "2026-07-17",
+            "sector": 98.77,
+            "benchmark": 95.18,
+            "relative": 103.77
+          },
+          {
+            "date": "2026-07-20",
+            "sector": 97.46,
+            "benchmark": 96.64,
+            "relative": 100.85
+          },
+          {
+            "date": "2026-07-21",
+            "sector": 104.69,
+            "benchmark": 99.6,
+            "relative": 105.11
+          },
+          {
+            "date": "2026-07-22",
+            "sector": 102.28,
+            "benchmark": 99.14,
+            "relative": 103.17
+          },
+          {
+            "date": "2026-07-23",
+            "sector": 100.96,
+            "benchmark": 99.37,
+            "relative": 101.6
+          },
+          {
+            "date": "2026-07-24",
+            "sector": 98.54,
+            "benchmark": 97.71,
+            "relative": 100.85
+          }
+        ],
         "drivers": [
           "由申万电子、计算机、通信三个一级行业等权合成",
           "用于判断科技主线，不代表任一只科技股"
@@ -1444,6 +2530,368 @@
               "美国二季度GDP与6月PCE",
               "中国7月官方PMI"
             ]
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-04-28",
+            "sector": 100.0,
+            "benchmark": 100.0,
+            "relative": 100.0
+          },
+          {
+            "date": "2026-04-29",
+            "sector": 100.99,
+            "benchmark": 101.1,
+            "relative": 99.89
+          },
+          {
+            "date": "2026-04-30",
+            "sector": 100.5,
+            "benchmark": 101.03,
+            "relative": 99.48
+          },
+          {
+            "date": "2026-05-06",
+            "sector": 99.72,
+            "benchmark": 102.5,
+            "relative": 97.29
+          },
+          {
+            "date": "2026-05-07",
+            "sector": 99.56,
+            "benchmark": 102.99,
+            "relative": 96.67
+          },
+          {
+            "date": "2026-05-08",
+            "sector": 99.36,
+            "benchmark": 102.39,
+            "relative": 97.04
+          },
+          {
+            "date": "2026-05-11",
+            "sector": 99.19,
+            "benchmark": 104.07,
+            "relative": 95.31
+          },
+          {
+            "date": "2026-05-12",
+            "sector": 98.24,
+            "benchmark": 103.99,
+            "relative": 94.47
+          },
+          {
+            "date": "2026-05-13",
+            "sector": 97.62,
+            "benchmark": 105.05,
+            "relative": 92.93
+          },
+          {
+            "date": "2026-05-14",
+            "sector": 97.66,
+            "benchmark": 103.29,
+            "relative": 94.55
+          },
+          {
+            "date": "2026-05-15",
+            "sector": 96.26,
+            "benchmark": 102.13,
+            "relative": 94.25
+          },
+          {
+            "date": "2026-05-18",
+            "sector": 95.67,
+            "benchmark": 101.58,
+            "relative": 94.17
+          },
+          {
+            "date": "2026-05-19",
+            "sector": 95.8,
+            "benchmark": 101.99,
+            "relative": 93.93
+          },
+          {
+            "date": "2026-05-20",
+            "sector": 95.68,
+            "benchmark": 101.94,
+            "relative": 93.85
+          },
+          {
+            "date": "2026-05-21",
+            "sector": 94.78,
+            "benchmark": 100.52,
+            "relative": 94.28
+          },
+          {
+            "date": "2026-05-22",
+            "sector": 93.51,
+            "benchmark": 101.83,
+            "relative": 91.83
+          },
+          {
+            "date": "2026-05-25",
+            "sector": 93.73,
+            "benchmark": 103.43,
+            "relative": 90.62
+          },
+          {
+            "date": "2026-05-26",
+            "sector": 92.99,
+            "benchmark": 103.99,
+            "relative": 89.43
+          },
+          {
+            "date": "2026-05-27",
+            "sector": 94.15,
+            "benchmark": 103.15,
+            "relative": 91.27
+          },
+          {
+            "date": "2026-05-28",
+            "sector": 92.27,
+            "benchmark": 103.28,
+            "relative": 89.34
+          },
+          {
+            "date": "2026-05-29",
+            "sector": 95.05,
+            "benchmark": 102.81,
+            "relative": 92.45
+          },
+          {
+            "date": "2026-06-01",
+            "sector": 94.77,
+            "benchmark": 101.81,
+            "relative": 93.08
+          },
+          {
+            "date": "2026-06-02",
+            "sector": 93.78,
+            "benchmark": 103.29,
+            "relative": 90.8
+          },
+          {
+            "date": "2026-06-03",
+            "sector": 92.31,
+            "benchmark": 103.8,
+            "relative": 88.93
+          },
+          {
+            "date": "2026-06-04",
+            "sector": 90.84,
+            "benchmark": 103.08,
+            "relative": 88.13
+          },
+          {
+            "date": "2026-06-05",
+            "sector": 90.69,
+            "benchmark": 101.23,
+            "relative": 89.59
+          },
+          {
+            "date": "2026-06-08",
+            "sector": 89.56,
+            "benchmark": 99.06,
+            "relative": 90.41
+          },
+          {
+            "date": "2026-06-09",
+            "sector": 89.12,
+            "benchmark": 100.92,
+            "relative": 88.31
+          },
+          {
+            "date": "2026-06-10",
+            "sector": 90.19,
+            "benchmark": 99.8,
+            "relative": 90.38
+          },
+          {
+            "date": "2026-06-11",
+            "sector": 90.22,
+            "benchmark": 99.25,
+            "relative": 90.91
+          },
+          {
+            "date": "2026-06-12",
+            "sector": 90.88,
+            "benchmark": 100.4,
+            "relative": 90.52
+          },
+          {
+            "date": "2026-06-15",
+            "sector": 90.06,
+            "benchmark": 102.81,
+            "relative": 87.6
+          },
+          {
+            "date": "2026-06-16",
+            "sector": 88.8,
+            "benchmark": 102.65,
+            "relative": 86.51
+          },
+          {
+            "date": "2026-06-17",
+            "sector": 87.88,
+            "benchmark": 103.64,
+            "relative": 84.79
+          },
+          {
+            "date": "2026-06-18",
+            "sector": 86.19,
+            "benchmark": 103.85,
+            "relative": 82.99
+          },
+          {
+            "date": "2026-06-22",
+            "sector": 87.43,
+            "benchmark": 106.34,
+            "relative": 82.22
+          },
+          {
+            "date": "2026-06-23",
+            "sector": 86.4,
+            "benchmark": 103.39,
+            "relative": 83.57
+          },
+          {
+            "date": "2026-06-24",
+            "sector": 85.26,
+            "benchmark": 103.88,
+            "relative": 82.07
+          },
+          {
+            "date": "2026-06-25",
+            "sector": 85.74,
+            "benchmark": 105.5,
+            "relative": 81.27
+          },
+          {
+            "date": "2026-06-26",
+            "sector": 83.33,
+            "benchmark": 102.31,
+            "relative": 81.44
+          },
+          {
+            "date": "2026-06-29",
+            "sector": 84.91,
+            "benchmark": 103.55,
+            "relative": 82.0
+          },
+          {
+            "date": "2026-06-30",
+            "sector": 84.04,
+            "benchmark": 104.65,
+            "relative": 80.31
+          },
+          {
+            "date": "2026-07-01",
+            "sector": 85.02,
+            "benchmark": 104.22,
+            "relative": 81.58
+          },
+          {
+            "date": "2026-07-02",
+            "sector": 85.05,
+            "benchmark": 101.14,
+            "relative": 84.09
+          },
+          {
+            "date": "2026-07-03",
+            "sector": 85.04,
+            "benchmark": 101.76,
+            "relative": 83.57
+          },
+          {
+            "date": "2026-07-06",
+            "sector": 85.95,
+            "benchmark": 101.76,
+            "relative": 84.46
+          },
+          {
+            "date": "2026-07-07",
+            "sector": 84.4,
+            "benchmark": 100.72,
+            "relative": 83.8
+          },
+          {
+            "date": "2026-07-08",
+            "sector": 84.7,
+            "benchmark": 99.94,
+            "relative": 84.74
+          },
+          {
+            "date": "2026-07-09",
+            "sector": 83.54,
+            "benchmark": 102.48,
+            "relative": 81.51
+          },
+          {
+            "date": "2026-07-10",
+            "sector": 85.1,
+            "benchmark": 100.47,
+            "relative": 84.7
+          },
+          {
+            "date": "2026-07-13",
+            "sector": 85.06,
+            "benchmark": 98.68,
+            "relative": 86.2
+          },
+          {
+            "date": "2026-07-14",
+            "sector": 85.52,
+            "benchmark": 100.8,
+            "relative": 84.83
+          },
+          {
+            "date": "2026-07-15",
+            "sector": 88.45,
+            "benchmark": 100.6,
+            "relative": 87.92
+          },
+          {
+            "date": "2026-07-16",
+            "sector": 88.68,
+            "benchmark": 98.74,
+            "relative": 89.81
+          },
+          {
+            "date": "2026-07-17",
+            "sector": 87.42,
+            "benchmark": 95.18,
+            "relative": 91.84
+          },
+          {
+            "date": "2026-07-20",
+            "sector": 90.75,
+            "benchmark": 96.64,
+            "relative": 93.91
+          },
+          {
+            "date": "2026-07-21",
+            "sector": 89.79,
+            "benchmark": 99.6,
+            "relative": 90.15
+          },
+          {
+            "date": "2026-07-22",
+            "sector": 90.08,
+            "benchmark": 99.14,
+            "relative": 90.86
+          },
+          {
+            "date": "2026-07-23",
+            "sector": 89.48,
+            "benchmark": 99.37,
+            "relative": 90.06
+          },
+          {
+            "date": "2026-07-24",
+            "sector": 88.58,
+            "benchmark": 97.71,
+            "relative": 90.66
           }
         ],
         "drivers": [
@@ -1546,6 +2994,368 @@
             ]
           }
         ],
+        "history": [
+          {
+            "date": "2026-04-28",
+            "sector": 100.0,
+            "benchmark": 100.0,
+            "relative": 100.0
+          },
+          {
+            "date": "2026-04-29",
+            "sector": 100.32,
+            "benchmark": 101.1,
+            "relative": 99.23
+          },
+          {
+            "date": "2026-04-30",
+            "sector": 100.04,
+            "benchmark": 101.03,
+            "relative": 99.01
+          },
+          {
+            "date": "2026-05-06",
+            "sector": 100.4,
+            "benchmark": 102.5,
+            "relative": 97.96
+          },
+          {
+            "date": "2026-05-07",
+            "sector": 100.78,
+            "benchmark": 102.99,
+            "relative": 97.85
+          },
+          {
+            "date": "2026-05-08",
+            "sector": 100.35,
+            "benchmark": 102.39,
+            "relative": 98.0
+          },
+          {
+            "date": "2026-05-11",
+            "sector": 101.93,
+            "benchmark": 104.07,
+            "relative": 97.94
+          },
+          {
+            "date": "2026-05-12",
+            "sector": 101.08,
+            "benchmark": 103.99,
+            "relative": 97.2
+          },
+          {
+            "date": "2026-05-13",
+            "sector": 100.65,
+            "benchmark": 105.05,
+            "relative": 95.81
+          },
+          {
+            "date": "2026-05-14",
+            "sector": 98.34,
+            "benchmark": 103.29,
+            "relative": 95.21
+          },
+          {
+            "date": "2026-05-15",
+            "sector": 97.58,
+            "benchmark": 102.13,
+            "relative": 95.55
+          },
+          {
+            "date": "2026-05-18",
+            "sector": 96.18,
+            "benchmark": 101.58,
+            "relative": 94.68
+          },
+          {
+            "date": "2026-05-19",
+            "sector": 96.68,
+            "benchmark": 101.99,
+            "relative": 94.79
+          },
+          {
+            "date": "2026-05-20",
+            "sector": 95.99,
+            "benchmark": 101.94,
+            "relative": 94.16
+          },
+          {
+            "date": "2026-05-21",
+            "sector": 95.66,
+            "benchmark": 100.52,
+            "relative": 95.16
+          },
+          {
+            "date": "2026-05-22",
+            "sector": 95.21,
+            "benchmark": 101.83,
+            "relative": 93.51
+          },
+          {
+            "date": "2026-05-25",
+            "sector": 94.58,
+            "benchmark": 103.43,
+            "relative": 91.44
+          },
+          {
+            "date": "2026-05-26",
+            "sector": 93.89,
+            "benchmark": 103.99,
+            "relative": 90.29
+          },
+          {
+            "date": "2026-05-27",
+            "sector": 93.32,
+            "benchmark": 103.15,
+            "relative": 90.47
+          },
+          {
+            "date": "2026-05-28",
+            "sector": 92.03,
+            "benchmark": 103.28,
+            "relative": 89.11
+          },
+          {
+            "date": "2026-05-29",
+            "sector": 92.7,
+            "benchmark": 102.81,
+            "relative": 90.16
+          },
+          {
+            "date": "2026-06-01",
+            "sector": 92.23,
+            "benchmark": 101.81,
+            "relative": 90.59
+          },
+          {
+            "date": "2026-06-02",
+            "sector": 90.98,
+            "benchmark": 103.29,
+            "relative": 88.09
+          },
+          {
+            "date": "2026-06-03",
+            "sector": 89.72,
+            "benchmark": 103.8,
+            "relative": 86.44
+          },
+          {
+            "date": "2026-06-04",
+            "sector": 88.5,
+            "benchmark": 103.08,
+            "relative": 85.85
+          },
+          {
+            "date": "2026-06-05",
+            "sector": 88.46,
+            "benchmark": 101.23,
+            "relative": 87.38
+          },
+          {
+            "date": "2026-06-08",
+            "sector": 86.32,
+            "benchmark": 99.06,
+            "relative": 87.13
+          },
+          {
+            "date": "2026-06-09",
+            "sector": 86.45,
+            "benchmark": 100.92,
+            "relative": 85.66
+          },
+          {
+            "date": "2026-06-10",
+            "sector": 86.72,
+            "benchmark": 99.8,
+            "relative": 86.9
+          },
+          {
+            "date": "2026-06-11",
+            "sector": 86.21,
+            "benchmark": 99.25,
+            "relative": 86.86
+          },
+          {
+            "date": "2026-06-12",
+            "sector": 87.96,
+            "benchmark": 100.4,
+            "relative": 87.61
+          },
+          {
+            "date": "2026-06-15",
+            "sector": 87.82,
+            "benchmark": 102.81,
+            "relative": 85.42
+          },
+          {
+            "date": "2026-06-16",
+            "sector": 86.82,
+            "benchmark": 102.65,
+            "relative": 84.58
+          },
+          {
+            "date": "2026-06-17",
+            "sector": 86.16,
+            "benchmark": 103.64,
+            "relative": 83.14
+          },
+          {
+            "date": "2026-06-18",
+            "sector": 87.1,
+            "benchmark": 103.85,
+            "relative": 83.86
+          },
+          {
+            "date": "2026-06-22",
+            "sector": 87.46,
+            "benchmark": 106.34,
+            "relative": 82.25
+          },
+          {
+            "date": "2026-06-23",
+            "sector": 88.62,
+            "benchmark": 103.39,
+            "relative": 85.72
+          },
+          {
+            "date": "2026-06-24",
+            "sector": 88.99,
+            "benchmark": 103.88,
+            "relative": 85.66
+          },
+          {
+            "date": "2026-06-25",
+            "sector": 88.67,
+            "benchmark": 105.5,
+            "relative": 84.04
+          },
+          {
+            "date": "2026-06-26",
+            "sector": 85.81,
+            "benchmark": 102.31,
+            "relative": 83.87
+          },
+          {
+            "date": "2026-06-29",
+            "sector": 90.88,
+            "benchmark": 103.55,
+            "relative": 87.77
+          },
+          {
+            "date": "2026-06-30",
+            "sector": 89.66,
+            "benchmark": 104.65,
+            "relative": 85.68
+          },
+          {
+            "date": "2026-07-01",
+            "sector": 93.14,
+            "benchmark": 104.22,
+            "relative": 89.37
+          },
+          {
+            "date": "2026-07-02",
+            "sector": 93.02,
+            "benchmark": 101.14,
+            "relative": 91.97
+          },
+          {
+            "date": "2026-07-03",
+            "sector": 94.85,
+            "benchmark": 101.76,
+            "relative": 93.21
+          },
+          {
+            "date": "2026-07-06",
+            "sector": 95.51,
+            "benchmark": 101.76,
+            "relative": 93.86
+          },
+          {
+            "date": "2026-07-07",
+            "sector": 91.97,
+            "benchmark": 100.72,
+            "relative": 91.32
+          },
+          {
+            "date": "2026-07-08",
+            "sector": 90.72,
+            "benchmark": 99.94,
+            "relative": 90.77
+          },
+          {
+            "date": "2026-07-09",
+            "sector": 91.5,
+            "benchmark": 102.48,
+            "relative": 89.28
+          },
+          {
+            "date": "2026-07-10",
+            "sector": 93.77,
+            "benchmark": 100.47,
+            "relative": 93.33
+          },
+          {
+            "date": "2026-07-13",
+            "sector": 93.06,
+            "benchmark": 98.68,
+            "relative": 94.3
+          },
+          {
+            "date": "2026-07-14",
+            "sector": 95.45,
+            "benchmark": 100.8,
+            "relative": 94.69
+          },
+          {
+            "date": "2026-07-15",
+            "sector": 98.69,
+            "benchmark": 100.6,
+            "relative": 98.1
+          },
+          {
+            "date": "2026-07-16",
+            "sector": 99.06,
+            "benchmark": 98.74,
+            "relative": 100.32
+          },
+          {
+            "date": "2026-07-17",
+            "sector": 93.23,
+            "benchmark": 95.18,
+            "relative": 97.95
+          },
+          {
+            "date": "2026-07-20",
+            "sector": 94.9,
+            "benchmark": 96.64,
+            "relative": 98.2
+          },
+          {
+            "date": "2026-07-21",
+            "sector": 94.79,
+            "benchmark": 99.6,
+            "relative": 95.17
+          },
+          {
+            "date": "2026-07-22",
+            "sector": 94.74,
+            "benchmark": 99.14,
+            "relative": 95.57
+          },
+          {
+            "date": "2026-07-23",
+            "sector": 94.66,
+            "benchmark": 99.37,
+            "relative": 95.27
+          },
+          {
+            "date": "2026-07-24",
+            "sector": 91.33,
+            "benchmark": 97.71,
+            "relative": 93.48
+          }
+        ],
         "drivers": [
           "20日动量 +6.4%",
           "20日相对沪深300 +10.9%",
@@ -1646,6 +3456,368 @@
             ]
           }
         ],
+        "history": [
+          {
+            "date": "2026-04-28",
+            "sector": 100.0,
+            "benchmark": 100.0,
+            "relative": 100.0
+          },
+          {
+            "date": "2026-04-29",
+            "sector": 99.64,
+            "benchmark": 101.1,
+            "relative": 98.56
+          },
+          {
+            "date": "2026-04-30",
+            "sector": 98.96,
+            "benchmark": 101.03,
+            "relative": 97.95
+          },
+          {
+            "date": "2026-05-06",
+            "sector": 98.11,
+            "benchmark": 102.5,
+            "relative": 95.72
+          },
+          {
+            "date": "2026-05-07",
+            "sector": 97.82,
+            "benchmark": 102.99,
+            "relative": 94.98
+          },
+          {
+            "date": "2026-05-08",
+            "sector": 97.73,
+            "benchmark": 102.39,
+            "relative": 95.45
+          },
+          {
+            "date": "2026-05-11",
+            "sector": 97.68,
+            "benchmark": 104.07,
+            "relative": 93.86
+          },
+          {
+            "date": "2026-05-12",
+            "sector": 97.44,
+            "benchmark": 103.99,
+            "relative": 93.7
+          },
+          {
+            "date": "2026-05-13",
+            "sector": 97.0,
+            "benchmark": 105.05,
+            "relative": 92.34
+          },
+          {
+            "date": "2026-05-14",
+            "sector": 97.26,
+            "benchmark": 103.29,
+            "relative": 94.17
+          },
+          {
+            "date": "2026-05-15",
+            "sector": 96.85,
+            "benchmark": 102.13,
+            "relative": 94.83
+          },
+          {
+            "date": "2026-05-18",
+            "sector": 95.95,
+            "benchmark": 101.58,
+            "relative": 94.46
+          },
+          {
+            "date": "2026-05-19",
+            "sector": 96.34,
+            "benchmark": 101.99,
+            "relative": 94.46
+          },
+          {
+            "date": "2026-05-20",
+            "sector": 95.46,
+            "benchmark": 101.94,
+            "relative": 93.64
+          },
+          {
+            "date": "2026-05-21",
+            "sector": 95.72,
+            "benchmark": 100.52,
+            "relative": 95.22
+          },
+          {
+            "date": "2026-05-22",
+            "sector": 95.53,
+            "benchmark": 101.83,
+            "relative": 93.82
+          },
+          {
+            "date": "2026-05-25",
+            "sector": 95.53,
+            "benchmark": 103.43,
+            "relative": 92.36
+          },
+          {
+            "date": "2026-05-26",
+            "sector": 95.75,
+            "benchmark": 103.99,
+            "relative": 92.08
+          },
+          {
+            "date": "2026-05-27",
+            "sector": 95.4,
+            "benchmark": 103.15,
+            "relative": 92.49
+          },
+          {
+            "date": "2026-05-28",
+            "sector": 94.79,
+            "benchmark": 103.28,
+            "relative": 91.78
+          },
+          {
+            "date": "2026-05-29",
+            "sector": 96.43,
+            "benchmark": 102.81,
+            "relative": 93.79
+          },
+          {
+            "date": "2026-06-01",
+            "sector": 97.57,
+            "benchmark": 101.81,
+            "relative": 95.84
+          },
+          {
+            "date": "2026-06-02",
+            "sector": 98.17,
+            "benchmark": 103.29,
+            "relative": 95.05
+          },
+          {
+            "date": "2026-06-03",
+            "sector": 97.28,
+            "benchmark": 103.8,
+            "relative": 93.72
+          },
+          {
+            "date": "2026-06-04",
+            "sector": 96.21,
+            "benchmark": 103.08,
+            "relative": 93.34
+          },
+          {
+            "date": "2026-06-05",
+            "sector": 97.49,
+            "benchmark": 101.23,
+            "relative": 96.3
+          },
+          {
+            "date": "2026-06-08",
+            "sector": 98.08,
+            "benchmark": 99.06,
+            "relative": 99.0
+          },
+          {
+            "date": "2026-06-09",
+            "sector": 98.57,
+            "benchmark": 100.92,
+            "relative": 97.68
+          },
+          {
+            "date": "2026-06-10",
+            "sector": 100.07,
+            "benchmark": 99.8,
+            "relative": 100.27
+          },
+          {
+            "date": "2026-06-11",
+            "sector": 99.78,
+            "benchmark": 99.25,
+            "relative": 100.54
+          },
+          {
+            "date": "2026-06-12",
+            "sector": 100.87,
+            "benchmark": 100.4,
+            "relative": 100.46
+          },
+          {
+            "date": "2026-06-15",
+            "sector": 99.25,
+            "benchmark": 102.81,
+            "relative": 96.54
+          },
+          {
+            "date": "2026-06-16",
+            "sector": 97.98,
+            "benchmark": 102.65,
+            "relative": 95.45
+          },
+          {
+            "date": "2026-06-17",
+            "sector": 97.06,
+            "benchmark": 103.64,
+            "relative": 93.65
+          },
+          {
+            "date": "2026-06-18",
+            "sector": 94.55,
+            "benchmark": 103.85,
+            "relative": 91.04
+          },
+          {
+            "date": "2026-06-22",
+            "sector": 95.32,
+            "benchmark": 106.34,
+            "relative": 89.64
+          },
+          {
+            "date": "2026-06-23",
+            "sector": 96.41,
+            "benchmark": 103.39,
+            "relative": 93.25
+          },
+          {
+            "date": "2026-06-24",
+            "sector": 94.02,
+            "benchmark": 103.88,
+            "relative": 90.51
+          },
+          {
+            "date": "2026-06-25",
+            "sector": 93.14,
+            "benchmark": 105.5,
+            "relative": 88.28
+          },
+          {
+            "date": "2026-06-26",
+            "sector": 92.27,
+            "benchmark": 102.31,
+            "relative": 90.19
+          },
+          {
+            "date": "2026-06-29",
+            "sector": 92.65,
+            "benchmark": 103.55,
+            "relative": 89.47
+          },
+          {
+            "date": "2026-06-30",
+            "sector": 90.47,
+            "benchmark": 104.65,
+            "relative": 86.45
+          },
+          {
+            "date": "2026-07-01",
+            "sector": 91.05,
+            "benchmark": 104.22,
+            "relative": 87.36
+          },
+          {
+            "date": "2026-07-02",
+            "sector": 92.03,
+            "benchmark": 101.14,
+            "relative": 91.0
+          },
+          {
+            "date": "2026-07-03",
+            "sector": 91.97,
+            "benchmark": 101.76,
+            "relative": 90.37
+          },
+          {
+            "date": "2026-07-06",
+            "sector": 93.71,
+            "benchmark": 101.76,
+            "relative": 92.09
+          },
+          {
+            "date": "2026-07-07",
+            "sector": 93.9,
+            "benchmark": 100.72,
+            "relative": 93.23
+          },
+          {
+            "date": "2026-07-08",
+            "sector": 94.78,
+            "benchmark": 99.94,
+            "relative": 94.84
+          },
+          {
+            "date": "2026-07-09",
+            "sector": 93.91,
+            "benchmark": 102.48,
+            "relative": 91.64
+          },
+          {
+            "date": "2026-07-10",
+            "sector": 93.71,
+            "benchmark": 100.47,
+            "relative": 93.27
+          },
+          {
+            "date": "2026-07-13",
+            "sector": 95.31,
+            "benchmark": 98.68,
+            "relative": 96.59
+          },
+          {
+            "date": "2026-07-14",
+            "sector": 95.43,
+            "benchmark": 100.8,
+            "relative": 94.66
+          },
+          {
+            "date": "2026-07-15",
+            "sector": 96.52,
+            "benchmark": 100.6,
+            "relative": 95.94
+          },
+          {
+            "date": "2026-07-16",
+            "sector": 95.38,
+            "benchmark": 98.74,
+            "relative": 96.59
+          },
+          {
+            "date": "2026-07-17",
+            "sector": 96.23,
+            "benchmark": 95.18,
+            "relative": 101.1
+          },
+          {
+            "date": "2026-07-20",
+            "sector": 98.47,
+            "benchmark": 96.64,
+            "relative": 101.89
+          },
+          {
+            "date": "2026-07-21",
+            "sector": 96.3,
+            "benchmark": 99.6,
+            "relative": 96.69
+          },
+          {
+            "date": "2026-07-22",
+            "sector": 97.38,
+            "benchmark": 99.14,
+            "relative": 98.22
+          },
+          {
+            "date": "2026-07-23",
+            "sector": 97.92,
+            "benchmark": 99.37,
+            "relative": 98.54
+          },
+          {
+            "date": "2026-07-24",
+            "sector": 98.22,
+            "benchmark": 97.71,
+            "relative": 100.53
+          }
+        ],
         "drivers": [
           "20日动量 +6.5%",
           "20日相对沪深300 +10.9%",
@@ -1692,7 +3864,7 @@
             "date": "2026-07-28",
             "weekday": "二",
             "direction": "震荡",
-            "up_probability": 51.6,
+            "up_probability": 51.2,
             "outperform_probability": 49.6,
             "expected_return": -0.01,
             "expected_excess": -0.03,
@@ -1744,6 +3916,368 @@
               "美国二季度GDP与6月PCE",
               "中国7月官方PMI"
             ]
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-04-28",
+            "sector": 100.0,
+            "benchmark": 100.0,
+            "relative": 100.0
+          },
+          {
+            "date": "2026-04-29",
+            "sector": 100.11,
+            "benchmark": 101.1,
+            "relative": 99.03
+          },
+          {
+            "date": "2026-04-30",
+            "sector": 99.12,
+            "benchmark": 101.03,
+            "relative": 98.11
+          },
+          {
+            "date": "2026-05-06",
+            "sector": 100.79,
+            "benchmark": 102.5,
+            "relative": 98.33
+          },
+          {
+            "date": "2026-05-07",
+            "sector": 101.78,
+            "benchmark": 102.99,
+            "relative": 98.83
+          },
+          {
+            "date": "2026-05-08",
+            "sector": 101.79,
+            "benchmark": 102.39,
+            "relative": 99.42
+          },
+          {
+            "date": "2026-05-11",
+            "sector": 102.87,
+            "benchmark": 104.07,
+            "relative": 98.85
+          },
+          {
+            "date": "2026-05-12",
+            "sector": 103.63,
+            "benchmark": 103.99,
+            "relative": 99.65
+          },
+          {
+            "date": "2026-05-13",
+            "sector": 105.48,
+            "benchmark": 105.05,
+            "relative": 100.41
+          },
+          {
+            "date": "2026-05-14",
+            "sector": 103.83,
+            "benchmark": 103.29,
+            "relative": 100.53
+          },
+          {
+            "date": "2026-05-15",
+            "sector": 102.99,
+            "benchmark": 102.13,
+            "relative": 100.84
+          },
+          {
+            "date": "2026-05-18",
+            "sector": 103.08,
+            "benchmark": 101.58,
+            "relative": 101.47
+          },
+          {
+            "date": "2026-05-19",
+            "sector": 106.02,
+            "benchmark": 101.99,
+            "relative": 103.95
+          },
+          {
+            "date": "2026-05-20",
+            "sector": 102.31,
+            "benchmark": 101.94,
+            "relative": 100.35
+          },
+          {
+            "date": "2026-05-21",
+            "sector": 100.36,
+            "benchmark": 100.52,
+            "relative": 99.84
+          },
+          {
+            "date": "2026-05-22",
+            "sector": 100.68,
+            "benchmark": 101.83,
+            "relative": 98.87
+          },
+          {
+            "date": "2026-05-25",
+            "sector": 102.5,
+            "benchmark": 103.43,
+            "relative": 99.1
+          },
+          {
+            "date": "2026-05-26",
+            "sector": 103.03,
+            "benchmark": 103.99,
+            "relative": 99.08
+          },
+          {
+            "date": "2026-05-27",
+            "sector": 103.81,
+            "benchmark": 103.15,
+            "relative": 100.64
+          },
+          {
+            "date": "2026-05-28",
+            "sector": 104.84,
+            "benchmark": 103.28,
+            "relative": 101.51
+          },
+          {
+            "date": "2026-05-29",
+            "sector": 107.3,
+            "benchmark": 102.81,
+            "relative": 104.36
+          },
+          {
+            "date": "2026-06-01",
+            "sector": 108.48,
+            "benchmark": 101.81,
+            "relative": 106.56
+          },
+          {
+            "date": "2026-06-02",
+            "sector": 107.58,
+            "benchmark": 103.29,
+            "relative": 104.16
+          },
+          {
+            "date": "2026-06-03",
+            "sector": 107.94,
+            "benchmark": 103.8,
+            "relative": 103.99
+          },
+          {
+            "date": "2026-06-04",
+            "sector": 106.76,
+            "benchmark": 103.08,
+            "relative": 103.57
+          },
+          {
+            "date": "2026-06-05",
+            "sector": 103.29,
+            "benchmark": 101.23,
+            "relative": 102.03
+          },
+          {
+            "date": "2026-06-08",
+            "sector": 100.62,
+            "benchmark": 99.06,
+            "relative": 101.58
+          },
+          {
+            "date": "2026-06-09",
+            "sector": 101.49,
+            "benchmark": 100.92,
+            "relative": 100.57
+          },
+          {
+            "date": "2026-06-10",
+            "sector": 99.47,
+            "benchmark": 99.8,
+            "relative": 99.67
+          },
+          {
+            "date": "2026-06-11",
+            "sector": 99.53,
+            "benchmark": 99.25,
+            "relative": 100.28
+          },
+          {
+            "date": "2026-06-12",
+            "sector": 100.43,
+            "benchmark": 100.4,
+            "relative": 100.03
+          },
+          {
+            "date": "2026-06-15",
+            "sector": 100.73,
+            "benchmark": 102.81,
+            "relative": 97.98
+          },
+          {
+            "date": "2026-06-16",
+            "sector": 100.29,
+            "benchmark": 102.65,
+            "relative": 97.7
+          },
+          {
+            "date": "2026-06-17",
+            "sector": 99.43,
+            "benchmark": 103.64,
+            "relative": 95.94
+          },
+          {
+            "date": "2026-06-18",
+            "sector": 96.5,
+            "benchmark": 103.85,
+            "relative": 92.91
+          },
+          {
+            "date": "2026-06-22",
+            "sector": 97.07,
+            "benchmark": 106.34,
+            "relative": 91.28
+          },
+          {
+            "date": "2026-06-23",
+            "sector": 96.4,
+            "benchmark": 103.39,
+            "relative": 93.24
+          },
+          {
+            "date": "2026-06-24",
+            "sector": 94.82,
+            "benchmark": 103.88,
+            "relative": 91.28
+          },
+          {
+            "date": "2026-06-25",
+            "sector": 93.01,
+            "benchmark": 105.5,
+            "relative": 88.16
+          },
+          {
+            "date": "2026-06-26",
+            "sector": 92.48,
+            "benchmark": 102.31,
+            "relative": 90.39
+          },
+          {
+            "date": "2026-06-29",
+            "sector": 92.62,
+            "benchmark": 103.55,
+            "relative": 89.45
+          },
+          {
+            "date": "2026-06-30",
+            "sector": 92.14,
+            "benchmark": 104.65,
+            "relative": 88.05
+          },
+          {
+            "date": "2026-07-01",
+            "sector": 93.53,
+            "benchmark": 104.22,
+            "relative": 89.75
+          },
+          {
+            "date": "2026-07-02",
+            "sector": 92.88,
+            "benchmark": 101.14,
+            "relative": 91.83
+          },
+          {
+            "date": "2026-07-03",
+            "sector": 92.95,
+            "benchmark": 101.76,
+            "relative": 91.34
+          },
+          {
+            "date": "2026-07-06",
+            "sector": 92.6,
+            "benchmark": 101.76,
+            "relative": 91.0
+          },
+          {
+            "date": "2026-07-07",
+            "sector": 90.94,
+            "benchmark": 100.72,
+            "relative": 90.29
+          },
+          {
+            "date": "2026-07-08",
+            "sector": 90.71,
+            "benchmark": 99.94,
+            "relative": 90.76
+          },
+          {
+            "date": "2026-07-09",
+            "sector": 90.43,
+            "benchmark": 102.48,
+            "relative": 88.24
+          },
+          {
+            "date": "2026-07-10",
+            "sector": 91.32,
+            "benchmark": 100.47,
+            "relative": 90.89
+          },
+          {
+            "date": "2026-07-13",
+            "sector": 90.31,
+            "benchmark": 98.68,
+            "relative": 91.52
+          },
+          {
+            "date": "2026-07-14",
+            "sector": 91.15,
+            "benchmark": 100.8,
+            "relative": 90.43
+          },
+          {
+            "date": "2026-07-15",
+            "sector": 91.77,
+            "benchmark": 100.6,
+            "relative": 91.22
+          },
+          {
+            "date": "2026-07-16",
+            "sector": 90.41,
+            "benchmark": 98.74,
+            "relative": 91.56
+          },
+          {
+            "date": "2026-07-17",
+            "sector": 90.51,
+            "benchmark": 95.18,
+            "relative": 95.09
+          },
+          {
+            "date": "2026-07-20",
+            "sector": 93.98,
+            "benchmark": 96.64,
+            "relative": 97.25
+          },
+          {
+            "date": "2026-07-21",
+            "sector": 93.45,
+            "benchmark": 99.6,
+            "relative": 93.82
+          },
+          {
+            "date": "2026-07-22",
+            "sector": 94.77,
+            "benchmark": 99.14,
+            "relative": 95.59
+          },
+          {
+            "date": "2026-07-23",
+            "sector": 95.74,
+            "benchmark": 99.37,
+            "relative": 96.35
+          },
+          {
+            "date": "2026-07-24",
+            "sector": 92.46,
+            "benchmark": 97.71,
+            "relative": 94.63
           }
         ],
         "drivers": [
@@ -1847,6 +4381,368 @@
             ]
           }
         ],
+        "history": [
+          {
+            "date": "2026-04-28",
+            "sector": 100.0,
+            "benchmark": 100.0,
+            "relative": 100.0
+          },
+          {
+            "date": "2026-04-29",
+            "sector": 103.99,
+            "benchmark": 101.1,
+            "relative": 102.86
+          },
+          {
+            "date": "2026-04-30",
+            "sector": 103.44,
+            "benchmark": 101.03,
+            "relative": 102.38
+          },
+          {
+            "date": "2026-05-06",
+            "sector": 107.12,
+            "benchmark": 102.5,
+            "relative": 104.51
+          },
+          {
+            "date": "2026-05-07",
+            "sector": 107.65,
+            "benchmark": 102.99,
+            "relative": 104.53
+          },
+          {
+            "date": "2026-05-08",
+            "sector": 107.83,
+            "benchmark": 102.39,
+            "relative": 105.31
+          },
+          {
+            "date": "2026-05-11",
+            "sector": 107.86,
+            "benchmark": 104.07,
+            "relative": 103.64
+          },
+          {
+            "date": "2026-05-12",
+            "sector": 107.14,
+            "benchmark": 103.99,
+            "relative": 103.03
+          },
+          {
+            "date": "2026-05-13",
+            "sector": 107.81,
+            "benchmark": 105.05,
+            "relative": 102.63
+          },
+          {
+            "date": "2026-05-14",
+            "sector": 104.14,
+            "benchmark": 103.29,
+            "relative": 100.82
+          },
+          {
+            "date": "2026-05-15",
+            "sector": 99.86,
+            "benchmark": 102.13,
+            "relative": 97.78
+          },
+          {
+            "date": "2026-05-18",
+            "sector": 98.83,
+            "benchmark": 101.58,
+            "relative": 97.29
+          },
+          {
+            "date": "2026-05-19",
+            "sector": 97.74,
+            "benchmark": 101.99,
+            "relative": 95.84
+          },
+          {
+            "date": "2026-05-20",
+            "sector": 97.7,
+            "benchmark": 101.94,
+            "relative": 95.84
+          },
+          {
+            "date": "2026-05-21",
+            "sector": 95.49,
+            "benchmark": 100.52,
+            "relative": 94.99
+          },
+          {
+            "date": "2026-05-22",
+            "sector": 98.98,
+            "benchmark": 101.83,
+            "relative": 97.2
+          },
+          {
+            "date": "2026-05-25",
+            "sector": 99.56,
+            "benchmark": 103.43,
+            "relative": 96.26
+          },
+          {
+            "date": "2026-05-26",
+            "sector": 102.32,
+            "benchmark": 103.99,
+            "relative": 98.39
+          },
+          {
+            "date": "2026-05-27",
+            "sector": 98.5,
+            "benchmark": 103.15,
+            "relative": 95.49
+          },
+          {
+            "date": "2026-05-28",
+            "sector": 98.04,
+            "benchmark": 103.28,
+            "relative": 94.93
+          },
+          {
+            "date": "2026-05-29",
+            "sector": 96.13,
+            "benchmark": 102.81,
+            "relative": 93.5
+          },
+          {
+            "date": "2026-06-01",
+            "sector": 95.38,
+            "benchmark": 101.81,
+            "relative": 93.68
+          },
+          {
+            "date": "2026-06-02",
+            "sector": 98.49,
+            "benchmark": 103.29,
+            "relative": 95.35
+          },
+          {
+            "date": "2026-06-03",
+            "sector": 99.07,
+            "benchmark": 103.8,
+            "relative": 95.44
+          },
+          {
+            "date": "2026-06-04",
+            "sector": 96.25,
+            "benchmark": 103.08,
+            "relative": 93.38
+          },
+          {
+            "date": "2026-06-05",
+            "sector": 94.55,
+            "benchmark": 101.23,
+            "relative": 93.4
+          },
+          {
+            "date": "2026-06-08",
+            "sector": 89.38,
+            "benchmark": 99.06,
+            "relative": 90.23
+          },
+          {
+            "date": "2026-06-09",
+            "sector": 91.91,
+            "benchmark": 100.92,
+            "relative": 91.08
+          },
+          {
+            "date": "2026-06-10",
+            "sector": 90.45,
+            "benchmark": 99.8,
+            "relative": 90.64
+          },
+          {
+            "date": "2026-06-11",
+            "sector": 92.11,
+            "benchmark": 99.25,
+            "relative": 92.81
+          },
+          {
+            "date": "2026-06-12",
+            "sector": 96.07,
+            "benchmark": 100.4,
+            "relative": 95.68
+          },
+          {
+            "date": "2026-06-15",
+            "sector": 100.79,
+            "benchmark": 102.81,
+            "relative": 98.04
+          },
+          {
+            "date": "2026-06-16",
+            "sector": 100.32,
+            "benchmark": 102.65,
+            "relative": 97.73
+          },
+          {
+            "date": "2026-06-17",
+            "sector": 99.93,
+            "benchmark": 103.64,
+            "relative": 96.42
+          },
+          {
+            "date": "2026-06-18",
+            "sector": 100.0,
+            "benchmark": 103.85,
+            "relative": 96.29
+          },
+          {
+            "date": "2026-06-22",
+            "sector": 104.68,
+            "benchmark": 106.34,
+            "relative": 98.44
+          },
+          {
+            "date": "2026-06-23",
+            "sector": 97.1,
+            "benchmark": 103.39,
+            "relative": 93.92
+          },
+          {
+            "date": "2026-06-24",
+            "sector": 97.88,
+            "benchmark": 103.88,
+            "relative": 94.22
+          },
+          {
+            "date": "2026-06-25",
+            "sector": 95.65,
+            "benchmark": 105.5,
+            "relative": 90.66
+          },
+          {
+            "date": "2026-06-26",
+            "sector": 91.56,
+            "benchmark": 102.31,
+            "relative": 89.49
+          },
+          {
+            "date": "2026-06-29",
+            "sector": 92.58,
+            "benchmark": 103.55,
+            "relative": 89.41
+          },
+          {
+            "date": "2026-06-30",
+            "sector": 92.22,
+            "benchmark": 104.65,
+            "relative": 88.13
+          },
+          {
+            "date": "2026-07-01",
+            "sector": 92.39,
+            "benchmark": 104.22,
+            "relative": 88.65
+          },
+          {
+            "date": "2026-07-02",
+            "sector": 92.7,
+            "benchmark": 101.14,
+            "relative": 91.66
+          },
+          {
+            "date": "2026-07-03",
+            "sector": 93.6,
+            "benchmark": 101.76,
+            "relative": 91.98
+          },
+          {
+            "date": "2026-07-06",
+            "sector": 92.01,
+            "benchmark": 101.76,
+            "relative": 90.42
+          },
+          {
+            "date": "2026-07-07",
+            "sector": 89.48,
+            "benchmark": 100.72,
+            "relative": 88.85
+          },
+          {
+            "date": "2026-07-08",
+            "sector": 86.64,
+            "benchmark": 99.94,
+            "relative": 86.69
+          },
+          {
+            "date": "2026-07-09",
+            "sector": 86.31,
+            "benchmark": 102.48,
+            "relative": 84.22
+          },
+          {
+            "date": "2026-07-10",
+            "sector": 86.43,
+            "benchmark": 100.47,
+            "relative": 86.02
+          },
+          {
+            "date": "2026-07-13",
+            "sector": 82.71,
+            "benchmark": 98.68,
+            "relative": 83.82
+          },
+          {
+            "date": "2026-07-14",
+            "sector": 86.93,
+            "benchmark": 100.8,
+            "relative": 86.24
+          },
+          {
+            "date": "2026-07-15",
+            "sector": 85.08,
+            "benchmark": 100.6,
+            "relative": 84.57
+          },
+          {
+            "date": "2026-07-16",
+            "sector": 84.03,
+            "benchmark": 98.74,
+            "relative": 85.1
+          },
+          {
+            "date": "2026-07-17",
+            "sector": 79.86,
+            "benchmark": 95.18,
+            "relative": 83.9
+          },
+          {
+            "date": "2026-07-20",
+            "sector": 79.28,
+            "benchmark": 96.64,
+            "relative": 82.03
+          },
+          {
+            "date": "2026-07-21",
+            "sector": 82.73,
+            "benchmark": 99.6,
+            "relative": 83.06
+          },
+          {
+            "date": "2026-07-22",
+            "sector": 85.13,
+            "benchmark": 99.14,
+            "relative": 85.87
+          },
+          {
+            "date": "2026-07-23",
+            "sector": 87.91,
+            "benchmark": 99.37,
+            "relative": 88.47
+          },
+          {
+            "date": "2026-07-24",
+            "sector": 83.76,
+            "benchmark": 97.71,
+            "relative": 85.73
+          }
+        ],
         "drivers": [
           "20日动量 -8.5%",
           "20日相对沪深300 -4.0%",
@@ -1945,6 +4841,368 @@
               "美国二季度GDP与6月PCE",
               "中国7月官方PMI"
             ]
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-04-28",
+            "sector": 100.0,
+            "benchmark": 100.0,
+            "relative": 100.0
+          },
+          {
+            "date": "2026-04-29",
+            "sector": 103.57,
+            "benchmark": 101.1,
+            "relative": 102.45
+          },
+          {
+            "date": "2026-04-30",
+            "sector": 103.11,
+            "benchmark": 101.03,
+            "relative": 102.06
+          },
+          {
+            "date": "2026-05-06",
+            "sector": 106.75,
+            "benchmark": 102.5,
+            "relative": 104.15
+          },
+          {
+            "date": "2026-05-07",
+            "sector": 106.52,
+            "benchmark": 102.99,
+            "relative": 103.42
+          },
+          {
+            "date": "2026-05-08",
+            "sector": 104.91,
+            "benchmark": 102.39,
+            "relative": 102.46
+          },
+          {
+            "date": "2026-05-11",
+            "sector": 106.58,
+            "benchmark": 104.07,
+            "relative": 102.42
+          },
+          {
+            "date": "2026-05-12",
+            "sector": 105.47,
+            "benchmark": 103.99,
+            "relative": 101.42
+          },
+          {
+            "date": "2026-05-13",
+            "sector": 107.3,
+            "benchmark": 105.05,
+            "relative": 102.14
+          },
+          {
+            "date": "2026-05-14",
+            "sector": 104.13,
+            "benchmark": 103.29,
+            "relative": 100.81
+          },
+          {
+            "date": "2026-05-15",
+            "sector": 103.23,
+            "benchmark": 102.13,
+            "relative": 101.08
+          },
+          {
+            "date": "2026-05-18",
+            "sector": 103.3,
+            "benchmark": 101.58,
+            "relative": 101.69
+          },
+          {
+            "date": "2026-05-19",
+            "sector": 104.03,
+            "benchmark": 101.99,
+            "relative": 102.0
+          },
+          {
+            "date": "2026-05-20",
+            "sector": 104.92,
+            "benchmark": 101.94,
+            "relative": 102.92
+          },
+          {
+            "date": "2026-05-21",
+            "sector": 101.81,
+            "benchmark": 100.52,
+            "relative": 101.28
+          },
+          {
+            "date": "2026-05-22",
+            "sector": 103.31,
+            "benchmark": 101.83,
+            "relative": 101.46
+          },
+          {
+            "date": "2026-05-25",
+            "sector": 102.59,
+            "benchmark": 103.43,
+            "relative": 99.18
+          },
+          {
+            "date": "2026-05-26",
+            "sector": 102.04,
+            "benchmark": 103.99,
+            "relative": 98.13
+          },
+          {
+            "date": "2026-05-27",
+            "sector": 102.66,
+            "benchmark": 103.15,
+            "relative": 99.52
+          },
+          {
+            "date": "2026-05-28",
+            "sector": 103.37,
+            "benchmark": 103.28,
+            "relative": 100.09
+          },
+          {
+            "date": "2026-05-29",
+            "sector": 100.84,
+            "benchmark": 102.81,
+            "relative": 98.08
+          },
+          {
+            "date": "2026-06-01",
+            "sector": 100.5,
+            "benchmark": 101.81,
+            "relative": 98.71
+          },
+          {
+            "date": "2026-06-02",
+            "sector": 100.33,
+            "benchmark": 103.29,
+            "relative": 97.14
+          },
+          {
+            "date": "2026-06-03",
+            "sector": 99.35,
+            "benchmark": 103.8,
+            "relative": 95.71
+          },
+          {
+            "date": "2026-06-04",
+            "sector": 97.4,
+            "benchmark": 103.08,
+            "relative": 94.49
+          },
+          {
+            "date": "2026-06-05",
+            "sector": 95.66,
+            "benchmark": 101.23,
+            "relative": 94.49
+          },
+          {
+            "date": "2026-06-08",
+            "sector": 92.11,
+            "benchmark": 99.06,
+            "relative": 92.98
+          },
+          {
+            "date": "2026-06-09",
+            "sector": 94.54,
+            "benchmark": 100.92,
+            "relative": 93.69
+          },
+          {
+            "date": "2026-06-10",
+            "sector": 92.06,
+            "benchmark": 99.8,
+            "relative": 92.25
+          },
+          {
+            "date": "2026-06-11",
+            "sector": 91.23,
+            "benchmark": 99.25,
+            "relative": 91.92
+          },
+          {
+            "date": "2026-06-12",
+            "sector": 92.95,
+            "benchmark": 100.4,
+            "relative": 92.58
+          },
+          {
+            "date": "2026-06-15",
+            "sector": 95.24,
+            "benchmark": 102.81,
+            "relative": 92.64
+          },
+          {
+            "date": "2026-06-16",
+            "sector": 97.84,
+            "benchmark": 102.65,
+            "relative": 95.32
+          },
+          {
+            "date": "2026-06-17",
+            "sector": 97.58,
+            "benchmark": 103.64,
+            "relative": 94.15
+          },
+          {
+            "date": "2026-06-18",
+            "sector": 96.82,
+            "benchmark": 103.85,
+            "relative": 93.22
+          },
+          {
+            "date": "2026-06-22",
+            "sector": 100.1,
+            "benchmark": 106.34,
+            "relative": 94.14
+          },
+          {
+            "date": "2026-06-23",
+            "sector": 96.06,
+            "benchmark": 103.39,
+            "relative": 92.91
+          },
+          {
+            "date": "2026-06-24",
+            "sector": 96.36,
+            "benchmark": 103.88,
+            "relative": 92.76
+          },
+          {
+            "date": "2026-06-25",
+            "sector": 96.17,
+            "benchmark": 105.5,
+            "relative": 91.16
+          },
+          {
+            "date": "2026-06-26",
+            "sector": 92.2,
+            "benchmark": 102.31,
+            "relative": 90.11
+          },
+          {
+            "date": "2026-06-29",
+            "sector": 93.03,
+            "benchmark": 103.55,
+            "relative": 89.85
+          },
+          {
+            "date": "2026-06-30",
+            "sector": 95.06,
+            "benchmark": 104.65,
+            "relative": 90.83
+          },
+          {
+            "date": "2026-07-01",
+            "sector": 93.67,
+            "benchmark": 104.22,
+            "relative": 89.88
+          },
+          {
+            "date": "2026-07-02",
+            "sector": 91.39,
+            "benchmark": 101.14,
+            "relative": 90.37
+          },
+          {
+            "date": "2026-07-03",
+            "sector": 91.82,
+            "benchmark": 101.76,
+            "relative": 90.23
+          },
+          {
+            "date": "2026-07-06",
+            "sector": 90.16,
+            "benchmark": 101.76,
+            "relative": 88.6
+          },
+          {
+            "date": "2026-07-07",
+            "sector": 88.69,
+            "benchmark": 100.72,
+            "relative": 88.06
+          },
+          {
+            "date": "2026-07-08",
+            "sector": 85.01,
+            "benchmark": 99.94,
+            "relative": 85.06
+          },
+          {
+            "date": "2026-07-09",
+            "sector": 86.03,
+            "benchmark": 102.48,
+            "relative": 83.94
+          },
+          {
+            "date": "2026-07-10",
+            "sector": 83.68,
+            "benchmark": 100.47,
+            "relative": 83.29
+          },
+          {
+            "date": "2026-07-13",
+            "sector": 80.83,
+            "benchmark": 98.68,
+            "relative": 81.92
+          },
+          {
+            "date": "2026-07-14",
+            "sector": 82.0,
+            "benchmark": 100.8,
+            "relative": 81.34
+          },
+          {
+            "date": "2026-07-15",
+            "sector": 81.67,
+            "benchmark": 100.6,
+            "relative": 81.19
+          },
+          {
+            "date": "2026-07-16",
+            "sector": 79.68,
+            "benchmark": 98.74,
+            "relative": 80.7
+          },
+          {
+            "date": "2026-07-17",
+            "sector": 76.81,
+            "benchmark": 95.18,
+            "relative": 80.69
+          },
+          {
+            "date": "2026-07-20",
+            "sector": 76.44,
+            "benchmark": 96.64,
+            "relative": 79.09
+          },
+          {
+            "date": "2026-07-21",
+            "sector": 78.95,
+            "benchmark": 99.6,
+            "relative": 79.26
+          },
+          {
+            "date": "2026-07-22",
+            "sector": 77.79,
+            "benchmark": 99.14,
+            "relative": 78.46
+          },
+          {
+            "date": "2026-07-23",
+            "sector": 80.96,
+            "benchmark": 99.37,
+            "relative": 81.48
+          },
+          {
+            "date": "2026-07-24",
+            "sector": 78.89,
+            "benchmark": 97.71,
+            "relative": 80.74
           }
         ],
         "drivers": [
@@ -2052,6 +5310,368 @@
             ]
           }
         ],
+        "history": [
+          {
+            "date": "2026-04-28",
+            "sector": 100.0,
+            "benchmark": 100.0,
+            "relative": 100.0
+          },
+          {
+            "date": "2026-04-29",
+            "sector": 100.86,
+            "benchmark": 101.1,
+            "relative": 99.77
+          },
+          {
+            "date": "2026-04-30",
+            "sector": 101.43,
+            "benchmark": 101.03,
+            "relative": 100.4
+          },
+          {
+            "date": "2026-05-06",
+            "sector": 104.87,
+            "benchmark": 102.5,
+            "relative": 102.31
+          },
+          {
+            "date": "2026-05-07",
+            "sector": 106.83,
+            "benchmark": 102.99,
+            "relative": 103.73
+          },
+          {
+            "date": "2026-05-08",
+            "sector": 107.32,
+            "benchmark": 102.39,
+            "relative": 104.82
+          },
+          {
+            "date": "2026-05-11",
+            "sector": 107.92,
+            "benchmark": 104.07,
+            "relative": 103.7
+          },
+          {
+            "date": "2026-05-12",
+            "sector": 106.05,
+            "benchmark": 103.99,
+            "relative": 101.98
+          },
+          {
+            "date": "2026-05-13",
+            "sector": 107.93,
+            "benchmark": 105.05,
+            "relative": 102.74
+          },
+          {
+            "date": "2026-05-14",
+            "sector": 104.06,
+            "benchmark": 103.29,
+            "relative": 100.75
+          },
+          {
+            "date": "2026-05-15",
+            "sector": 102.92,
+            "benchmark": 102.13,
+            "relative": 100.77
+          },
+          {
+            "date": "2026-05-18",
+            "sector": 104.12,
+            "benchmark": 101.58,
+            "relative": 102.5
+          },
+          {
+            "date": "2026-05-19",
+            "sector": 106.29,
+            "benchmark": 101.99,
+            "relative": 104.22
+          },
+          {
+            "date": "2026-05-20",
+            "sector": 104.47,
+            "benchmark": 101.94,
+            "relative": 102.48
+          },
+          {
+            "date": "2026-05-21",
+            "sector": 100.59,
+            "benchmark": 100.52,
+            "relative": 100.07
+          },
+          {
+            "date": "2026-05-22",
+            "sector": 101.93,
+            "benchmark": 101.83,
+            "relative": 100.11
+          },
+          {
+            "date": "2026-05-25",
+            "sector": 102.63,
+            "benchmark": 103.43,
+            "relative": 99.23
+          },
+          {
+            "date": "2026-05-26",
+            "sector": 100.72,
+            "benchmark": 103.99,
+            "relative": 96.86
+          },
+          {
+            "date": "2026-05-27",
+            "sector": 97.63,
+            "benchmark": 103.15,
+            "relative": 94.65
+          },
+          {
+            "date": "2026-05-28",
+            "sector": 97.76,
+            "benchmark": 103.28,
+            "relative": 94.66
+          },
+          {
+            "date": "2026-05-29",
+            "sector": 94.23,
+            "benchmark": 102.81,
+            "relative": 91.65
+          },
+          {
+            "date": "2026-06-01",
+            "sector": 96.11,
+            "benchmark": 101.81,
+            "relative": 94.4
+          },
+          {
+            "date": "2026-06-02",
+            "sector": 95.38,
+            "benchmark": 103.29,
+            "relative": 92.34
+          },
+          {
+            "date": "2026-06-03",
+            "sector": 94.54,
+            "benchmark": 103.8,
+            "relative": 91.09
+          },
+          {
+            "date": "2026-06-04",
+            "sector": 92.85,
+            "benchmark": 103.08,
+            "relative": 90.08
+          },
+          {
+            "date": "2026-06-05",
+            "sector": 92.37,
+            "benchmark": 101.23,
+            "relative": 91.25
+          },
+          {
+            "date": "2026-06-08",
+            "sector": 89.69,
+            "benchmark": 99.06,
+            "relative": 90.54
+          },
+          {
+            "date": "2026-06-09",
+            "sector": 91.24,
+            "benchmark": 100.92,
+            "relative": 90.41
+          },
+          {
+            "date": "2026-06-10",
+            "sector": 89.64,
+            "benchmark": 99.8,
+            "relative": 89.82
+          },
+          {
+            "date": "2026-06-11",
+            "sector": 86.82,
+            "benchmark": 99.25,
+            "relative": 87.48
+          },
+          {
+            "date": "2026-06-12",
+            "sector": 87.86,
+            "benchmark": 100.4,
+            "relative": 87.51
+          },
+          {
+            "date": "2026-06-15",
+            "sector": 90.47,
+            "benchmark": 102.81,
+            "relative": 88.01
+          },
+          {
+            "date": "2026-06-16",
+            "sector": 91.11,
+            "benchmark": 102.65,
+            "relative": 88.76
+          },
+          {
+            "date": "2026-06-17",
+            "sector": 91.38,
+            "benchmark": 103.64,
+            "relative": 88.17
+          },
+          {
+            "date": "2026-06-18",
+            "sector": 92.0,
+            "benchmark": 103.85,
+            "relative": 88.58
+          },
+          {
+            "date": "2026-06-22",
+            "sector": 93.92,
+            "benchmark": 106.34,
+            "relative": 88.33
+          },
+          {
+            "date": "2026-06-23",
+            "sector": 92.09,
+            "benchmark": 103.39,
+            "relative": 89.07
+          },
+          {
+            "date": "2026-06-24",
+            "sector": 92.0,
+            "benchmark": 103.88,
+            "relative": 88.56
+          },
+          {
+            "date": "2026-06-25",
+            "sector": 91.38,
+            "benchmark": 105.5,
+            "relative": 86.61
+          },
+          {
+            "date": "2026-06-26",
+            "sector": 87.42,
+            "benchmark": 102.31,
+            "relative": 85.45
+          },
+          {
+            "date": "2026-06-29",
+            "sector": 87.13,
+            "benchmark": 103.55,
+            "relative": 84.15
+          },
+          {
+            "date": "2026-06-30",
+            "sector": 90.19,
+            "benchmark": 104.65,
+            "relative": 86.18
+          },
+          {
+            "date": "2026-07-01",
+            "sector": 91.46,
+            "benchmark": 104.22,
+            "relative": 87.75
+          },
+          {
+            "date": "2026-07-02",
+            "sector": 88.9,
+            "benchmark": 101.14,
+            "relative": 87.9
+          },
+          {
+            "date": "2026-07-03",
+            "sector": 89.15,
+            "benchmark": 101.76,
+            "relative": 87.61
+          },
+          {
+            "date": "2026-07-06",
+            "sector": 88.23,
+            "benchmark": 101.76,
+            "relative": 86.71
+          },
+          {
+            "date": "2026-07-07",
+            "sector": 86.1,
+            "benchmark": 100.72,
+            "relative": 85.49
+          },
+          {
+            "date": "2026-07-08",
+            "sector": 88.2,
+            "benchmark": 99.94,
+            "relative": 88.25
+          },
+          {
+            "date": "2026-07-09",
+            "sector": 90.53,
+            "benchmark": 102.48,
+            "relative": 88.34
+          },
+          {
+            "date": "2026-07-10",
+            "sector": 91.6,
+            "benchmark": 100.47,
+            "relative": 91.17
+          },
+          {
+            "date": "2026-07-13",
+            "sector": 88.04,
+            "benchmark": 98.68,
+            "relative": 89.22
+          },
+          {
+            "date": "2026-07-14",
+            "sector": 87.13,
+            "benchmark": 100.8,
+            "relative": 86.43
+          },
+          {
+            "date": "2026-07-15",
+            "sector": 87.01,
+            "benchmark": 100.6,
+            "relative": 86.49
+          },
+          {
+            "date": "2026-07-16",
+            "sector": 87.62,
+            "benchmark": 98.74,
+            "relative": 88.74
+          },
+          {
+            "date": "2026-07-17",
+            "sector": 82.68,
+            "benchmark": 95.18,
+            "relative": 86.86
+          },
+          {
+            "date": "2026-07-20",
+            "sector": 83.82,
+            "benchmark": 96.64,
+            "relative": 86.74
+          },
+          {
+            "date": "2026-07-21",
+            "sector": 86.65,
+            "benchmark": 99.6,
+            "relative": 86.99
+          },
+          {
+            "date": "2026-07-22",
+            "sector": 86.64,
+            "benchmark": 99.14,
+            "relative": 87.39
+          },
+          {
+            "date": "2026-07-23",
+            "sector": 85.95,
+            "benchmark": 99.37,
+            "relative": 86.5
+          },
+          {
+            "date": "2026-07-24",
+            "sector": 82.8,
+            "benchmark": 97.71,
+            "relative": 84.74
+          }
+        ],
         "drivers": [
           "20日动量 -5.3%",
           "20日相对沪深300 -0.8%",
@@ -2150,6 +5770,368 @@
               "美国二季度GDP与6月PCE",
               "中国7月官方PMI"
             ]
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-04-28",
+            "sector": 100.0,
+            "benchmark": 100.0,
+            "relative": 100.0
+          },
+          {
+            "date": "2026-04-29",
+            "sector": 101.25,
+            "benchmark": 101.1,
+            "relative": 100.16
+          },
+          {
+            "date": "2026-04-30",
+            "sector": 101.31,
+            "benchmark": 101.03,
+            "relative": 100.28
+          },
+          {
+            "date": "2026-05-06",
+            "sector": 102.21,
+            "benchmark": 102.5,
+            "relative": 99.72
+          },
+          {
+            "date": "2026-05-07",
+            "sector": 102.43,
+            "benchmark": 102.99,
+            "relative": 99.46
+          },
+          {
+            "date": "2026-05-08",
+            "sector": 101.9,
+            "benchmark": 102.39,
+            "relative": 99.53
+          },
+          {
+            "date": "2026-05-11",
+            "sector": 103.13,
+            "benchmark": 104.07,
+            "relative": 99.1
+          },
+          {
+            "date": "2026-05-12",
+            "sector": 102.91,
+            "benchmark": 103.99,
+            "relative": 98.97
+          },
+          {
+            "date": "2026-05-13",
+            "sector": 101.85,
+            "benchmark": 105.05,
+            "relative": 96.96
+          },
+          {
+            "date": "2026-05-14",
+            "sector": 99.64,
+            "benchmark": 103.29,
+            "relative": 96.47
+          },
+          {
+            "date": "2026-05-15",
+            "sector": 97.54,
+            "benchmark": 102.13,
+            "relative": 95.5
+          },
+          {
+            "date": "2026-05-18",
+            "sector": 96.92,
+            "benchmark": 101.58,
+            "relative": 95.41
+          },
+          {
+            "date": "2026-05-19",
+            "sector": 97.38,
+            "benchmark": 101.99,
+            "relative": 95.48
+          },
+          {
+            "date": "2026-05-20",
+            "sector": 96.68,
+            "benchmark": 101.94,
+            "relative": 94.83
+          },
+          {
+            "date": "2026-05-21",
+            "sector": 96.43,
+            "benchmark": 100.52,
+            "relative": 95.93
+          },
+          {
+            "date": "2026-05-22",
+            "sector": 95.39,
+            "benchmark": 101.83,
+            "relative": 93.68
+          },
+          {
+            "date": "2026-05-25",
+            "sector": 96.3,
+            "benchmark": 103.43,
+            "relative": 93.1
+          },
+          {
+            "date": "2026-05-26",
+            "sector": 96.84,
+            "benchmark": 103.99,
+            "relative": 93.13
+          },
+          {
+            "date": "2026-05-27",
+            "sector": 95.39,
+            "benchmark": 103.15,
+            "relative": 92.48
+          },
+          {
+            "date": "2026-05-28",
+            "sector": 93.73,
+            "benchmark": 103.28,
+            "relative": 90.76
+          },
+          {
+            "date": "2026-05-29",
+            "sector": 94.81,
+            "benchmark": 102.81,
+            "relative": 92.22
+          },
+          {
+            "date": "2026-06-01",
+            "sector": 95.07,
+            "benchmark": 101.81,
+            "relative": 93.39
+          },
+          {
+            "date": "2026-06-02",
+            "sector": 95.1,
+            "benchmark": 103.29,
+            "relative": 92.07
+          },
+          {
+            "date": "2026-06-03",
+            "sector": 94.65,
+            "benchmark": 103.8,
+            "relative": 91.19
+          },
+          {
+            "date": "2026-06-04",
+            "sector": 93.58,
+            "benchmark": 103.08,
+            "relative": 90.79
+          },
+          {
+            "date": "2026-06-05",
+            "sector": 93.26,
+            "benchmark": 101.23,
+            "relative": 92.13
+          },
+          {
+            "date": "2026-06-08",
+            "sector": 92.05,
+            "benchmark": 99.06,
+            "relative": 92.92
+          },
+          {
+            "date": "2026-06-09",
+            "sector": 92.61,
+            "benchmark": 100.92,
+            "relative": 91.77
+          },
+          {
+            "date": "2026-06-10",
+            "sector": 93.34,
+            "benchmark": 99.8,
+            "relative": 93.52
+          },
+          {
+            "date": "2026-06-11",
+            "sector": 92.41,
+            "benchmark": 99.25,
+            "relative": 93.11
+          },
+          {
+            "date": "2026-06-12",
+            "sector": 95.41,
+            "benchmark": 100.4,
+            "relative": 95.02
+          },
+          {
+            "date": "2026-06-15",
+            "sector": 97.39,
+            "benchmark": 102.81,
+            "relative": 94.73
+          },
+          {
+            "date": "2026-06-16",
+            "sector": 97.38,
+            "benchmark": 102.65,
+            "relative": 94.87
+          },
+          {
+            "date": "2026-06-17",
+            "sector": 97.1,
+            "benchmark": 103.64,
+            "relative": 93.69
+          },
+          {
+            "date": "2026-06-18",
+            "sector": 93.29,
+            "benchmark": 103.85,
+            "relative": 89.83
+          },
+          {
+            "date": "2026-06-22",
+            "sector": 99.67,
+            "benchmark": 106.34,
+            "relative": 93.73
+          },
+          {
+            "date": "2026-06-23",
+            "sector": 99.1,
+            "benchmark": 103.39,
+            "relative": 95.85
+          },
+          {
+            "date": "2026-06-24",
+            "sector": 97.0,
+            "benchmark": 103.88,
+            "relative": 93.37
+          },
+          {
+            "date": "2026-06-25",
+            "sector": 99.49,
+            "benchmark": 105.5,
+            "relative": 94.3
+          },
+          {
+            "date": "2026-06-26",
+            "sector": 95.39,
+            "benchmark": 102.31,
+            "relative": 93.24
+          },
+          {
+            "date": "2026-06-29",
+            "sector": 96.97,
+            "benchmark": 103.55,
+            "relative": 93.65
+          },
+          {
+            "date": "2026-06-30",
+            "sector": 96.55,
+            "benchmark": 104.65,
+            "relative": 92.26
+          },
+          {
+            "date": "2026-07-01",
+            "sector": 101.02,
+            "benchmark": 104.22,
+            "relative": 96.93
+          },
+          {
+            "date": "2026-07-02",
+            "sector": 98.9,
+            "benchmark": 101.14,
+            "relative": 97.79
+          },
+          {
+            "date": "2026-07-03",
+            "sector": 99.52,
+            "benchmark": 101.76,
+            "relative": 97.79
+          },
+          {
+            "date": "2026-07-06",
+            "sector": 100.36,
+            "benchmark": 101.76,
+            "relative": 98.62
+          },
+          {
+            "date": "2026-07-07",
+            "sector": 97.76,
+            "benchmark": 100.72,
+            "relative": 97.06
+          },
+          {
+            "date": "2026-07-08",
+            "sector": 96.97,
+            "benchmark": 99.94,
+            "relative": 97.03
+          },
+          {
+            "date": "2026-07-09",
+            "sector": 98.3,
+            "benchmark": 102.48,
+            "relative": 95.92
+          },
+          {
+            "date": "2026-07-10",
+            "sector": 96.99,
+            "benchmark": 100.47,
+            "relative": 96.53
+          },
+          {
+            "date": "2026-07-13",
+            "sector": 96.21,
+            "benchmark": 98.68,
+            "relative": 97.5
+          },
+          {
+            "date": "2026-07-14",
+            "sector": 96.7,
+            "benchmark": 100.8,
+            "relative": 95.93
+          },
+          {
+            "date": "2026-07-15",
+            "sector": 99.25,
+            "benchmark": 100.6,
+            "relative": 98.66
+          },
+          {
+            "date": "2026-07-16",
+            "sector": 97.83,
+            "benchmark": 98.74,
+            "relative": 99.08
+          },
+          {
+            "date": "2026-07-17",
+            "sector": 96.57,
+            "benchmark": 95.18,
+            "relative": 101.46
+          },
+          {
+            "date": "2026-07-20",
+            "sector": 99.3,
+            "benchmark": 96.64,
+            "relative": 102.75
+          },
+          {
+            "date": "2026-07-21",
+            "sector": 99.31,
+            "benchmark": 99.6,
+            "relative": 99.71
+          },
+          {
+            "date": "2026-07-22",
+            "sector": 99.44,
+            "benchmark": 99.14,
+            "relative": 100.3
+          },
+          {
+            "date": "2026-07-23",
+            "sector": 100.47,
+            "benchmark": 99.37,
+            "relative": 101.11
+          },
+          {
+            "date": "2026-07-24",
+            "sector": 98.25,
+            "benchmark": 97.71,
+            "relative": 100.55
           }
         ],
         "drivers": [
@@ -2252,6 +6234,368 @@
             ]
           }
         ],
+        "history": [
+          {
+            "date": "2026-04-28",
+            "sector": 100.0,
+            "benchmark": 100.0,
+            "relative": 100.0
+          },
+          {
+            "date": "2026-04-29",
+            "sector": 100.2,
+            "benchmark": 101.1,
+            "relative": 99.11
+          },
+          {
+            "date": "2026-04-30",
+            "sector": 102.17,
+            "benchmark": 101.03,
+            "relative": 101.13
+          },
+          {
+            "date": "2026-05-06",
+            "sector": 103.99,
+            "benchmark": 102.5,
+            "relative": 101.45
+          },
+          {
+            "date": "2026-05-07",
+            "sector": 105.01,
+            "benchmark": 102.99,
+            "relative": 101.96
+          },
+          {
+            "date": "2026-05-08",
+            "sector": 107.57,
+            "benchmark": 102.39,
+            "relative": 105.06
+          },
+          {
+            "date": "2026-05-11",
+            "sector": 108.7,
+            "benchmark": 104.07,
+            "relative": 104.45
+          },
+          {
+            "date": "2026-05-12",
+            "sector": 107.52,
+            "benchmark": 103.99,
+            "relative": 103.39
+          },
+          {
+            "date": "2026-05-13",
+            "sector": 108.64,
+            "benchmark": 105.05,
+            "relative": 103.42
+          },
+          {
+            "date": "2026-05-14",
+            "sector": 103.93,
+            "benchmark": 103.29,
+            "relative": 100.63
+          },
+          {
+            "date": "2026-05-15",
+            "sector": 102.0,
+            "benchmark": 102.13,
+            "relative": 99.87
+          },
+          {
+            "date": "2026-05-18",
+            "sector": 101.43,
+            "benchmark": 101.58,
+            "relative": 99.85
+          },
+          {
+            "date": "2026-05-19",
+            "sector": 101.25,
+            "benchmark": 101.99,
+            "relative": 99.28
+          },
+          {
+            "date": "2026-05-20",
+            "sector": 100.83,
+            "benchmark": 101.94,
+            "relative": 98.91
+          },
+          {
+            "date": "2026-05-21",
+            "sector": 98.23,
+            "benchmark": 100.52,
+            "relative": 97.72
+          },
+          {
+            "date": "2026-05-22",
+            "sector": 99.68,
+            "benchmark": 101.83,
+            "relative": 97.89
+          },
+          {
+            "date": "2026-05-25",
+            "sector": 100.77,
+            "benchmark": 103.43,
+            "relative": 97.43
+          },
+          {
+            "date": "2026-05-26",
+            "sector": 98.57,
+            "benchmark": 103.99,
+            "relative": 94.79
+          },
+          {
+            "date": "2026-05-27",
+            "sector": 96.45,
+            "benchmark": 103.15,
+            "relative": 93.5
+          },
+          {
+            "date": "2026-05-28",
+            "sector": 97.98,
+            "benchmark": 103.28,
+            "relative": 94.87
+          },
+          {
+            "date": "2026-05-29",
+            "sector": 93.29,
+            "benchmark": 102.81,
+            "relative": 90.73
+          },
+          {
+            "date": "2026-06-01",
+            "sector": 91.77,
+            "benchmark": 101.81,
+            "relative": 90.14
+          },
+          {
+            "date": "2026-06-02",
+            "sector": 91.63,
+            "benchmark": 103.29,
+            "relative": 88.71
+          },
+          {
+            "date": "2026-06-03",
+            "sector": 92.36,
+            "benchmark": 103.8,
+            "relative": 88.98
+          },
+          {
+            "date": "2026-06-04",
+            "sector": 92.48,
+            "benchmark": 103.08,
+            "relative": 89.71
+          },
+          {
+            "date": "2026-06-05",
+            "sector": 92.62,
+            "benchmark": 101.23,
+            "relative": 91.49
+          },
+          {
+            "date": "2026-06-08",
+            "sector": 88.86,
+            "benchmark": 99.06,
+            "relative": 89.7
+          },
+          {
+            "date": "2026-06-09",
+            "sector": 89.98,
+            "benchmark": 100.92,
+            "relative": 89.17
+          },
+          {
+            "date": "2026-06-10",
+            "sector": 89.18,
+            "benchmark": 99.8,
+            "relative": 89.36
+          },
+          {
+            "date": "2026-06-11",
+            "sector": 89.12,
+            "benchmark": 99.25,
+            "relative": 89.8
+          },
+          {
+            "date": "2026-06-12",
+            "sector": 90.96,
+            "benchmark": 100.4,
+            "relative": 90.6
+          },
+          {
+            "date": "2026-06-15",
+            "sector": 92.53,
+            "benchmark": 102.81,
+            "relative": 90.0
+          },
+          {
+            "date": "2026-06-16",
+            "sector": 92.82,
+            "benchmark": 102.65,
+            "relative": 90.43
+          },
+          {
+            "date": "2026-06-17",
+            "sector": 94.1,
+            "benchmark": 103.64,
+            "relative": 90.79
+          },
+          {
+            "date": "2026-06-18",
+            "sector": 93.73,
+            "benchmark": 103.85,
+            "relative": 90.25
+          },
+          {
+            "date": "2026-06-22",
+            "sector": 93.86,
+            "benchmark": 106.34,
+            "relative": 88.27
+          },
+          {
+            "date": "2026-06-23",
+            "sector": 90.8,
+            "benchmark": 103.39,
+            "relative": 87.82
+          },
+          {
+            "date": "2026-06-24",
+            "sector": 91.43,
+            "benchmark": 103.88,
+            "relative": 88.01
+          },
+          {
+            "date": "2026-06-25",
+            "sector": 91.05,
+            "benchmark": 105.5,
+            "relative": 86.3
+          },
+          {
+            "date": "2026-06-26",
+            "sector": 90.11,
+            "benchmark": 102.31,
+            "relative": 88.08
+          },
+          {
+            "date": "2026-06-29",
+            "sector": 89.71,
+            "benchmark": 103.55,
+            "relative": 86.63
+          },
+          {
+            "date": "2026-06-30",
+            "sector": 93.04,
+            "benchmark": 104.65,
+            "relative": 88.91
+          },
+          {
+            "date": "2026-07-01",
+            "sector": 93.9,
+            "benchmark": 104.22,
+            "relative": 90.1
+          },
+          {
+            "date": "2026-07-02",
+            "sector": 91.6,
+            "benchmark": 101.14,
+            "relative": 90.57
+          },
+          {
+            "date": "2026-07-03",
+            "sector": 94.84,
+            "benchmark": 101.76,
+            "relative": 93.19
+          },
+          {
+            "date": "2026-07-06",
+            "sector": 93.26,
+            "benchmark": 101.76,
+            "relative": 91.65
+          },
+          {
+            "date": "2026-07-07",
+            "sector": 91.05,
+            "benchmark": 100.72,
+            "relative": 90.4
+          },
+          {
+            "date": "2026-07-08",
+            "sector": 88.89,
+            "benchmark": 99.94,
+            "relative": 88.94
+          },
+          {
+            "date": "2026-07-09",
+            "sector": 90.51,
+            "benchmark": 102.48,
+            "relative": 88.32
+          },
+          {
+            "date": "2026-07-10",
+            "sector": 92.82,
+            "benchmark": 100.47,
+            "relative": 92.38
+          },
+          {
+            "date": "2026-07-13",
+            "sector": 86.54,
+            "benchmark": 98.68,
+            "relative": 87.69
+          },
+          {
+            "date": "2026-07-14",
+            "sector": 84.22,
+            "benchmark": 100.8,
+            "relative": 83.55
+          },
+          {
+            "date": "2026-07-15",
+            "sector": 82.82,
+            "benchmark": 100.6,
+            "relative": 82.32
+          },
+          {
+            "date": "2026-07-16",
+            "sector": 81.18,
+            "benchmark": 98.74,
+            "relative": 82.21
+          },
+          {
+            "date": "2026-07-17",
+            "sector": 76.9,
+            "benchmark": 95.18,
+            "relative": 80.79
+          },
+          {
+            "date": "2026-07-20",
+            "sector": 76.27,
+            "benchmark": 96.64,
+            "relative": 78.92
+          },
+          {
+            "date": "2026-07-21",
+            "sector": 78.7,
+            "benchmark": 99.6,
+            "relative": 79.02
+          },
+          {
+            "date": "2026-07-22",
+            "sector": 78.19,
+            "benchmark": 99.14,
+            "relative": 78.86
+          },
+          {
+            "date": "2026-07-23",
+            "sector": 79.56,
+            "benchmark": 99.37,
+            "relative": 80.07
+          },
+          {
+            "date": "2026-07-24",
+            "sector": 77.98,
+            "benchmark": 97.71,
+            "relative": 79.81
+          }
+        ],
         "drivers": [
           "20日动量 -13.5%",
           "20日相对沪深300 -9.0%",
@@ -2350,6 +6694,368 @@
               "美国二季度GDP与6月PCE",
               "中国7月官方PMI"
             ]
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-04-28",
+            "sector": 100.0,
+            "benchmark": 100.0,
+            "relative": 100.0
+          },
+          {
+            "date": "2026-04-29",
+            "sector": 101.05,
+            "benchmark": 101.1,
+            "relative": 99.95
+          },
+          {
+            "date": "2026-04-30",
+            "sector": 101.2,
+            "benchmark": 101.03,
+            "relative": 100.16
+          },
+          {
+            "date": "2026-05-06",
+            "sector": 102.69,
+            "benchmark": 102.5,
+            "relative": 100.18
+          },
+          {
+            "date": "2026-05-07",
+            "sector": 104.35,
+            "benchmark": 102.99,
+            "relative": 101.32
+          },
+          {
+            "date": "2026-05-08",
+            "sector": 105.08,
+            "benchmark": 102.39,
+            "relative": 102.62
+          },
+          {
+            "date": "2026-05-11",
+            "sector": 105.09,
+            "benchmark": 104.07,
+            "relative": 100.98
+          },
+          {
+            "date": "2026-05-12",
+            "sector": 104.11,
+            "benchmark": 103.99,
+            "relative": 100.12
+          },
+          {
+            "date": "2026-05-13",
+            "sector": 104.71,
+            "benchmark": 105.05,
+            "relative": 99.68
+          },
+          {
+            "date": "2026-05-14",
+            "sector": 102.84,
+            "benchmark": 103.29,
+            "relative": 99.57
+          },
+          {
+            "date": "2026-05-15",
+            "sector": 103.1,
+            "benchmark": 102.13,
+            "relative": 100.95
+          },
+          {
+            "date": "2026-05-18",
+            "sector": 102.21,
+            "benchmark": 101.58,
+            "relative": 100.62
+          },
+          {
+            "date": "2026-05-19",
+            "sector": 102.72,
+            "benchmark": 101.99,
+            "relative": 100.72
+          },
+          {
+            "date": "2026-05-20",
+            "sector": 101.42,
+            "benchmark": 101.94,
+            "relative": 99.48
+          },
+          {
+            "date": "2026-05-21",
+            "sector": 101.61,
+            "benchmark": 100.52,
+            "relative": 101.08
+          },
+          {
+            "date": "2026-05-22",
+            "sector": 102.66,
+            "benchmark": 101.83,
+            "relative": 100.82
+          },
+          {
+            "date": "2026-05-25",
+            "sector": 102.65,
+            "benchmark": 103.43,
+            "relative": 99.24
+          },
+          {
+            "date": "2026-05-26",
+            "sector": 101.98,
+            "benchmark": 103.99,
+            "relative": 98.07
+          },
+          {
+            "date": "2026-05-27",
+            "sector": 99.4,
+            "benchmark": 103.15,
+            "relative": 96.36
+          },
+          {
+            "date": "2026-05-28",
+            "sector": 98.91,
+            "benchmark": 103.28,
+            "relative": 95.77
+          },
+          {
+            "date": "2026-05-29",
+            "sector": 96.71,
+            "benchmark": 102.81,
+            "relative": 94.06
+          },
+          {
+            "date": "2026-06-01",
+            "sector": 96.09,
+            "benchmark": 101.81,
+            "relative": 94.38
+          },
+          {
+            "date": "2026-06-02",
+            "sector": 96.37,
+            "benchmark": 103.29,
+            "relative": 93.31
+          },
+          {
+            "date": "2026-06-03",
+            "sector": 95.86,
+            "benchmark": 103.8,
+            "relative": 92.35
+          },
+          {
+            "date": "2026-06-04",
+            "sector": 95.71,
+            "benchmark": 103.08,
+            "relative": 92.85
+          },
+          {
+            "date": "2026-06-05",
+            "sector": 95.03,
+            "benchmark": 101.23,
+            "relative": 93.87
+          },
+          {
+            "date": "2026-06-08",
+            "sector": 93.33,
+            "benchmark": 99.06,
+            "relative": 94.21
+          },
+          {
+            "date": "2026-06-09",
+            "sector": 93.9,
+            "benchmark": 100.92,
+            "relative": 93.04
+          },
+          {
+            "date": "2026-06-10",
+            "sector": 91.16,
+            "benchmark": 99.8,
+            "relative": 91.35
+          },
+          {
+            "date": "2026-06-11",
+            "sector": 89.69,
+            "benchmark": 99.25,
+            "relative": 90.37
+          },
+          {
+            "date": "2026-06-12",
+            "sector": 90.63,
+            "benchmark": 100.4,
+            "relative": 90.27
+          },
+          {
+            "date": "2026-06-15",
+            "sector": 92.71,
+            "benchmark": 102.81,
+            "relative": 90.18
+          },
+          {
+            "date": "2026-06-16",
+            "sector": 91.76,
+            "benchmark": 102.65,
+            "relative": 89.4
+          },
+          {
+            "date": "2026-06-17",
+            "sector": 91.1,
+            "benchmark": 103.64,
+            "relative": 87.9
+          },
+          {
+            "date": "2026-06-18",
+            "sector": 91.24,
+            "benchmark": 103.85,
+            "relative": 87.86
+          },
+          {
+            "date": "2026-06-22",
+            "sector": 90.41,
+            "benchmark": 106.34,
+            "relative": 85.02
+          },
+          {
+            "date": "2026-06-23",
+            "sector": 89.06,
+            "benchmark": 103.39,
+            "relative": 86.15
+          },
+          {
+            "date": "2026-06-24",
+            "sector": 88.14,
+            "benchmark": 103.88,
+            "relative": 84.85
+          },
+          {
+            "date": "2026-06-25",
+            "sector": 86.88,
+            "benchmark": 105.5,
+            "relative": 82.34
+          },
+          {
+            "date": "2026-06-26",
+            "sector": 84.18,
+            "benchmark": 102.31,
+            "relative": 82.28
+          },
+          {
+            "date": "2026-06-29",
+            "sector": 83.8,
+            "benchmark": 103.55,
+            "relative": 80.93
+          },
+          {
+            "date": "2026-06-30",
+            "sector": 85.08,
+            "benchmark": 104.65,
+            "relative": 81.3
+          },
+          {
+            "date": "2026-07-01",
+            "sector": 86.09,
+            "benchmark": 104.22,
+            "relative": 82.6
+          },
+          {
+            "date": "2026-07-02",
+            "sector": 86.3,
+            "benchmark": 101.14,
+            "relative": 85.33
+          },
+          {
+            "date": "2026-07-03",
+            "sector": 90.13,
+            "benchmark": 101.76,
+            "relative": 88.57
+          },
+          {
+            "date": "2026-07-06",
+            "sector": 89.73,
+            "benchmark": 101.76,
+            "relative": 88.18
+          },
+          {
+            "date": "2026-07-07",
+            "sector": 87.85,
+            "benchmark": 100.72,
+            "relative": 87.23
+          },
+          {
+            "date": "2026-07-08",
+            "sector": 85.33,
+            "benchmark": 99.94,
+            "relative": 85.38
+          },
+          {
+            "date": "2026-07-09",
+            "sector": 85.36,
+            "benchmark": 102.48,
+            "relative": 83.29
+          },
+          {
+            "date": "2026-07-10",
+            "sector": 86.37,
+            "benchmark": 100.47,
+            "relative": 85.96
+          },
+          {
+            "date": "2026-07-13",
+            "sector": 82.7,
+            "benchmark": 98.68,
+            "relative": 83.81
+          },
+          {
+            "date": "2026-07-14",
+            "sector": 83.93,
+            "benchmark": 100.8,
+            "relative": 83.26
+          },
+          {
+            "date": "2026-07-15",
+            "sector": 84.25,
+            "benchmark": 100.6,
+            "relative": 83.74
+          },
+          {
+            "date": "2026-07-16",
+            "sector": 84.33,
+            "benchmark": 98.74,
+            "relative": 85.4
+          },
+          {
+            "date": "2026-07-17",
+            "sector": 80.83,
+            "benchmark": 95.18,
+            "relative": 84.92
+          },
+          {
+            "date": "2026-07-20",
+            "sector": 80.03,
+            "benchmark": 96.64,
+            "relative": 82.81
+          },
+          {
+            "date": "2026-07-21",
+            "sector": 81.39,
+            "benchmark": 99.6,
+            "relative": 81.72
+          },
+          {
+            "date": "2026-07-22",
+            "sector": 80.3,
+            "benchmark": 99.14,
+            "relative": 81.0
+          },
+          {
+            "date": "2026-07-23",
+            "sector": 81.68,
+            "benchmark": 99.37,
+            "relative": 82.2
+          },
+          {
+            "date": "2026-07-24",
+            "sector": 79.98,
+            "benchmark": 97.71,
+            "relative": 81.86
           }
         ],
         "drivers": [
@@ -2717,7 +7423,7 @@
     },
     "collection": {
       "status": "live",
-      "fetched_at": "2026-07-26T09:20:18.809982+08:00",
+      "fetched_at": "2026-07-26T09:50:11.864316+08:00",
       "cache_used": false,
       "event_count": 2,
       "sources": [
