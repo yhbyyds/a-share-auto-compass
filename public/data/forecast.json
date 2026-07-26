@@ -1,13 +1,13 @@
 {
   "meta": {
-    "generated_at": "2026-07-26T07:20:02.024933+08:00",
+    "generated_at": "2026-07-26T08:01:17.258777+08:00",
     "data_through": "2026-07-24",
     "forecast_window": "2026-07-27 至 2026-07-31",
     "version": "1.3.0",
     "data_source": "腾讯证券主源 / 东方财富备用",
     "release": "7",
     "automation": {
-      "run_id": "20260726T071855",
+      "run_id": "20260726T075945",
       "status": "passed",
       "quality_gate": {
         "passed": true,
@@ -25,7 +25,7 @@
           "event_count": 7
         }
       },
-      "updated_at": "2026-07-26T07:18:55.624968+08:00",
+      "updated_at": "2026-07-26T07:59:45.244674+08:00",
       "mode": "automatic"
     }
   },
@@ -1641,7 +1641,7 @@
             "date": "2026-07-28",
             "weekday": "二",
             "direction": "震荡",
-            "up_probability": 51.2,
+            "up_probability": 51.6,
             "outperform_probability": 49.6,
             "expected_return": -0.01,
             "expected_excess": -0.03,
