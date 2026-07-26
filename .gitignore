@@ -5,6 +5,7 @@ __pycache__/
 node_modules/
 .next/
 dist/
+public/data/forecast.enc.json
 data/cache/
 data/automation/
 .worktrees/

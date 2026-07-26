@@ -112,21 +112,32 @@ def _find_node() -> str:
 def _run_site_build() -> None:
     node_command = _find_node()
     vinext_cli = ROOT / "node_modules" / "vinext" / "dist" / "cli.js"
+    encrypt_script = ROOT / "scripts" / "encrypt-forecast.mjs"
     prepare_script = ROOT / "scripts" / "prepare-dist.mjs"
+    encrypted_source = ROOT / "public" / "data" / "forecast.enc.json"
     if not vinext_cli.is_file():
         raise RuntimeError("缺少网页构建依赖；请先在项目目录运行 npm install")
-    subprocess.run(
-        [node_command, str(vinext_cli), "build"],
-        cwd=ROOT,
-        check=True,
-        text=True,
-    )
-    subprocess.run(
-        [node_command, str(prepare_script)],
-        cwd=ROOT,
-        check=True,
-        text=True,
-    )
+    try:
+        subprocess.run(
+            [node_command, str(encrypt_script)],
+            cwd=ROOT,
+            check=True,
+            text=True,
+        )
+        subprocess.run(
+            [node_command, str(vinext_cli), "build"],
+            cwd=ROOT,
+            check=True,
+            text=True,
+        )
+        subprocess.run(
+            [node_command, str(prepare_script)],
+            cwd=ROOT,
+            check=True,
+            text=True,
+        )
+    finally:
+        encrypted_source.unlink(missing_ok=True)
 
 
 @contextmanager

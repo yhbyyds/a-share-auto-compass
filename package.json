@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vinext dev",
-    "build": "vinext build && node scripts/prepare-dist.mjs",
+    "build": "node scripts/encrypt-forecast.mjs && vinext build && node scripts/prepare-dist.mjs",
     "start": "vinext start",
     "verify:encrypted": "node scripts/verify-encrypted-build.mjs"
   },
