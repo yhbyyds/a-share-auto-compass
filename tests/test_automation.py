@@ -63,8 +63,10 @@ def test_build_uses_node_directly(tmp_path, monkeypatch) -> None:
     vinext_cli = tmp_path / "node_modules" / "vinext" / "dist" / "cli.js"
     vinext_cli.parent.mkdir(parents=True)
     vinext_cli.touch()
+    encrypt_script = tmp_path / "scripts" / "encrypt-forecast.mjs"
     prepare_script = tmp_path / "scripts" / "prepare-dist.mjs"
     prepare_script.parent.mkdir()
+    encrypt_script.touch()
     prepare_script.touch()
     monkeypatch.setattr(automation, "ROOT", tmp_path)
     calls = []
@@ -82,10 +84,12 @@ def test_build_uses_node_directly(tmp_path, monkeypatch) -> None:
     )
 
     assert calls[0][0][0] == "node.exe"
-    assert calls[0][0][-1] == "build"
+    assert calls[0][0][-1].endswith("encrypt-forecast.mjs")
     assert calls[0][1]["check"] is True
     assert calls[1][0][0] == "node.exe"
-    assert calls[1][0][-1].endswith("prepare-dist.mjs")
+    assert calls[1][0][-1] == "build"
+    assert calls[2][0][0] == "node.exe"
+    assert calls[2][0][-1].endswith("prepare-dist.mjs")
 
 
 def test_failed_build_restores_previous_output(tmp_path, monkeypatch) -> None:
