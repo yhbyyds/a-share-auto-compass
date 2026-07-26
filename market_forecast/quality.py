@@ -6,6 +6,8 @@ import math
 from typing import Any
 from zoneinfo import ZoneInfo
 
+from market_forecast.trading_calendar import is_trading_session
+
 
 @dataclass
 class QualityResult:
@@ -67,6 +69,18 @@ def validate_forecast(
         return result
 
     meta = forecast["meta"]
+    calendar = meta.get("trading_calendar") or {}
+    if calendar.get("name") != "XSHG" or not str(
+        calendar.get("url", "")
+    ).startswith("http"):
+        result.errors.append("缺少可审计的 XSHG 交易日历元数据")
+    try:
+        calendar_verified_through = date.fromisoformat(
+            calendar["verified_through"]
+        )
+    except (KeyError, TypeError, ValueError):
+        calendar_verified_through = None
+        result.errors.append("交易日历缺少有效的官方核验截止日")
     try:
         data_through = date.fromisoformat(meta["data_through"])
     except (KeyError, TypeError, ValueError):
@@ -106,12 +120,21 @@ def validate_forecast(
             result.errors.append(f"第 {index + 1} 个逐日预测字段无效")
             continue
         day_dates.append(parsed)
-        if parsed.weekday() >= 5:
-            result.errors.append(f"逐日预测包含非交易工作日: {parsed}")
+        if not is_trading_session(parsed):
+            result.errors.append(f"逐日预测包含非A股交易日: {parsed}")
         if not 0 <= probability <= 100:
             result.errors.append(f"上涨概率越界: {probability}")
     if day_dates != sorted(set(day_dates)):
         result.errors.append("逐日预测日期未严格递增或存在重复")
+    if (
+        day_dates
+        and calendar_verified_through
+        and day_dates[-1] > calendar_verified_through
+    ):
+        result.errors.append(
+            "预测窗口超过交易日历官方核验范围: "
+            f"{day_dates[-1]} > {calendar_verified_through}"
+        )
     if day_dates and day_dates[0] <= today:
         result.errors.append(
             f"预测窗口已过期: 首日 {day_dates[0]} 不晚于当前日期 {today}"
@@ -143,9 +166,17 @@ def validate_forecast(
     if sector_block.get("data_through") != meta.get("data_through"):
         result.errors.append("行业数据日期与大盘数据日期不一致")
     for sector in sectors:
-        if len(sector.get("days", [])) != 5:
+        sector_days = sector.get("days", [])
+        if len(sector_days) != 5:
             result.errors.append(
                 f"行业 {sector.get('name', sector.get('key'))} 不是5日预测"
+            )
+        elif [item.get("date") for item in sector_days] != [
+            item.get("date") for item in days
+        ]:
+            result.errors.append(
+                f"行业 {sector.get('name', sector.get('key'))} "
+                "与大盘交易日不一致"
             )
 
     breadth_stocks = int((forecast.get("breadth") or {}).get("stocks", 0) or 0)
@@ -165,6 +196,36 @@ def validate_forecast(
             result.errors.append(
                 f"事件缺少可审计来源: {event.get('title', '未命名')}"
             )
+
+    collection = (forecast.get("event_radar") or {}).get("collection") or {}
+    collection_status = collection.get("status")
+    result.metrics["event_collection_status"] = collection_status
+    if collection_status not in {
+        "live",
+        "partial",
+        "cached",
+        "manual",
+    }:
+        result.warnings.append("官方事件自动采集不可用；仅保留已核验静态事件")
+    if collection_status in {"partial", "cached"}:
+        result.warnings.append(
+            f"官方事件采集状态为 {collection_status}；已启用缓存容灾"
+        )
+
+    monitor = forecast.get("performance_monitor") or {}
+    monitor_status = monitor.get("status")
+    result.metrics["performance_status"] = monitor_status
+    result.metrics["live_evaluated_samples"] = int(
+        monitor.get("evaluated_samples", 0) or 0
+    )
+    if monitor_status not in {"collecting", "healthy", "watch", "degraded"}:
+        result.errors.append("缺少有效的实盘预测效果监控")
+    if monitor_status == "degraded":
+        if forecast["market"].get("weekly_direction") != "震荡":
+            result.errors.append("模型失效时周方向未自动降级为震荡")
+        if any(day.get("confidence") != "低" for day in days):
+            result.errors.append("模型失效时逐日置信度未全部降为低")
+        result.warnings.append("实盘近期表现低于门限，预测已自动降级")
 
     result.errors.extend(_finite_numbers(forecast))
     result.metrics["event_count"] = len(forecast.get("events", []))

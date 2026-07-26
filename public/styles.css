@@ -239,6 +239,8 @@ body {
 .validation-card > strong { display: block; margin-top: 13px; font-size: 35px; letter-spacing: -.05em; }
 .validation-card strong i { color: var(--muted); font-size: 18px; font-style: normal; font-weight: 400; }
 .validation-card p { margin: 8px 0 0; color: var(--muted); font-size: 11px; }
+.health-card { grid-column: 1 / -1; }
+.health-card > strong { font-size: 25px; }
 .model-panel { margin-top: 14px; }
 .model-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 28px; }
 .model-name-row, .model-numbers { display: flex; justify-content: space-between; gap: 10px; font-size: 12px; }

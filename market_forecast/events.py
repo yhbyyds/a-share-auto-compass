@@ -34,12 +34,25 @@ def _cluster_risk(events: list[dict[str, Any]]) -> dict[str, Any]:
 def enrich_forecast_with_events(
     forecast: dict[str, Any],
     calendar_path: str | Path = DEFAULT_CALENDAR,
+    *,
+    dynamic_events: list[dict[str, Any]] | None = None,
+    collection: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     calendar = _load_calendar(calendar_path)
     forecast_dates = {day["date"] for day in forecast["days"]}
+    merged = {
+        event["id"]: event.copy()
+        for event in (dynamic_events or [])
+    }
+    merged.update(
+        {
+            event["id"]: event.copy()
+            for event in calendar.get("events", [])
+        }
+    )
     events = [
         event.copy()
-        for event in calendar.get("events", [])
+        for event in merged.values()
         if event["impact_date"] in forecast_dates
     ]
     events.sort(key=lambda event: (event["impact_date"], -event["risk_score"]))
@@ -97,9 +110,17 @@ def enrich_forecast_with_events(
         "events": events,
         "unscheduled_watch": calendar.get("unscheduled_watch", []),
         "highest_risk_day": highest,
+        "collection": collection
+        or {
+            "status": "manual",
+            "event_count": len(events),
+            "sources": [],
+            "warnings": [],
+        },
         "method": (
             "事件层不直接修改量价模型概率；它按A股实际反应日聚合风险，"
-            "标记受影响行业并把高冲击日改为事件置信，等待盘中条件确认。"
+            "官方自动日程与人工核验事件合并去重，标记受影响行业并把"
+            "高冲击日改为事件置信，等待盘中条件确认。"
         ),
     }
     forecast["playbook"]["event"] = (

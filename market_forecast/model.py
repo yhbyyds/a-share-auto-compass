@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
-from datetime import timedelta
 from typing import Any
 
 import numpy as np
@@ -20,6 +19,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
 from market_forecast.data import DOMESTIC_KEYS, GLOBAL_KEYS
+from market_forecast.trading_calendar import trading_sessions_after
 
 
 RANDOM_STATE = 20260724
@@ -334,13 +334,7 @@ def _backtest(diagnostics: dict[str, Any], close: pd.Series) -> dict[str, float]
 
 
 def _next_weekdays(last_date: pd.Timestamp, count: int = 5) -> list[pd.Timestamp]:
-    dates: list[pd.Timestamp] = []
-    current = last_date + timedelta(days=1)
-    while len(dates) < count:
-        if current.weekday() < 5:
-            dates.append(current)
-        current += timedelta(days=1)
-    return dates
+    return trading_sessions_after(last_date, count)
 
 
 def _pct(value: float) -> float:
@@ -470,7 +464,7 @@ def generate_forecast(
     h1_backtest = _backtest(day_diagnostics[0], close)
     recent = data["sse"].loc[:last_date].tail(90)
     recent_chart = [
-        {"date": idx.strftime("%m-%d"), "close": round(float(value), 2)}
+        {"date": idx.strftime("%Y-%m-%d"), "close": round(float(value), 2)}
         for idx, value in recent["close"].items()
     ]
     model_details = []

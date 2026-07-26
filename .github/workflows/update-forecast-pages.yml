@@ -6,6 +6,8 @@ on:
       - main
     paths-ignore:
       - public/data/forecast.json
+      - data/performance_history.json
+      - data/sse_holidays.json
   schedule:
     - cron: "35 10 * * 1-5"
     - cron: "30 12 * * 0"
@@ -67,7 +69,8 @@ jobs:
         run: |
           git config user.name "a-share-forecast-bot"
           git config user.email "a-share-forecast-bot@users.noreply.github.com"
-          git add public/data/forecast.json
+          git add public/data/forecast.json data/performance_history.json \
+            data/sse_holidays.json
           if ! git diff --cached --quiet; then
             git commit -m "chore: update accepted forecast"
             git push
@@ -112,8 +115,13 @@ jobs:
               try:
                   with urlopen(url, timeout=20) as response:
                       payload = json.load(response)
-                  assert payload["meta"]["release"] == "7"
+                  assert payload["meta"]["release"] == "8"
                   assert payload["meta"]["automation"]["status"] == "passed"
+                  assert payload["meta"]["trading_calendar"]["name"] == "XSHG"
+                  assert payload["meta"]["trading_calendar"]["verified_through"]
+                  assert payload["performance_monitor"]["status"] in {
+                      "collecting", "healthy", "watch", "degraded"
+                  }
                   assert len(payload["days"]) == 5
                   assert len(payload["sector_forecast"]["sectors"]) >= 10
                   print("Published forecast verified:", url)

@@ -15,7 +15,13 @@ def valid_forecast() -> dict:
         "2026-07-31",
     ]
     days = [
-        {"date": item, "up_probability": 50 + index}
+        {
+            "date": item,
+            "up_probability": 50 + index,
+            "direction": "震荡",
+            "expected_return": 0.1,
+            "confidence": "低",
+        }
         for index, item in enumerate(dates)
     ]
     sectors = [
@@ -23,9 +29,24 @@ def valid_forecast() -> dict:
         for index in range(10)
     ]
     return {
-        "meta": {"data_through": "2026-07-24"},
-        "market": {"weekly_up_probability": 52},
+        "meta": {
+            "data_through": "2026-07-24",
+            "generated_at": "2026-07-26T08:00:00+08:00",
+            "trading_calendar": {
+                "name": "XSHG",
+                "url": "https://www.sse.com.cn/",
+                "verified_through": "2026-12-31",
+            },
+        },
+        "market": {
+            "weekly_up_probability": 52,
+            "weekly_direction": "震荡",
+            "last_close": 3500.0,
+        },
         "days": days,
+        "recent_chart": [
+            {"date": "2026-07-24", "close": 3500.0},
+        ],
         "validation": {
             "samples": 500,
             "daily_direction_accuracy": 54,
@@ -44,7 +65,15 @@ def valid_forecast() -> dict:
                 "url": "https://example.com/official",
             }
         ],
-        "event_radar": {"daily_risk": []},
+        "event_radar": {
+            "daily_risk": [],
+            "collection": {"status": "manual"},
+        },
+        "performance_monitor": {
+            "status": "collecting",
+            "evaluated_samples": 0,
+            "degraded": False,
+        },
     }
 
 
@@ -104,3 +133,13 @@ def test_expired_forecast_window_blocks_publication() -> None:
 
     assert not result.passed
     assert any("预测窗口已过期" in error for error in result.errors)
+
+
+def test_calendar_verification_range_blocks_publication() -> None:
+    forecast = valid_forecast()
+    forecast["meta"]["trading_calendar"]["verified_through"] = "2026-07-30"
+
+    result = validate_forecast(forecast, today=date(2026, 7, 26))
+
+    assert not result.passed
+    assert any("超过交易日历官方核验范围" in error for error in result.errors)

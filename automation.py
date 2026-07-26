@@ -17,12 +17,14 @@ from uuid import uuid4
 from zoneinfo import ZoneInfo
 
 from market_forecast.pipeline import build_forecast
+from market_forecast.performance import update_performance_history
 from market_forecast.quality import QualityResult, validate_forecast
 
 
 ROOT = Path(__file__).resolve().parent
 DEFAULT_OUTPUT = ROOT / "public" / "data" / "forecast.json"
 DEFAULT_STATE_DIR = ROOT / "data" / "automation"
+DEFAULT_PERFORMANCE = ROOT / "data" / "performance_history.json"
 
 
 def _read_json(path: Path) -> dict[str, Any] | None:
@@ -170,6 +172,7 @@ def run_update(
     *,
     output: Path = DEFAULT_OUTPUT,
     state_dir: Path = DEFAULT_STATE_DIR,
+    performance_path: Path = DEFAULT_PERFORMANCE,
     max_data_age_days: int = 5,
     dry_run: bool = False,
     run_build: bool = False,
@@ -178,12 +181,16 @@ def run_update(
     started = datetime.now(ZoneInfo("Asia/Shanghai"))
     run_id = started.strftime("%Y%m%dT%H%M%S")
     previous = _read_json(output)
+    performance_history = _read_json(performance_path) or {}
     previous_bytes = output.read_bytes() if output.exists() else None
 
     with _run_lock(state_dir):
         logger.info("自动更新开始 run_id=%s", run_id)
         try:
             forecast = build_forecast()
+            updated_performance, performance_monitor = (
+                update_performance_history(performance_history, forecast)
+            )
             quality = validate_forecast(
                 forecast,
                 previous=previous,
@@ -199,6 +206,10 @@ def run_update(
             }
             candidate = state_dir / "candidate_forecast.json"
             _atomic_json(candidate, forecast)
+            _atomic_json(
+                state_dir / "candidate_performance_history.json",
+                updated_performance,
+            )
 
             if not quality.passed:
                 raise RuntimeError("质量门禁未通过: " + "；".join(quality.errors))
@@ -229,6 +240,7 @@ def run_update(
                     if output.exists():
                         shutil.copy2(output, state_dir / "previous_forecast.json")
                     _atomic_json(output, forecast)
+                _atomic_json(performance_path, updated_performance)
                 _atomic_json(state_dir / "last_good_forecast.json", forecast)
 
             finished = datetime.now(ZoneInfo("Asia/Shanghai"))
@@ -239,6 +251,7 @@ def run_update(
                 "finished_at": finished.isoformat(),
                 "output": str(output),
                 "quality_gate": quality.as_dict(),
+                "performance_monitor": performance_monitor,
             }
             _atomic_json(state_dir / "last_run.json", state)
             logger.info(
@@ -266,6 +279,11 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="A股罗盘自动更新与质量门禁")
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--state-dir", type=Path, default=DEFAULT_STATE_DIR)
+    parser.add_argument(
+        "--performance-path",
+        type=Path,
+        default=DEFAULT_PERFORMANCE,
+    )
     parser.add_argument("--max-data-age-days", type=int, default=5)
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--build", action="store_true")
@@ -274,6 +292,7 @@ def main() -> None:
         forecast, quality = run_update(
             output=args.output,
             state_dir=args.state_dir,
+            performance_path=args.performance_path,
             max_data_age_days=args.max_data_age_days,
             dry_run=args.dry_run,
             run_build=args.build,

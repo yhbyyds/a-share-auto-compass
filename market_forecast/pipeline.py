@@ -5,16 +5,22 @@ from typing import Any
 from market_forecast.data import fetch_market_breadth, fetch_market_data
 from market_forecast.events import enrich_forecast_with_events
 from market_forecast.model import generate_forecast
+from market_forecast.official_events import fetch_official_events
 from market_forecast.sectors import fetch_sector_data, generate_sector_forecast
+from market_forecast.trading_calendar import (
+    calendar_metadata,
+    prepare_calendar_updates,
+)
 from market_forecast.watchlist import generate_watchlist
 
 
-RELEASE = "7"
-DATA_VERSION = "1.3.0"
+RELEASE = "8"
+DATA_VERSION = "1.4.0"
 
 
 def build_forecast() -> dict[str, Any]:
     """Fetch current data, retrain all models, and assemble one forecast."""
+    calendar_warnings = prepare_calendar_updates()
     data = fetch_market_data()
     forecast = generate_forecast(
         data,
@@ -26,9 +32,18 @@ def build_forecast() -> dict[str, Any]:
         fetch_sector_data(),
         forecast["days"],
     )
-    enrich_forecast_with_events(forecast)
+    official_events = fetch_official_events(
+        [day["date"] for day in forecast["days"]]
+    )
+    enrich_forecast_with_events(
+        forecast,
+        dynamic_events=official_events.events,
+        collection=official_events.as_dict(),
+    )
     forecast["meta"]["version"] = DATA_VERSION
     forecast["meta"]["release"] = RELEASE
+    forecast["meta"]["trading_calendar"] = calendar_metadata()
+    forecast["meta"]["trading_calendar"]["update_warnings"] = calendar_warnings
     forecast["sources"].extend(
         [
             {
@@ -40,17 +55,35 @@ def build_forecast() -> dict[str, Any]:
                 ),
             },
             {
-                "name": "短线事件日历",
-                "detail": "交易所、央行、统计机构及公司投资者关系官方日程",
+                "name": "官方短线事件日历",
+                "detail": "自动采集美联储与BEA官方日程，并与人工核验事件合并",
                 "url": (
                     "https://www.federalreserve.gov/monetarypolicy/"
                     "fomccalendars.htm"
                 ),
             },
             {
+                "name": "上海证券交易所休市安排",
+                "detail": (
+                    "按上交所年度休市公告维护的XSHG日历；"
+                    "未知年份采用拒绝发布策略"
+                ),
+                "url": (
+                    "https://www.sse.com.cn/disclosure/dealinstruc/closed/"
+                ),
+            },
+            {
+                "name": "实盘预测追踪",
+                "detail": "逐次保存预测、到期后核对实际涨跌并触发失效降级",
+                "url": (
+                    "https://github.com/yhbyyds/a-share-auto-compass/"
+                    "actions"
+                ),
+            },
+            {
                 "name": "自动更新质量门禁",
                 "detail": "数据时效、结构完整性、验证样本与异常值检查",
-                "url": "https://a-share-event-compass-v6-202607.marialewisf383.chatgpt.site",
+                "url": "https://yhbyyds.github.io/a-share-auto-compass/",
             },
         ]
     )

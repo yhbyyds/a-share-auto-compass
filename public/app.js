@@ -70,8 +70,8 @@ function renderChart(history, days) {
       <path class="forecast-path" d="${forecastPath}"/>
       <circle cx="${x(history.length-1)}" cy="${y(history.at(-1).close)}" r="4" fill="#17211c"/>
       <circle cx="${x(totalPoints-1)}" cy="${y(days.at(-1).path_close)}" r="5" fill="#0c6b4f" stroke="#fff" stroke-width="2"/>
-      <text class="chart-label" x="${pad.left}" y="${height-5}">${history[0].date}</text>
-      <text class="chart-label" x="${x(history.length-1)-34}" y="${height-5}">${history.at(-1).date}</text>
+      <text class="chart-label" x="${pad.left}" y="${height-5}">${history[0].date.slice(5)}</text>
+      <text class="chart-label" x="${x(history.length-1)-34}" y="${height-5}">${history.at(-1).date.slice(5)}</text>
       <text class="chart-label" x="${width-pad.right-22}" y="${height-5}">${days.at(-1).date.slice(5)}</text>
     </svg>`;
 }
@@ -245,7 +245,15 @@ function renderEventRadar(radar, playbook) {
       <small>${item.rule}</small>
       <a href="${item.url}" target="_blank" rel="noreferrer">监控来源 ↗</a>
     </div>`).join("");
-  $("#event-method-note").textContent = radar.method;
+  const collectionLabels = {
+    live: "官方日程实时采集",
+    partial: "部分实时、部分缓存",
+    cached: "官方日程缓存容灾",
+    manual: "人工核验日历",
+    failed: "自动采集暂不可用",
+  };
+  const collection = radar.collection || {};
+  $("#event-method-note").textContent = `${radar.method} · ${collectionLabels[collection.status] || "事件源状态未知"}`;
 
   const playbookLabels = { base: "基础", bull: "转强", bear: "失效", neutral: "观望", event: "事件" };
   $("#playbook").innerHTML = Object.entries(playbook).map(([key, value]) => `
@@ -290,6 +298,11 @@ function render(data) {
   $("#benchmark-return").textContent = formatSigned(validation.benchmark_annual_return);
   $("#benchmark-dd").textContent = `${validation.benchmark_max_drawdown}%`;
   $("#sample-context").textContent = `${validation.samples} 个样本外观察 · 市场参与率 ${validation.active_days}%`;
+  const monitor = data.performance_monitor || {};
+  $("#model-health").textContent = monitor.label || "实盘样本积累中";
+  $("#model-health-context").textContent = monitor.accuracy == null
+    ? monitor.reason || "等待预测到期后自动核对实际涨跌。"
+    : `实盘 ${monitor.evaluated_samples} 次 · 近${monitor.recent_window}次命中 ${monitor.accuracy}% · 基线 ${monitor.baseline}% · ${monitor.reason}`;
 
   $("#model-list").innerHTML = data.models.map((model) => `
     <div class="model-item">

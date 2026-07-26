@@ -19,6 +19,7 @@ def test_successful_update_writes_forecast_and_state(
     written, quality = automation.run_update(
         output=output,
         state_dir=state_dir,
+        performance_path=tmp_path / "performance.json",
         max_data_age_days=5,
     )
 
@@ -42,7 +43,11 @@ def test_failed_gate_preserves_previous_output(tmp_path, monkeypatch) -> None:
     state_dir = tmp_path / "state"
 
     with pytest.raises(RuntimeError, match="质量门禁未通过"):
-        automation.run_update(output=output, state_dir=state_dir)
+        automation.run_update(
+            output=output,
+            state_dir=state_dir,
+            performance_path=tmp_path / "performance.json",
+        )
 
     assert json.loads(output.read_text(encoding="utf-8")) == previous
     state = json.loads(
@@ -72,6 +77,7 @@ def test_build_uses_node_directly(tmp_path, monkeypatch) -> None:
     automation.run_update(
         output=tmp_path / "forecast.json",
         state_dir=tmp_path / "state",
+        performance_path=tmp_path / "performance.json",
         run_build=True,
     )
 
@@ -98,6 +104,7 @@ def test_failed_build_restores_previous_output(tmp_path, monkeypatch) -> None:
         automation.run_update(
             output=output,
             state_dir=tmp_path / "state",
+            performance_path=tmp_path / "performance.json",
             run_build=True,
         )
 
