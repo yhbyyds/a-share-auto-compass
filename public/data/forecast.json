@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-07-26T10:20:55.004006+08:00",
+    "generated_at": "2026-07-26T10:25:36.683245+08:00",
     "data_through": "2026-07-24",
     "forecast_window": "2026-07-27 至 2026-07-31",
     "version": "1.7.0",
@@ -17,7 +17,7 @@
       "update_warnings": []
     },
     "automation": {
-      "run_id": "20260726T101906",
+      "run_id": "20260726T102349",
       "status": "passed",
       "quality_gate": {
         "passed": true,
@@ -38,7 +38,7 @@
           "event_count": 7
         }
       },
-      "updated_at": "2026-07-26T10:19:06.667100+08:00",
+      "updated_at": "2026-07-26T10:23:49.678090+08:00",
       "mode": "automatic"
     }
   },
@@ -193,9 +193,9 @@
     "advance_ratio": 9.9,
     "source": "新浪财经全A快照",
     "status": "live",
-    "fetched_at": "2026-07-26T10:20:01.453302+08:00",
+    "fetched_at": "2026-07-26T10:24:40.117920+08:00",
     "failures": [
-      "_fetch_breadth_eastmoney: ProxyError"
+      "_fetch_breadth_eastmoney: RetryError"
     ]
   },
   "models": [
@@ -3864,7 +3864,7 @@
             "date": "2026-07-28",
             "weekday": "二",
             "direction": "震荡",
-            "up_probability": 51.2,
+            "up_probability": 51.6,
             "outperform_probability": 49.6,
             "expected_return": -0.01,
             "expected_excess": -0.03,
@@ -7423,7 +7423,7 @@
     },
     "collection": {
       "status": "live",
-      "fetched_at": "2026-07-26T10:21:45.486654+08:00",
+      "fetched_at": "2026-07-26T10:26:35.705234+08:00",
       "cache_used": false,
       "event_count": 2,
       "sources": [
