@@ -52,9 +52,6 @@ jobs:
       - name: Run tests
         run: python -m pytest -q
 
-      - name: Run authentication tests
-        run: node --test tests/auth.test.mjs
-
       - name: Fetch, retrain, and validate
         run: python automation.py --max-data-age-days 5
 

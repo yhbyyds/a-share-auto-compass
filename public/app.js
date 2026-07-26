@@ -429,20 +429,23 @@ function render(data) {
 
 async function loadForecast() {
   const protectedHost = window.location.hostname.endsWith(".chatgpt.site");
-  const forecastUrl = protectedHost
-    ? "/api/forecast"
-    : "./data/forecast.json?v=1.7.0";
+  if (protectedHost) {
+    try {
+      const data = await window.SecureForecast.load();
+      render(data);
+      return data;
+    } catch {
+      const next = encodeURIComponent(
+        `${window.location.pathname}${window.location.search}`,
+      );
+      window.location.replace(`/login.html?next=${next}`);
+      throw new Error("需要登录，正在返回登录页");
+    }
+  }
   const response = await fetch(
-    forecastUrl,
+    "./data/forecast.json?v=1.7.0",
     { cache: "no-store" },
   );
-  if (response.status === 401 && protectedHost) {
-    const next = encodeURIComponent(
-      `${window.location.pathname}${window.location.search}`,
-    );
-    window.location.replace(`/login.html?next=${next}`);
-    throw new Error("登录已失效，正在返回登录页");
-  }
   if (!response.ok) throw new Error("预测文件读取失败");
   const data = await response.json();
   render(data);
@@ -475,14 +478,8 @@ if (
   logoutButton.addEventListener("click", async () => {
     logoutButton.disabled = true;
     logoutButton.textContent = "正在退出…";
-    try {
-      await fetch("/api/auth/logout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
-    } finally {
-      window.location.replace("/login.html");
-    }
+    window.SecureForecast.logout();
+    window.location.replace("/login.html");
   });
 }
 

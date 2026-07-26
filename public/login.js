@@ -26,16 +26,10 @@ form.addEventListener("submit", async (event) => {
   submitButton.textContent = "正在验证…";
   const data = new FormData(form);
   try {
-    const response = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username: data.get("username"),
-        password: data.get("password"),
-      }),
-    });
-    const result = await response.json();
-    if (!response.ok) throw new Error(result.error || "登录失败");
+    await window.SecureForecast.unlock(
+      data.get("username"),
+      data.get("password"),
+    );
     window.location.replace(destination());
   } catch (error) {
     errorBox.textContent = error.message || "登录失败，请稍后再试";

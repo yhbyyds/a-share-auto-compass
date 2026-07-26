@@ -20,13 +20,13 @@
       <p class="login-eyebrow">SECURE ACCESS · VERSION 11</p>
       <h1>把判断留在<br><em>安全边界内</em></h1>
       <p class="login-intro">
-        预测数据、行业曲线与自动更新结果仅在通过认证后加载。
+        预测数据、行业曲线与自动更新结果均以加密形式保存，通过认证后才在当前设备解密。
         登录不会提高模型准确率，也不构成收益保证。
       </p>
       <div class="login-points">
-        <span>12小时安全会话</span>
-        <span>HttpOnly Cookie</span>
-        <span>服务端密码校验</span>
+        <span>AES-256-GCM</span>
+        <span>PBKDF2密钥派生</span>
+        <span>标签页级会话</span>
       </div>
     </section>
 
@@ -54,10 +54,11 @@
         <button id="login-submit" class="login-submit" type="submit">进入罗盘</button>
       </form>
       <p class="login-footnote">
-        连续输错会触发临时限制。请勿使用银行卡、邮箱或其他网站的相同密码。
+        密钥仅保留在当前标签页；关闭标签页或退出账号后需要重新登录。
       </p>
     </section>
   </main>
+  <script src="/secure-data.js" defer></script>
   <script src="/login.js" defer></script>
 </body>
 </html>
