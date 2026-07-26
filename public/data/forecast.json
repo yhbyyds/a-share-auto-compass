@@ -1,13 +1,23 @@
 {
   "meta": {
-    "generated_at": "2026-07-26T08:01:17.258777+08:00",
+    "generated_at": "2026-07-26T08:40:43.986324+08:00",
     "data_through": "2026-07-24",
     "forecast_window": "2026-07-27 至 2026-07-31",
-    "version": "1.3.0",
+    "version": "1.4.0",
     "data_source": "腾讯证券主源 / 东方财富备用",
-    "release": "7",
+    "release": "8",
+    "trading_calendar": {
+      "name": "XSHG",
+      "source": "上海证券交易所年度休市安排（版本化官方清单）",
+      "url": "https://www.sse.com.cn/disclosure/dealinstruc/closed/",
+      "verified_through": "2026-12-31",
+      "retrieved_at": "2026-07-26",
+      "available_years": "2026",
+      "policy": "仅使用已核验年度；缺少官方清单时拒绝发布",
+      "update_warnings": []
+    },
     "automation": {
-      "run_id": "20260726T075945",
+      "run_id": "20260726T083924",
       "status": "passed",
       "quality_gate": {
         "passed": true,
@@ -22,10 +32,13 @@
           "validation_samples": 790,
           "sector_count": 13,
           "breadth_stocks": 0,
+          "event_collection_status": "live",
+          "performance_status": "collecting",
+          "live_evaluated_samples": 0,
           "event_count": 7
         }
       },
-      "updated_at": "2026-07-26T07:59:45.244674+08:00",
+      "updated_at": "2026-07-26T08:39:24.690170+08:00",
       "mode": "automatic"
     }
   },
@@ -40,7 +53,8 @@
       -1.7,
       1.88
     ],
-    "risk_level": "较高"
+    "risk_level": "较高",
+    "model_health_guard": "collecting"
   },
   "days": [
     {
@@ -271,363 +285,363 @@
   },
   "recent_chart": [
     {
-      "date": "03-16",
+      "date": "2026-03-16",
       "close": 4084.79
     },
     {
-      "date": "03-17",
+      "date": "2026-03-17",
       "close": 4049.91
     },
     {
-      "date": "03-18",
+      "date": "2026-03-18",
       "close": 4062.98
     },
     {
-      "date": "03-19",
+      "date": "2026-03-19",
       "close": 4006.55
     },
     {
-      "date": "03-20",
+      "date": "2026-03-20",
       "close": 3957.05
     },
     {
-      "date": "03-23",
+      "date": "2026-03-23",
       "close": 3813.28
     },
     {
-      "date": "03-24",
+      "date": "2026-03-24",
       "close": 3881.28
     },
     {
-      "date": "03-25",
+      "date": "2026-03-25",
       "close": 3931.84
     },
     {
-      "date": "03-26",
+      "date": "2026-03-26",
       "close": 3889.08
     },
     {
-      "date": "03-27",
+      "date": "2026-03-27",
       "close": 3913.72
     },
     {
-      "date": "03-30",
+      "date": "2026-03-30",
       "close": 3923.29
     },
     {
-      "date": "03-31",
+      "date": "2026-03-31",
       "close": 3891.86
     },
     {
-      "date": "04-01",
+      "date": "2026-04-01",
       "close": 3948.55
     },
     {
-      "date": "04-02",
+      "date": "2026-04-02",
       "close": 3919.29
     },
     {
-      "date": "04-03",
+      "date": "2026-04-03",
       "close": 3880.1
     },
     {
-      "date": "04-07",
+      "date": "2026-04-07",
       "close": 3890.16
     },
     {
-      "date": "04-08",
+      "date": "2026-04-08",
       "close": 3995.0
     },
     {
-      "date": "04-09",
+      "date": "2026-04-09",
       "close": 3966.17
     },
     {
-      "date": "04-10",
+      "date": "2026-04-10",
       "close": 3986.22
     },
     {
-      "date": "04-13",
+      "date": "2026-04-13",
       "close": 3988.56
     },
     {
-      "date": "04-14",
+      "date": "2026-04-14",
       "close": 4026.63
     },
     {
-      "date": "04-15",
+      "date": "2026-04-15",
       "close": 4027.21
     },
     {
-      "date": "04-16",
+      "date": "2026-04-16",
       "close": 4055.55
     },
     {
-      "date": "04-17",
+      "date": "2026-04-17",
       "close": 4051.43
     },
     {
-      "date": "04-20",
+      "date": "2026-04-20",
       "close": 4082.13
     },
     {
-      "date": "04-21",
+      "date": "2026-04-21",
       "close": 4085.08
     },
     {
-      "date": "04-22",
+      "date": "2026-04-22",
       "close": 4106.26
     },
     {
-      "date": "04-23",
+      "date": "2026-04-23",
       "close": 4093.25
     },
     {
-      "date": "04-24",
+      "date": "2026-04-24",
       "close": 4079.9
     },
     {
-      "date": "04-27",
+      "date": "2026-04-27",
       "close": 4086.34
     },
     {
-      "date": "04-28",
+      "date": "2026-04-28",
       "close": 4078.64
     },
     {
-      "date": "04-29",
+      "date": "2026-04-29",
       "close": 4107.51
     },
     {
-      "date": "04-30",
+      "date": "2026-04-30",
       "close": 4112.16
     },
     {
-      "date": "05-06",
+      "date": "2026-05-06",
       "close": 4160.17
     },
     {
-      "date": "05-07",
+      "date": "2026-05-07",
       "close": 4180.09
     },
     {
-      "date": "05-08",
+      "date": "2026-05-08",
       "close": 4179.95
     },
     {
-      "date": "05-11",
+      "date": "2026-05-11",
       "close": 4225.02
     },
     {
-      "date": "05-12",
+      "date": "2026-05-12",
       "close": 4214.49
     },
     {
-      "date": "05-13",
+      "date": "2026-05-13",
       "close": 4242.57
     },
     {
-      "date": "05-14",
+      "date": "2026-05-14",
       "close": 4177.92
     },
     {
-      "date": "05-15",
+      "date": "2026-05-15",
       "close": 4135.39
     },
     {
-      "date": "05-18",
+      "date": "2026-05-18",
       "close": 4131.53
     },
     {
-      "date": "05-19",
+      "date": "2026-05-19",
       "close": 4169.54
     },
     {
-      "date": "05-20",
+      "date": "2026-05-20",
       "close": 4162.18
     },
     {
-      "date": "05-21",
+      "date": "2026-05-21",
       "close": 4077.28
     },
     {
-      "date": "05-22",
+      "date": "2026-05-22",
       "close": 4112.9
     },
     {
-      "date": "05-25",
+      "date": "2026-05-25",
       "close": 4152.57
     },
     {
-      "date": "05-26",
+      "date": "2026-05-26",
       "close": 4145.37
     },
     {
-      "date": "05-27",
+      "date": "2026-05-27",
       "close": 4093.73
     },
     {
-      "date": "05-28",
+      "date": "2026-05-28",
       "close": 4098.64
     },
     {
-      "date": "05-29",
+      "date": "2026-05-29",
       "close": 4068.57
     },
     {
-      "date": "06-01",
+      "date": "2026-06-01",
       "close": 4057.74
     },
     {
-      "date": "06-02",
+      "date": "2026-06-02",
       "close": 4075.1
     },
     {
-      "date": "06-03",
+      "date": "2026-06-03",
       "close": 4083.97
     },
     {
-      "date": "06-04",
+      "date": "2026-06-04",
       "close": 4057.78
     },
     {
-      "date": "06-05",
+      "date": "2026-06-05",
       "close": 4027.74
     },
     {
-      "date": "06-08",
+      "date": "2026-06-08",
       "close": 3959.34
     },
     {
-      "date": "06-09",
+      "date": "2026-06-09",
       "close": 4010.03
     },
     {
-      "date": "06-10",
+      "date": "2026-06-10",
       "close": 3993.23
     },
     {
-      "date": "06-11",
+      "date": "2026-06-11",
       "close": 3987.01
     },
     {
-      "date": "06-12",
+      "date": "2026-06-12",
       "close": 4031.51
     },
     {
-      "date": "06-15",
+      "date": "2026-06-15",
       "close": 4096.47
     },
     {
-      "date": "06-16",
+      "date": "2026-06-16",
       "close": 4091.89
     },
     {
-      "date": "06-17",
+      "date": "2026-06-17",
       "close": 4108.08
     },
     {
-      "date": "06-18",
+      "date": "2026-06-18",
       "close": 4090.48
     },
     {
-      "date": "06-22",
+      "date": "2026-06-22",
       "close": 4163.1
     },
     {
-      "date": "06-23",
+      "date": "2026-06-23",
       "close": 4106.25
     },
     {
-      "date": "06-24",
+      "date": "2026-06-24",
       "close": 4110.81
     },
     {
-      "date": "06-25",
+      "date": "2026-06-25",
       "close": 4120.28
     },
     {
-      "date": "06-26",
+      "date": "2026-06-26",
       "close": 4027.26
     },
     {
-      "date": "06-29",
+      "date": "2026-06-29",
       "close": 4073.9
     },
     {
-      "date": "06-30",
+      "date": "2026-06-30",
       "close": 4094.4
     },
     {
-      "date": "07-01",
+      "date": "2026-07-01",
       "close": 4112.45
     },
     {
-      "date": "07-02",
+      "date": "2026-07-02",
       "close": 4028.9
     },
     {
-      "date": "07-03",
+      "date": "2026-07-03",
       "close": 4043.64
     },
     {
-      "date": "07-06",
+      "date": "2026-07-06",
       "close": 4041.24
     },
     {
-      "date": "07-07",
+      "date": "2026-07-07",
       "close": 3990.24
     },
     {
-      "date": "07-08",
+      "date": "2026-07-08",
       "close": 3970.88
     },
     {
-      "date": "07-09",
+      "date": "2026-07-09",
       "close": 4036.59
     },
     {
-      "date": "07-10",
+      "date": "2026-07-10",
       "close": 3996.16
     },
     {
-      "date": "07-13",
+      "date": "2026-07-13",
       "close": 3913.79
     },
     {
-      "date": "07-14",
+      "date": "2026-07-14",
       "close": 3967.13
     },
     {
-      "date": "07-15",
+      "date": "2026-07-15",
       "close": 3955.58
     },
     {
-      "date": "07-16",
+      "date": "2026-07-16",
       "close": 3882.41
     },
     {
-      "date": "07-17",
+      "date": "2026-07-17",
       "close": 3764.15
     },
     {
-      "date": "07-20",
+      "date": "2026-07-20",
       "close": 3796.28
     },
     {
-      "date": "07-21",
+      "date": "2026-07-21",
       "close": 3864.37
     },
     {
-      "date": "07-22",
+      "date": "2026-07-22",
       "close": 3867.03
     },
     {
-      "date": "07-23",
+      "date": "2026-07-23",
       "close": 3876.78
     },
     {
-      "date": "07-24",
+      "date": "2026-07-24",
       "close": 3814.2
     }
   ],
@@ -991,14 +1005,24 @@
       "url": "https://www.swsresearch.com/institute_sw/allIndex/releasedIndex"
     },
     {
-      "name": "短线事件日历",
-      "detail": "交易所、央行、统计机构及公司投资者关系官方日程",
+      "name": "官方短线事件日历",
+      "detail": "自动采集美联储与BEA官方日程，并与人工核验事件合并",
       "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
+    },
+    {
+      "name": "上海证券交易所休市安排",
+      "detail": "按上交所年度休市公告维护的XSHG日历；未知年份采用拒绝发布策略",
+      "url": "https://www.sse.com.cn/disclosure/dealinstruc/closed/"
+    },
+    {
+      "name": "实盘预测追踪",
+      "detail": "逐次保存预测、到期后核对实际涨跌并触发失效降级",
+      "url": "https://github.com/yhbyyds/a-share-auto-compass/actions"
     },
     {
       "name": "自动更新质量门禁",
       "detail": "数据时效、结构完整性、验证样本与异常值检查",
-      "url": "https://a-share-event-compass-v6-202607.marialewisf383.chatgpt.site"
+      "url": "https://yhbyyds.github.io/a-share-auto-compass/"
     }
   ],
   "disclaimer": "本系统是研究与风险管理工具，不构成投资建议。样本外回测不等于未来表现，交易成本、滑点、政策与突发事件均可能使预测失效；不存在可承诺的稳定盈利模型。",
@@ -2664,6 +2688,41 @@
         "Meta 2026年二季度业绩"
       ]
     },
-    "method": "事件层不直接修改量价模型概率；它按A股实际反应日聚合风险，标记受影响行业并把高冲击日改为事件置信，等待盘中条件确认。"
+    "collection": {
+      "status": "live",
+      "fetched_at": "2026-07-26T08:41:43.090451+08:00",
+      "cache_used": false,
+      "event_count": 2,
+      "sources": [
+        {
+          "id": "federal_reserve",
+          "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
+          "status": "live",
+          "parsed_events": 8
+        },
+        {
+          "id": "bea",
+          "url": "https://www.bea.gov/news/schedule",
+          "status": "live",
+          "parsed_events": 6
+        }
+      ],
+      "warnings": []
+    },
+    "method": "事件层不直接修改量价模型概率；它按A股实际反应日聚合风险，官方自动日程与人工核验事件合并去重，标记受影响行业并把高冲击日改为事件置信，等待盘中条件确认。"
+  },
+  "performance_monitor": {
+    "status": "collecting",
+    "label": "实盘样本积累中",
+    "evaluated_samples": 0,
+    "pending_samples": 5,
+    "recent_window": 0,
+    "accuracy": null,
+    "baseline": null,
+    "edge_pp": null,
+    "brier": null,
+    "last_evaluated_date": null,
+    "degraded": false,
+    "reason": "版本8开始记录逐日预测，至少积累20个已实现样本后判断失效。"
   }
 }

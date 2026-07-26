@@ -1,4 +1,80 @@
 {
   "version": 1,
-  "predictions": []
+  "predictions": [
+    {
+      "id": "2026-07-24:2026-07-27:h1",
+      "generated_at": "2026-07-26T08:40:43.986324+08:00",
+      "base_date": "2026-07-24",
+      "base_close": 3814.2,
+      "target_date": "2026-07-27",
+      "horizon": 1,
+      "direction": "偏强",
+      "up_probability": 59.7,
+      "expected_return": 0.2,
+      "status": "pending"
+    },
+    {
+      "id": "2026-07-24:2026-07-28:h2",
+      "generated_at": "2026-07-26T08:40:43.986324+08:00",
+      "base_date": "2026-07-24",
+      "base_close": 3814.2,
+      "target_date": "2026-07-28",
+      "horizon": 2,
+      "direction": "震荡",
+      "up_probability": 50.0,
+      "expected_return": 0.02,
+      "status": "pending"
+    },
+    {
+      "id": "2026-07-24:2026-07-29:h3",
+      "generated_at": "2026-07-26T08:40:43.986324+08:00",
+      "base_date": "2026-07-24",
+      "base_close": 3814.2,
+      "target_date": "2026-07-29",
+      "horizon": 3,
+      "direction": "震荡",
+      "up_probability": 49.3,
+      "expected_return": -0.1,
+      "status": "pending"
+    },
+    {
+      "id": "2026-07-24:2026-07-30:h4",
+      "generated_at": "2026-07-26T08:40:43.986324+08:00",
+      "base_date": "2026-07-24",
+      "base_close": 3814.2,
+      "target_date": "2026-07-30",
+      "horizon": 4,
+      "direction": "震荡",
+      "up_probability": 50.0,
+      "expected_return": -0.14,
+      "status": "pending"
+    },
+    {
+      "id": "2026-07-24:2026-07-31:h5",
+      "generated_at": "2026-07-26T08:40:43.986324+08:00",
+      "base_date": "2026-07-24",
+      "base_close": 3814.2,
+      "target_date": "2026-07-31",
+      "horizon": 5,
+      "direction": "震荡",
+      "up_probability": 57.1,
+      "expected_return": 0.04,
+      "status": "pending"
+    }
+  ],
+  "updated_at": "2026-07-26T08:41:43.684597+08:00",
+  "monitor": {
+    "status": "collecting",
+    "label": "实盘样本积累中",
+    "evaluated_samples": 0,
+    "pending_samples": 5,
+    "recent_window": 0,
+    "accuracy": null,
+    "baseline": null,
+    "edge_pp": null,
+    "brier": null,
+    "last_evaluated_date": null,
+    "degraded": false,
+    "reason": "版本8开始记录逐日预测，至少积累20个已实现样本后判断失效。"
+  }
 }
