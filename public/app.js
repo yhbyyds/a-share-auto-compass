@@ -140,7 +140,13 @@ function renderIntradayLab(intraday) {
   const latest = intraday.latest_snapshot;
   const themes = (intraday.micro_themes || []).slice(0, 8);
   const themeTraining = intraday.theme_training || {};
+  const selection = intraday.selection || {};
+  const selectedUp = selection.up || [];
+  const selectedDown = selection.down || [];
   const ready = status.status === "ready";
+  const renderSelection = (items, tone, empty) => items.length
+    ? items.map((theme, index) => `<div class="selection-item ${tone}"><span>#${index + 1} · ${theme.name}</span><strong>${theme.selection_bucket}</strong><small>${theme.selection_reason || `迁移分 ${theme.provisional_score ?? "—"}`}</small></div>`).join("")
+    : `<p class="selection-empty">${empty}</p>`;
   container.innerHTML = `
     <div class="intraday-head">
       <div><span class="label">${ready ? "VALIDATED INTRADAY MODEL" : "DATA COLLECTION · NO LIVE CALL"}</span>
@@ -150,6 +156,10 @@ function renderIntradayLab(intraday) {
     <div class="intraday-progress"><div><strong>${status.labelled_sessions || 0}</strong><span>/ ${status.minimum_sessions || 60} 交易日</span></div><div><strong>${status.labelled_samples || 0}</strong><span>/ ${status.minimum_samples || 240} 已结算快照</span></div><div><strong>${intraday.taxonomy_count || 0}</strong><span>细分领域覆盖</span></div></div>
     <p class="intraday-copy">${status.reason || status.method || "按日期前推验证中。"}</p>
     ${latest ? `<p class="intraday-snapshot">最近快照：${new Date(latest.timestamp).toLocaleString("zh-CN", { hour12: false })} · ${latest.bucket} 桶 · ${latest.source}</p>` : ""}
+    <div class="micro-selection-grid">
+      <div class="micro-selection-column"><h4>模型候选偏强 · 优先观察</h4><p>按父行业次日先验 + 概念快照迁移分排序，不等同于买入指令。</p>${renderSelection(selectedUp, "positive", "当前没有达到偏强候选门槛的细分板块。")}</div>
+      <div class="micro-selection-column"><h4>模型候选偏弱 · 风险回避</h4><p>仅表示相对弱势，需结合开盘后强弱确认。</p>${renderSelection(selectedDown, "negative", "当前没有达到偏弱候选门槛的细分板块。")}</div>
+    </div>
     <div class="micro-theme-grid">${themes.length ? themes.map((theme, index) => {
       const training = themeTraining[theme.key] || {};
       const directionClass = theme.provisional_direction?.includes("偏强") ? "positive" : theme.provisional_direction?.includes("偏弱") ? "negative" : "neutral";

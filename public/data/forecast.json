@@ -7711,6 +7711,8 @@
         "provisional_score": 9.4,
         "provisional_expected_return": 0.12,
         "provisional_confidence": "低",
+        "selection_bucket": "候选偏强",
+        "selection_reason": "迁移分 9.4 · 概念快照 -0.02% · 父行业期望 +0.18%",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -7727,6 +7729,8 @@
         "provisional_score": 2.7,
         "provisional_expected_return": 0.11,
         "provisional_confidence": "低",
+        "selection_bucket": "中性",
+        "selection_reason": "迁移分 2.7 · 概念快照 -0.03% · 父行业期望 +0.17%",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -7743,6 +7747,8 @@
         "provisional_score": -1.5,
         "provisional_expected_return": 0.04,
         "provisional_confidence": "低",
+        "selection_bucket": "中性",
+        "selection_reason": "迁移分 -1.5 · 概念快照 -0.57% · 父行业期望 +0.13%",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -7759,6 +7765,8 @@
         "provisional_score": -2.3,
         "provisional_expected_return": 0.07,
         "provisional_confidence": "低",
+        "selection_bucket": "中性",
+        "selection_reason": "迁移分 -2.3 · 概念快照 -0.69% · 父行业期望 +0.18%",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -7775,6 +7783,8 @@
         "provisional_score": -7.1,
         "provisional_expected_return": 0.07,
         "provisional_confidence": "低",
+        "selection_bucket": "中性",
+        "selection_reason": "迁移分 -7.1 · 概念快照 -0.70% · 父行业期望 +0.19%",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -7791,6 +7801,8 @@
         "provisional_score": 6.0,
         "provisional_expected_return": 0.14,
         "provisional_confidence": "低",
+        "selection_bucket": "候选偏强",
+        "selection_reason": "迁移分 6.0 · 概念快照 -0.81% · 父行业期望 +0.30%",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -7807,6 +7819,8 @@
         "provisional_score": -14.4,
         "provisional_expected_return": 0.08,
         "provisional_confidence": "低",
+        "selection_bucket": "中性",
+        "selection_reason": "迁移分 -14.4 · 概念快照 -1.01% · 父行业期望 +0.23%",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -7823,6 +7837,8 @@
         "provisional_score": -15.5,
         "provisional_expected_return": 0.04,
         "provisional_confidence": "低",
+        "selection_bucket": "中性",
+        "selection_reason": "迁移分 -15.5 · 概念快照 -1.07% · 父行业期望 +0.17%",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -7839,6 +7855,8 @@
         "provisional_score": -10.3,
         "provisional_expected_return": 0.01,
         "provisional_confidence": "低",
+        "selection_bucket": "中性",
+        "selection_reason": "迁移分 -10.3 · 概念快照 -1.07% · 父行业期望 +0.13%",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -7855,6 +7873,8 @@
         "provisional_score": -15.8,
         "provisional_expected_return": 0.07,
         "provisional_confidence": "低",
+        "selection_bucket": "中性",
+        "selection_reason": "迁移分 -15.8 · 概念快照 -1.09% · 父行业期望 +0.23%",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -7871,6 +7891,8 @@
         "provisional_score": -20.2,
         "provisional_expected_return": 0.05,
         "provisional_confidence": "低",
+        "selection_bucket": "中性",
+        "selection_reason": "迁移分 -20.2 · 概念快照 -1.30% · 父行业期望 +0.21%",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -7887,6 +7909,8 @@
         "provisional_score": -25.6,
         "provisional_expected_return": 0.02,
         "provisional_confidence": "低",
+        "selection_bucket": "中性",
+        "selection_reason": "迁移分 -25.6 · 概念快照 -1.61% · 父行业期望 +0.21%",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -7903,6 +7927,8 @@
         "provisional_score": -14.8,
         "provisional_expected_return": 0.04,
         "provisional_confidence": "低",
+        "selection_bucket": "中性",
+        "selection_reason": "迁移分 -14.8 · 概念快照 -2.21% · 父行业期望 +0.30%",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -7919,6 +7945,8 @@
         "provisional_score": -31.8,
         "provisional_expected_return": -0.05,
         "provisional_confidence": "低",
+        "selection_bucket": "中性",
+        "selection_reason": "迁移分 -31.8 · 概念快照 -2.84% · 父行业期望 +0.23%",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -7935,6 +7963,8 @@
         "provisional_score": -30.4,
         "provisional_expected_return": -0.13,
         "provisional_confidence": "低",
+        "selection_bucket": "候选偏弱",
+        "selection_reason": "迁移分 -30.4 · 概念快照 -3.77% · 父行业期望 +0.21%",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -7951,6 +7981,8 @@
         "provisional_score": -14.8,
         "provisional_expected_return": -0.08,
         "provisional_confidence": "低",
+        "selection_bucket": "候选偏弱",
+        "selection_reason": "迁移分 -14.8 · 概念快照 -3.97% · 父行业期望 +0.30%",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -7967,11 +7999,109 @@
         "provisional_score": -18.1,
         "provisional_expected_return": -0.17,
         "provisional_confidence": "低",
+        "selection_bucket": "候选偏弱",
+        "selection_reason": "迁移分 -18.1 · 概念快照 -5.83% · 父行业期望 +0.28%",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
       }
     ],
+    "selection": {
+      "up": [
+        {
+          "key": "ai_compute",
+          "name": "AI算力",
+          "parent": "computer",
+          "board": "人工智能",
+          "change": -0.02,
+          "amount": 200322841365.0,
+          "provisional_direction": "明日临时震荡",
+          "day_ahead_direction": "明日临时震荡",
+          "provisional_score": 9.4,
+          "provisional_expected_return": 0.12,
+          "provisional_confidence": "低",
+          "selection_bucket": "候选偏强",
+          "selection_reason": "迁移分 9.4 · 概念快照 -0.02% · 父行业期望 +0.18%",
+          "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
+          "prediction_horizon": "next_trading_session",
+          "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
+        },
+        {
+          "key": "chip_equipment",
+          "name": "半导体设备",
+          "parent": "electronics",
+          "board": "光刻机(胶)",
+          "change": -0.81,
+          "amount": 64290951278.0,
+          "provisional_direction": "明日临时震荡",
+          "day_ahead_direction": "明日临时震荡",
+          "provisional_score": 6.0,
+          "provisional_expected_return": 0.14,
+          "provisional_confidence": "低",
+          "selection_bucket": "候选偏强",
+          "selection_reason": "迁移分 6.0 · 概念快照 -0.81% · 父行业期望 +0.30%",
+          "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
+          "prediction_horizon": "next_trading_session",
+          "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
+        }
+      ],
+      "down": [
+        {
+          "key": "copper",
+          "name": "铜",
+          "parent": "nonferrous",
+          "board": "铜缆高速连接",
+          "change": -3.77,
+          "amount": 20902244060.0,
+          "provisional_direction": "明日临时偏弱",
+          "day_ahead_direction": "明日临时偏弱",
+          "provisional_score": -30.4,
+          "provisional_expected_return": -0.13,
+          "provisional_confidence": "低",
+          "selection_bucket": "候选偏弱",
+          "selection_reason": "迁移分 -30.4 · 概念快照 -3.77% · 父行业期望 +0.21%",
+          "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
+          "prediction_horizon": "next_trading_session",
+          "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
+        },
+        {
+          "key": "cpo_optical",
+          "name": "CPO与光模块",
+          "parent": "telecom",
+          "board": "CPO概念",
+          "change": -5.83,
+          "amount": 147729011627.0,
+          "provisional_direction": "明日临时偏弱",
+          "day_ahead_direction": "明日临时偏弱",
+          "provisional_score": -18.1,
+          "provisional_expected_return": -0.17,
+          "provisional_confidence": "低",
+          "selection_bucket": "候选偏弱",
+          "selection_reason": "迁移分 -18.1 · 概念快照 -5.83% · 父行业期望 +0.28%",
+          "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
+          "prediction_horizon": "next_trading_session",
+          "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
+        },
+        {
+          "key": "memory",
+          "name": "存储芯片",
+          "parent": "electronics",
+          "board": "存储芯片",
+          "change": -3.97,
+          "amount": 211077125700.0,
+          "provisional_direction": "明日临时偏弱",
+          "day_ahead_direction": "明日临时偏弱",
+          "provisional_score": -14.8,
+          "provisional_expected_return": -0.08,
+          "provisional_confidence": "低",
+          "selection_bucket": "候选偏弱",
+          "selection_reason": "迁移分 -14.8 · 概念快照 -3.97% · 父行业期望 +0.30%",
+          "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
+          "prediction_horizon": "next_trading_session",
+          "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
+        }
+      ]
+    },
     "theme_training": {
       "chip_equipment": {
         "status": "collecting",

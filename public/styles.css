@@ -560,6 +560,17 @@ footer p { max-width: 840px; margin: 0; }
 .intraday-progress span { color:var(--muted); font-size:11px; margin-left:4px; }
 .intraday-copy,.intraday-snapshot { color:var(--muted); font-size:12px; line-height:1.65; }
 .intraday-snapshot { padding-top:10px; border-top:1px solid var(--line); }
+.micro-selection-grid { display:grid; grid-template-columns:repeat(2, 1fr); gap:12px; margin-top:18px; }
+.micro-selection-column { padding:16px; border:1px solid var(--line); border-radius:14px; background:rgba(255,255,255,.72); }
+.micro-selection-column h4 { margin:0; font-size:15px; }
+.micro-selection-column > p { margin:6px 0 12px; color:var(--muted); font-size:10px; line-height:1.5; }
+.selection-item { display:grid; grid-template-columns:1fr auto; gap:4px 12px; padding:10px 0; border-top:1px solid var(--line); }
+.selection-item span, .selection-item small { color:var(--muted); font-size:10px; }
+.selection-item strong { font-size:12px; }
+.selection-item small { grid-column:1 / -1; }
+.selection-item.positive strong { color:var(--green); }
+.selection-item.negative strong { color:var(--red); }
+.selection-empty { padding:10px 0; border-top:1px solid var(--line); color:var(--muted); font-size:11px; }
 .micro-theme-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-top:18px; }
 .micro-theme { display:flex; min-height:88px; flex-direction:column; gap:5px; padding:12px; border:1px solid var(--line); border-radius:12px; background:rgba(255,255,255,.78); }
 .micro-theme > span,.micro-theme small { color:var(--muted); font-size:10px; }
@@ -626,7 +637,7 @@ footer p { max-width: 840px; margin: 0; }
   .sector-detail-metrics { grid-template-columns: repeat(2, 1fr); }
   .sector-leaders { grid-template-columns: 1fr; }
   .sector-leader:last-child { grid-column: auto; }
-  .intraday-progress, .micro-theme-grid { grid-template-columns: 1fr; }
+  .intraday-progress, .micro-theme-grid, .micro-selection-grid { grid-template-columns: 1fr; }
   .sector-matrix-panel { padding: 22px 14px; }
   .sector-matrix-head { display: block; }
   .sector-matrix-head > p { margin-top: 8px; text-align: left; }

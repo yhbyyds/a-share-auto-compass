@@ -316,6 +316,17 @@ def _transfer_predictions(
             and parent.get("signal_band") == "强"
             else "低"
         )
+        # Keep the official direction conservative while exposing a separate
+        # ranking layer for users who need cross-sectional selection.  These
+        # labels are evidence-gated candidates, not independent theme-model
+        # calls: the parent day-1 prior and the capped concept-board move must
+        # point in the same direction.
+        if transfer_score >= 0.05 and expected >= 0.05:
+            selection_bucket = "候选偏强"
+        elif transfer_score <= -0.12 and expected <= -0.05:
+            selection_bucket = "候选偏弱"
+        else:
+            selection_bucket = "中性"
         output.append({
             **theme,
             "provisional_direction": direction,
@@ -323,6 +334,12 @@ def _transfer_predictions(
             "provisional_score": round(transfer_score * 100, 1),
             "provisional_expected_return": round(expected, 2),
             "provisional_confidence": confidence,
+            "selection_bucket": selection_bucket,
+            "selection_reason": (
+                f"迁移分 {transfer_score * 100:.1f} · "
+                f"概念快照 {live_change:+.2f}% · "
+                f"父行业期望 {parent_expected:+.2f}%"
+            ),
             "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
             "prediction_horizon": "next_trading_session",
             "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。",
@@ -343,8 +360,18 @@ def build_intraday_brief(
     latest = rows[-1] if rows else None
     themes = sorted((latest or {}).get("themes", []), key=lambda item: (item.get("change", 0), item.get("amount", 0)), reverse=True)
     themes = _transfer_predictions(themes, sector_forecast)
+    selected_up = sorted(
+        (theme for theme in themes if theme.get("selection_bucket") == "候选偏强"),
+        key=lambda item: (item.get("provisional_score", 0), item.get("provisional_expected_return", 0)),
+        reverse=True,
+    )[:3]
+    selected_down = sorted(
+        (theme for theme in themes if theme.get("selection_bucket") == "候选偏弱"),
+        key=lambda item: (item.get("provisional_score", 0), item.get("provisional_expected_return", 0)),
+    )[:3]
     return {
         "status": status, "latest_snapshot": latest, "micro_themes": themes,
+        "selection": {"up": selected_up, "down": selected_down},
         "theme_training": theme_training,
         "taxonomy_count": len(MICRO_THEMES),
         "disclaimer": "页面主预测对象是下一交易日；盘中快照只作为次日先验和训练数据，不输出当日剩余走势。",

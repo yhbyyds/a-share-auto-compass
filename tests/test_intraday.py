@@ -61,3 +61,5 @@ def test_transfer_prediction_is_capped_and_uses_parent_prior():
     assert result["provisional_direction"] == "明日临时偏强"
     assert result["provisional_score"] <= 100
     assert result["prediction_stage"].startswith("一级行业次日先验")
+    assert result["selection_bucket"] == "候选偏强"
+    assert "迁移分" in result["selection_reason"]
