@@ -1,6 +1,6 @@
 import pandas as pd
 
-from market_forecast.sectors import _direction, _outlook, _recent_history
+from market_forecast.sectors import _cross_sectional_signal, _direction, _outlook, _recent_history
 
 
 def test_sector_direction_requires_validated_quality():
@@ -34,3 +34,25 @@ def test_recent_history_is_normalized_and_limited_to_60_days():
     assert history[0]["relative"] == 100
     assert history[-1]["date"] == index[-1].strftime("%Y-%m-%d")
     assert history[-1]["sector"] > history[-1]["benchmark"]
+
+
+def test_cross_sectional_signal_stays_neutral_when_spread_is_small():
+    rows = [
+        {"up_probability": 50.0 + index * 0.2, "expected_excess": 0.0001 * index,
+         "outperform_probability": 50.0, "confidence": "中"}
+        for index in range(5)
+    ]
+    _cross_sectional_signal(rows)
+    assert all(row["relative_signal"] == "相对中性" for row in rows)
+    assert rows[0]["relative_signal_spread"]["separated"] is False
+
+
+def test_cross_sectional_signal_marks_only_validated_extremes():
+    rows = [
+        {"up_probability": 42.0, "expected_excess": -0.006, "outperform_probability": 44.0, "confidence": "中"},
+        {"up_probability": 50.0, "expected_excess": 0.000, "outperform_probability": 50.0, "confidence": "中"},
+        {"up_probability": 60.0, "expected_excess": 0.006, "outperform_probability": 56.0, "confidence": "中"},
+    ]
+    _cross_sectional_signal(rows)
+    assert rows[0]["relative_signal"] == "相对偏弱"
+    assert rows[2]["relative_signal"] == "相对偏强"

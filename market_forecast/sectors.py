@@ -398,6 +398,50 @@ def _outlook(probability: float, expected: float) -> str:
     return "相对中性"
 
 
+def _cross_sectional_signal(days: list[dict[str, Any]]) -> None:
+    """Attach an evidence-gated relative signal to one forecast day.
+
+    The absolute classifier remains untouched. The extra layer only answers
+    which covered sectors are stronger or weaker than the others, using the
+    model's own probability, expected excess return, and confidence.
+    """
+    if not days:
+        return
+    probabilities = np.asarray([float(item["up_probability"]) for item in days])
+    excess = np.asarray([float(item["expected_excess"]) for item in days])
+    relative = np.asarray([float(item["outperform_probability"]) for item in days])
+    # Percentile ranks prevent percentage points and returns from mixing units.
+    p_rank = pd.Series(probabilities).rank(pct=True).to_numpy()
+    e_rank = pd.Series(excess).rank(pct=True).to_numpy()
+    r_rank = pd.Series(relative).rank(pct=True).to_numpy()
+    score = 100 * (0.45 * p_rank + 0.40 * e_rank + 0.15 * r_rank)
+    probability_spread = float(probabilities.max() - probabilities.min())
+    excess_spread = float(excess.max() - excess.min())
+    separated = probability_spread >= 3.0 or excess_spread >= 0.003
+    tail_cutoff = min(35.0, max(25.0, 100.0 / len(days)))
+    for index, item in enumerate(days):
+        item["relative_signal_score"] = round(float(score[index]), 1)
+        item["relative_signal_spread"] = {
+            "probability_pp": round(probability_spread, 1),
+            "expected_excess_pp": round(excess_spread * 100, 2),
+            "separated": separated,
+        }
+        quality = item.get("confidence") in {"中", "事件"}
+        label = "相对中性"
+        if separated and quality and score[index] >= 100 - tail_cutoff and excess[index] > 0:
+            label = "相对偏强"
+        elif separated and quality and score[index] <= tail_cutoff and excess[index] < 0:
+            label = "相对偏弱"
+        item["relative_signal"] = label
+        item["relative_signal_reason"] = (
+            "模型横截面分位数较高，且预期超额收益为正"
+            if label == "相对偏强"
+            else "模型横截面分位数较低，且预期超额收益为负"
+            if label == "相对偏弱"
+            else "概率/预期超额收益横截面分歧不足，保留中性"
+        )
+
+
 def _drivers(
     spec: SectorSpec,
     frame: pd.DataFrame,
@@ -629,6 +673,11 @@ def generate_sector_forecast(
         )
 
     sectors.insert(0, _composite_technology(sectors))
+    # Add an explicitly relative layer after all sector forecasts exist. The
+    # primary direction field remains the absolute model output.
+    for day_index in range(len(forecast_dates)):
+        day_rows = [item["days"][day_index] for item in sectors if not item.get("is_composite")]
+        _cross_sectional_signal(day_rows)
     for item in sectors:
         weekly_return = float(
             np.prod(
@@ -666,7 +715,8 @@ def generate_sector_forecast(
         "method": (
             "行业绝对方向使用逻辑回归与梯度提升的滚动样本外集成；"
             "行业相对强弱使用独立梯度提升模型；收益预测为行业相对"
-            "沪深300的回归结果叠加大盘路径。"
+            "沪深300的回归结果叠加大盘路径；另外使用概率、超额收益"
+            "与相对概率的横截面分位数生成相对信号，分歧不足时保留中性。"
         ),
         "sectors": ordered,
     }
