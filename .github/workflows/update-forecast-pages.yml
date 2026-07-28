@@ -1,6 +1,9 @@
 name: Update forecast and deploy Pages
 
 on:
+  push:
+    branches:
+      - main
   schedule:
     - cron: "35 10 * * 1-5"
     - cron: "30 12 * * 0"
