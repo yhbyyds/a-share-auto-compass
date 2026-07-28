@@ -1,11 +1,24 @@
 from __future__ import annotations
 
 import json
+from datetime import datetime
 
 import pytest
 
 import automation
 from tests.test_quality import valid_forecast
+
+
+@pytest.fixture(autouse=True)
+def freeze_automation_clock(monkeypatch):
+    """Keep date-sensitive publication fixtures deterministic."""
+    class FrozenDatetime(datetime):
+        @classmethod
+        def now(cls, tz=None):
+            value = cls(2026, 7, 26, 18, 35)
+            return value.replace(tzinfo=tz) if tz else value
+
+    monkeypatch.setattr(automation, "datetime", FrozenDatetime)
 
 
 def test_successful_update_writes_forecast_and_state(

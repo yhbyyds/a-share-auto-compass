@@ -93,6 +93,29 @@ function renderBreadth(breadth) {
   $("#breadth-panel").innerHTML = `<div class="breadth-stats">${items.map(([name, value, cls]) => `<div class="breadth-stat"><span>${name}</span><strong class="${cls}">${value}</strong></div>`).join("")}</div><p class="breadth-source">来源：${breadth.source || "全A快照"}</p>`;
 }
 
+function renderIntradayLab(intraday) {
+  const container = $("#intraday-lab");
+  if (!intraday) {
+    container.innerHTML = `<p class="breadth-unavailable">超短线数据集尚未初始化。</p>`;
+    return;
+  }
+  const status = intraday.status || {};
+  const latest = intraday.latest_snapshot;
+  const themes = (intraday.micro_themes || []).slice(0, 8);
+  const ready = status.status === "ready";
+  container.innerHTML = `
+    <div class="intraday-head">
+      <div><span class="label">${ready ? "VALIDATED INTRADAY MODEL" : "DATA COLLECTION · NO LIVE CALL"}</span>
+      <h3>${ready ? "盘中方向模型已达到训练门槛" : "超短线模型正在积累独立样本"}</h3></div>
+      <span class="intraday-status ${ready ? "ready" : "collecting"}">${ready ? "可进入样本外核验" : "采集中"}</span>
+    </div>
+    <div class="intraday-progress"><div><strong>${status.labelled_sessions || 0}</strong><span>/ ${status.minimum_sessions || 60} 交易日</span></div><div><strong>${status.labelled_samples || 0}</strong><span>/ ${status.minimum_samples || 240} 已结算快照</span></div><div><strong>${intraday.taxonomy_count || 0}</strong><span>细分领域覆盖</span></div></div>
+    <p class="intraday-copy">${status.reason || status.method || "按日期前推验证中。"}</p>
+    ${latest ? `<p class="intraday-snapshot">最近快照：${new Date(latest.timestamp).toLocaleString("zh-CN", { hour12: false })} · ${latest.bucket} 桶 · ${latest.source}</p>` : ""}
+    <div class="micro-theme-grid">${themes.length ? themes.map((theme, index) => `<div class="micro-theme ${Number(theme.change) >= 0 ? "positive" : "negative"}"><span>#${index + 1} · ${theme.parent}</span><strong>${theme.name}</strong><small>${theme.board || "未匹配板块"} · ${formatSigned(Number(theme.change || 0))}</small></div>`).join("") : `<p class="breadth-unavailable">尚无细分板块快照；将在下一固定盘中时点采集。</p>`}</div>
+    <p class="section-footnote warning">${intraday.disclaimer || "盘中热度不等于买入信号。"}</p>`;
+}
+
 function renderHorizonValidation(rows) {
   $("#horizon-validation").innerHTML = rows.map((row) => {
     const edge = row.recent_accuracy - row.baseline;
@@ -393,6 +416,7 @@ function render(data) {
       <p>${item.detail}</p>
     </div>`).join("");
   renderBreadth(data.breadth);
+  renderIntradayLab(data.intraday);
 
   $("#weekly-accuracy").textContent = `${validation.weekly_direction_accuracy}%`;
   $("#accuracy-context").textContent = `朴素多数类基线 ${validation.baseline_accuracy}% · AUC ${validation.auc}`;

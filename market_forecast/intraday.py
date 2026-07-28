@@ -1,0 +1,228 @@
+"""Intraday data collection and evidence-gated micro-theme research.
+
+This module deliberately separates *collection* from *prediction*.  A daily
+model cannot honestly be presented as a 30-minute model.  We first preserve
+timestamped intraday observations, settle them against the same-day close, and
+only enable a classifier after enough independent trading sessions exist.
+"""
+from __future__ import annotations
+
+from datetime import datetime
+import json
+from pathlib import Path
+from typing import Any
+from zoneinfo import ZoneInfo
+
+import numpy as np
+import pandas as pd
+import requests
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, brier_score_loss
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+
+from market_forecast.data import _session, fetch_market_breadth
+
+
+BEIJING = ZoneInfo("Asia/Shanghai")
+SNAPSHOT_FILE = Path("data/intraday/snapshots.json")
+MIN_TRAINED_SESSIONS = 60
+MIN_TRAINED_SAMPLES = 240
+CONCEPT_URL = "https://push2.eastmoney.com/api/qt/clist/get"
+QUOTE_URL = "https://qt.gtimg.cn/q=sh000001,sh000300,sz399006"
+
+# This is a coverage taxonomy, not a stock recommendation list.  A theme can
+# be observed immediately, but receives a direction prediction only after it
+# accumulates enough labelled intraday sessions.
+MICRO_THEMES: tuple[dict[str, str], ...] = (
+    {"key": "chip_equipment", "name": "半导体设备", "parent": "electronics", "keywords": "半导体设备,光刻机,刻蚀,芯片设备"},
+    {"key": "memory", "name": "存储芯片", "parent": "electronics", "keywords": "存储芯片,DRAM,HBM,存储"},
+    {"key": "cpo_optical", "name": "CPO与光模块", "parent": "telecom", "keywords": "CPO,光模块,光通信,光纤"},
+    {"key": "ai_compute", "name": "AI算力", "parent": "computer", "keywords": "算力,人工智能,服务器,AIGC"},
+    {"key": "robotics", "name": "人形机器人", "parent": "computer", "keywords": "人形机器人,机器人,减速器"},
+    {"key": "data_center_power", "name": "数据中心电源", "parent": "power_equipment", "keywords": "数据中心电源,液冷,UPS,电源设备"},
+    {"key": "grid", "name": "智能电网", "parent": "power_equipment", "keywords": "智能电网,特高压,电网设备"},
+    {"key": "energy_storage", "name": "储能", "parent": "power_equipment", "keywords": "储能,钠离子电池,固态电池"},
+    {"key": "thermal_power", "name": "火电", "parent": "utilities", "keywords": "火电,电力"},
+    {"key": "power_reform", "name": "电力改革", "parent": "utilities", "keywords": "电力改革,虚拟电厂,绿电"},
+    {"key": "innovative_drug", "name": "创新药", "parent": "healthcare", "keywords": "创新药,生物医药,减肥药"},
+    {"key": "medical_service", "name": "医疗服务", "parent": "healthcare", "keywords": "医疗服务,医疗器械,CRO"},
+    {"key": "military_electronics", "name": "军工电子", "parent": "defense", "keywords": "军工电子,军工信息化,卫星"},
+    {"key": "commercial_aerospace", "name": "商业航天", "parent": "defense", "keywords": "商业航天,航天,卫星互联网"},
+    {"key": "copper", "name": "铜", "parent": "nonferrous", "keywords": "铜,有色金属"},
+    {"key": "securities", "name": "证券", "parent": "nonbank", "keywords": "证券,金融科技"},
+    {"key": "consumer_electronics", "name": "消费电子", "parent": "electronics", "keywords": "消费电子,苹果概念,VR"},
+    {"key": "automotive_parts", "name": "汽车零部件", "parent": "auto", "keywords": "汽车零部件,智能驾驶,无人驾驶"},
+)
+
+
+def _bucket(now: datetime) -> str:
+    """Use fixed, non-overlapping collection buckets for independent samples."""
+    minute = now.hour * 60 + now.minute
+    points = ((575, "09:35"), (600, "10:00"), (630, "10:30"),
+              (660, "11:00"), (810, "13:30"), (840, "14:00"),
+              (870, "14:30"), (890, "14:50"))
+    passed = [label for edge, label in points if minute >= edge]
+    return passed[-1] if passed else "before_open"
+
+
+def _quote_snapshot() -> dict[str, dict[str, float]]:
+    response = _session().get(QUOTE_URL, headers={"User-Agent": "Mozilla/5.0"}, timeout=12)
+    response.raise_for_status()
+    result: dict[str, dict[str, float]] = {}
+    keys = ("sse", "csi300", "chinext")
+    for key, line in zip(keys, response.text.splitlines()):
+        fields = line.split('"')[1].split("~")
+        result[key] = {"price": float(fields[3]), "change": float(fields[32])}
+    return result
+
+
+def _concept_rows() -> list[dict[str, Any]]:
+    params = {
+        "pn": "1", "pz": "100", "po": "1", "np": "1", "fltt": "2", "invt": "2",
+        "fid": "f3", "fs": "m:90+t:3+f:!50", "fields": "f12,f14,f3,f6",
+    }
+    headers = {"User-Agent": "Mozilla/5.0", "Referer": "https://quote.eastmoney.com/"}
+    rows: list[dict[str, Any]] = []
+    total = 100
+    page = 1
+    while len(rows) < total and page <= 8:
+        response = _session().get(CONCEPT_URL, params={**params, "pn": str(page)}, headers=headers, timeout=15)
+        response.raise_for_status()
+        data = response.json().get("data") or {}
+        total = int(data.get("total") or 0)
+        batch = data.get("diff") or []
+        if not batch:
+            break
+        rows.extend(batch)
+        page += 1
+    return rows
+
+
+def _match_themes(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    matched: list[dict[str, Any]] = []
+    for theme in MICRO_THEMES:
+        keywords = [item.lower() for item in theme["keywords"].split(",")]
+        candidates = [row for row in rows if any(word in str(row.get("f14", "")).lower() for word in keywords)]
+        if not candidates:
+            continue
+        # Use the most liquid matching board instead of cherry-picking the
+        # highest return.  This keeps the snapshot reproducible.
+        row = max(candidates, key=lambda item: float(item.get("f6") or 0))
+        matched.append({
+            **{key: theme[key] for key in ("key", "name", "parent")},
+            "board": str(row.get("f14", "")),
+            "change": round(float(row.get("f3") or 0), 2),
+            "amount": float(row.get("f6") or 0),
+        })
+    return matched
+
+
+def collect_intraday_snapshot(path: str | Path = SNAPSHOT_FILE, now: datetime | None = None) -> dict[str, Any]:
+    now = now or datetime.now(BEIJING)
+    snapshot = {
+        "timestamp": now.isoformat(), "date": now.date().isoformat(), "bucket": _bucket(now),
+        "quotes": _quote_snapshot(), "breadth": fetch_market_breadth(), "themes": _match_themes(_concept_rows()),
+        "source": "腾讯指数快照 / 东方财富概念板块快照", "label": None,
+    }
+    file_path = Path(path)
+    file_path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        payload = json.loads(file_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        payload = {"schema": 1, "snapshots": []}
+    snapshots = [row for row in payload.get("snapshots", []) if not (row.get("date") == snapshot["date"] and row.get("bucket") == snapshot["bucket"])]
+    snapshots.append(snapshot)
+    payload["snapshots"] = sorted(snapshots, key=lambda item: item["timestamp"])[-5000:]
+    file_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    return snapshot
+
+
+def settle_intraday_labels(close_by_date: pd.Series, path: str | Path = SNAPSHOT_FILE) -> int:
+    """Label each saved snapshot with its remaining same-session SSE return."""
+    file_path = Path(path)
+    if not file_path.exists():
+        return 0
+    payload = json.loads(file_path.read_text(encoding="utf-8"))
+    updated = 0
+    for row in payload.get("snapshots", []):
+        if row.get("label") is not None or row.get("date") not in close_by_date.index:
+            continue
+        spot = float(row.get("quotes", {}).get("sse", {}).get("price") or 0)
+        close = float(close_by_date.loc[row["date"]])
+        if spot > 0:
+            row["label"] = {"remaining_return": round((close / spot - 1) * 100, 4), "up": bool(close >= spot)}
+            updated += 1
+    file_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    return updated
+
+
+def _features(rows: list[dict[str, Any]]) -> tuple[pd.DataFrame, pd.Series]:
+    data = []
+    target = []
+    for row in rows:
+        breadth = row.get("breadth", {})
+        quotes = row.get("quotes", {})
+        themes = row.get("themes", [])
+        changes = [float(item.get("change", 0)) for item in themes]
+        if not row.get("label"):
+            continue
+        data.append({
+            "sse": float(quotes.get("sse", {}).get("change", 0)),
+            "csi300": float(quotes.get("csi300", {}).get("change", 0)),
+            "chinext": float(quotes.get("chinext", {}).get("change", 0)),
+            "advance_ratio": float(breadth.get("advance_ratio", 50)),
+            "median_change": float(breadth.get("median_change", 0)),
+            "limit_spread": float(breadth.get("limit_up_proxy", 0)) - float(breadth.get("limit_down_proxy", 0)),
+            "theme_mean": float(np.mean(changes)) if changes else 0.0,
+            "theme_dispersion": float(np.std(changes)) if changes else 0.0,
+        })
+        target.append(int(bool(row["label"].get("up"))))
+    return pd.DataFrame(data), pd.Series(target, dtype=int)
+
+
+def intraday_research_status(path: str | Path = SNAPSHOT_FILE) -> dict[str, Any]:
+    file_path = Path(path)
+    try:
+        rows = json.loads(file_path.read_text(encoding="utf-8")).get("snapshots", [])
+    except (OSError, json.JSONDecodeError):
+        rows = []
+    labelled = [row for row in rows if row.get("label") is not None]
+    sessions = len({row.get("date") for row in labelled})
+    status = "ready" if sessions >= MIN_TRAINED_SESSIONS and len(labelled) >= MIN_TRAINED_SAMPLES else "collecting"
+    output: dict[str, Any] = {
+        "status": status, "snapshot_count": len(rows), "labelled_samples": len(labelled),
+        "labelled_sessions": sessions, "minimum_sessions": MIN_TRAINED_SESSIONS,
+        "minimum_samples": MIN_TRAINED_SAMPLES,
+        "target": "各固定时点至当日收盘的上证方向",
+        "method": "固定时点快照、收盘后结算标签、按日期前推验证；未满样本不输出盘中方向。",
+    }
+    if status != "ready":
+        output["reason"] = f"已结算 {sessions}/{MIN_TRAINED_SESSIONS} 个交易日、{len(labelled)}/{MIN_TRAINED_SAMPLES} 个样本；当前只展示细分领域热度，不生成伪精确盘中预测。"
+        return output
+    x, y = _features(labelled)
+    split = max(int(len(x) * 0.7), 1)
+    model = make_pipeline(StandardScaler(), LogisticRegression(C=0.3, max_iter=600, class_weight="balanced"))
+    model.fit(x.iloc[:split], y.iloc[:split])
+    probability = model.predict_proba(x.iloc[split:])[:, 1]
+    output.update({
+        "validation_samples": int(len(y) - split),
+        "validation_accuracy": round(float(accuracy_score(y.iloc[split:], probability >= 0.5)) * 100, 1),
+        "brier": round(float(brier_score_loss(y.iloc[split:], probability)), 3),
+    })
+    return output
+
+
+def build_intraday_brief(path: str | Path = SNAPSHOT_FILE) -> dict[str, Any]:
+    status = intraday_research_status(path)
+    try:
+        rows = json.loads(Path(path).read_text(encoding="utf-8")).get("snapshots", [])
+    except (OSError, json.JSONDecodeError):
+        rows = []
+    latest = rows[-1] if rows else None
+    themes = sorted((latest or {}).get("themes", []), key=lambda item: (item.get("change", 0), item.get("amount", 0)), reverse=True)
+    return {
+        "status": status, "latest_snapshot": latest, "micro_themes": themes,
+        "taxonomy_count": len(MICRO_THEMES),
+        "disclaimer": "细分领域热度是盘中观测，不等于买入信号；方向模型会在满足样本和样本外验证门槛后才启用。",
+    }
