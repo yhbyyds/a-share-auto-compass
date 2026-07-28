@@ -1,13 +1,6 @@
 name: Update forecast and deploy Pages
 
 on:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - public/data/forecast.json
-      - data/performance_history.json
-      - data/sse_holidays.json
   schedule:
     - cron: "35 10 * * 1-5"
     - cron: "30 12 * * 0"
@@ -23,7 +16,26 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # A source-only push publishes the updated UI immediately without pretending
+  # that a new next-session forecast exists during the trading session.
+  source_only:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload source UI artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: public
+      - name: Deploy source UI
+        id: source_deployment
+        uses: actions/deploy-pages@v4
+
   update:
+    if: github.event_name != 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:

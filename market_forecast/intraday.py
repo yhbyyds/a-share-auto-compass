@@ -259,7 +259,7 @@ def micro_theme_training_status(path: str | Path = SNAPSHOT_FILE) -> dict[str, d
     for theme in MICRO_THEMES:
         labelled = [
             row for row in rows
-            if row.get("label", {}).get("themes", {}).get(theme["key"]) is not None
+            if (row.get("label") or {}).get("themes", {}).get(theme["key"]) is not None
         ]
         sessions = len({row.get("date") for row in labelled})
         output[theme["key"]] = {
