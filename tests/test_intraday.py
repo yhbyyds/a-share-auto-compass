@@ -4,7 +4,12 @@ from zoneinfo import ZoneInfo
 
 import pandas as pd
 
-from market_forecast.intraday import _bucket, collect_intraday_snapshot, settle_intraday_labels
+from market_forecast.intraday import (
+    _bucket,
+    _transfer_predictions,
+    collect_intraday_snapshot,
+    settle_intraday_labels,
+)
 
 
 def test_settlement_uses_snapshot_price_and_close(tmp_path):
@@ -45,3 +50,14 @@ def test_snapshot_replaces_same_fixed_bucket(tmp_path, monkeypatch):
 def test_bucket_never_assigns_a_future_collection_time():
     now = datetime(2026, 7, 27, 11, 20, tzinfo=ZoneInfo("Asia/Shanghai"))
     assert _bucket(now) == "11:00"
+
+
+def test_transfer_prediction_is_capped_and_uses_parent_prior():
+    themes = [{"key": "robotics", "name": "机器人", "parent": "computer", "change": 8.0}]
+    sectors = {"sectors": [{"key": "computer", "days": [{
+        "up_probability": 60.0, "expected_return": 0.4, "signal_band": "中",
+    }]}]}
+    result = _transfer_predictions(themes, sectors)[0]
+    assert result["provisional_direction"] == "临时偏强"
+    assert result["provisional_score"] <= 100
+    assert result["prediction_stage"].startswith("一级行业先验")

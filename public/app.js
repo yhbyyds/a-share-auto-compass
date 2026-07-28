@@ -116,7 +116,8 @@ function renderIntradayLab(intraday) {
     ${latest ? `<p class="intraday-snapshot">最近快照：${new Date(latest.timestamp).toLocaleString("zh-CN", { hour12: false })} · ${latest.bucket} 桶 · ${latest.source}</p>` : ""}
     <div class="micro-theme-grid">${themes.length ? themes.map((theme, index) => {
       const training = themeTraining[theme.key] || {};
-      return `<div class="micro-theme ${Number(theme.change) >= 0 ? "positive" : "negative"}"><span>#${index + 1} · ${theme.parent}</span><strong>${theme.name}</strong><small>${theme.board || "未匹配板块"} · ${formatSigned(Number(theme.change || 0))}</small><small>独立标签 ${training.labelled_samples || 0}/${training.minimum_samples || 240} · ${training.status === "ready" ? "已达训练门槛" : "采集中"}</small></div>`;
+      const directionClass = theme.provisional_direction?.includes("偏强") ? "positive" : theme.provisional_direction?.includes("偏弱") ? "negative" : "neutral";
+      return `<div class="micro-theme ${directionClass}"><span>#${index + 1} · ${theme.parent}</span><strong>${theme.name}</strong><em>${theme.provisional_direction || "临时震荡"} · ${theme.provisional_confidence || "低"}置信</em><small>快照 ${formatSigned(Number(theme.change || 0))} · 迁移分 ${theme.provisional_score ?? "—"}</small><small>独立标签 ${training.labelled_samples || 0}/${training.minimum_samples || 240} · ${training.status === "ready" ? "已达训练门槛" : "采集中"}</small></div>`;
     }).join("") : `<p class="breadth-unavailable">尚无细分板块快照；将在下一固定盘中时点采集。</p>`}</div>
     <p class="section-footnote warning">${intraday.disclaimer || "盘中热度不等于买入信号。"}</p>`;
 }

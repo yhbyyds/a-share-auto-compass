@@ -42,7 +42,9 @@ def build_forecast() -> dict[str, Any]:
     )
     # Intraday research is evidence-gated and remains in collection mode until
     # independently-labelled fixed-time snapshots are sufficient.
-    forecast["intraday"] = build_intraday_brief()
+    forecast["intraday"] = build_intraday_brief(
+        sector_forecast=forecast["sector_forecast"],
+    )
     official_events = fetch_official_events(
         [day["date"] for day in forecast["days"]]
     )

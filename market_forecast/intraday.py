@@ -277,7 +277,61 @@ def micro_theme_training_status(path: str | Path = SNAPSHOT_FILE) -> dict[str, d
     return output
 
 
-def build_intraday_brief(path: str | Path = SNAPSHOT_FILE) -> dict[str, Any]:
+def _transfer_predictions(
+    themes: list[dict[str, Any]],
+    sector_forecast: dict[str, Any] | None,
+) -> list[dict[str, Any]]:
+    """Produce transparent provisional theme directions from validated priors.
+
+    Before each theme has enough independent labels, the only defensible
+    prediction is a transfer estimate: the existing parent-sector day-1 model
+    supplies the prior and the current concept-board move supplies a small,
+    capped intraday adjustment.  This never rewrites the parent probability.
+    """
+    parent_days = {
+        sector.get("key"): (sector.get("days") or [{}])[0]
+        for sector in (sector_forecast or {}).get("sectors", [])
+    }
+    output: list[dict[str, Any]] = []
+    for theme in themes:
+        parent = parent_days.get(theme.get("parent"), {})
+        parent_probability = float(parent.get("up_probability", 50.0))
+        parent_expected = float(parent.get("expected_return", 0.0))
+        live_change = float(theme.get("change") or 0.0)
+        # Concept-board movement is capped and receives less weight than the
+        # historical parent model so a single noisy quote cannot dominate.
+        live_bias = float(np.clip(live_change / 2.0, -1.0, 1.0))
+        prior_bias = float(np.clip((parent_probability - 50.0) / 10.0, -1.0, 1.0))
+        transfer_score = 0.65 * prior_bias + 0.35 * live_bias
+        expected = 0.65 * parent_expected + 0.35 * float(np.clip(live_change * 0.20, -1.0, 1.0))
+        if transfer_score >= 0.12 and expected > 0:
+            direction = "临时偏强"
+        elif transfer_score <= -0.12 and expected < 0:
+            direction = "临时偏弱"
+        else:
+            direction = "临时震荡"
+        confidence = (
+            "中"
+            if abs(transfer_score) >= 0.45
+            and parent.get("signal_band") == "强"
+            else "低"
+        )
+        output.append({
+            **theme,
+            "provisional_direction": direction,
+            "provisional_score": round(transfer_score * 100, 1),
+            "provisional_expected_return": round(expected, 2),
+            "provisional_confidence": confidence,
+            "prediction_stage": "一级行业先验 + 盘中概念快照迁移",
+            "prediction_note": "独立细分样本未达门槛，先作临时倾向，不替代独立模型。",
+        })
+    return output
+
+
+def build_intraday_brief(
+    path: str | Path = SNAPSHOT_FILE,
+    sector_forecast: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     status = intraday_research_status(path)
     theme_training = micro_theme_training_status(path)
     try:
@@ -286,9 +340,10 @@ def build_intraday_brief(path: str | Path = SNAPSHOT_FILE) -> dict[str, Any]:
         rows = []
     latest = rows[-1] if rows else None
     themes = sorted((latest or {}).get("themes", []), key=lambda item: (item.get("change", 0), item.get("amount", 0)), reverse=True)
+    themes = _transfer_predictions(themes, sector_forecast)
     return {
         "status": status, "latest_snapshot": latest, "micro_themes": themes,
         "theme_training": theme_training,
         "taxonomy_count": len(MICRO_THEMES),
-        "disclaimer": "细分领域热度是盘中观测，不等于买入信号；方向模型会在满足样本和样本外验证门槛后才启用。",
+        "disclaimer": "页面同时展示临时迁移倾向和独立训练状态；临时倾向来自一级行业先验与盘中概念快照，独立细分模型达到样本门槛后再替换。",
     }

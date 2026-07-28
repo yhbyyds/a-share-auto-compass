@@ -7704,7 +7704,13 @@
         "parent": "computer",
         "board": "人工智能",
         "change": -0.02,
-        "amount": 200322841365.0
+        "amount": 200322841365.0,
+        "provisional_direction": "临时震荡",
+        "provisional_score": 9.4,
+        "provisional_expected_return": 0.12,
+        "provisional_confidence": "低",
+        "prediction_stage": "一级行业先验 + 盘中概念快照迁移",
+        "prediction_note": "独立细分样本未达门槛，先作临时倾向，不替代独立模型。"
       },
       {
         "key": "medical_service",
@@ -7712,7 +7718,13 @@
         "parent": "healthcare",
         "board": "医疗器械概念",
         "change": -0.03,
-        "amount": 54231176462.0
+        "amount": 54231176462.0,
+        "provisional_direction": "临时震荡",
+        "provisional_score": 2.7,
+        "provisional_expected_return": 0.11,
+        "provisional_confidence": "低",
+        "prediction_stage": "一级行业先验 + 盘中概念快照迁移",
+        "prediction_note": "独立细分样本未达门槛，先作临时倾向，不替代独立模型。"
       },
       {
         "key": "thermal_power",
@@ -7720,7 +7732,13 @@
         "parent": "utilities",
         "board": "绿色电力",
         "change": -0.57,
-        "amount": 44704451673.0
+        "amount": 44704451673.0,
+        "provisional_direction": "临时震荡",
+        "provisional_score": -1.5,
+        "provisional_expected_return": 0.04,
+        "provisional_confidence": "低",
+        "prediction_stage": "一级行业先验 + 盘中概念快照迁移",
+        "prediction_note": "独立细分样本未达门槛，先作临时倾向，不替代独立模型。"
       },
       {
         "key": "robotics",
@@ -7728,7 +7746,13 @@
         "parent": "computer",
         "board": "机器人概念",
         "change": -0.69,
-        "amount": 157498387315.0
+        "amount": 157498387315.0,
+        "provisional_direction": "临时震荡",
+        "provisional_score": -2.3,
+        "provisional_expected_return": 0.07,
+        "provisional_confidence": "低",
+        "prediction_stage": "一级行业先验 + 盘中概念快照迁移",
+        "prediction_note": "独立细分样本未达门槛，先作临时倾向，不替代独立模型。"
       },
       {
         "key": "automotive_parts",
@@ -7736,7 +7760,13 @@
         "parent": "auto",
         "board": "无人驾驶",
         "change": -0.7,
-        "amount": 102764760679.0
+        "amount": 102764760679.0,
+        "provisional_direction": "临时震荡",
+        "provisional_score": -7.1,
+        "provisional_expected_return": 0.07,
+        "provisional_confidence": "低",
+        "prediction_stage": "一级行业先验 + 盘中概念快照迁移",
+        "prediction_note": "独立细分样本未达门槛，先作临时倾向，不替代独立模型。"
       },
       {
         "key": "chip_equipment",
@@ -7744,7 +7774,13 @@
         "parent": "electronics",
         "board": "光刻机(胶)",
         "change": -0.81,
-        "amount": 64290951278.0
+        "amount": 64290951278.0,
+        "provisional_direction": "临时震荡",
+        "provisional_score": 6.0,
+        "provisional_expected_return": 0.14,
+        "provisional_confidence": "低",
+        "prediction_stage": "一级行业先验 + 盘中概念快照迁移",
+        "prediction_note": "独立细分样本未达门槛，先作临时倾向，不替代独立模型。"
       },
       {
         "key": "grid",
@@ -7752,7 +7788,13 @@
         "parent": "power_equipment",
         "board": "智能电网",
         "change": -1.01,
-        "amount": 42713443115.0
+        "amount": 42713443115.0,
+        "provisional_direction": "临时震荡",
+        "provisional_score": -14.4,
+        "provisional_expected_return": 0.08,
+        "provisional_confidence": "低",
+        "prediction_stage": "一级行业先验 + 盘中概念快照迁移",
+        "prediction_note": "独立细分样本未达门槛，先作临时倾向，不替代独立模型。"
       },
       {
         "key": "innovative_drug",
@@ -7760,7 +7802,13 @@
         "parent": "healthcare",
         "board": "创新药",
         "change": -1.07,
-        "amount": 37043338504.0
+        "amount": 37043338504.0,
+        "provisional_direction": "临时震荡",
+        "provisional_score": -15.5,
+        "provisional_expected_return": 0.04,
+        "provisional_confidence": "低",
+        "prediction_stage": "一级行业先验 + 盘中概念快照迁移",
+        "prediction_note": "独立细分样本未达门槛，先作临时倾向，不替代独立模型。"
       },
       {
         "key": "power_reform",
@@ -7768,7 +7816,13 @@
         "parent": "utilities",
         "board": "虚拟电厂",
         "change": -1.07,
-        "amount": 10680246324.0
+        "amount": 10680246324.0,
+        "provisional_direction": "临时震荡",
+        "provisional_score": -10.3,
+        "provisional_expected_return": 0.01,
+        "provisional_confidence": "低",
+        "prediction_stage": "一级行业先验 + 盘中概念快照迁移",
+        "prediction_note": "独立细分样本未达门槛，先作临时倾向，不替代独立模型。"
       },
       {
         "key": "energy_storage",
@@ -7776,7 +7830,13 @@
         "parent": "power_equipment",
         "board": "储能概念",
         "change": -1.09,
-        "amount": 119818662407.0
+        "amount": 119818662407.0,
+        "provisional_direction": "临时震荡",
+        "provisional_score": -15.8,
+        "provisional_expected_return": 0.07,
+        "provisional_confidence": "低",
+        "prediction_stage": "一级行业先验 + 盘中概念快照迁移",
+        "prediction_note": "独立细分样本未达门槛，先作临时倾向，不替代独立模型。"
       },
       {
         "key": "military_electronics",
@@ -7784,7 +7844,13 @@
         "parent": "defense",
         "board": "卫星互联网",
         "change": -1.3,
-        "amount": 27581968736.0
+        "amount": 27581968736.0,
+        "provisional_direction": "临时震荡",
+        "provisional_score": -20.2,
+        "provisional_expected_return": 0.05,
+        "provisional_confidence": "低",
+        "prediction_stage": "一级行业先验 + 盘中概念快照迁移",
+        "prediction_note": "独立细分样本未达门槛，先作临时倾向，不替代独立模型。"
       },
       {
         "key": "commercial_aerospace",
@@ -7792,7 +7858,13 @@
         "parent": "defense",
         "board": "商业航天",
         "change": -1.61,
-        "amount": 78361806775.0
+        "amount": 78361806775.0,
+        "provisional_direction": "临时震荡",
+        "provisional_score": -25.6,
+        "provisional_expected_return": 0.02,
+        "provisional_confidence": "低",
+        "prediction_stage": "一级行业先验 + 盘中概念快照迁移",
+        "prediction_note": "独立细分样本未达门槛，先作临时倾向，不替代独立模型。"
       },
       {
         "key": "consumer_electronics",
@@ -7800,7 +7872,13 @@
         "parent": "electronics",
         "board": "消费电子概念",
         "change": -2.21,
-        "amount": 110042821734.0
+        "amount": 110042821734.0,
+        "provisional_direction": "临时震荡",
+        "provisional_score": -14.8,
+        "provisional_expected_return": 0.04,
+        "provisional_confidence": "低",
+        "prediction_stage": "一级行业先验 + 盘中概念快照迁移",
+        "prediction_note": "独立细分样本未达门槛，先作临时倾向，不替代独立模型。"
       },
       {
         "key": "data_center_power",
@@ -7808,7 +7886,13 @@
         "parent": "power_equipment",
         "board": "液冷概念",
         "change": -2.84,
-        "amount": 91829438342.0
+        "amount": 91829438342.0,
+        "provisional_direction": "临时偏弱",
+        "provisional_score": -31.8,
+        "provisional_expected_return": -0.05,
+        "provisional_confidence": "低",
+        "prediction_stage": "一级行业先验 + 盘中概念快照迁移",
+        "prediction_note": "独立细分样本未达门槛，先作临时倾向，不替代独立模型。"
       },
       {
         "key": "copper",
@@ -7816,7 +7900,13 @@
         "parent": "nonferrous",
         "board": "铜缆高速连接",
         "change": -3.77,
-        "amount": 20902244060.0
+        "amount": 20902244060.0,
+        "provisional_direction": "临时偏弱",
+        "provisional_score": -30.4,
+        "provisional_expected_return": -0.13,
+        "provisional_confidence": "低",
+        "prediction_stage": "一级行业先验 + 盘中概念快照迁移",
+        "prediction_note": "独立细分样本未达门槛，先作临时倾向，不替代独立模型。"
       },
       {
         "key": "memory",
@@ -7824,7 +7914,13 @@
         "parent": "electronics",
         "board": "存储芯片",
         "change": -3.97,
-        "amount": 211077125700.0
+        "amount": 211077125700.0,
+        "provisional_direction": "临时偏弱",
+        "provisional_score": -14.8,
+        "provisional_expected_return": -0.08,
+        "provisional_confidence": "低",
+        "prediction_stage": "一级行业先验 + 盘中概念快照迁移",
+        "prediction_note": "独立细分样本未达门槛，先作临时倾向，不替代独立模型。"
       },
       {
         "key": "cpo_optical",
@@ -7832,7 +7928,13 @@
         "parent": "telecom",
         "board": "CPO概念",
         "change": -5.83,
-        "amount": 147729011627.0
+        "amount": 147729011627.0,
+        "provisional_direction": "临时偏弱",
+        "provisional_score": -18.1,
+        "provisional_expected_return": -0.17,
+        "provisional_confidence": "低",
+        "prediction_stage": "一级行业先验 + 盘中概念快照迁移",
+        "prediction_note": "独立细分样本未达门槛，先作临时倾向，不替代独立模型。"
       }
     ],
     "theme_training": {
@@ -7964,6 +8066,6 @@
       }
     },
     "taxonomy_count": 18,
-    "disclaimer": "细分领域热度是盘中观测，不等于买入信号；方向模型会在满足样本和样本外验证门槛后才启用。"
+    "disclaimer": "页面同时展示临时迁移倾向和独立训练状态；临时倾向来自一级行业先验与盘中概念快照，独立细分模型达到样本门槛后再替换。"
   }
 }
