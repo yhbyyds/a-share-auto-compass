@@ -40,7 +40,9 @@
       },
       "updated_at": "2026-07-26T22:06:35.901538+08:00",
       "mode": "automatic"
-    }
+    },
+    "intraday_observation_updated_at": "2026-07-28T11:04:33.709833+08:00",
+    "forecast_note": "日线预测保留最近一次质量门禁通过版本；盘中细分领域为独立观测层，收盘后再结算训练标签。"
   },
   "market": {
     "name": "上证指数",
@@ -7506,5 +7508,462 @@
       }
     },
     "reason": "版本9按第1日唯一目标日统计，至少积累60日后判断有效性。"
+  },
+  "intraday": {
+    "status": {
+      "status": "collecting",
+      "snapshot_count": 1,
+      "labelled_samples": 0,
+      "labelled_sessions": 0,
+      "minimum_sessions": 60,
+      "minimum_samples": 240,
+      "target": "各固定时点至当日收盘的上证方向",
+      "method": "固定时点快照、收盘后结算标签、按日期前推验证；未满样本不输出盘中方向。",
+      "reason": "已结算 0/60 个交易日、0/240 个样本；当前只展示细分领域热度，不生成伪精确盘中预测。"
+    },
+    "latest_snapshot": {
+      "timestamp": "2026-07-28T11:04:33.709833+08:00",
+      "date": "2026-07-28",
+      "bucket": "11:00",
+      "quotes": {
+        "sse": {
+          "price": 3803.5,
+          "change": -1.42
+        },
+        "csi300": {
+          "price": 4574.49,
+          "change": -2.72
+        },
+        "chinext": {
+          "price": 3382.64,
+          "change": -5.8
+        }
+      },
+      "breadth": {
+        "stocks": 5483,
+        "advancers": 2500,
+        "decliners": 2787,
+        "flat": 196,
+        "limit_up_proxy": 71,
+        "limit_down_proxy": 41,
+        "median_change": -0.1,
+        "turnover_yi": 11945.0,
+        "advance_ratio": 45.6,
+        "source": "新浪财经全A快照",
+        "status": "live",
+        "fetched_at": "2026-07-28T11:04:40.570621+08:00",
+        "failures": [
+          "_fetch_breadth_eastmoney: MarketDataError"
+        ]
+      },
+      "themes": [
+        {
+          "key": "chip_equipment",
+          "name": "半导体设备",
+          "parent": "electronics",
+          "board": "光刻机(胶)",
+          "change": -0.81,
+          "amount": 64290951278.0
+        },
+        {
+          "key": "memory",
+          "name": "存储芯片",
+          "parent": "electronics",
+          "board": "存储芯片",
+          "change": -3.97,
+          "amount": 211077125700.0
+        },
+        {
+          "key": "cpo_optical",
+          "name": "CPO与光模块",
+          "parent": "telecom",
+          "board": "CPO概念",
+          "change": -5.83,
+          "amount": 147729011627.0
+        },
+        {
+          "key": "ai_compute",
+          "name": "AI算力",
+          "parent": "computer",
+          "board": "人工智能",
+          "change": -0.02,
+          "amount": 200322841365.0
+        },
+        {
+          "key": "robotics",
+          "name": "人形机器人",
+          "parent": "computer",
+          "board": "机器人概念",
+          "change": -0.69,
+          "amount": 157498387315.0
+        },
+        {
+          "key": "data_center_power",
+          "name": "数据中心电源",
+          "parent": "power_equipment",
+          "board": "液冷概念",
+          "change": -2.84,
+          "amount": 91829438342.0
+        },
+        {
+          "key": "grid",
+          "name": "智能电网",
+          "parent": "power_equipment",
+          "board": "智能电网",
+          "change": -1.01,
+          "amount": 42713443115.0
+        },
+        {
+          "key": "energy_storage",
+          "name": "储能",
+          "parent": "power_equipment",
+          "board": "储能概念",
+          "change": -1.09,
+          "amount": 119818662407.0
+        },
+        {
+          "key": "thermal_power",
+          "name": "火电",
+          "parent": "utilities",
+          "board": "绿色电力",
+          "change": -0.57,
+          "amount": 44704451673.0
+        },
+        {
+          "key": "power_reform",
+          "name": "电力改革",
+          "parent": "utilities",
+          "board": "虚拟电厂",
+          "change": -1.07,
+          "amount": 10680246324.0
+        },
+        {
+          "key": "innovative_drug",
+          "name": "创新药",
+          "parent": "healthcare",
+          "board": "创新药",
+          "change": -1.07,
+          "amount": 37043338504.0
+        },
+        {
+          "key": "medical_service",
+          "name": "医疗服务",
+          "parent": "healthcare",
+          "board": "医疗器械概念",
+          "change": -0.03,
+          "amount": 54231176462.0
+        },
+        {
+          "key": "military_electronics",
+          "name": "军工电子",
+          "parent": "defense",
+          "board": "卫星互联网",
+          "change": -1.3,
+          "amount": 27581968736.0
+        },
+        {
+          "key": "commercial_aerospace",
+          "name": "商业航天",
+          "parent": "defense",
+          "board": "商业航天",
+          "change": -1.61,
+          "amount": 78361806775.0
+        },
+        {
+          "key": "copper",
+          "name": "铜",
+          "parent": "nonferrous",
+          "board": "铜缆高速连接",
+          "change": -3.77,
+          "amount": 20902244060.0
+        },
+        {
+          "key": "consumer_electronics",
+          "name": "消费电子",
+          "parent": "electronics",
+          "board": "消费电子概念",
+          "change": -2.21,
+          "amount": 110042821734.0
+        },
+        {
+          "key": "automotive_parts",
+          "name": "汽车零部件",
+          "parent": "auto",
+          "board": "无人驾驶",
+          "change": -0.7,
+          "amount": 102764760679.0
+        }
+      ],
+      "source": "腾讯指数快照 / 东方财富概念板块快照",
+      "label": null
+    },
+    "micro_themes": [
+      {
+        "key": "ai_compute",
+        "name": "AI算力",
+        "parent": "computer",
+        "board": "人工智能",
+        "change": -0.02,
+        "amount": 200322841365.0
+      },
+      {
+        "key": "medical_service",
+        "name": "医疗服务",
+        "parent": "healthcare",
+        "board": "医疗器械概念",
+        "change": -0.03,
+        "amount": 54231176462.0
+      },
+      {
+        "key": "thermal_power",
+        "name": "火电",
+        "parent": "utilities",
+        "board": "绿色电力",
+        "change": -0.57,
+        "amount": 44704451673.0
+      },
+      {
+        "key": "robotics",
+        "name": "人形机器人",
+        "parent": "computer",
+        "board": "机器人概念",
+        "change": -0.69,
+        "amount": 157498387315.0
+      },
+      {
+        "key": "automotive_parts",
+        "name": "汽车零部件",
+        "parent": "auto",
+        "board": "无人驾驶",
+        "change": -0.7,
+        "amount": 102764760679.0
+      },
+      {
+        "key": "chip_equipment",
+        "name": "半导体设备",
+        "parent": "electronics",
+        "board": "光刻机(胶)",
+        "change": -0.81,
+        "amount": 64290951278.0
+      },
+      {
+        "key": "grid",
+        "name": "智能电网",
+        "parent": "power_equipment",
+        "board": "智能电网",
+        "change": -1.01,
+        "amount": 42713443115.0
+      },
+      {
+        "key": "innovative_drug",
+        "name": "创新药",
+        "parent": "healthcare",
+        "board": "创新药",
+        "change": -1.07,
+        "amount": 37043338504.0
+      },
+      {
+        "key": "power_reform",
+        "name": "电力改革",
+        "parent": "utilities",
+        "board": "虚拟电厂",
+        "change": -1.07,
+        "amount": 10680246324.0
+      },
+      {
+        "key": "energy_storage",
+        "name": "储能",
+        "parent": "power_equipment",
+        "board": "储能概念",
+        "change": -1.09,
+        "amount": 119818662407.0
+      },
+      {
+        "key": "military_electronics",
+        "name": "军工电子",
+        "parent": "defense",
+        "board": "卫星互联网",
+        "change": -1.3,
+        "amount": 27581968736.0
+      },
+      {
+        "key": "commercial_aerospace",
+        "name": "商业航天",
+        "parent": "defense",
+        "board": "商业航天",
+        "change": -1.61,
+        "amount": 78361806775.0
+      },
+      {
+        "key": "consumer_electronics",
+        "name": "消费电子",
+        "parent": "electronics",
+        "board": "消费电子概念",
+        "change": -2.21,
+        "amount": 110042821734.0
+      },
+      {
+        "key": "data_center_power",
+        "name": "数据中心电源",
+        "parent": "power_equipment",
+        "board": "液冷概念",
+        "change": -2.84,
+        "amount": 91829438342.0
+      },
+      {
+        "key": "copper",
+        "name": "铜",
+        "parent": "nonferrous",
+        "board": "铜缆高速连接",
+        "change": -3.77,
+        "amount": 20902244060.0
+      },
+      {
+        "key": "memory",
+        "name": "存储芯片",
+        "parent": "electronics",
+        "board": "存储芯片",
+        "change": -3.97,
+        "amount": 211077125700.0
+      },
+      {
+        "key": "cpo_optical",
+        "name": "CPO与光模块",
+        "parent": "telecom",
+        "board": "CPO概念",
+        "change": -5.83,
+        "amount": 147729011627.0
+      }
+    ],
+    "theme_training": {
+      "chip_equipment": {
+        "status": "collecting",
+        "labelled_samples": 0,
+        "labelled_sessions": 0,
+        "minimum_sessions": 60,
+        "minimum_samples": 240
+      },
+      "memory": {
+        "status": "collecting",
+        "labelled_samples": 0,
+        "labelled_sessions": 0,
+        "minimum_sessions": 60,
+        "minimum_samples": 240
+      },
+      "cpo_optical": {
+        "status": "collecting",
+        "labelled_samples": 0,
+        "labelled_sessions": 0,
+        "minimum_sessions": 60,
+        "minimum_samples": 240
+      },
+      "ai_compute": {
+        "status": "collecting",
+        "labelled_samples": 0,
+        "labelled_sessions": 0,
+        "minimum_sessions": 60,
+        "minimum_samples": 240
+      },
+      "robotics": {
+        "status": "collecting",
+        "labelled_samples": 0,
+        "labelled_sessions": 0,
+        "minimum_sessions": 60,
+        "minimum_samples": 240
+      },
+      "data_center_power": {
+        "status": "collecting",
+        "labelled_samples": 0,
+        "labelled_sessions": 0,
+        "minimum_sessions": 60,
+        "minimum_samples": 240
+      },
+      "grid": {
+        "status": "collecting",
+        "labelled_samples": 0,
+        "labelled_sessions": 0,
+        "minimum_sessions": 60,
+        "minimum_samples": 240
+      },
+      "energy_storage": {
+        "status": "collecting",
+        "labelled_samples": 0,
+        "labelled_sessions": 0,
+        "minimum_sessions": 60,
+        "minimum_samples": 240
+      },
+      "thermal_power": {
+        "status": "collecting",
+        "labelled_samples": 0,
+        "labelled_sessions": 0,
+        "minimum_sessions": 60,
+        "minimum_samples": 240
+      },
+      "power_reform": {
+        "status": "collecting",
+        "labelled_samples": 0,
+        "labelled_sessions": 0,
+        "minimum_sessions": 60,
+        "minimum_samples": 240
+      },
+      "innovative_drug": {
+        "status": "collecting",
+        "labelled_samples": 0,
+        "labelled_sessions": 0,
+        "minimum_sessions": 60,
+        "minimum_samples": 240
+      },
+      "medical_service": {
+        "status": "collecting",
+        "labelled_samples": 0,
+        "labelled_sessions": 0,
+        "minimum_sessions": 60,
+        "minimum_samples": 240
+      },
+      "military_electronics": {
+        "status": "collecting",
+        "labelled_samples": 0,
+        "labelled_sessions": 0,
+        "minimum_sessions": 60,
+        "minimum_samples": 240
+      },
+      "commercial_aerospace": {
+        "status": "collecting",
+        "labelled_samples": 0,
+        "labelled_sessions": 0,
+        "minimum_sessions": 60,
+        "minimum_samples": 240
+      },
+      "copper": {
+        "status": "collecting",
+        "labelled_samples": 0,
+        "labelled_sessions": 0,
+        "minimum_sessions": 60,
+        "minimum_samples": 240
+      },
+      "securities": {
+        "status": "collecting",
+        "labelled_samples": 0,
+        "labelled_sessions": 0,
+        "minimum_sessions": 60,
+        "minimum_samples": 240
+      },
+      "consumer_electronics": {
+        "status": "collecting",
+        "labelled_samples": 0,
+        "labelled_sessions": 0,
+        "minimum_sessions": 60,
+        "minimum_samples": 240
+      },
+      "automotive_parts": {
+        "status": "collecting",
+        "labelled_samples": 0,
+        "labelled_sessions": 0,
+        "minimum_sessions": 60,
+        "minimum_samples": 240
+      }
+    },
+    "taxonomy_count": 18,
+    "disclaimer": "细分领域热度是盘中观测，不等于买入信号；方向模型会在满足样本和样本外验证门槛后才启用。"
   }
 }
