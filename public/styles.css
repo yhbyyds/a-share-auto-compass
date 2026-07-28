@@ -146,6 +146,19 @@ body {
 .section-heading h2, .playbook-panel h2, .guard-copy h2, .method-section h2 { margin: 0; font-size: 35px; letter-spacing: -.045em; }
 .section-heading > p { max-width: 420px; margin: 0; color: var(--muted); font-size: 12px; line-height: 1.6; text-align: right; }
 .section-heading.compact { margin-bottom: 22px; }
+.day-ahead-panel { padding: 28px; background: linear-gradient(135deg, rgba(12,107,79,.11), rgba(44,86,176,.06)); }
+.day-ahead-head { display:flex; justify-content:space-between; gap:18px; align-items:flex-start; }
+.day-ahead-head h2 { margin:7px 0 0; font-size:30px; letter-spacing:-.04em; }
+.day-ahead-date { margin:8px 0 0; color:var(--muted); font-size:12px; }
+.day-ahead-stage { padding:7px 11px; border-radius:999px; color:var(--green); background:var(--green-soft); font-size:11px; font-weight:700; white-space:nowrap; }
+.day-ahead-grid { display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:12px; margin-top:24px; }
+.day-ahead-grid > div { min-height:92px; padding:16px; border:1px solid var(--line); border-radius:14px; background:rgba(255,255,255,.78); }
+.day-ahead-grid span, .day-ahead-grid small { display:block; color:var(--muted); font-size:11px; }
+.day-ahead-grid strong { display:block; margin:8px 0 4px; font-size:24px; letter-spacing:-.03em; }
+.day-ahead-direction { border-top:3px solid var(--amber) !important; }
+.day-ahead-direction.positive { border-top-color:var(--green) !important; }
+.day-ahead-direction.negative { border-top-color:var(--red) !important; }
+.day-ahead-note { margin:20px 0 0; padding-top:14px; border-top:1px solid var(--line); color:var(--muted); font-size:11px; line-height:1.65; }
 .day-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
 .day-card { min-width: 0; padding: 22px; border-top: 3px solid var(--amber); transition: transform .2s ease, box-shadow .2s ease; }
 .day-card:hover { transform: translateY(-3px); box-shadow: 0 18px 45px rgba(31,41,35,.09); }
@@ -576,6 +589,9 @@ footer p { max-width: 840px; margin: 0; }
   .sector-leaders { grid-template-columns: repeat(2, 1fr); }
   .sector-leader:last-child { grid-column: span 2; }
   .micro-theme-grid { grid-template-columns: repeat(2, 1fr); }
+  .day-ahead-grid { grid-template-columns: 1fr; }
+  .day-ahead-head { display:block; }
+  .day-ahead-stage { display:inline-block; margin-top:12px; }
   .portfolio-layout { grid-template-columns: 1fr; }
   .portfolio-guide { display: none; }
   .report-plan { grid-template-columns: repeat(2, 1fr); }

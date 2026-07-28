@@ -53,6 +53,15 @@ def build_forecast() -> dict[str, Any]:
         dynamic_events=official_events.events,
         collection=official_events.as_dict(),
     )
+    # Make the primary product explicit: today's accepted close predicts the
+    # next trading session, not the remainder of today's session.
+    first_day = forecast["days"][0]
+    forecast["day_ahead"] = {
+        **first_day,
+        "horizon": "next_trading_session",
+        "label": "明日A股日间预测",
+        "based_on_close_date": forecast["meta"]["data_through"],
+    }
     forecast["meta"]["version"] = DATA_VERSION
     forecast["meta"]["release"] = RELEASE
     forecast["meta"]["trading_calendar"] = calendar_metadata()

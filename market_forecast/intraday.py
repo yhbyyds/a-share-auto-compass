@@ -305,11 +305,11 @@ def _transfer_predictions(
         transfer_score = 0.65 * prior_bias + 0.35 * live_bias
         expected = 0.65 * parent_expected + 0.35 * float(np.clip(live_change * 0.20, -1.0, 1.0))
         if transfer_score >= 0.12 and expected > 0:
-            direction = "临时偏强"
+            direction = "明日临时偏强"
         elif transfer_score <= -0.12 and expected < 0:
-            direction = "临时偏弱"
+            direction = "明日临时偏弱"
         else:
-            direction = "临时震荡"
+            direction = "明日临时震荡"
         confidence = (
             "中"
             if abs(transfer_score) >= 0.45
@@ -319,11 +319,13 @@ def _transfer_predictions(
         output.append({
             **theme,
             "provisional_direction": direction,
+            "day_ahead_direction": direction,
             "provisional_score": round(transfer_score * 100, 1),
             "provisional_expected_return": round(expected, 2),
             "provisional_confidence": confidence,
-            "prediction_stage": "一级行业先验 + 盘中概念快照迁移",
-            "prediction_note": "独立细分样本未达门槛，先作临时倾向，不替代独立模型。",
+            "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
+            "prediction_horizon": "next_trading_session",
+            "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。",
         })
     return output
 
@@ -345,5 +347,5 @@ def build_intraday_brief(
         "status": status, "latest_snapshot": latest, "micro_themes": themes,
         "theme_training": theme_training,
         "taxonomy_count": len(MICRO_THEMES),
-        "disclaimer": "页面同时展示临时迁移倾向和独立训练状态；临时倾向来自一级行业先验与盘中概念快照，独立细分模型达到样本门槛后再替换。",
+        "disclaimer": "页面主预测对象是下一交易日；盘中快照只作为次日先验和训练数据，不输出当日剩余走势。",
     }

@@ -39,6 +39,39 @@ function renderDays(days) {
   }).join("");
 }
 
+function renderDayAhead(dayAhead, days, meta) {
+  const panel = $("#day-ahead-panel");
+  const row = dayAhead || days?.[0];
+  if (!panel || !row) return;
+  const explicit = Boolean(dayAhead);
+  const direction = row.direction || "震荡";
+  const probability = Number(row.up_probability ?? 50);
+  const expected = Number(row.expected_return ?? 0);
+  const range = row.low_return != null && row.high_return != null
+    ? `${row.low_return}% &mdash; ${formatSigned(row.high_return)}`
+    : "&mdash;";
+  const validation = row.validation_accuracy == null ? "&mdash;" : `${row.validation_accuracy}%`;
+  const eventRisk = row.event_risk || "低";
+  panel.innerHTML = `
+    <div class="day-ahead-head">
+      <div>
+        <span class="label">NEXT TRADING SESSION</span>
+        <h2>${explicit ? "明日A股日间预测" : "最近一次日间预测"}</h2>
+        <p class="day-ahead-date">${row.date || "待收盘更新"} &middot; ${row.weekday ? `周${row.weekday}` : ""} &middot; 基于 ${row.based_on_close_date || meta?.data_through || "最新收盘"}</p>
+      </div>
+      <span class="day-ahead-stage">${explicit ? "收盘后主预测" : "等待收盘生成明日主预测"}</span>
+    </div>
+    <div class="day-ahead-grid">
+      <div class="day-ahead-direction ${cardClass(direction)}">
+        <span>方向判断</span><strong>${direction}</strong>
+        <small>上涨概率 ${probability}% &middot; ${row.confidence || "中"}置信</small>
+      </div>
+      <div><span>模型期望</span><strong class="${expected >= 0 ? "positive-text" : "negative-text"}">${formatSigned(expected)}</strong><small>历史相似区间 ${range}</small></div>
+      <div><span>样本外验证</span><strong>${validation}</strong><small>事件风险 ${eventRisk}</small></div>
+    </div>
+    <p class="day-ahead-note">主产品回答“今天收盘后，下一交易日大方向如何”。盘中快照只用于辅助更新，不替代收盘后的日间预测。</p>`;
+}
+
 function renderChart(history, days) {
   const width = 760;
   const height = 305;
@@ -117,7 +150,7 @@ function renderIntradayLab(intraday) {
     <div class="micro-theme-grid">${themes.length ? themes.map((theme, index) => {
       const training = themeTraining[theme.key] || {};
       const directionClass = theme.provisional_direction?.includes("偏强") ? "positive" : theme.provisional_direction?.includes("偏弱") ? "negative" : "neutral";
-      return `<div class="micro-theme ${directionClass}"><span>#${index + 1} · ${theme.parent}</span><strong>${theme.name}</strong><em>${theme.provisional_direction || "临时震荡"} · ${theme.provisional_confidence || "低"}置信</em><small>快照 ${formatSigned(Number(theme.change || 0))} · 迁移分 ${theme.provisional_score ?? "—"}</small><small>独立标签 ${training.labelled_samples || 0}/${training.minimum_samples || 240} · ${training.status === "ready" ? "已达训练门槛" : "采集中"}</small></div>`;
+      return `<div class="micro-theme ${directionClass}"><span>#${index + 1} · ${theme.parent}</span><strong>${theme.name}</strong><em>${theme.provisional_direction || "明日临时震荡"} · ${theme.provisional_confidence || "低"}置信</em><small>快照 ${formatSigned(Number(theme.change || 0))} · 迁移分 ${theme.provisional_score ?? "—"}</small><small>独立标签 ${training.labelled_samples || 0}/${training.minimum_samples || 240} · ${training.status === "ready" ? "已达训练门槛" : "采集中"}</small></div>`;
     }).join("") : `<p class="breadth-unavailable">尚无细分板块快照；将在下一固定盘中时点采集。</p>`}</div>
     <p class="section-footnote warning">${intraday.disclaimer || "盘中热度不等于买入信号。"}</p>`;
 }
@@ -417,6 +450,7 @@ function render(data) {
     ? "模型没有发现值得重仓押注的方向优势；弱趋势与事件风险并存，现金也是一种仓位。"
     : `模型给出${market.weekly_direction}倾向，但只把它当作概率优势，不当作确定答案。`;
 
+  renderDayAhead(data.day_ahead, days, meta);
   renderDays(days);
   renderChart(data.recent_chart, days);
   $("#drivers").innerHTML = data.drivers.map((item) => `

@@ -140,6 +140,10 @@ jobs:
                   assert payload["performance_monitor"]["effective_sample"] == (
                       "第1日预测的唯一目标交易日"
                   )
+                  assert payload["day_ahead"]["horizon"] == "next_trading_session"
+                  assert payload["day_ahead"]["based_on_close_date"] == (
+                      payload["meta"]["data_through"]
+                  )
                   assert payload["validation"]["calibration"]
                   assert len(payload["days"]) == 5
                   assert len(payload["sector_forecast"]["sectors"]) >= 10

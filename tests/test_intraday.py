@@ -58,6 +58,6 @@ def test_transfer_prediction_is_capped_and_uses_parent_prior():
         "up_probability": 60.0, "expected_return": 0.4, "signal_band": "中",
     }]}]}
     result = _transfer_predictions(themes, sectors)[0]
-    assert result["provisional_direction"] == "临时偏强"
+    assert result["provisional_direction"] == "明日临时偏强"
     assert result["provisional_score"] <= 100
-    assert result["prediction_stage"].startswith("一级行业先验")
+    assert result["prediction_stage"].startswith("一级行业次日先验")
