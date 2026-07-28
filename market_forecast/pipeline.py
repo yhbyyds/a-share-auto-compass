@@ -19,8 +19,8 @@ from market_forecast.trading_calendar import (
 from market_forecast.watchlist import generate_watchlist
 
 
-RELEASE = "13"
-DATA_VERSION = "1.9.0"
+RELEASE = "14"
+DATA_VERSION = "1.10.0"
 
 
 def build_forecast() -> dict[str, Any]:

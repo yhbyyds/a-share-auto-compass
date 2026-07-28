@@ -6,6 +6,7 @@ import pandas as pd
 
 from market_forecast.intraday import (
     _bucket,
+    _market_regime,
     _transfer_predictions,
     collect_intraday_snapshot,
     settle_intraday_labels,
@@ -63,3 +64,23 @@ def test_transfer_prediction_is_capped_and_uses_parent_prior():
     assert result["prediction_stage"].startswith("一级行业次日先验")
     assert result["selection_bucket"] == "候选偏强"
     assert "迁移分" in result["selection_reason"]
+
+
+def test_risk_off_regime_blocks_long_candidate_and_keeps_resilience():
+    regime = _market_regime({
+        "quotes": {
+            "csi300": {"change": -2.0},
+            "chinext": {"change": -4.0},
+        },
+        "breadth": {"advance_ratio": 42.0, "median_change": -0.2},
+    })
+    assert regime["key"] == "risk_off"
+    result = _transfer_predictions(
+        [{"key": "robotics", "name": "机器人", "parent": "computer", "change": -0.2}],
+        {"sectors": [{"key": "computer", "days": [{
+            "up_probability": 60.0, "expected_return": 0.4, "signal_band": "强",
+        }]}]},
+        regime,
+    )[0]
+    assert result["selection_bucket"] == "抗跌观察"
+    assert result["raw_up_candidate"] is True

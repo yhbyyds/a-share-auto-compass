@@ -277,9 +277,40 @@ def micro_theme_training_status(path: str | Path = SNAPSHOT_FILE) -> dict[str, d
     return output
 
 
+def _market_regime(snapshot: dict[str, Any] | None) -> dict[str, Any]:
+    """Classify the live tape before allowing long micro-theme candidates."""
+    snapshot = snapshot or {}
+    quotes = snapshot.get("quotes") or {}
+    breadth = snapshot.get("breadth") or {}
+    csi300 = float((quotes.get("csi300") or {}).get("change") or 0)
+    chinext = float((quotes.get("chinext") or {}).get("change") or 0)
+    advance_ratio = float(breadth.get("advance_ratio") or 50)
+    median_change = float(breadth.get("median_change") or 0)
+    flags: list[str] = []
+    if csi300 <= -1.5:
+        flags.append("沪深300跌幅超过1.5%")
+    if chinext <= -3.0:
+        flags.append("创业板跌幅超过3%")
+    if advance_ratio < 45.0:
+        flags.append("上涨比例低于45%")
+    if median_change <= -0.1:
+        flags.append("个股中位数不强")
+    risk_off = len(flags) >= 2
+    return {
+        "key": "risk_off" if risk_off else "normal",
+        "label": "风险市况" if risk_off else "常态市况",
+        "risk_score": len(flags),
+        "flags": flags,
+        "benchmark_change": round(csi300, 2),
+        "long_candidates": "blocked" if risk_off else "enabled",
+        "method": "沪深300、创业板、市场宽度与个股中位数联合过滤",
+    }
+
+
 def _transfer_predictions(
     themes: list[dict[str, Any]],
     sector_forecast: dict[str, Any] | None,
+    market_regime: dict[str, Any] | None = None,
 ) -> list[dict[str, Any]]:
     """Produce transparent provisional theme directions from validated priors.
 
@@ -292,12 +323,16 @@ def _transfer_predictions(
         sector.get("key"): (sector.get("days") or [{}])[0]
         for sector in (sector_forecast or {}).get("sectors", [])
     }
+    market_regime = market_regime or _market_regime(None)
+    benchmark_change = float(market_regime.get("benchmark_change") or 0)
+    risk_off = market_regime.get("key") == "risk_off"
     output: list[dict[str, Any]] = []
     for theme in themes:
         parent = parent_days.get(theme.get("parent"), {})
         parent_probability = float(parent.get("up_probability", 50.0))
         parent_expected = float(parent.get("expected_return", 0.0))
         live_change = float(theme.get("change") or 0.0)
+        relative_strength = live_change - benchmark_change
         # Concept-board movement is capped and receives less weight than the
         # historical parent model so a single noisy quote cannot dominate.
         live_bias = float(np.clip(live_change / 2.0, -1.0, 1.0))
@@ -321,10 +356,19 @@ def _transfer_predictions(
         # labels are evidence-gated candidates, not independent theme-model
         # calls: the parent day-1 prior and the capped concept-board move must
         # point in the same direction.
-        if transfer_score >= 0.05 and expected >= 0.05:
+        raw_up_candidate = transfer_score >= 0.05 and expected >= 0.05
+        raw_down_candidate = transfer_score <= -0.12 and expected <= -0.05
+        long_gate = (
+            not risk_off
+            and live_change >= 0
+            and relative_strength >= 0.5
+        )
+        if raw_up_candidate and long_gate:
             selection_bucket = "候选偏强"
-        elif transfer_score <= -0.12 and expected <= -0.05:
+        elif raw_down_candidate:
             selection_bucket = "候选偏弱"
+        elif risk_off and relative_strength >= 0.5:
+            selection_bucket = "抗跌观察"
         else:
             selection_bucket = "中性"
         output.append({
@@ -335,10 +379,13 @@ def _transfer_predictions(
             "provisional_expected_return": round(expected, 2),
             "provisional_confidence": confidence,
             "selection_bucket": selection_bucket,
+            "raw_up_candidate": raw_up_candidate,
+            "relative_strength": round(relative_strength, 2),
             "selection_reason": (
                 f"迁移分 {transfer_score * 100:.1f} · "
                 f"概念快照 {live_change:+.2f}% · "
-                f"父行业期望 {parent_expected:+.2f}%"
+                f"父行业期望 {parent_expected:+.2f}% · "
+                f"相对沪深300 {relative_strength:+.2f}pp"
             ),
             "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
             "prediction_horizon": "next_trading_session",
@@ -358,8 +405,9 @@ def build_intraday_brief(
     except (OSError, json.JSONDecodeError):
         rows = []
     latest = rows[-1] if rows else None
+    market_regime = _market_regime(latest)
     themes = sorted((latest or {}).get("themes", []), key=lambda item: (item.get("change", 0), item.get("amount", 0)), reverse=True)
-    themes = _transfer_predictions(themes, sector_forecast)
+    themes = _transfer_predictions(themes, sector_forecast, market_regime)
     selected_up = sorted(
         (theme for theme in themes if theme.get("selection_bucket") == "候选偏强"),
         key=lambda item: (item.get("provisional_score", 0), item.get("provisional_expected_return", 0)),
@@ -369,9 +417,28 @@ def build_intraday_brief(
         (theme for theme in themes if theme.get("selection_bucket") == "候选偏弱"),
         key=lambda item: (item.get("provisional_score", 0), item.get("provisional_expected_return", 0)),
     )[:3]
+    resilient = sorted(
+        (theme for theme in themes if theme.get("selection_bucket") == "抗跌观察"),
+        key=lambda item: (
+            bool(item.get("raw_up_candidate")),
+            item.get("relative_strength", 0),
+            item.get("provisional_score", 0),
+        ),
+        reverse=True,
+    )[:3]
     return {
         "status": status, "latest_snapshot": latest, "micro_themes": themes,
-        "selection": {"up": selected_up, "down": selected_down},
+        "selection": {
+            "up": selected_up,
+            "down": selected_down,
+            "resilient": resilient,
+            "market_regime": market_regime,
+            "long_candidate_note": (
+                "风险市况下暂不输出普通偏强候选；抗跌观察仅供市场修复后复核。"
+                if market_regime["key"] == "risk_off"
+                else "偏强候选需同时满足实时上涨与相对沪深300强度门槛。"
+            ),
+        },
         "theme_training": theme_training,
         "taxonomy_count": len(MICRO_THEMES),
         "disclaimer": "页面主预测对象是下一交易日；盘中快照只作为次日先验和训练数据，不输出当日剩余走势。",

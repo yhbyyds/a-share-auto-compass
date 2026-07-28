@@ -143,6 +143,8 @@ function renderIntradayLab(intraday) {
   const selection = intraday.selection || {};
   const selectedUp = selection.up || [];
   const selectedDown = selection.down || [];
+  const resilient = selection.resilient || [];
+  const marketRegime = selection.market_regime || {};
   const ready = status.status === "ready";
   const renderSelection = (items, tone, empty) => items.length
     ? items.map((theme, index) => `<div class="selection-item ${tone}"><span>#${index + 1} · ${theme.name}</span><strong>${theme.selection_bucket}</strong><small>${theme.selection_reason || `迁移分 ${theme.provisional_score ?? "—"}`}</small></div>`).join("")
@@ -156,8 +158,9 @@ function renderIntradayLab(intraday) {
     <div class="intraday-progress"><div><strong>${status.labelled_sessions || 0}</strong><span>/ ${status.minimum_sessions || 60} 交易日</span></div><div><strong>${status.labelled_samples || 0}</strong><span>/ ${status.minimum_samples || 240} 已结算快照</span></div><div><strong>${intraday.taxonomy_count || 0}</strong><span>细分领域覆盖</span></div></div>
     <p class="intraday-copy">${status.reason || status.method || "按日期前推验证中。"}</p>
     ${latest ? `<p class="intraday-snapshot">最近快照：${new Date(latest.timestamp).toLocaleString("zh-CN", { hour12: false })} · ${latest.bucket} 桶 · ${latest.source}</p>` : ""}
+    <div class="micro-regime-banner ${marketRegime.key === "risk_off" ? "risk-off" : "normal"}"><strong>${marketRegime.label || "常态市况"}</strong><span>风险分 ${marketRegime.risk_score || 0} · ${selection.long_candidate_note || "偏强候选需经过市场状态过滤。"}</span></div>
     <div class="micro-selection-grid">
-      <div class="micro-selection-column"><h4>模型候选偏强 · 优先观察</h4><p>按父行业次日先验 + 概念快照迁移分排序，不等同于买入指令。</p>${renderSelection(selectedUp, "positive", "当前没有达到偏强候选门槛的细分板块。")}</div>
+      <div class="micro-selection-column"><h4>${marketRegime.key === "risk_off" ? "风险市况 · 暂停普通偏强候选" : "模型候选偏强 · 优先观察"}</h4><p>${marketRegime.flags?.join("、") || "按父行业次日先验、实时上涨和相对强度排序。"}</p>${renderSelection(selectedUp, "positive", "当前没有通过偏强候选门槛的细分板块。")}${resilient.length ? `<h5>抗跌观察</h5>${renderSelection(resilient, "resilient", "暂无抗跌观察板块。")}` : ""}</div>
       <div class="micro-selection-column"><h4>模型候选偏弱 · 风险回避</h4><p>仅表示相对弱势，需结合开盘后强弱确认。</p>${renderSelection(selectedDown, "negative", "当前没有达到偏弱候选门槛的细分板块。")}</div>
     </div>
     <div class="micro-theme-grid">${themes.length ? themes.map((theme, index) => {
@@ -504,7 +507,7 @@ function render(data) {
 
   $("#sources").innerHTML = data.sources.map((source) => `<a href="${source.url}" target="_blank" rel="noreferrer" title="${source.detail}">${source.name} ↗</a>`).join("");
   $("#disclaimer").textContent = data.disclaimer;
-  $("#app-version").textContent = `版本 ${meta.release || meta.version} · Research only`;
+  $("#app-version").textContent = `Structure ${meta.structure_version || meta.release || meta.version} &middot; Data release ${meta.release || meta.version} &middot; Research only`;
   window.dispatchEvent(new CustomEvent("forecast:loaded", { detail: data }));
 }
 
@@ -524,7 +527,7 @@ async function loadForecast() {
     }
   }
   const response = await fetch(
-    "./data/forecast.json?v=1.9.2",
+    "./data/forecast.json?v=1.10.0",
     { cache: "no-store" },
   );
   if (!response.ok) throw new Error("预测文件读取失败");

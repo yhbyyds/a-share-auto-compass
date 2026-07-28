@@ -130,7 +130,7 @@ jobs:
               try:
                   with urlopen(url, timeout=20) as response:
                       payload = json.load(response)
-                  assert payload["meta"]["release"] == "13"
+                  assert payload["meta"]["release"] == "14"
                   assert payload["meta"]["automation"]["status"] == "passed"
                   assert payload["meta"]["trading_calendar"]["name"] == "XSHG"
                   assert payload["meta"]["trading_calendar"]["verified_through"]
