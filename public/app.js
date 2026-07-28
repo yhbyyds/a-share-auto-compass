@@ -41,9 +41,12 @@ function renderDays(days) {
 
 function renderDayAhead(dayAhead, days, meta) {
   const panel = $("#day-ahead-panel");
-  const row = dayAhead || days?.[0];
+  const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Shanghai" }).format(new Date());
+  const dayAheadActive = Boolean(dayAhead && dayAhead.date >= today);
+  const row = dayAheadActive ? dayAhead : days?.find((item) => item.date >= today) || days?.[0];
   if (!panel || !row) return;
-  const explicit = Boolean(dayAhead);
+  const explicit = dayAheadActive;
+  const isToday = row.date === today;
   const direction = row.direction || "震荡";
   const probability = Number(row.up_probability ?? 50);
   const expected = Number(row.expected_return ?? 0);
@@ -56,10 +59,10 @@ function renderDayAhead(dayAhead, days, meta) {
     <div class="day-ahead-head">
       <div>
         <span class="label">NEXT TRADING SESSION</span>
-        <h2>${explicit ? "明日A股日间预测" : "最近一次日间预测"}</h2>
+        <h2>${isToday ? "今日A股日间预测" : explicit ? "明日A股日间预测" : "最近一次日间预测"}</h2>
         <p class="day-ahead-date">${row.date || "待收盘更新"} &middot; ${row.weekday ? `周${row.weekday}` : ""} &middot; 基于 ${row.based_on_close_date || meta?.data_through || "最新收盘"}</p>
       </div>
-      <span class="day-ahead-stage">${explicit ? "收盘后主预测" : "等待收盘生成明日主预测"}</span>
+      <span class="day-ahead-stage">${isToday ? "已由上一交易日收盘生成" : explicit ? "收盘后主预测" : "等待收盘生成明日主预测"}</span>
     </div>
     <div class="day-ahead-grid">
       <div class="day-ahead-direction ${cardClass(direction)}">
@@ -69,7 +72,7 @@ function renderDayAhead(dayAhead, days, meta) {
       <div><span>模型期望</span><strong class="${expected >= 0 ? "positive-text" : "negative-text"}">${formatSigned(expected)}</strong><small>历史相似区间 ${range}</small></div>
       <div><span>样本外验证</span><strong>${validation}</strong><small>事件风险 ${eventRisk}</small></div>
     </div>
-    <p class="day-ahead-note">主产品回答“今天收盘后，下一交易日大方向如何”。盘中快照只用于辅助更新，不替代收盘后的日间预测。</p>`;
+    <p class="day-ahead-note">数据快照截至 ${meta?.data_through || "&mdash;"}；收盘后自动生成下一交易日正式预测。主产品回答“今天收盘后、下一交易日大方向如何”。盘中快照只用于辅助更新、不替代收盘后的日间预测。</p>`;
 }
 
 function renderChart(history, days) {
