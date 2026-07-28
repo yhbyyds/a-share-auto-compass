@@ -99,6 +99,18 @@ def _concept_rows() -> list[dict[str, Any]]:
     return rows
 
 
+def fetch_theme_close_changes() -> dict[str, float]:
+    """Return latest concept-board changes for per-theme label settlement."""
+    try:
+        return {
+            str(row.get("f14", "")): float(row.get("f3") or 0)
+            for row in _concept_rows()
+            if row.get("f14")
+        }
+    except (requests.RequestException, ValueError, TypeError):
+        return {}
+
+
 def _match_themes(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     matched: list[dict[str, Any]] = []
     for theme in MICRO_THEMES:
@@ -138,8 +150,17 @@ def collect_intraday_snapshot(path: str | Path = SNAPSHOT_FILE, now: datetime | 
     return snapshot
 
 
-def settle_intraday_labels(close_by_date: pd.Series, path: str | Path = SNAPSHOT_FILE) -> int:
-    """Label each saved snapshot with its remaining same-session SSE return."""
+def settle_intraday_labels(
+    close_by_date: pd.Series,
+    theme_close_changes: dict[str, float] | None = None,
+    path: str | Path = SNAPSHOT_FILE,
+) -> int:
+    """Label market and per-theme remaining same-session movement."""
+    # Preserve the old two-positional-argument API where the second argument
+    # was the snapshot path.
+    if isinstance(theme_close_changes, (str, Path)):
+        path = theme_close_changes
+        theme_close_changes = None
     file_path = Path(path)
     if not file_path.exists():
         return 0
@@ -151,7 +172,21 @@ def settle_intraday_labels(close_by_date: pd.Series, path: str | Path = SNAPSHOT
         spot = float(row.get("quotes", {}).get("sse", {}).get("price") or 0)
         close = float(close_by_date.loc[row["date"]])
         if spot > 0:
-            row["label"] = {"remaining_return": round((close / spot - 1) * 100, 4), "up": bool(close >= spot)}
+            label = {
+                "remaining_return": round((close / spot - 1) * 100, 4),
+                "up": bool(close >= spot),
+                "themes": {},
+            }
+            for theme in row.get("themes", []):
+                board = str(theme.get("board", ""))
+                if board in (theme_close_changes or {}):
+                    final_change = float(theme_close_changes[board])
+                    delta = final_change - float(theme.get("change") or 0)
+                    label["themes"][theme["key"]] = {
+                        "remaining_change": round(delta, 4),
+                        "up": bool(delta >= 0),
+                    }
+            row["label"] = label
             updated += 1
     file_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     return updated
@@ -213,8 +248,38 @@ def intraday_research_status(path: str | Path = SNAPSHOT_FILE) -> dict[str, Any]
     return output
 
 
+def micro_theme_training_status(path: str | Path = SNAPSHOT_FILE) -> dict[str, dict[str, Any]]:
+    """Summarize independently labelled coverage for every micro-theme."""
+    file_path = Path(path)
+    try:
+        rows = json.loads(file_path.read_text(encoding="utf-8")).get("snapshots", [])
+    except (OSError, json.JSONDecodeError):
+        rows = []
+    output: dict[str, dict[str, Any]] = {}
+    for theme in MICRO_THEMES:
+        labelled = [
+            row for row in rows
+            if row.get("label", {}).get("themes", {}).get(theme["key"]) is not None
+        ]
+        sessions = len({row.get("date") for row in labelled})
+        output[theme["key"]] = {
+            "status": (
+                "ready"
+                if sessions >= MIN_TRAINED_SESSIONS
+                and len(labelled) >= MIN_TRAINED_SAMPLES
+                else "collecting"
+            ),
+            "labelled_samples": len(labelled),
+            "labelled_sessions": sessions,
+            "minimum_sessions": MIN_TRAINED_SESSIONS,
+            "minimum_samples": MIN_TRAINED_SAMPLES,
+        }
+    return output
+
+
 def build_intraday_brief(path: str | Path = SNAPSHOT_FILE) -> dict[str, Any]:
     status = intraday_research_status(path)
+    theme_training = micro_theme_training_status(path)
     try:
         rows = json.loads(Path(path).read_text(encoding="utf-8")).get("snapshots", [])
     except (OSError, json.JSONDecodeError):
@@ -223,6 +288,7 @@ def build_intraday_brief(path: str | Path = SNAPSHOT_FILE) -> dict[str, Any]:
     themes = sorted((latest or {}).get("themes", []), key=lambda item: (item.get("change", 0), item.get("amount", 0)), reverse=True)
     return {
         "status": status, "latest_snapshot": latest, "micro_themes": themes,
+        "theme_training": theme_training,
         "taxonomy_count": len(MICRO_THEMES),
         "disclaimer": "细分领域热度是盘中观测，不等于买入信号；方向模型会在满足样本和样本外验证门槛后才启用。",
     }

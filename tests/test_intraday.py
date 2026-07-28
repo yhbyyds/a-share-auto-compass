@@ -10,12 +10,25 @@ from market_forecast.intraday import _bucket, collect_intraday_snapshot, settle_
 def test_settlement_uses_snapshot_price_and_close(tmp_path):
     path = tmp_path / "snapshots.json"
     path.write_text(json.dumps({"snapshots": [{
-        "date": "2026-07-27", "quotes": {"sse": {"price": 100.0}}, "label": None,
+        "date": "2026-07-27",
+        "quotes": {"sse": {"price": 100.0}},
+        "themes": [{"key": "test_theme", "board": "测试板块", "change": 1.0}],
+        "label": None,
     }]}), encoding="utf-8")
-    changed = settle_intraday_labels(pd.Series([101.0], index=["2026-07-27"]), path)
+    changed = settle_intraday_labels(
+        pd.Series([101.0], index=["2026-07-27"]),
+        {"测试板块": 2.0},
+        path,
+    )
     payload = json.loads(path.read_text(encoding="utf-8"))
     assert changed == 1
-    assert payload["snapshots"][0]["label"] == {"remaining_return": 1.0, "up": True}
+    assert payload["snapshots"][0]["label"] == {
+        "remaining_return": 1.0,
+        "up": True,
+        "themes": {
+            "test_theme": {"remaining_change": 1.0, "up": True},
+        },
+    }
 
 
 def test_snapshot_replaces_same_fixed_bucket(tmp_path, monkeypatch):

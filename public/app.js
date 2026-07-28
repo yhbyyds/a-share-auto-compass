@@ -103,6 +103,7 @@ function renderIntradayLab(intraday) {
   const status = intraday.status || {};
   const latest = intraday.latest_snapshot;
   const themes = (intraday.micro_themes || []).slice(0, 8);
+  const themeTraining = intraday.theme_training || {};
   const ready = status.status === "ready";
   container.innerHTML = `
     <div class="intraday-head">
@@ -113,7 +114,10 @@ function renderIntradayLab(intraday) {
     <div class="intraday-progress"><div><strong>${status.labelled_sessions || 0}</strong><span>/ ${status.minimum_sessions || 60} 交易日</span></div><div><strong>${status.labelled_samples || 0}</strong><span>/ ${status.minimum_samples || 240} 已结算快照</span></div><div><strong>${intraday.taxonomy_count || 0}</strong><span>细分领域覆盖</span></div></div>
     <p class="intraday-copy">${status.reason || status.method || "按日期前推验证中。"}</p>
     ${latest ? `<p class="intraday-snapshot">最近快照：${new Date(latest.timestamp).toLocaleString("zh-CN", { hour12: false })} · ${latest.bucket} 桶 · ${latest.source}</p>` : ""}
-    <div class="micro-theme-grid">${themes.length ? themes.map((theme, index) => `<div class="micro-theme ${Number(theme.change) >= 0 ? "positive" : "negative"}"><span>#${index + 1} · ${theme.parent}</span><strong>${theme.name}</strong><small>${theme.board || "未匹配板块"} · ${formatSigned(Number(theme.change || 0))}</small></div>`).join("") : `<p class="breadth-unavailable">尚无细分板块快照；将在下一固定盘中时点采集。</p>`}</div>
+    <div class="micro-theme-grid">${themes.length ? themes.map((theme, index) => {
+      const training = themeTraining[theme.key] || {};
+      return `<div class="micro-theme ${Number(theme.change) >= 0 ? "positive" : "negative"}"><span>#${index + 1} · ${theme.parent}</span><strong>${theme.name}</strong><small>${theme.board || "未匹配板块"} · ${formatSigned(Number(theme.change || 0))}</small><small>独立标签 ${training.labelled_samples || 0}/${training.minimum_samples || 240} · ${training.status === "ready" ? "已达训练门槛" : "采集中"}</small></div>`;
+    }).join("") : `<p class="breadth-unavailable">尚无细分板块快照；将在下一固定盘中时点采集。</p>`}</div>
     <p class="section-footnote warning">${intraday.disclaimer || "盘中热度不等于买入信号。"}</p>`;
 }
 

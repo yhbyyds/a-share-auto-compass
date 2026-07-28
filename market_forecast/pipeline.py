@@ -4,7 +4,11 @@ from typing import Any
 
 from market_forecast.data import fetch_market_breadth, fetch_market_data
 from market_forecast.events import enrich_forecast_with_events
-from market_forecast.intraday import build_intraday_brief, settle_intraday_labels
+from market_forecast.intraday import (
+    build_intraday_brief,
+    fetch_theme_close_changes,
+    settle_intraday_labels,
+)
 from market_forecast.model import generate_forecast
 from market_forecast.official_events import fetch_official_events
 from market_forecast.sectors import fetch_sector_data, generate_sector_forecast
@@ -25,7 +29,7 @@ def build_forecast() -> dict[str, Any]:
     data = fetch_market_data()
     close_by_date = data["sse"]["close"].copy()
     close_by_date.index = close_by_date.index.strftime("%Y-%m-%d")
-    settle_intraday_labels(close_by_date)
+    settle_intraday_labels(close_by_date, fetch_theme_close_changes())
     forecast = generate_forecast(
         data,
         fetch_market_breadth(),
