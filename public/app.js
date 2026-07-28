@@ -1,7 +1,7 @@
 const $ = (selector) => document.querySelector(selector);
 const formatSigned = (value, suffix = "%") => `${Number(value) > 0 ? "+" : ""}${value}${suffix}`;
 const impactClass = (impact) => impact === "positive" ? "positive-text" : impact === "negative" ? "negative-text" : "neutral-text";
-const cardClass = (direction) => direction === "偏强" ? "positive" : direction === "偏弱" ? "negative" : "neutral";
+const cardClass = (direction) => direction?.includes("偏强") ? "positive" : direction?.includes("偏弱") ? "negative" : "neutral";
 const relativeSignalClass = (signal) => signal === "相对偏强" ? "positive-text" : signal === "相对偏弱" ? "negative-text" : "neutral-text";
 const riskClass = (risk) => risk === "极高" ? "extreme" : risk === "高" ? "high" : risk === "中" ? "medium" : "low";
 
@@ -286,8 +286,9 @@ function renderSectorForecast(forecast) {
             <small>${sector.weekly_outlook} · 周${formatSigned(sector.weekly_expected_return)}</small>
           </div>
           ${sector.days.map((day) => `
-            <div class="sector-day-cell ${cardClass(day.direction)}">
-              <strong>${day.direction}</strong>
+              <div class="sector-day-cell ${cardClass(day.direction)}">
+                <strong>${day.direction}</strong>
+                <span class="signal-strength ${day.signal_band === "强" ? "strong" : ""}">证据 ${day.signal_strength ?? "—"} · ${day.signal_band ?? "—"}</span>
               <small class="sector-relative-mini ${relativeSignalClass(day.relative_signal)}">${day.relative_signal || "相对中性"}</small>
               <span>涨 ${day.up_probability}%</span>
               <span>胜 ${day.outperform_probability}%</span>

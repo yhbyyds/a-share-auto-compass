@@ -1,12 +1,29 @@
 import pandas as pd
 
-from market_forecast.sectors import _cross_sectional_signal, _direction, _outlook, _recent_history
+from market_forecast.sectors import (
+    _cross_sectional_signal,
+    _direction,
+    _outlook,
+    _recent_history,
+    _signal_strength,
+)
 
 
 def test_sector_direction_requires_validated_quality():
     assert _direction(0.60, 0.01, True) == "偏强"
+    assert _direction(0.68, 0.01, True, 78) == "强偏强"
     assert _direction(0.60, 0.01, False) == "震荡"
     assert _direction(0.40, -0.01, True) == "偏弱"
+    assert _direction(0.32, -0.01, True, 78) == "强偏弱"
+
+
+def test_signal_strength_does_not_inflate_failed_validation():
+    good_score, good_band = _signal_strength(0.70, 0.01, 0.05, True)
+    weak_score, weak_band = _signal_strength(0.70, 0.01, 0.05, False)
+    assert good_score == 100
+    assert good_band == "强"
+    assert weak_score == 50
+    assert weak_band == "中"
 
 
 def test_relative_outlook_uses_probability_and_expected_excess():
@@ -49,9 +66,9 @@ def test_cross_sectional_signal_stays_neutral_when_spread_is_small():
 
 def test_cross_sectional_signal_marks_only_validated_extremes():
     rows = [
-        {"up_probability": 42.0, "expected_excess": -0.006, "outperform_probability": 44.0, "confidence": "中"},
-        {"up_probability": 50.0, "expected_excess": 0.000, "outperform_probability": 50.0, "confidence": "中"},
-        {"up_probability": 60.0, "expected_excess": 0.006, "outperform_probability": 56.0, "confidence": "中"},
+        {"up_probability": 42.0, "expected_excess": -0.6, "outperform_probability": 44.0, "confidence": "中"},
+        {"up_probability": 50.0, "expected_excess": 0.0, "outperform_probability": 50.0, "confidence": "中"},
+        {"up_probability": 60.0, "expected_excess": 0.6, "outperform_probability": 56.0, "confidence": "中"},
     ]
     _cross_sectional_signal(rows)
     assert rows[0]["relative_signal"] == "相对偏弱"

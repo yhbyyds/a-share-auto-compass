@@ -292,6 +292,8 @@ body {
 .sector-day-cell span, .sector-evidence-cell span { display: block; margin-top: 4px; color: var(--muted); font-size: 8px; }
 .sector-day-cell .sector-event-flag { display: inline-block; margin-top: 6px; color: #7f511d; }
 .sector-day-cell .sector-event-flag.extreme, .sector-day-cell .sector-event-flag.high { color: var(--red); }
+.sector-day-cell .signal-strength { margin: 6px 0 3px; padding: 3px 5px; border-radius: 5px; background: rgba(113,121,116,.08); }
+.sector-day-cell .signal-strength.strong { color: var(--ink); background: rgba(199,148,49,.16); font-weight: 700; }
 .sector-evidence-cell strong { display: block; font-size: 12px; }
 
 .evidence-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }

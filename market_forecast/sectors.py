@@ -382,12 +382,54 @@ def _fit_horizon_panel(
     return output
 
 
-def _direction(probability: float, expected: float, quality: bool) -> str:
+def _direction(
+    probability: float,
+    expected: float,
+    quality: bool,
+    signal_strength: float | None = None,
+) -> str:
+    if (
+        quality
+        and signal_strength is not None
+        and signal_strength >= 70
+        and probability >= 0.60
+        and expected >= 0.003
+    ):
+        return "强偏强"
+    if (
+        quality
+        and signal_strength is not None
+        and signal_strength >= 70
+        and probability <= 0.40
+        and expected <= -0.003
+    ):
+        return "强偏弱"
     if quality and probability >= 0.56 and expected > 0:
         return "偏强"
     if quality and probability <= 0.44 and expected < 0:
         return "偏弱"
     return "震荡"
+
+
+def _signal_strength(
+    probability: float,
+    expected: float,
+    validation_edge: float,
+    quality: bool,
+) -> tuple[float, str]:
+    """Return an evidence-weighted distinction score, without widening p."""
+    probability_evidence = min(abs(probability - 0.5) / 0.20, 1.0)
+    return_evidence = min(abs(expected) / 0.01, 1.0)
+    validation_evidence = min(max(validation_edge, 0.0) / 0.05, 1.0)
+    score = 100 * (
+        0.55 * probability_evidence
+        + 0.30 * return_evidence
+        + 0.15 * validation_evidence
+    )
+    if not quality:
+        score *= 0.5
+    band = "强" if score >= 70 and quality else "中" if score >= 45 else "弱"
+    return round(score, 1), band
 
 
 def _outlook(probability: float, expected: float) -> str:
@@ -417,13 +459,15 @@ def _cross_sectional_signal(days: list[dict[str, Any]]) -> None:
     score = 100 * (0.45 * p_rank + 0.40 * e_rank + 0.15 * r_rank)
     probability_spread = float(probabilities.max() - probabilities.min())
     excess_spread = float(excess.max() - excess.min())
-    separated = probability_spread >= 3.0 or excess_spread >= 0.003
+    # expected_excess is stored in percentage points in the public JSON.
+    # A 0.30pp guard prevents rounding noise from manufacturing tail signals.
+    separated = probability_spread >= 3.0 or excess_spread >= 0.30
     tail_cutoff = min(35.0, max(25.0, 100.0 / len(days)))
     for index, item in enumerate(days):
         item["relative_signal_score"] = round(float(score[index]), 1)
         item["relative_signal_spread"] = {
             "probability_pp": round(probability_spread, 1),
-            "expected_excess_pp": round(excess_spread * 100, 2),
+            "expected_excess_pp": round(excess_spread, 2),
             "separated": separated,
         }
         quality = item.get("confidence") in {"中", "事件"}
@@ -511,18 +555,34 @@ def _composite_technology(
         expected = float(np.mean([row["expected_return"] for row in rows]))
         excess = float(np.mean([row["expected_excess"] for row in rows]))
         quality = sum(row["confidence"] != "低" for row in rows) >= 2
+        signal_strength = round(
+            float(np.mean([row.get("signal_strength", 0.0) for row in rows])),
+            1,
+        )
+        signal_band = (
+            "强"
+            if quality and signal_strength >= 70
+            else "中"
+            if signal_strength >= 45
+            else "弱"
+        )
         days.append(
             {
                 "date": rows[0]["date"],
                 "weekday": rows[0]["weekday"],
                 "direction": _direction(
-                    probability / 100, expected / 100, quality
+                    probability / 100,
+                    expected / 100,
+                    quality,
+                    signal_strength,
                 ),
                 "up_probability": round(probability, 1),
                 "outperform_probability": round(out_probability, 1),
                 "expected_return": round(expected, 2),
                 "expected_excess": round(excess, 2),
                 "confidence": "中" if quality else "低",
+                "signal_strength": signal_strength,
+                "signal_band": signal_band,
             }
         )
     history_length = min(len(item.get("history", [])) for item in members)
@@ -614,12 +674,22 @@ def generate_sector_forecast(
                 float(metrics["edge"]) >= 0.015
                 and float(metrics["auc"]) >= 0.51
             )
+            expected_excess = float(result["expected_excess"])
+            signal_strength, signal_band = _signal_strength(
+                result["up_probability"],
+                expected,
+                float(metrics["edge"]),
+                quality,
+            )
             days.append(
                 {
                     "date": forecast_date.strftime("%Y-%m-%d"),
                     "weekday": "一二三四五"[forecast_date.weekday()],
                     "direction": _direction(
-                        result["up_probability"], expected, quality
+                        result["up_probability"],
+                        expected,
+                        quality,
+                        signal_strength,
                     ),
                     "up_probability": round(
                         result["up_probability"] * 100, 1
@@ -629,9 +699,11 @@ def generate_sector_forecast(
                     ),
                     "expected_return": round(expected * 100, 2),
                     "expected_excess": round(
-                        result["expected_excess"] * 100, 2
+                        expected_excess * 100, 2
                     ),
                     "confidence": "中" if quality else "低",
+                    "signal_strength": signal_strength,
+                    "signal_band": signal_band,
                 }
             )
         h1_abs = horizon_results[1][spec.key]["absolute_validation"]
@@ -717,6 +789,8 @@ def generate_sector_forecast(
             "行业相对强弱使用独立梯度提升模型；收益预测为行业相对"
             "沪深300的回归结果叠加大盘路径；另外使用概率、超额收益"
             "与相对概率的横截面分位数生成相对信号，分歧不足时保留中性。"
+            "强偏强/强偏弱只在概率、预期收益和验证优势同向且证据分"
+            "达到70时显示，不人为放大原始概率。"
         ),
         "sectors": ordered,
     }
