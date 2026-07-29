@@ -182,3 +182,23 @@ def test_missing_sector_history_blocks_publication() -> None:
 
     assert not result.passed
     assert any("历史走势不足50个交易日" in error for error in result.errors)
+
+
+def test_guarded_sector_lag_allows_fresh_market_publication() -> None:
+    forecast = valid_forecast()
+    for sector in forecast["sector_forecast"]["sectors"]:
+        for row in sector["history"]:
+            row["date"] = "2026-07-23"
+    forecast["sector_forecast"]["freshness"] = {
+        "status": "stale",
+        "actual_data_through": "2026-07-23",
+        "market_data_through": "2026-07-24",
+        "lag_trading_sessions": 1,
+    }
+    forecast["sector_forecast"]["tomorrow_selection"] = {"up": [], "down": []}
+
+    result = validate_forecast(forecast, today=date(2026, 7, 26))
+
+    assert result.passed
+    assert result.metrics["sector_lag_sessions"] == 1
+    assert any("\u884c\u4e1a\u6570\u636e\u843d\u540e" in warning for warning in result.warnings)

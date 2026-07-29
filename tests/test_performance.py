@@ -118,3 +118,12 @@ def test_sector_prediction_is_settled_and_exposed_in_review() -> None:
     assert review["monitor"]["evaluated_samples"] == 1
     assert review["monitor"]["evaluated_days"] == 1
     assert review["rows"][0]["sector_name"] == sector["name"]
+
+
+def test_stale_sector_snapshot_does_not_create_new_sector_call() -> None:
+    forecast = valid_forecast()
+    forecast["sector_forecast"]["freshness"] = {"status": "stale"}
+
+    updated, _ = update_performance_history({"predictions": []}, forecast)
+
+    assert updated["sector_predictions"] == []

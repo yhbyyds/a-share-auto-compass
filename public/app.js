@@ -44,18 +44,24 @@ function renderPulse(data) {
     : `${day.evidence_label || "证据"} · ${day.direction || "震荡"}`;
 
   const selection = data.sector_forecast?.tomorrow_selection || {};
+  const sectorFreshness = data.sector_forecast?.freshness || {};
   const sourceSpread = selection.source_spread || {};
   const rankingValidation = selection.selection_validation || {};
   const spread = selection.score_spread;
-  $("#pulse-sector-spread").textContent = spread == null
-    ? `${sourceSpread.probability_pp ?? "—"}pp`
-    : `${Number(spread).toFixed(1)}分`;
-  $("#pulse-sector-label").textContent = rankingValidation.samples
-    ? `排序验证 ${Number(rankingValidation.spread_hit_rate ?? 0).toFixed(1)}% · ${rankingValidation.samples}日`
-    : sourceSpread.separated === false
-      ? "板块分歧偏小"
-      : `强候选 ${selection.validated_up_count ?? "—"} · 弱候选 ${selection.validated_down_count ?? "—"}`;
-
+  if (sectorFreshness.status === "stale") {
+    const lag = sectorFreshness.lag_trading_sessions ?? "\u2014";
+    $("#pulse-sector-spread").textContent = `\u6ede\u540e ${lag} \u65e5`;
+    $("#pulse-sector-label").textContent = sectorFreshness.message || "\u884c\u4e1a\u5019\u9009\u7b49\u5f85\u6536\u76d8\u6570\u636e\u540c\u6b65";
+  } else {
+    $("#pulse-sector-spread").textContent = spread == null
+      ? `${sourceSpread.probability_pp ?? "\u2014"}pp`
+      : `${Number(spread).toFixed(1)}\u5206`;
+    $("#pulse-sector-label").textContent = rankingValidation.samples
+      ? `\u6392\u5e8f\u9a8c\u8bc1 ${Number(rankingValidation.spread_hit_rate ?? 0).toFixed(1)}% \u00b7 ${rankingValidation.samples}\u65e5`
+      : sourceSpread.separated === false
+        ? "\u677f\u5757\u533a\u5206\u504f\u5c0f"
+        : `\u5f3a\u5019\u9009 ${selection.validated_up_count ?? "\u2014"} \u00b7 \u5f31\u5019\u9009 ${selection.validated_down_count ?? "\u2014"}`;
+  }
   const regime = data.intraday?.selection?.market_regime || {};
   $("#pulse-regime").textContent = regime.label || data.market?.weekly_direction || "—";
   $("#pulse-regime-note").textContent = regime.flags?.slice(0, 2).join(" · ")
@@ -265,7 +271,16 @@ function sectorSparkline(sector) {
   </svg>`;
 }
 
-function renderSectorTomorrow(selection, sectors) {
+function renderSectorTomorrow(selection, sectors, freshness = {}) {
+  if (freshness.status === "stale") {
+    const note = freshness.message || "\u884c\u4e1a\u6536\u76d8\u5e8f\u5217\u7b49\u5f85\u540c\u6b65\u3002";
+    const content = `<p class="selection-empty">${note}</p>`;
+    $("#sector-tomorrow-up").innerHTML = content;
+    $("#sector-tomorrow-down").innerHTML = content;
+    $("#sector-tomorrow-summary").textContent = "\u677f\u5757\u5f53\u65e5\u5019\u9009\u5df2\u6682\u505c";
+    $("#sector-tomorrow-method").textContent = note;
+    return;
+  }
   const rankScore = (rank) => Math.round(
     100
     - (Math.max(Number(rank) - 1, 0) / Math.max(sectors.length - 1, 1))
@@ -429,8 +444,22 @@ function renderSectorForecast(forecast) {
   }
 
   const sectors = [...forecast.sectors].sort((a, b) => a.rank - b.rank);
+  const freshness = forecast.freshness || {};
+  if (freshness.status === "stale") {
+    renderSectorTomorrow(forecast.tomorrow_selection, sectors, freshness);
+    $("#sector-leaders").innerHTML = `<article class="watchlist-empty panel">${freshness.message || "\u884c\u4e1a\u6536\u76d8\u5e8f\u5217\u7b49\u5f85\u540c\u6b65\u3002"}</article>`;
+    $("#sector-matrix").innerHTML = "";
+    $("#sector-heatmap").innerHTML = "";
+    $("#sector-distribution").innerHTML = `<p class="selection-empty">\u5927\u76d8\u65e5\u95f4\u9884\u6d4b\u5df2\u6309\u6700\u65b0\u6536\u76d8\u66f4\u65b0\uff1b\u677f\u5757\u7b49\u5f85\u5bf9\u5e94\u6536\u76d8\u6e90\u540c\u6b65\u3002</p>`;
+    $("#sector-select").innerHTML = `<option>\u7b49\u5f85\u884c\u4e1a\u6570\u636e\u540c\u6b65</option>`;
+    $("#sector-detail-title").textContent = "\u884c\u4e1a\u6570\u636e\u72b6\u6001";
+    $("#sector-detail-chart").innerHTML = "";
+    $("#sector-detail-metrics").innerHTML = "";
+    $("#sector-method-note").textContent = `${forecast.data_source}\uff0c\u6570\u636e\u622a\u81f3 ${forecast.actual_data_through || forecast.data_through}\u3002${forecast.method}`;
+    return;
+  }
   renderSectorVisuals(sectors);
-  renderSectorTomorrow(forecast.tomorrow_selection, sectors);
+  renderSectorTomorrow(forecast.tomorrow_selection, sectors, freshness);
   const leaders = sectors.slice(0, 3);
   $("#sector-leaders").innerHTML = leaders.map((sector) => {
     const validationEdge = sector.validation.accuracy - sector.validation.baseline;
@@ -727,7 +756,7 @@ async function loadForecast() {
     }
   }
   const response = await fetch(
-    "./data/forecast.json?v=1.14.0",
+    "./data/forecast.json?v=1.15.0",
     { cache: "no-store" },
   );
   if (!response.ok) throw new Error("预测文件读取失败");

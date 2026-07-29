@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import date, timedelta
 from typing import Any
 
 from market_forecast.data import fetch_market_breadth, fetch_market_data
@@ -14,6 +15,7 @@ from market_forecast.official_events import fetch_official_events
 from market_forecast.sectors import fetch_sector_data, generate_sector_forecast
 from market_forecast.trading_calendar import (
     calendar_metadata,
+    is_trading_session,
     prepare_calendar_updates,
 )
 from market_forecast.watchlist import generate_watchlist
@@ -21,6 +23,67 @@ from market_forecast.watchlist import generate_watchlist
 
 RELEASE = "17"
 DATA_VERSION = "1.13.0"
+
+
+def _sector_actual_through(forecast: dict[str, Any]) -> date | None:
+    dates: list[date] = []
+    for sector in forecast.get("sector_forecast", {}).get("sectors", []):
+        if sector.get("is_composite") or not sector.get("history"):
+            continue
+        try:
+            dates.append(date.fromisoformat(str(sector["history"][-1]["date"])))
+        except (KeyError, TypeError, ValueError):
+            continue
+    return min(dates) if dates else None
+
+
+def _trading_session_lag(start: date, end: date) -> int:
+    lag = 0
+    current = start + timedelta(days=1)
+    while current <= end:
+        if is_trading_session(current):
+            lag += 1
+        current += timedelta(days=1)
+    return lag
+
+
+def _apply_sector_freshness_guard(forecast: dict[str, Any]) -> None:
+    sector_block = forecast.get("sector_forecast") or {}
+    market_date = date.fromisoformat(forecast["meta"]["data_through"])
+    sector_date = _sector_actual_through(forecast)
+    if sector_date is None:
+        sector_block["freshness"] = {
+            "status": "missing",
+            "actual_data_through": None,
+            "market_data_through": market_date.isoformat(),
+            "lag_trading_sessions": None,
+            "message": "\u884c\u4e1a\u6536\u76d8\u5e8f\u5217\u7b49\u5f85\u540c\u6b65\uff0c\u5f53\u65e5\u677f\u5757\u5019\u9009\u6682\u505c\u3002",
+        }
+        return
+    lag = _trading_session_lag(sector_date, market_date)
+    status = "fresh" if lag == 0 else "stale"
+    freshness = {
+        "status": status,
+        "actual_data_through": sector_date.isoformat(),
+        "market_data_through": market_date.isoformat(),
+        "lag_trading_sessions": lag,
+        "message": (
+            "\u884c\u4e1a\u884c\u60c5\u5df2\u66f4\u65b0\u81f3 " + sector_date.isoformat()
+            if lag == 0
+            else "\u884c\u4e1a\u884c\u60c5\u6682\u81f3 " + sector_date.isoformat()
+            + "\uff0c\u6bd4\u5927\u76d8\u6536\u76d8\u665a " + str(lag)
+            + " \u4e2a\u4ea4\u6613\u65e5\uff1b\u5f53\u65e5\u677f\u5757\u5019\u9009\u6682\u505c\u3002"
+        ),
+    }
+    sector_block["actual_data_through"] = sector_date.isoformat()
+    sector_block["freshness"] = freshness
+    if status == "stale":
+        selection = sector_block.get("tomorrow_selection") or {}
+        selection["up"] = []
+        selection["down"] = []
+        selection["status"] = "stale"
+        selection["method"] = freshness["message"]
+        sector_block["tomorrow_selection"] = selection
 
 
 def build_forecast() -> dict[str, Any]:
@@ -40,6 +103,7 @@ def build_forecast() -> dict[str, Any]:
         fetch_sector_data(),
         forecast["days"],
     )
+    _apply_sector_freshness_guard(forecast)
     # Intraday research is evidence-gated and remains in collection mode until
     # independently-labelled fixed-time snapshots are sufficient.
     forecast["intraday"] = build_intraday_brief(

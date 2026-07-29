@@ -267,7 +267,11 @@ def update_performance_history(
         str(row.get("key")): row.get("priority_score")
         for row in [*(selection.get("up") or []), *(selection.get("down") or [])]
     }
+    sector_freshness = (forecast.get("sector_forecast") or {}).get("freshness") or {}
+    sector_updates_allowed = sector_freshness.get("status") != "stale"
     for sector in (forecast.get("sector_forecast") or {}).get("sectors", []):
+        if not sector_updates_allowed:
+            continue
         if sector.get("is_composite") or not sector.get("days"):
             continue
         history_rows = sector.get("history") or []

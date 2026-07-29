@@ -173,8 +173,52 @@ def validate_forecast(
         result.errors.append(
             f"行业覆盖不足: {len(sectors)} < {minimum_sectors}"
         )
-    if sector_block.get("data_through") != meta.get("data_through"):
-        result.errors.append("行业数据日期与大盘数据日期不一致")
+    sector_history_dates: list[date] = []
+    for sector in sectors:
+        history = sector.get("history") or []
+        if sector.get("is_composite") or not history:
+            continue
+        try:
+            sector_history_dates.append(date.fromisoformat(str(history[-1]["date"])))
+        except (KeyError, TypeError, ValueError):
+            result.errors.append(
+                f"\u884c\u4e1a {sector.get('name', sector.get('key'))} \u5386\u53f2\u622a\u6b62\u65e5\u671f\u65e0\u6548"
+            )
+    sector_actual_through = min(sector_history_dates) if sector_history_dates else None
+    freshness = sector_block.get("freshness") or {}
+    sector_lag_sessions: int | None = None
+    if sector_actual_through is None:
+        result.errors.append("\u884c\u4e1a\u5386\u53f2\u8d70\u52bf\u7f3a\u5c11\u6709\u6548\u622a\u6b62\u65e5\u671f")
+        sector_lag_is_guarded = False
+    else:
+        current = sector_actual_through
+        sector_lag_sessions = 0
+        while current < data_through:
+            current = date.fromordinal(current.toordinal() + 1)
+            if is_trading_session(current):
+                sector_lag_sessions += 1
+        result.metrics["sector_data_through"] = sector_actual_through.isoformat()
+        result.metrics["sector_lag_sessions"] = sector_lag_sessions
+        sector_lag_is_guarded = (
+            sector_lag_sessions == 0
+            or (
+                freshness.get("status") == "stale"
+                and int(freshness.get("lag_trading_sessions", -1)) == sector_lag_sessions
+                and sector_lag_sessions <= 2
+                and not (sector_block.get("tomorrow_selection") or {}).get("up")
+                and not (sector_block.get("tomorrow_selection") or {}).get("down")
+            )
+        )
+        if sector_lag_sessions > 0 and not sector_lag_is_guarded:
+            result.errors.append("\u884c\u4e1a\u6570\u636e\u843d\u540e\u4e8e\u5927\u76d8\u4f46\u672a\u89e6\u53d1\u884c\u4e1a\u5019\u9009\u6682\u505c")
+        elif sector_lag_sessions > 2:
+            result.errors.append(
+                f"\u884c\u4e1a\u6570\u636e\u843d\u540e {sector_lag_sessions} \u4e2a\u4ea4\u6613\u65e5\uff0c\u8d85\u8fc7\u53d7\u63a7\u53d1\u5e03\u95e8\u69db"
+            )
+        elif sector_lag_sessions > 0:
+            result.warnings.append(
+                f"\u884c\u4e1a\u6570\u636e\u843d\u540e {sector_lag_sessions} \u4e2a\u4ea4\u6613\u65e5\uff1b\u5f53\u65e5\u677f\u5757\u5019\u9009\u5df2\u6682\u505c"
+            )
     selection = sector_block.get("tomorrow_selection") or {}
     ranking_validation = selection.get("selection_validation") or {}
     if ranking_validation:
@@ -214,11 +258,15 @@ def validate_forecast(
                 f"行业 {sector.get('name', sector.get('key'))} "
                 f"历史走势不足50个交易日: {len(history)}"
             )
-        elif history[-1].get("date") != meta.get("data_through"):
+        elif (
+            history[-1].get("date") != meta.get("data_through")
+            and not sector_lag_is_guarded
+        ):
             result.errors.append(
-                f"行业 {sector.get('name', sector.get('key'))} "
-                "历史走势未更新到行情截止日"
+                f"\u884c\u4e1a {sector.get('name', sector.get('key'))} "
+                "\u5386\u53f2\u8d70\u52bf\u672a\u66f4\u65b0\u5230\u884c\u60c5\u622a\u6b62\u65e5"
             )
+
 
     breadth_stocks = int((forecast.get("breadth") or {}).get("stocks", 0) or 0)
     result.metrics["breadth_stocks"] = breadth_stocks
