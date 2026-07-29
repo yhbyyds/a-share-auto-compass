@@ -44,8 +44,8 @@
     "intraday_observation_updated_at": "2026-07-28T11:04:33.709833+08:00",
     "forecast_note": "日线预测保留最近一次质量门禁通过版本；盘中细分领域为独立观测层，收盘后再结算训练标签。",
     "day_ahead_definition": "??????????????????????????",
-    "structure_update": "risk_off_gate_and_relative_strength_filter",
-    "structure_version": "1.10.0"
+    "structure_update": "reliability_dashboard_and_next_session_sector_ranking",
+    "structure_version": "1.11.0"
   },
   "market": {
     "name": "上证指数",

@@ -3,6 +3,7 @@ import pandas as pd
 
 from market_forecast.model import (
     _direction,
+    _evidence_score,
     _next_weekdays,
     _rsi,
     build_features,
@@ -75,4 +76,35 @@ def test_strategy_features_are_available_without_lookahead():
     assert len(features) > 0
     assert features.index.max() == close.index.max()
     assert np.isfinite(features[list(expected)].to_numpy()).all()
+    assert features["trend_efficiency_20"].between(0, 1.01).all()
+
+
+def test_evidence_score_rewards_validated_edge_and_agreement():
+    strong = {
+        "recent_accuracy": 0.58,
+        "recent_baseline": 0.52,
+        "auc": 0.57,
+        "brier": 0.22,
+        "high_conf_accuracy": 0.60,
+    }
+    weak = {
+        "recent_accuracy": 0.51,
+        "recent_baseline": 0.52,
+        "auc": 0.49,
+        "brier": 0.27,
+        "high_conf_accuracy": None,
+    }
+
+    strong_score = _evidence_score(
+        strong,
+        {"a": 0.58, "b": 0.56, "c": 0.57},
+    )
+    weak_score = _evidence_score(
+        weak,
+        {"a": 0.65, "b": 0.45, "c": 0.50},
+    )
+
+    assert strong_score["score"] > weak_score["score"]
+    assert strong_score["label"] in {"中等", "较高"}
+    assert weak_score["label"] == "较低"
 

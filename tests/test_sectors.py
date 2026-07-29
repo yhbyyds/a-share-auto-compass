@@ -6,6 +6,7 @@ from market_forecast.sectors import (
     _outlook,
     _recent_history,
     _signal_strength,
+    _tomorrow_selection,
 )
 
 
@@ -73,3 +74,49 @@ def test_cross_sectional_signal_marks_only_validated_extremes():
     _cross_sectional_signal(rows)
     assert rows[0]["relative_signal"] == "相对偏弱"
     assert rows[2]["relative_signal"] == "相对偏强"
+
+
+def test_tomorrow_selection_separates_ranking_from_validated_direction():
+    sectors = []
+    for index, score in enumerate((80, 60, 40), start=1):
+        direction = "偏强" if index == 1 else "震荡"
+        sectors.append(
+            {
+                "key": f"s{index}",
+                "name": f"行业{index}",
+                "is_composite": False,
+                "validation": {
+                    "accuracy": 57.0 if index == 1 else 51.0,
+                    "baseline": 52.0,
+                },
+                "days": [
+                    {
+                        "date": "2026-07-30",
+                        "direction": direction,
+                        "confidence": "中" if index == 1 else "低",
+                        "relative_signal": (
+                            "相对偏强" if index == 1 else "相对中性"
+                        ),
+                        "relative_signal_score": score,
+                        "relative_signal_spread": {
+                            "probability_pp": 8.0,
+                            "expected_excess_pp": 0.6,
+                            "separated": True,
+                        },
+                        "up_probability": 60.0 if index == 1 else 50.0,
+                        "expected_return": 0.4 if index == 1 else 0.0,
+                        "expected_excess": 0.5 if index == 1 else -0.1,
+                        "signal_strength": score,
+                    }
+                ],
+            }
+        )
+
+    result = _tomorrow_selection(sectors)
+
+    assert result["up"][0]["key"] == "s1"
+    assert result["up"][0]["status"] == "模型偏强候选"
+    assert result["down"][0]["key"] == "s3"
+    assert result["down"][0]["status"] == "相对落后观察"
+    assert result["validated_up_count"] == 1
+    assert result["score_spread"] > 0

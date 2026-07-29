@@ -13,6 +13,52 @@ function showToast(message) {
   showToast.timer = window.setTimeout(() => toast.classList.remove("visible"), 3500);
 }
 
+function renderPulse(data) {
+  const reliability = data.validation?.reliability || {};
+  const score = reliability.score == null ? null : Number(reliability.score);
+  $("#pulse-reliability").textContent = score == null
+    ? "等待新模型"
+    : `${reliability.label || "已评估"} · ${score.toFixed(0)}分`;
+  $("#pulse-reliability-note").textContent = reliability.reasons?.slice(0, 2).join(" · ")
+    || "下一次收盘重训后显示综合证据";
+  $("#pulse-data-date").textContent = data.meta?.data_through || "—";
+  $("#pulse-data-state").textContent = data.meta?.automation?.quality_gate?.passed
+    ? "发布质量门禁已通过"
+    : data.meta?.automation?.status === "manual"
+      ? "人工校验快照"
+      : "已发布数据快照";
+
+  const today = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Shanghai",
+  }).format(new Date());
+  const day = (
+    data.day_ahead?.date >= today
+      ? data.day_ahead
+      : data.days?.find((item) => item.date >= today)
+  ) || data.days?.[0] || {};
+  $("#pulse-day-score").textContent = day.evidence_score == null
+    ? `${day.validation_accuracy ?? "—"}%`
+    : `${Number(day.evidence_score).toFixed(0)} / 100`;
+  $("#pulse-day-label").textContent = day.evidence_score == null
+    ? "显示近期方向验证"
+    : `${day.evidence_label || "证据"} · ${day.direction || "震荡"}`;
+
+  const selection = data.sector_forecast?.tomorrow_selection || {};
+  const sourceSpread = selection.source_spread || {};
+  const spread = selection.score_spread;
+  $("#pulse-sector-spread").textContent = spread == null
+    ? `${sourceSpread.probability_pp ?? "—"}pp`
+    : `${Number(spread).toFixed(1)}分`;
+  $("#pulse-sector-label").textContent = sourceSpread.separated === false
+    ? "板块分歧偏小"
+    : `强候选 ${selection.validated_up_count ?? "—"} · 弱候选 ${selection.validated_down_count ?? "—"}`;
+
+  const regime = data.intraday?.selection?.market_regime || {};
+  $("#pulse-regime").textContent = regime.label || data.market?.weekly_direction || "—";
+  $("#pulse-regime-note").textContent = regime.flags?.slice(0, 2).join(" · ")
+    || `风险等级 ${data.market?.risk_level || "—"}`;
+}
+
 function renderDays(days) {
   $("#day-grid").innerHTML = days.map((day) => {
     const range = Math.max(day.high_return - day.low_return, 0.01);
@@ -70,7 +116,7 @@ function renderDayAhead(dayAhead, days, meta) {
         <small>上涨概率 ${probability}% &middot; ${row.confidence || "中"}置信</small>
       </div>
       <div><span>模型期望</span><strong class="${expected >= 0 ? "positive-text" : "negative-text"}">${formatSigned(expected)}</strong><small>历史相似区间 ${range}</small></div>
-      <div><span>样本外验证</span><strong>${validation}</strong><small>事件风险 ${eventRisk}</small></div>
+      <div><span>样本外验证</span><strong>${validation}</strong><small>${row.evidence_score == null ? `事件风险 ${eventRisk}` : `综合证据 ${row.evidence_score}/100 · ${row.evidence_label}`}</small></div>
     </div>
     <p class="day-ahead-note">数据快照截至 ${meta?.data_through || "&mdash;"}；收盘后自动生成下一交易日正式预测。主产品回答“今天收盘后、下一交易日大方向如何”。盘中快照只用于辅助更新、不替代收盘后的日间预测。</p>`;
 }
@@ -216,6 +262,76 @@ function sectorSparkline(sector) {
   </svg>`;
 }
 
+function renderSectorTomorrow(selection, sectors) {
+  const rankScore = (rank) => Math.round(
+    100
+    - (Math.max(Number(rank) - 1, 0) / Math.max(sectors.length - 1, 1))
+    * 100,
+  );
+  const fallback = {
+    up: sectors.slice(0, 3).map((sector) => ({
+      key: sector.key,
+      name: sector.name,
+      tomorrow_rank: sector.rank,
+      score: sector.days?.[0]?.signal_strength || rankScore(sector.rank),
+      status: "周相对领先观察",
+      direction: sector.days?.[0]?.direction || "震荡",
+      relative_signal: sector.days?.[0]?.relative_signal || "相对中性",
+      expected_excess: sector.days?.[0]?.expected_excess ?? 0,
+    })),
+    down: sectors.slice(-3).reverse().map((sector) => ({
+      key: sector.key,
+      name: sector.name,
+      tomorrow_rank: sector.rank,
+      score: sector.days?.[0]?.signal_strength || rankScore(sector.rank),
+      status: "周相对落后观察",
+      direction: sector.days?.[0]?.direction || "震荡",
+      relative_signal: sector.days?.[0]?.relative_signal || "相对中性",
+      expected_excess: sector.days?.[0]?.expected_excess ?? 0,
+    })),
+    score_spread: null,
+    method: "当前页面使用周行业排序兼容展示；下一次收盘重训后切换为第1日专用分层。",
+  };
+  const resolved = selection?.up?.length ? selection : fallback;
+  const renderList = (items, tone) => items.map((item) => `
+    <button class="sector-tomorrow-item" type="button" data-sector="${item.key}">
+      <span>#${item.tomorrow_rank ?? "—"}</span>
+      <span class="sector-tomorrow-copy">
+        <strong>${item.name}</strong>
+        <small>${item.status} · ${item.direction} · ${item.relative_signal}</small>
+      </span>
+      <span class="sector-tomorrow-score">
+        <strong class="${tone === "up" ? "positive-text" : "negative-text"}">${Number(item.score ?? 0).toFixed(0)}</strong>
+        <small>超额 ${formatSigned(item.expected_excess ?? 0)}</small>
+      </span>
+    </button>`).join("");
+  $("#sector-tomorrow-up").innerHTML = renderList(resolved.up || [], "up")
+    || `<p class="selection-empty">当前没有形成领先侧排序。</p>`;
+  $("#sector-tomorrow-down").innerHTML = renderList(resolved.down || [], "down")
+    || `<p class="selection-empty">当前没有形成落后侧排序。</p>`;
+  $("#sector-tomorrow-summary").textContent = resolved.score_spread == null
+    ? "兼容展示 · 等待第1日专用分层"
+    : `第1日横截面区分度 ${resolved.score_spread}分 · 正式偏强 ${resolved.validated_up_count} · 正式偏弱 ${resolved.validated_down_count}`;
+  $("#sector-tomorrow-method").textContent = resolved.method || "";
+  document.querySelectorAll(".sector-tomorrow-item").forEach((button) => {
+    button.addEventListener("click", () => {
+      const select = $("#sector-select");
+      if (
+        !select
+        || ![...select.options].some(
+          (option) => option.value === button.dataset.sector,
+        )
+      ) return;
+      select.value = button.dataset.sector;
+      select.dispatchEvent(new Event("change"));
+      $("#sector-detail-title")?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    });
+  });
+}
+
 function renderSectorDetail(sector) {
   const history = sector.history || [];
   $("#sector-detail-title").textContent = `${sector.name} · 趋势与相对强弱`;
@@ -300,6 +416,7 @@ function renderSectorForecast(forecast) {
 
   const sectors = [...forecast.sectors].sort((a, b) => a.rank - b.rank);
   renderSectorVisuals(sectors);
+  renderSectorTomorrow(forecast.tomorrow_selection, sectors);
   const leaders = sectors.slice(0, 3);
   $("#sector-leaders").innerHTML = leaders.map((sector) => {
     const validationEdge = sector.validation.accuracy - sector.validation.baseline;
@@ -466,6 +583,7 @@ function render(data) {
     ? "模型没有发现值得重仓押注的方向优势；弱趋势与事件风险并存，现金也是一种仓位。"
     : `模型给出${market.weekly_direction}倾向，但只把它当作概率优势，不当作确定答案。`;
 
+  renderPulse(data);
   renderDayAhead(data.day_ahead, days, meta);
   renderDays(days);
   renderChart(data.recent_chart, days);
@@ -507,7 +625,7 @@ function render(data) {
 
   $("#sources").innerHTML = data.sources.map((source) => `<a href="${source.url}" target="_blank" rel="noreferrer" title="${source.detail}">${source.name} ↗</a>`).join("");
   $("#disclaimer").textContent = data.disclaimer;
-  $("#app-version").textContent = `Structure ${meta.structure_version || meta.release || meta.version} &middot; Data release ${meta.release || meta.version} &middot; Research only`;
+  $("#app-version").textContent = `Structure ${meta.structure_version || meta.release || meta.version} · Data release ${meta.release || meta.version} · Research only`;
   window.dispatchEvent(new CustomEvent("forecast:loaded", { detail: data }));
 }
 
@@ -527,7 +645,7 @@ async function loadForecast() {
     }
   }
   const response = await fetch(
-    "./data/forecast.json?v=1.10.0",
+    "./data/forecast.json?v=1.11.0",
     { cache: "no-store" },
   );
   if (!response.ok) throw new Error("预测文件读取失败");

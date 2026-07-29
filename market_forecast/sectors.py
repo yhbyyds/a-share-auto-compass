@@ -152,6 +152,27 @@ def _sector_features(
         (log_amount - log_amount.rolling(20).mean())
         / log_amount.rolling(20).std()
     )
+    for window in (20, 60):
+        prior_high = close.rolling(window).max().shift(1)
+        features[f"s_breakout_{window}"] = close / prior_high - 1
+    high = frame["high"].reindex(index).ffill()
+    low = frame["low"].reindex(index).ffill()
+    true_range = pd.concat(
+        [
+            high - low,
+            (high - close.shift(1)).abs(),
+            (low - close.shift(1)).abs(),
+        ],
+        axis=1,
+    ).max(axis=1)
+    features["s_atr14_pct"] = true_range.rolling(14).mean() / close
+    features["s_trend_efficiency_20"] = (
+        close.pct_change(20).abs()
+        / daily.abs().rolling(20).sum().replace(0, np.nan)
+    )
+    features["s_amount_price_confirmation"] = (
+        daily * features["s_amount_z20"]
+    )
     return features.replace([np.inf, -np.inf], np.nan)
 
 
@@ -486,6 +507,121 @@ def _cross_sectional_signal(days: list[dict[str, Any]]) -> None:
         )
 
 
+def _tomorrow_selection(
+    sectors: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Build an explicit top/bottom next-session ranking with evidence labels."""
+    rows: list[dict[str, Any]] = []
+    for sector in sectors:
+        if sector.get("is_composite") or not sector.get("days"):
+            continue
+        day = sector["days"][0]
+        validation = sector.get("validation", {})
+        validation_edge = float(
+            validation.get("accuracy", 0) - validation.get("baseline", 0)
+        )
+        relative_score = float(day.get("relative_signal_score", 50))
+        signal_strength = float(day.get("signal_strength", 0))
+        expected_excess = float(day.get("expected_excess", 0))
+        excess_component = float(
+            np.clip(50 + expected_excess * 30, 0, 100)
+        )
+        score = round(
+            0.50 * relative_score
+            + 0.30 * signal_strength
+            + 0.20 * excess_component,
+            1,
+        )
+        direction = str(day.get("direction", "震荡"))
+        confidence = day.get("confidence", "低")
+        validated_up = (
+            confidence != "低"
+            and "偏强" in direction
+            and expected_excess > 0
+            and validation_edge >= 1.5
+        )
+        validated_down = (
+            confidence != "低"
+            and "偏弱" in direction
+            and expected_excess < 0
+            and validation_edge >= 1.5
+        )
+        rows.append(
+            {
+                "key": sector["key"],
+                "name": sector["name"],
+                "date": day.get("date"),
+                "score": score,
+                "direction": direction,
+                "relative_signal": day.get(
+                    "relative_signal",
+                    "相对中性",
+                ),
+                "up_probability": day.get("up_probability"),
+                "expected_return": day.get("expected_return"),
+                "expected_excess": day.get("expected_excess"),
+                "signal_strength": signal_strength,
+                "validation_edge": round(validation_edge, 1),
+                "validated_up": validated_up,
+                "validated_down": validated_down,
+            }
+        )
+    ordered = sorted(rows, key=lambda item: item["score"], reverse=True)
+    for index, item in enumerate(ordered, start=1):
+        item["tomorrow_rank"] = index
+    up = []
+    for item in ordered[:3]:
+        up.append(
+            {
+                **item,
+                "status": (
+                    "模型偏强候选"
+                    if item["validated_up"]
+                    else "相对领先观察"
+                ),
+            }
+        )
+    down = []
+    for item in reversed(ordered[-3:]):
+        down.append(
+            {
+                **item,
+                "status": (
+                    "模型偏弱回避"
+                    if item["validated_down"]
+                    else "相对落后观察"
+                ),
+            }
+        )
+    spread = (
+        ordered[0]["score"] - ordered[-1]["score"]
+        if len(ordered) >= 2
+        else 0.0
+    )
+    source_day = next(
+        (
+            sector["days"][0]
+            for sector in sectors
+            if not sector.get("is_composite") and sector.get("days")
+        ),
+        {},
+    )
+    source_spread = source_day.get("relative_signal_spread", {})
+    return {
+        "date": ordered[0].get("date") if ordered else None,
+        "up": up,
+        "down": down,
+        "score_spread": round(float(spread), 1),
+        "source_spread": source_spread,
+        "validated_up_count": sum(item["validated_up"] for item in rows),
+        "validated_down_count": sum(item["validated_down"] for item in rows),
+        "method": (
+            "只使用第1日模型的横截面分位、证据强度、预期超额收益与"
+            "第1日样本外验证；相对排名与正式方向分开显示。"
+        ),
+    }
+
+
 def _drivers(
     spec: SectorSpec,
     frame: pd.DataFrame,
@@ -780,6 +916,7 @@ def generate_sector_forecast(
         item["rank"] = rank
         item.pop("_rank_score", None)
 
+    tomorrow_selection = _tomorrow_selection(ordered)
     return {
         "benchmark": "沪深300",
         "data_source": "申万宏源研究·申万一级行业指数",
@@ -792,5 +929,6 @@ def generate_sector_forecast(
             "强偏强/强偏弱只在概率、预期收益和验证优势同向且证据分"
             "达到70时显示，不人为放大原始概率。"
         ),
+        "tomorrow_selection": tomorrow_selection,
         "sectors": ordered,
     }

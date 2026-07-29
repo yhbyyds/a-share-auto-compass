@@ -13,7 +13,12 @@ from sklearn.ensemble import (
     RandomForestClassifier,
 )
 from sklearn.linear_model import LogisticRegression, Ridge
-from sklearn.metrics import accuracy_score, brier_score_loss, roc_auc_score
+from sklearn.metrics import (
+    accuracy_score,
+    balanced_accuracy_score,
+    brier_score_loss,
+    roc_auc_score,
+)
 from sklearn.model_selection import TimeSeriesSplit
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
@@ -23,6 +28,25 @@ from market_forecast.trading_calendar import trading_sessions_after
 
 
 RANDOM_STATE = 20260724
+ANALOG_FEATURES = (
+    "return_5d",
+    "return_20d",
+    "return_60d",
+    "ma_gap_20",
+    "ma_gap_60",
+    "volatility_20",
+    "rsi_14",
+    "volume_z20",
+    "drawdown_60",
+    "breakout_20d",
+    "atr14_pct",
+    "trend_efficiency_20",
+    "market_dispersion",
+    "breadth_proxy",
+    "small_vs_large_5d",
+    "relative_strength_csi300_20d",
+    "global_risk_on_1d",
+)
 
 
 @dataclass
@@ -93,7 +117,7 @@ def build_features(data: dict[str, pd.DataFrame]) -> tuple[pd.DataFrame, pd.Seri
     ).max(axis=1)
     features["atr14_pct"] = true_range.rolling(14).mean() / close
     features["trend_efficiency_20"] = (
-        close.diff(20).abs()
+        close.pct_change(20).abs()
         / daily_return.abs().rolling(20).sum().replace(0, np.nan)
     )
     features["volume_price_confirmation"] = (
@@ -205,10 +229,31 @@ def _walk_forward_predictions(
 
     valid = predictions.dropna()
     actual = y_binary.loc[valid.index]
-    accuracies = {
-        name: accuracy_score(actual, valid[name] >= 0.5) for name in valid.columns
-    }
-    return valid, accuracies
+    recent = valid.tail(min(240, len(valid)))
+    recent_actual = actual.loc[recent.index]
+    weight_scores: dict[str, float] = {}
+    for name in valid.columns:
+        full_balanced = balanced_accuracy_score(actual, valid[name] >= 0.5)
+        recent_balanced = balanced_accuracy_score(
+            recent_actual,
+            recent[name] >= 0.5,
+        )
+        probability_quality = float(
+            np.clip(
+                0.5 + (0.25 - brier_score_loss(actual, valid[name])),
+                0.35,
+                0.65,
+            )
+        )
+        # Prefer models that remain useful in the recent regime, while keeping
+        # a full-history and probability-quality anchor to avoid hot-hand
+        # chasing after a short streak.
+        weight_scores[name] = float(
+            0.35 * full_balanced
+            + 0.45 * recent_balanced
+            + 0.20 * probability_quality
+        )
+    return valid, weight_scores
 
 
 def _weights_from_accuracy(accuracies: dict[str, float]) -> dict[str, float]:
@@ -256,7 +301,8 @@ def _cross_calibrate(
 def _nearest_analogs(
     X: pd.DataFrame, target: pd.Series, neighbors: int = 80
 ) -> np.ndarray:
-    history = X.iloc[:-5]
+    columns = [column for column in ANALOG_FEATURES if column in X.columns]
+    history = X.loc[:, columns].iloc[:-5]
     target = target.reindex(history.index)
     valid = target.notna()
     history = history.loc[valid]
@@ -264,8 +310,11 @@ def _nearest_analogs(
     means = history.mean()
     scales = history.std().replace(0, 1)
     standardized = (history - means) / scales
-    current = (X.iloc[-1] - means) / scales
+    current = (X.loc[:, columns].iloc[-1] - means) / scales
     distances = ((standardized - current) ** 2).mean(axis=1)
+    # A mild age penalty breaks near-ties in favour of more recent market
+    # structures without discarding genuinely close older analogues.
+    distances = distances * np.linspace(1.08, 1.0, len(distances))
     selected = distances.nsmallest(min(neighbors, len(distances))).index
     return target.loc[selected].to_numpy()
 
@@ -325,7 +374,16 @@ def fit_horizon(
     skill = float(
         np.clip((ensemble_accuracy - baseline_accuracy) / 0.05, 0, 1)
     )
-    probability = 0.5 + (raw_probability - 0.5) * (0.45 + 0.55 * skill)
+    live_model_spread = float(np.std(list(model_probs.values())))
+    agreement_factor = float(
+        np.clip(1 - live_model_spread / 0.12, 0.45, 1.0)
+    )
+    probability = (
+        0.5
+        + (raw_probability - 0.5)
+        * (0.45 + 0.55 * skill)
+        * agreement_factor
+    )
     probability = float(np.clip(probability, 0.35, 0.65))
 
     regression_predictions: list[float] = []
@@ -359,6 +417,9 @@ def fit_horizon(
         "calibrated_brier": calibrated_brier,
         "calibration_applied": calibration_applied,
         "auc": auc,
+        "model_weight_scores": accuracies,
+        "live_model_spread": live_model_spread,
+        "agreement_factor": agreement_factor,
         "oof_count": int(len(oof)),
         "oof_probability": ensemble_oof,
         "oof_actual": actual_oof,
@@ -449,6 +510,61 @@ def _direction(probability: float, expected: float) -> str:
     return "震荡"
 
 
+def _evidence_score(
+    diagnostics: dict[str, Any],
+    model_probabilities: dict[str, float],
+) -> dict[str, Any]:
+    """Summarize validation strength without changing the model probability."""
+    recent_edge = float(
+        diagnostics["recent_accuracy"] - diagnostics["recent_baseline"]
+    )
+    high_conf_accuracy = diagnostics.get("high_conf_accuracy")
+    spread = float(np.std(list(model_probabilities.values())))
+    components = {
+        "recent_edge": float(np.clip(recent_edge / 0.05, 0, 1)),
+        "auc": float(np.clip((float(diagnostics["auc"]) - 0.5) / 0.08, 0, 1)),
+        "brier": float(
+            np.clip((0.26 - float(diagnostics["brier"])) / 0.06, 0, 1)
+        ),
+        "high_confidence": float(
+            np.clip(
+                (
+                    (float(high_conf_accuracy) - 0.5) / 0.08
+                    if high_conf_accuracy is not None
+                    else 0
+                ),
+                0,
+                1,
+            )
+        ),
+        "agreement": float(np.clip(1 - spread / 0.12, 0, 1)),
+    }
+    score = round(
+        100
+        * (
+            0.30 * components["recent_edge"]
+            + 0.20 * components["auc"]
+            + 0.20 * components["brier"]
+            + 0.20 * components["high_confidence"]
+            + 0.10 * components["agreement"]
+        ),
+        1,
+    )
+    label = "较高" if score >= 70 else "中等" if score >= 50 else "较低"
+    reasons = [
+        f"近期相对基线 {recent_edge * 100:+.1f}pp",
+        f"AUC {float(diagnostics['auc']):.3f}",
+        f"Brier {float(diagnostics['brier']):.3f}",
+        f"模型分歧 {spread * 100:.1f}pp",
+    ]
+    return {
+        "score": score,
+        "label": label,
+        "components": components,
+        "reasons": reasons,
+    }
+
+
 def _drivers(features: pd.DataFrame) -> list[dict[str, str]]:
     row = features.iloc[-1]
     output: list[dict[str, str]] = []
@@ -515,11 +631,18 @@ def generate_forecast(
     for date_value, result in zip(forecast_dates, day_results):
         diagnostics = day_diagnostics[len(days)]
         high_conf_accuracy = diagnostics.get("high_conf_accuracy")
+        evidence = _evidence_score(
+            diagnostics,
+            result.model_probabilities,
+        )
         quality_ok = (
             diagnostics["recent_accuracy"]
             >= diagnostics["recent_baseline"] + 0.02
             and high_conf_accuracy is not None
             and high_conf_accuracy >= 0.54
+            and diagnostics["auc"] >= 0.51
+            and diagnostics["brier"] <= 0.255
+            and evidence["score"] >= 50
         )
         direction = (
             _direction(result.probability, result.expected_return)
@@ -556,6 +679,9 @@ def generate_forecast(
                     * 100,
                     1,
                 ),
+                "evidence_score": evidence["score"],
+                "evidence_label": evidence["label"],
+                "evidence_reasons": evidence["reasons"],
             }
         )
 
@@ -587,6 +713,10 @@ def generate_forecast(
                 "weight": round(weekly.model_weights[name] * 100, 1),
             }
         )
+    weekly_evidence = _evidence_score(
+        weekly_diagnostics,
+        weekly.model_probabilities,
+    )
 
     return {
         "meta": {
@@ -687,6 +817,7 @@ def generate_forecast(
                 h1_backtest["benchmark_max_drawdown"] * 100, 1
             ),
             "active_days": round(h1_backtest["active_days"] * 100, 1),
+            "reliability": weekly_evidence,
             "calibration": "扩展窗口样本外预测 + 时间顺序Sigmoid校准",
             "method": "5折扩展窗口时序验证；独立时间段概率校准；预测与实盘收益错开一日；单边成本3bp",
         },

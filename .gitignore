@@ -9,3 +9,5 @@ public/data/forecast.enc.json
 data/cache/
 data/automation/
 .worktrees/
+.artifacts/
+.ui_server_pid

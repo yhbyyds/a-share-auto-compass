@@ -5,10 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="具备自动更新质量门禁的A股下周大盘与行业方向研究系统">
   <title>A股下周罗盘 · 自动更新版</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=1.10.0">
+  <link rel="stylesheet" href="./styles.css?v=1.11.0">
 </head>
 <body>
   <div class="noise"></div>
@@ -20,11 +17,19 @@
         <small>WEEKLY MARKET COMPASS</small>
       </span>
     </a>
-    <div class="topbar-meta">
-      <span class="status-dot"></span>
-      <span id="data-status">正在读取收盘数据</span>
-      <button id="refresh-button" class="ghost-button" type="button">检查最新数据</button>
-      <button id="logout-button" class="ghost-button auth-button" type="button" hidden>退出账号</button>
+    <div class="topbar-actions">
+      <nav class="top-nav" aria-label="主要页面导航">
+        <a href="#day-ahead">明日</a>
+        <a href="#sector-radar">板块</a>
+        <a href="#evidence">验证</a>
+        <a href="#portfolio-daily">持仓日报</a>
+      </nav>
+      <div class="topbar-meta">
+        <span class="status-dot"></span>
+        <span id="data-status">正在读取收盘数据</span>
+        <button id="refresh-button" class="ghost-button" type="button">检查最新数据</button>
+        <button id="logout-button" class="ghost-button auth-button" type="button" hidden>退出账号</button>
+      </div>
     </div>
   </header>
 
@@ -33,7 +38,35 @@
       <span class="safety-icon">!</span>
       <div>
         <strong>先保住生活，再谈收益。</strong>
-        <p>若交易资金涉及借贷、房租、债务或基本生活，请停止交易。本系统不会也不能承诺盈利。</p>
+        <p>若交易资金涉及借贷、房租、债务或基本生活，请停止交易。任何预测都不构成盈利承诺。</p>
+      </div>
+    </section>
+
+    <section class="market-pulse panel" aria-label="模型可信度中控台">
+      <div class="pulse-intro">
+        <span class="label">MODEL RELIABILITY</span>
+        <strong id="pulse-reliability">读取中</strong>
+        <small id="pulse-reliability-note">正在检查样本外证据与模型分歧</small>
+      </div>
+      <div class="pulse-stat">
+        <span>数据基准日</span>
+        <strong id="pulse-data-date">—</strong>
+        <small id="pulse-data-state">等待质量门禁</small>
+      </div>
+      <div class="pulse-stat">
+        <span>明日证据分</span>
+        <strong id="pulse-day-score">—</strong>
+        <small id="pulse-day-label">样本外验证</small>
+      </div>
+      <div class="pulse-stat">
+        <span>板块区分度</span>
+        <strong id="pulse-sector-spread">—</strong>
+        <small id="pulse-sector-label">横截面排序</small>
+      </div>
+      <div class="pulse-stat pulse-regime">
+        <span>市场状态</span>
+        <strong id="pulse-regime">—</strong>
+        <small id="pulse-regime-note">风险开关</small>
       </div>
     </section>
 
@@ -83,7 +116,7 @@
       </article>
     </section>
 
-    <section class="section-block day-ahead-section">
+    <section id="day-ahead" class="section-block day-ahead-section">
       <div class="section-heading">
         <div>
           <p class="eyebrow">DAY AHEAD &middot; CLOSE TO NEXT OPEN</p>
@@ -94,7 +127,7 @@
       <article id="day-ahead-panel" class="day-ahead-panel panel"></article>
     </section>
 
-    <section class="section-block">
+    <section id="intraday" class="section-block">
       <div class="section-heading">
         <div>
           <p class="eyebrow">INTRADAY · MICRO THEME LAB</p>
@@ -105,7 +138,7 @@
       <article id="intraday-lab" class="intraday-lab panel"></article>
     </section>
 
-    <section class="section-block">
+    <section id="sector-radar" class="section-block">
       <div class="section-heading">
         <div>
           <p class="eyebrow">MON — FRI</p>
@@ -161,6 +194,26 @@
         </div>
         <p>同时预测行业自身涨跌与相对沪深300强弱；新增相对分层只在概率/超额收益分歧达标时显示，排名不等于买入指令。</p>
       </div>
+      <article class="panel sector-tomorrow-panel">
+        <div class="sector-tomorrow-head">
+          <div>
+            <span class="label">NEXT SESSION · RELATIVE RANK</span>
+            <h3>明日细分方向分层</h3>
+          </div>
+          <p id="sector-tomorrow-summary">等待第1日模型横截面排序</p>
+        </div>
+        <div class="sector-tomorrow-grid">
+          <section>
+            <div class="sector-tomorrow-title positive-text"><span>↗</span><strong>相对领先侧</strong></div>
+            <div id="sector-tomorrow-up" class="sector-tomorrow-list"></div>
+          </section>
+          <section>
+            <div class="sector-tomorrow-title negative-text"><span>↘</span><strong>相对落后侧</strong></div>
+            <div id="sector-tomorrow-down" class="sector-tomorrow-list"></div>
+          </section>
+        </div>
+        <p id="sector-tomorrow-method" class="sector-tomorrow-method"></p>
+      </article>
       <div class="sector-visual-grid">
         <article class="panel sector-heatmap-panel">
           <div class="visual-panel-head">
@@ -204,7 +257,7 @@
       <p class="section-footnote warning">行业预测也会失效。若样本外准确率没有超过多数类基线，系统会收缩概率并标记低置信；不要因行业排名追高或重仓。</p>
     </section>
 
-    <section class="section-block">
+    <section id="evidence" class="section-block">
       <div class="section-heading">
         <div>
           <p class="eyebrow">OUT-OF-SAMPLE</p>
@@ -433,9 +486,15 @@
     </footer>
   </main>
 
+  <nav class="mobile-dock" aria-label="移动端快捷导航">
+    <a href="#day-ahead"><span>01</span>明日</a>
+    <a href="#sector-radar"><span>02</span>板块</a>
+    <a href="#evidence"><span>03</span>验证</a>
+    <a href="#portfolio-daily"><span>04</span>日报</a>
+  </nav>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="./secure-data.js" defer></script>
-  <script src="./app.js?v=1.10.0" defer></script>
+  <script src="./app.js?v=1.11.0" defer></script>
   <script src="./portfolio.js" defer></script>
 </body>
 </html>
