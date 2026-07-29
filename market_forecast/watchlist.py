@@ -81,13 +81,55 @@ def _fetch_history(symbol: str, count: int = 260) -> pd.DataFrame:
     return frame.dropna().set_index("date").sort_index()
 
 
-def _rsi(series: pd.Series, window: int = 14) -> float:
+def _rsi_series(series: pd.Series, window: int = 14) -> pd.Series:
     delta = series.diff()
     gain = delta.clip(lower=0).rolling(window).mean()
     loss = -delta.clip(upper=0).rolling(window).mean()
     rs = gain / loss.replace(0, np.nan)
-    value = 100 - 100 / (1 + rs)
-    return float(value.iloc[-1])
+    return 100 - 100 / (1 + rs)
+
+
+def _rsi(series: pd.Series, window: int = 14) -> float:
+    return float(_rsi_series(series, window).iloc[-1])
+
+
+def _setup_stats(history: pd.DataFrame) -> dict[str, float | int]:
+    """Estimate next-session hit rate for this stock's own historical setup.
+
+    The result is a smoothed historical conditional frequency, not a stretched
+    output from the cross-sectional score.  It gives each watchlist item a
+    comparable, auditable setup statistic while remaining close to neutral
+    when the stock has only a few comparable observations.
+    """
+    close = history["close"]
+    returns = close.pct_change()
+    ma20 = close.rolling(20).mean()
+    ma60 = close.rolling(60).mean()
+    rsi14 = _rsi_series(close)
+    volatility20 = returns.rolling(20).std()
+    drawdown60 = close / close.rolling(60).max() - 1
+    setup = (
+        (close > ma20)
+        & (ma20 > ma60)
+        & close.pct_change(20).between(0.01, 0.25)
+        & close.pct_change(5).between(-0.06, 0.12)
+        & rsi14.between(48, 75)
+        & (drawdown60 > -0.16)
+        & (volatility20 < 0.055)
+    )
+    next_return = returns.shift(-1)
+    observed = setup & next_return.notna()
+    samples = int(observed.sum())
+    wins = int((next_return.loc[observed] > 0).sum())
+    # Beta(2, 2) smoothing prevents a handful of occurrences from producing
+    # an eye-catching but fragile win rate.
+    historical_win_rate = (wins + 2) / (samples + 4)
+    setup_probability = 0.5 + (historical_win_rate - 0.5) * min(samples / 60, 1.0)
+    return {
+        "setup_win_rate": round(historical_win_rate * 100, 1),
+        "setup_samples": samples,
+        "setup_probability": round(setup_probability * 100, 1),
+    }
 
 
 def _metrics(row: dict[str, Any], history: pd.DataFrame, benchmark: pd.Series) -> dict:
@@ -107,6 +149,7 @@ def _metrics(row: dict[str, Any], history: pd.DataFrame, benchmark: pd.Series) -
         (volume.iloc[-1] - volume.tail(20).mean()) / volume.tail(20).std()
     )
     invalid_level = float(max(ma20 * 0.985, history["low"].tail(10).min()))
+    setup_stats = _setup_stats(history)
     return {
         "symbol": row["symbol"],
         "code": row["code"],
@@ -128,6 +171,7 @@ def _metrics(row: dict[str, Any], history: pd.DataFrame, benchmark: pd.Series) -
         "volume_z20": volume_z20,
         "rsi14": _rsi(close),
         "invalid_level": invalid_level,
+        **setup_stats,
         "data_date": history.index[-1].strftime("%Y-%m-%d"),
     }
 
@@ -194,6 +238,9 @@ def _rank_candidates(metrics: list[dict], count: int) -> list[dict]:
                 "amount_yi": round(float(item["amount"]) / 1e8, 1),
                 "ma20": round(float(item["ma20"]), 2),
                 "invalid_level": round(float(item["invalid_level"]), 2),
+                "setup_win_rate": float(item.get("setup_win_rate", 50.0)),
+                "setup_samples": int(item.get("setup_samples", 0)),
+                "setup_probability": float(item.get("setup_probability", 50.0)),
                 "data_date": item["data_date"],
                 "reason": (
                     f"20日动量{item['momentum20'] * 100:+.1f}%，"

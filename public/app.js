@@ -304,7 +304,8 @@ function renderSectorTomorrow(selection, sectors) {
         <small>${item.status} · ${item.direction} · ${item.relative_signal}</small>
       </span>
       <span class="sector-tomorrow-score">
-        <strong class="${tone === "up" ? "positive-text" : "negative-text"}">${Number(item.score ?? 0).toFixed(0)}</strong>
+        <strong class="${tone === "up" ? "positive-text" : "negative-text"}">${Number(item.priority_score ?? item.score ?? 0).toFixed(0)}</strong>
+        <small>优先级 · 上涨 ${item.up_probability ?? "—"}% · 胜率 ${item.directional_win_rate ?? "—"}%</small>
         <small>超额 ${formatSigned(item.expected_excess ?? 0)}${item.expected_excess_weight != null ? ` · 回归权重 ${Math.round(Number(item.expected_excess_weight) * 100)}%` : ""}</small>
       </span>
     </button>`).join("");
@@ -318,7 +319,7 @@ function renderSectorTomorrow(selection, sectors) {
     : "";
   $("#sector-tomorrow-summary").textContent = resolved.score_spread == null
     ? "兼容展示 · 等待第1日专用分层"
-    : `第1日横截面区分度 ${resolved.score_spread}分 · 正式偏强 ${resolved.validated_up_count} · 正式偏弱 ${resolved.validated_down_count}${rankEvidence}`;
+    : `第1日横截面区分度 ${resolved.score_spread}分 · 优先级按行业相对排名归一化 · 正式偏强 ${resolved.validated_up_count} · 正式偏弱 ${resolved.validated_down_count}${rankEvidence}`;
   $("#sector-tomorrow-method").textContent = resolved.method || "";
   document.querySelectorAll(".sector-tomorrow-item").forEach((button) => {
     button.addEventListener("click", () => {
@@ -490,9 +491,9 @@ function renderWatchlist(rows) {
   }
   $("#watchlist").innerHTML = rows.map((stock) => `
     <article class="stock-card panel">
-      <div class="stock-head">
+        <div class="stock-head">
         <div><span class="stock-code">${stock.code} · 数据 ${stock.data_date}</span><h3>${stock.name}</h3></div>
-        <div class="stock-score"><strong>${stock.score}</strong><span>量价分</span></div>
+        <div class="stock-score"><strong>${stock.score}</strong><span>筛选优先级</span></div>
       </div>
       <div class="stock-price">
         <strong>¥${stock.price}</strong>
@@ -505,6 +506,8 @@ function renderWatchlist(rows) {
         <div class="stock-metric"><span>相对沪深300</span><strong>${formatSigned(stock.relative_20d)}</strong></div>
         <div class="stock-metric"><span>20日波动</span><strong>${stock.volatility_20d}%</strong></div>
         <div class="stock-metric"><span>成交额</span><strong>${stock.amount_yi}亿</strong></div>
+        <div class="stock-metric"><span>同类形态次日概率</span><strong>${stock.setup_probability ?? "—"}%</strong></div>
+        <div class="stock-metric"><span>同类形态胜率</span><strong>${stock.setup_win_rate ?? "—"}% · ${stock.setup_samples ?? 0}次</strong></div>
       </div>
       <p class="stock-reason">${stock.reason}</p>
       <div class="stock-rule"><span>观察条件：${stock.trigger}</span><span>失效条件：${stock.invalid}</span></div>

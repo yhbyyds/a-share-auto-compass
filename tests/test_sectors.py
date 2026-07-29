@@ -168,6 +168,7 @@ def test_tomorrow_selection_separates_ranking_from_validated_direction():
 
     assert result["up"][0]["key"] == "s1"
     assert result["up"][0]["status"] == "模型偏强候选"
+    assert result["up"][0]["priority_score"] > result["down"][0]["priority_score"]
     assert result["down"][0]["key"] == "s3"
     assert result["down"][0]["status"] == "相对落后观察"
     assert result["validated_up_count"] == 1

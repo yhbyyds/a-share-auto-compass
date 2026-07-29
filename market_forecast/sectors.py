@@ -639,13 +639,17 @@ def _tomorrow_selection(
         excess_component = float(
             np.clip(50 + expected_excess * 30, 0, 100)
         )
+        validation_component = float(
+            np.clip(50 + validation_edge * 5.0, 0, 100)
+        )
         score = round(
-            0.50 * relative_score
-            + 0.30 * signal_strength
-            + 0.20 * (
+            0.45 * relative_score
+            + 0.25 * signal_strength
+            + 0.15 * (
                 expected_weight * excess_component
                 + (1 - expected_weight) * 50
-            ),
+            )
+            + 0.15 * validation_component,
             1,
         )
         direction = str(day.get("direction", "震荡"))
@@ -676,8 +680,12 @@ def _tomorrow_selection(
                 "up_probability": day.get("up_probability"),
                 "expected_return": day.get("expected_return"),
                 "expected_excess": day.get("expected_excess"),
+                "directional_win_rate": day.get("directional_win_rate"),
+                "directional_baseline": day.get("directional_baseline"),
+                "relative_win_rate": day.get("relative_win_rate"),
                 "signal_strength": signal_strength,
                 "validation_edge": round(validation_edge, 1),
+                "validation_component": round(validation_component, 1),
                 "expected_excess_weight": round(expected_weight, 2),
                 "validated_up": validated_up,
                 "validated_down": validated_down,
@@ -686,6 +694,11 @@ def _tomorrow_selection(
     ordered = sorted(rows, key=lambda item: item["score"], reverse=True)
     for index, item in enumerate(ordered, start=1):
         item["tomorrow_rank"] = index
+        # Relative priority is normalized for legibility; it never modifies
+        # the calibrated probability or claims an amplified win rate.
+        item["priority_score"] = round(
+            100 * (len(ordered) - index + 0.5) / max(len(ordered), 1), 1
+        )
     up = []
     for item in ordered[:3]:
         up.append(
@@ -955,6 +968,18 @@ def generate_sector_forecast(
                     "expected_return": round(expected * 100, 2),
                     "expected_excess": round(
                         expected_excess * 100, 2
+                    ),
+                    "directional_win_rate": round(
+                        float(result["absolute_validation"]["accuracy"]) * 100,
+                        1,
+                    ),
+                    "directional_baseline": round(
+                        float(result["absolute_validation"]["baseline"]) * 100,
+                        1,
+                    ),
+                    "relative_win_rate": round(
+                        float(result["relative_validation"]["accuracy"]) * 100,
+                        1,
                     ),
                     "excess_validation": {
                         "mae": round(float(result["excess_validation"]["mae"]) * 100, 3),
