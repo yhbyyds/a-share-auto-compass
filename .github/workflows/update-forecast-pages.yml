@@ -5,7 +5,9 @@ on:
     branches:
       - main
   schedule:
-    - cron: "35 10 * * 1-5"
+    # Run after the China A-share close and after the feed has had time to
+    # publish the completed session (22:30 Beijing / 14:30 UTC).
+    - cron: "30 14 * * 1-5"
     - cron: "30 12 * * 0"
   workflow_dispatch:
 
@@ -37,8 +39,40 @@ jobs:
         id: source_deployment
         uses: actions/deploy-pages@v4
 
-  update:
+  # Manual runs are common while debugging.  Before the close, the latest
+  # source row is still today's session, so the forecast window is intentionally
+  # rejected by the quality gate.  Defer those runs instead of turning them
+  # into noisy failed-workflow emails.
+  preflight:
     if: github.event_name != 'push'
+    runs-on: ubuntu-latest
+    outputs:
+      should_update: ${{ steps.gate.outputs.should_update }}
+      reason: ${{ steps.gate.outputs.reason }}
+    steps:
+      - name: Check China market update window
+        id: gate
+        shell: bash
+        run: |
+          read -r weekday hhmm <<< "$(TZ=Asia/Shanghai date '+%u %H%M')"
+          should_update=false
+          reason="等待收盘数据稳定后再更新"
+          if [[ "$weekday" -ge 1 && "$weekday" -le 5 && "$hhmm" -ge "2200" ]]; then
+            should_update=true
+            reason="工作日收盘后更新窗口"
+          elif [[ "$weekday" == "7" && "$hhmm" -ge "2030" ]]; then
+            should_update=true
+            reason="周日盘前更新窗口"
+          elif [[ "$weekday" == "6" ]]; then
+            reason="周六不运行市场更新"
+          fi
+          echo "should_update=$should_update" >> "$GITHUB_OUTPUT"
+          echo "reason=$reason" >> "$GITHUB_OUTPUT"
+          echo "China time: weekday=$weekday hhmm=$hhmm; should_update=$should_update; reason=$reason"
+
+  update:
+    needs: preflight
+    if: github.event_name != 'push' && needs.preflight.outputs.should_update == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:

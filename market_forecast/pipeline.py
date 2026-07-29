@@ -64,6 +64,29 @@ def build_forecast() -> dict[str, Any]:
     }
     forecast["meta"]["version"] = DATA_VERSION
     forecast["meta"]["release"] = RELEASE
+    forecast["meta"]["model_research"] = {
+        "open_source_references": [
+            "Microsoft Qlib",
+            "RQAlpha",
+            "FinRL",
+            "VeighNa vn.py",
+        ],
+        "strategy_priors": [
+            "trend_breakout_and_relative_strength",
+            "price_volume_confirmation",
+            "risk_budget_and_transaction_costs",
+        ],
+        "note": (
+            "开源框架用于数据、回测和风控工程参考；公开交易者原则只转成"
+            "特征与风险规则，不把个人观点当作训练标签。"
+        ),
+    }
+    forecast["validation"]["feature_families"] = [
+        "趋势与突破：20/60日突破、均线位置、趋势效率",
+        "动量与相对强弱：多周期收益、相对沪深300强弱",
+        "量价确认：成交量标准分、ATR波动率、量价协同",
+        "市场状态：宽度、离散度、大小盘风格与全球风险偏好",
+    ]
     forecast["meta"]["trading_calendar"] = calendar_metadata()
     forecast["meta"]["trading_calendar"]["update_warnings"] = calendar_warnings
     forecast["sources"].extend(

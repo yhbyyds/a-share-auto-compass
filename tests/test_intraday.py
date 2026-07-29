@@ -9,6 +9,7 @@ from market_forecast.intraday import (
     _market_regime,
     _transfer_predictions,
     collect_intraday_snapshot,
+    micro_theme_training_status,
     settle_intraday_labels,
 )
 
@@ -51,6 +52,29 @@ def test_snapshot_replaces_same_fixed_bucket(tmp_path, monkeypatch):
 def test_bucket_never_assigns_a_future_collection_time():
     now = datetime(2026, 7, 27, 11, 20, tzinfo=ZoneInfo("Asia/Shanghai"))
     assert _bucket(now) == "11:00"
+
+
+def test_training_status_accepts_unsettled_none_labels(tmp_path):
+    path = tmp_path / "snapshots.json"
+    path.write_text(
+        json.dumps(
+            {
+                "snapshots": [
+                    {
+                        "date": "2026-07-28",
+                        "themes": [],
+                        "label": None,
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = micro_theme_training_status(path)
+
+    assert result
+    assert all(item["status"] == "collecting" for item in result.values())
 
 
 def test_transfer_prediction_is_capped_and_uses_parent_prior():

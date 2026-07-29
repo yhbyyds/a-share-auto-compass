@@ -74,6 +74,32 @@ def build_features(data: dict[str, pd.DataFrame]) -> tuple[pd.DataFrame, pd.Seri
     features["amount_change_5"] = base["amount"].pct_change(5)
     features["drawdown_60"] = close / close.rolling(60).max() - 1
 
+    # Research priors translated into leak-free, next-session features:
+    # trend/momentum (Livermore/O'Neil/Minervini style), price-volume
+    # confirmation, and relative strength.  The rolling extrema are shifted
+    # so today's close is compared only with information available before it.
+    for window in (20, 60):
+        prior_high = close.rolling(window).max().shift(1)
+        prior_low = close.rolling(window).min().shift(1)
+        features[f"breakout_{window}d"] = close / prior_high - 1
+        features[f"rebound_from_low_{window}d"] = close / prior_low - 1
+    true_range = pd.concat(
+        [
+            base["high"] - base["low"],
+            (base["high"] - close.shift(1)).abs(),
+            (base["low"] - close.shift(1)).abs(),
+        ],
+        axis=1,
+    ).max(axis=1)
+    features["atr14_pct"] = true_range.rolling(14).mean() / close
+    features["trend_efficiency_20"] = (
+        close.diff(20).abs()
+        / daily_return.abs().rolling(20).sum().replace(0, np.nan)
+    )
+    features["volume_price_confirmation"] = (
+        daily_return * features["volume_z20"]
+    )
+
     index_returns: dict[str, pd.Series] = {}
     for key, frame in data.items():
         aligned_close = frame["close"].reindex(features.index).ffill()
@@ -81,6 +107,7 @@ def build_features(data: dict[str, pd.DataFrame]) -> tuple[pd.DataFrame, pd.Seri
         if key != "sse":
             features[f"{key}_return_1d"] = aligned_close.pct_change()
             features[f"{key}_return_5d"] = aligned_close.pct_change(5)
+            features[f"{key}_return_20d"] = aligned_close.pct_change(20)
             features[f"{key}_ma_gap_20"] = (
                 aligned_close / aligned_close.rolling(20).mean() - 1
             )
@@ -93,6 +120,13 @@ def build_features(data: dict[str, pd.DataFrame]) -> tuple[pd.DataFrame, pd.Seri
     features["small_vs_large_5d"] = (
         data["csi1000"]["close"].reindex(features.index).ffill().pct_change(5)
         - data["csi300"]["close"].reindex(features.index).ffill().pct_change(5)
+    )
+    csi300_close = data["csi300"]["close"].reindex(features.index).ffill()
+    features["relative_strength_csi300_5d"] = (
+        close.pct_change(5) - csi300_close.pct_change(5)
+    )
+    features["relative_strength_csi300_20d"] = (
+        close.pct_change(20) - csi300_close.pct_change(20)
     )
     features["weekday_sin"] = np.sin(2 * np.pi * features.index.dayofweek / 5)
     features["weekday_cos"] = np.cos(2 * np.pi * features.index.dayofweek / 5)
@@ -708,6 +742,21 @@ def generate_forecast(
                 "name": "AKShare",
                 "detail": "开源中文财经数据生态参考",
                 "url": "https://github.com/akfamily/akshare",
+            },
+            {
+                "name": "RQAlpha",
+                "detail": "事件驱动回测、交易成本与组合评估工程参考",
+                "url": "https://github.com/ricequant/rqalpha",
+            },
+            {
+                "name": "FinRL",
+                "detail": "强化学习研究路线参考，当前主模型仍采用监督学习",
+                "url": "https://github.com/AI4Finance-Foundation/FinRL",
+            },
+            {
+                "name": "VeighNa vn.py",
+                "detail": "因子研究与实盘风控分层参考",
+                "url": "https://github.com/vnpy/vnpy",
             },
         ],
         "disclaimer": "本系统是研究与风险管理工具，不构成投资建议。样本外回测不等于未来表现，交易成本、滑点、政策与突发事件均可能使预测失效；不存在可承诺的稳定盈利模型。",
