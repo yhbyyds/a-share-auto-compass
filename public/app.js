@@ -520,6 +520,71 @@ function renderWatchlist(rows) {
     </article>`).join("");
 }
 
+function reviewOutcome(row) {
+  if (row.status !== "evaluated") return { label: "待结算", tone: "pending" };
+  return row.correct
+    ? { label: "命中", tone: "hit" }
+    : { label: "未命中", tone: "miss" };
+}
+
+function renderReviewRows(rows, type) {
+  if (!rows?.length) {
+    return `<p class="selection-empty">暂无已到期记录；下一交易日收盘后会自动生成对照。</p>`;
+  }
+  return rows.map((row) => {
+    const outcome = reviewOutcome(row);
+    const title = type === "sector"
+      ? `${row.sector_name || row.sector_key || "行业"} · 优先级 ${row.priority_score ?? "—"}`
+      : `大盘第${row.horizon || 1}日 · ${row.direction || "—"}`;
+    const dash = "\u2014";
+    const separator = "\u00b7";
+    const settledSide = Number(row.up_probability ?? 50) >= 50
+      ? "\u4e8c\u5143\u7ed3\u7b97\uff1a\u770b\u6da8"
+      : "\u4e8c\u5143\u7ed3\u7b97\uff1a\u770b\u8dcc";
+    const prediction = `\u9884\u6d4b ${row.direction || dash} ${separator} ${settledSide} ${separator} \u4e0a\u6da8 ${row.up_probability ?? dash}% ${separator} \u9884\u671f ${formatSigned(row.expected_return ?? 0)}`;
+    const actual = row.status === "evaluated"
+      ? `实盘 ${formatSigned(row.actual_return ?? 0)} · ${row.actual_up ? "上涨" : "下跌"}`
+      : `目标 ${row.target_date || "—"} 收盘后结算`;
+    return `<div class="review-row">
+      <time>${row.target_date?.slice(5) || "—"}</time>
+      <div><strong>${title}</strong><p>${prediction}</p><small>${actual}</small></div>
+      <span class="review-outcome ${outcome.tone}">${outcome.label}</span>
+    </div>`;
+  }).join("");
+}
+
+function renderPerformanceReview(review, fallbackMonitor) {
+  const market = review?.market || {};
+  const sectors = review?.sectors || {};
+  const marketMonitor = market.monitor || fallbackMonitor || {};
+  const sectorMonitor = sectors.monitor || {};
+  const sampleWarning = " \u00b7 \u6837\u672c\u4e0d\u8db3";
+  const marketSummary = marketMonitor.evaluated_samples
+    ? `\u547d\u4e2d ${marketMonitor.accuracy}%${marketMonitor.evaluated_samples < 60 ? sampleWarning : ""}`
+    : "\u5b9e\u76d8\u6837\u672c\u79ef\u7d2f\u4e2d";
+  const sectorSummary = sectorMonitor.evaluated_samples
+    ? `\u547d\u4e2d ${sectorMonitor.accuracy}%${sectorMonitor.evaluated_samples < 60 ? sampleWarning : ""}`
+    : "\u884c\u4e1a\u6837\u672c\u79ef\u7d2f\u4e2d";
+  const marketEdge = Number(marketMonitor.edge_pp ?? 0);
+  const marketEdgeText = `${marketEdge >= 0 ? "+" : ""}${marketEdge.toFixed(1)}pp`;
+  const marketNote = marketMonitor.evaluated_samples
+    ? `已结算 ${marketMonitor.evaluated_samples} · 基线 ${marketMonitor.baseline}% · 优势 ${marketEdgeText}`
+    : marketMonitor.reason || "下一交易日收盘后自动结算第1日预测。";
+  const sectorDayCount = sectorMonitor.evaluated_days ?? 0;
+  const highPriorityText = Number(sectorMonitor.high_priority_samples ?? 0) > 0
+    ? `${sectorMonitor.high_priority_accuracy}%`
+    : "\u6682\u65e0\u5230\u671f\u9ad8\u4f18\u5148\u7ea7\u6837\u672c";
+  const sectorNote = sectorMonitor.evaluated_samples
+    ? `\u5df2\u7ed3\u7b97 ${sectorMonitor.evaluated_samples} \u6761 / ${sectorDayCount} \u4e2a\u4ea4\u6613\u65e5 \u00b7 \u57fa\u7ebf ${sectorMonitor.baseline}% \u00b7 \u9ad8\u4f18\u5148\u7ea7 ${highPriorityText}`
+    : "\u6bcf\u4e2a\u4e00\u7ea7\u884c\u4e1a\u7684\u6b21\u65e5\u9884\u6d4b\u4f1a\u5728\u76ee\u6807\u6536\u76d8\u540e\u9010\u7b14\u6bd4\u5bf9\u3002";
+  $("#review-market-summary").textContent = marketSummary;
+  $("#review-market-note").textContent = marketNote;
+  $("#review-sector-summary").textContent = sectorSummary;
+  $("#review-sector-note").textContent = sectorNote;
+  $("#review-market-rows").innerHTML = renderReviewRows(market.rows, "market");
+  $("#review-sector-rows").innerHTML = renderReviewRows(sectors.rows, "sector");
+}
+
 function renderEventRadar(radar, playbook) {
   if (!radar?.events?.length) {
     $("#event-risk-days").innerHTML = "";
@@ -631,6 +696,7 @@ function render(data) {
       <div class="model-numbers"><span>看涨概率</span><strong>${model.probability}%</strong></div>
     </div>`).join("");
   renderHorizonValidation(data.horizon_validation || []);
+  renderPerformanceReview(data.performance_review, monitor);
   renderSectorForecast(data.sector_forecast);
   renderWatchlist(data.watchlist || []);
   renderEventRadar(data.event_radar, data.playbook);
@@ -661,7 +727,7 @@ async function loadForecast() {
     }
   }
   const response = await fetch(
-    "./data/forecast.json?v=1.11.0",
+    "./data/forecast.json?v=1.14.0",
     { cache: "no-store" },
   );
   if (!response.ok) throw new Error("预测文件读取失败");

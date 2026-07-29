@@ -8,7 +8,7 @@ from zoneinfo import ZoneInfo
 import numpy as np
 
 
-HISTORY_VERSION = 2
+HISTORY_VERSION = 3
 MINIMUM_LIVE_DAYS = 60
 
 
@@ -127,12 +127,67 @@ def _monitor(records: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def _sector_levels(forecast: dict[str, Any]) -> dict[str, dict[str, float]]:
+    """Extract normalized sector index levels keyed by close date."""
+    output: dict[str, dict[str, float]] = {}
+    for sector in (forecast.get("sector_forecast") or {}).get("sectors", []):
+        if sector.get("is_composite"):
+            continue
+        levels: dict[str, float] = {}
+        for item in sector.get("history", []):
+            try:
+                levels[str(item["date"])] = float(item["sector"])
+            except (KeyError, TypeError, ValueError):
+                continue
+        output[str(sector.get("key", ""))] = levels
+    return output
+
+
+def _sector_monitor(records: list[dict[str, Any]]) -> dict[str, Any]:
+    evaluated = [row for row in records if row.get("status") == "evaluated"]
+    metrics = _metrics(evaluated, window=120)
+    high_priority = [
+        row for row in evaluated if float(row.get("priority_score") or 0) >= 75
+    ]
+    priority_metrics = _metrics(high_priority, window=120)
+    return {
+        "evaluated_samples": len(evaluated),
+        "evaluated_days": len({str(row.get("target_date", "")) for row in evaluated}),
+        "pending_samples": sum(row.get("status") == "pending" for row in records),
+        "accuracy": metrics["accuracy"],
+        "baseline": metrics["baseline"],
+        "edge_pp": metrics["edge_pp"],
+        "brier": metrics["brier"],
+        "last_evaluated_date": metrics["last_date"],
+        "high_priority_accuracy": priority_metrics["accuracy"],
+        "high_priority_samples": len(high_priority),
+        "status": "ready" if evaluated else "collecting",
+    }
+
+
+def _review_rows(records: list[dict[str, Any]], limit: int = 18) -> list[dict[str, Any]]:
+    fields = (
+        "base_date", "target_date", "horizon", "sector_key", "sector_name",
+        "direction", "up_probability", "expected_return", "priority_score",
+        "status", "actual_return", "actual_up", "correct",
+    )
+    return [
+        {key: row.get(key) for key in fields}
+        for row in sorted(
+            records,
+            key=lambda row: (str(row.get("target_date", "")), str(row.get("id", ""))),
+            reverse=True,
+        )[:limit]
+    ]
+
+
 def update_performance_history(
     history: dict[str, Any] | None,
     forecast: dict[str, Any],
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     payload = deepcopy(history or {})
     records = list(payload.get("predictions", []))
+    sector_records = list(payload.get("sector_predictions", []))
     actual_closes = {
         item["date"]: float(item["close"])
         for item in forecast.get("recent_chart", [])
@@ -152,6 +207,29 @@ def update_performance_history(
             {
                 "status": "evaluated",
                 "actual_close": round(target_close, 2),
+                "actual_return": round(actual_return * 100, 3),
+                "actual_up": actual_up,
+                "correct": predicted_up == actual_up,
+                "evaluated_at": forecast["meta"]["generated_at"],
+            }
+        )
+
+    actual_sector_levels = _sector_levels(forecast)
+    for row in sector_records:
+        if row.get("status") != "pending":
+            continue
+        target_level = actual_sector_levels.get(
+            str(row.get("sector_key", "")), {}
+        ).get(str(row.get("target_date", "")))
+        if target_level is None:
+            continue
+        actual_return = target_level / float(row["base_level"]) - 1
+        actual_up = actual_return > 0
+        predicted_up = float(row["up_probability"]) >= 50
+        row.update(
+            {
+                "status": "evaluated",
+                "actual_level": round(target_level, 3),
                 "actual_return": round(actual_return * 100, 3),
                 "actual_up": actual_up,
                 "correct": predicted_up == actual_up,
@@ -181,20 +259,80 @@ def update_performance_history(
             }
         )
 
+    sector_existing_ids = {row["id"] for row in sector_records}
+    selection = (forecast.get("sector_forecast") or {}).get(
+        "tomorrow_selection", {}
+    )
+    priority_by_key = {
+        str(row.get("key")): row.get("priority_score")
+        for row in [*(selection.get("up") or []), *(selection.get("down") or [])]
+    }
+    for sector in (forecast.get("sector_forecast") or {}).get("sectors", []):
+        if sector.get("is_composite") or not sector.get("days"):
+            continue
+        history_rows = sector.get("history") or []
+        if not history_rows:
+            continue
+        day = sector["days"][0]
+        try:
+            base_level = float(history_rows[-1]["sector"])
+            record_id = (
+                f"{base_date}:{day['date']}:sector:{sector['key']}:h1"
+            )
+        except (KeyError, TypeError, ValueError):
+            continue
+        if record_id in sector_existing_ids:
+            continue
+        sector_records.append(
+            {
+                "id": record_id,
+                "generated_at": forecast["meta"]["generated_at"],
+                "base_date": base_date,
+                "base_level": base_level,
+                "target_date": day["date"],
+                "horizon": 1,
+                "sector_key": sector["key"],
+                "sector_name": sector.get("name", sector["key"]),
+                "direction": day.get("direction", "震荡"),
+                "up_probability": float(day.get("up_probability", 50)),
+                "expected_return": float(day.get("expected_return", 0)),
+                "priority_score": priority_by_key.get(sector["key"]),
+                "status": "pending",
+            }
+        )
+
     records = sorted(
         records,
         key=lambda row: (row["base_date"], row["target_date"], row["horizon"]),
     )[-1500:]
+    sector_records = sorted(
+        sector_records,
+        key=lambda row: (
+            str(row.get("base_date", "")),
+            str(row.get("target_date", "")),
+            str(row.get("sector_key", "")),
+        ),
+    )[-3000:]
     monitor = _monitor(records)
+    sector_monitor = _sector_monitor(sector_records)
     payload.update(
         {
             "version": HISTORY_VERSION,
             "updated_at": datetime.now(ZoneInfo("Asia/Shanghai")).isoformat(),
             "predictions": records,
+            "sector_predictions": sector_records,
             "monitor": monitor,
+            "sector_monitor": sector_monitor,
         }
     )
     forecast["performance_monitor"] = monitor
+    forecast["performance_review"] = {
+        "market": {"monitor": monitor, "rows": _review_rows(records)},
+        "sectors": {
+            "monitor": sector_monitor,
+            "rows": _review_rows(sector_records, limit=36),
+        },
+    }
 
     if monitor["degraded"]:
         forecast["market"]["weekly_direction"] = "震荡"

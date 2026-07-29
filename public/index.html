@@ -311,6 +311,38 @@
       <p class="section-footnote">短线使用方式：每个交易日收盘后重新训练，优先使用新的“第1日”预测，不要在周五一次生成后机械持有整周。</p>
     </section>
 
+    <section id="live-review" class="section-block">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">PREDICTION VS. ACTUAL</p>
+          <h2>预测与实盘复盘</h2>
+        </div>
+        <p>每次收盘后自动结算上一交易日的预测；市场与行业分开统计，待结算记录会保留在表内。</p>
+      </div>
+      <div class="review-summary-grid">
+        <article class="panel review-summary-card">
+          <span class="label">MARKET · DAY 1</span>
+          <strong id="review-market-summary">等待实盘结算</strong>
+          <p id="review-market-note">预测快照将在目标交易日收盘后自动比对。</p>
+        </article>
+        <article class="panel review-summary-card">
+          <span class="label">SECTOR · NEXT SESSION</span>
+          <strong id="review-sector-summary">等待行业结算</strong>
+          <p id="review-sector-note">行业优先级与实际涨跌将逐笔留档。</p>
+        </article>
+      </div>
+      <div class="review-grid">
+        <article class="panel review-panel">
+          <div class="panel-heading"><div><span class="label">MARKET LOG</span><h3>大盘预测对照</h3></div></div>
+          <div id="review-market-rows" class="review-list"></div>
+        </article>
+        <article class="panel review-panel">
+          <div class="panel-heading"><div><span class="label">SECTOR LOG</span><h3>板块预测对照</h3></div></div>
+          <div id="review-sector-rows" class="review-list"></div>
+        </article>
+      </div>
+    </section>
+
     <section class="section-block">
       <div class="section-heading">
         <div>
@@ -494,7 +526,7 @@
   </nav>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="./secure-data.js" defer></script>
-  <script src="./app.js?v=1.13.1" defer></script>
+  <script src="./app.js?v=1.14.0" defer></script>
   <script src="./portfolio.js" defer></script>
 </body>
 </html>

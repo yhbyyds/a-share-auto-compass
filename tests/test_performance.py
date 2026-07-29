@@ -81,3 +81,40 @@ def test_monitor_does_not_pool_other_horizons_into_effective_sample() -> None:
     assert monitor["evaluated_samples"] == 1
     assert monitor["all_evaluated_predictions"] == 5
     assert monitor["effective_sample"] == "第1日预测的唯一目标交易日"
+
+
+def test_sector_prediction_is_settled_and_exposed_in_review() -> None:
+    forecast = valid_forecast()
+    sector = forecast["sector_forecast"]["sectors"][0]
+    sector["history"] = [
+        {"date": "2026-07-24", "sector": 100.0, "benchmark": 100.0, "relative": 100.0},
+        {"date": "2026-07-27", "sector": 101.5, "benchmark": 100.5, "relative": 101.0},
+    ]
+    history = {
+        "predictions": [],
+        "sector_predictions": [
+            {
+                "id": "sector-old",
+                "base_date": "2026-07-24",
+                "base_level": 100.0,
+                "target_date": "2026-07-27",
+                "horizon": 1,
+                "sector_key": sector["key"],
+                "sector_name": sector["name"],
+                "direction": "偏强",
+                "up_probability": 58.0,
+                "priority_score": 92.0,
+                "status": "pending",
+            }
+        ],
+    }
+
+    updated, _ = update_performance_history(history, forecast)
+
+    settled = next(row for row in updated["sector_predictions"] if row["id"] == "sector-old")
+    assert settled["status"] == "evaluated"
+    assert settled["actual_return"] == 1.5
+    review = forecast["performance_review"]["sectors"]
+    assert review["monitor"]["evaluated_samples"] == 1
+    assert review["monitor"]["evaluated_days"] == 1
+    assert review["rows"][0]["sector_name"] == sector["name"]
