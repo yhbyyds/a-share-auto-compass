@@ -45,13 +45,16 @@ function renderPulse(data) {
 
   const selection = data.sector_forecast?.tomorrow_selection || {};
   const sourceSpread = selection.source_spread || {};
+  const rankingValidation = selection.selection_validation || {};
   const spread = selection.score_spread;
   $("#pulse-sector-spread").textContent = spread == null
     ? `${sourceSpread.probability_pp ?? "—"}pp`
     : `${Number(spread).toFixed(1)}分`;
-  $("#pulse-sector-label").textContent = sourceSpread.separated === false
-    ? "板块分歧偏小"
-    : `强候选 ${selection.validated_up_count ?? "—"} · 弱候选 ${selection.validated_down_count ?? "—"}`;
+  $("#pulse-sector-label").textContent = rankingValidation.samples
+    ? `排序验证 ${Number(rankingValidation.spread_hit_rate ?? 0).toFixed(1)}% · ${rankingValidation.samples}日`
+    : sourceSpread.separated === false
+      ? "板块分歧偏小"
+      : `强候选 ${selection.validated_up_count ?? "—"} · 弱候选 ${selection.validated_down_count ?? "—"}`;
 
   const regime = data.intraday?.selection?.market_regime || {};
   $("#pulse-regime").textContent = regime.label || data.market?.weekly_direction || "—";
@@ -302,16 +305,20 @@ function renderSectorTomorrow(selection, sectors) {
       </span>
       <span class="sector-tomorrow-score">
         <strong class="${tone === "up" ? "positive-text" : "negative-text"}">${Number(item.score ?? 0).toFixed(0)}</strong>
-        <small>超额 ${formatSigned(item.expected_excess ?? 0)}</small>
+        <small>超额 ${formatSigned(item.expected_excess ?? 0)}${item.expected_excess_weight != null ? ` · 回归权重 ${Math.round(Number(item.expected_excess_weight) * 100)}%` : ""}</small>
       </span>
     </button>`).join("");
   $("#sector-tomorrow-up").innerHTML = renderList(resolved.up || [], "up")
     || `<p class="selection-empty">当前没有形成领先侧排序。</p>`;
   $("#sector-tomorrow-down").innerHTML = renderList(resolved.down || [], "down")
     || `<p class="selection-empty">当前没有形成落后侧排序。</p>`;
+  const rankValidation = resolved.selection_validation || {};
+  const rankEvidence = rankValidation.samples
+    ? ` · 排序样本 ${rankValidation.samples}日 · 顶底差 ${formatSigned(rankValidation.top_bottom_excess ?? 0)} · 命中 ${Number(rankValidation.spread_hit_rate ?? 0).toFixed(1)}%`
+    : "";
   $("#sector-tomorrow-summary").textContent = resolved.score_spread == null
     ? "兼容展示 · 等待第1日专用分层"
-    : `第1日横截面区分度 ${resolved.score_spread}分 · 正式偏强 ${resolved.validated_up_count} · 正式偏弱 ${resolved.validated_down_count}`;
+    : `第1日横截面区分度 ${resolved.score_spread}分 · 正式偏强 ${resolved.validated_up_count} · 正式偏弱 ${resolved.validated_down_count}${rankEvidence}`;
   $("#sector-tomorrow-method").textContent = resolved.method || "";
   document.querySelectorAll(".sector-tomorrow-item").forEach((button) => {
     button.addEventListener("click", () => {

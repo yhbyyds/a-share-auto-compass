@@ -237,10 +237,10 @@ def _relative_classifier() -> HistGradientBoostingClassifier:
     )
 
 
-def _regressors() -> tuple[Any, Any]:
-    return (
-        make_pipeline(StandardScaler(), Ridge(alpha=30.0)),
-        HistGradientBoostingRegressor(
+def _regressors() -> dict[str, Any]:
+    return {
+        "ridge": make_pipeline(StandardScaler(), Ridge(alpha=30.0)),
+        "boost": HistGradientBoostingRegressor(
             max_iter=75,
             max_depth=3,
             learning_rate=0.04,
@@ -249,7 +249,7 @@ def _regressors() -> tuple[Any, Any]:
             loss="absolute_error",
             random_state=RANDOM_STATE,
         ),
-    )
+    }
 
 
 def _sector_metrics(
@@ -294,6 +294,92 @@ def _sector_metrics(
     }
 
 
+def _excess_metrics(
+    actual: pd.Series,
+    predicted: pd.Series,
+    dates: pd.Series,
+) -> dict[str, float | int]:
+    """Evaluate excess-return regression against the zero-return baseline."""
+    valid = actual.notna() & predicted.notna()
+    actual = actual.loc[valid]
+    predicted = predicted.loc[valid]
+    dates = dates.loc[valid]
+    order = np.argsort(dates.to_numpy())
+    actual = actual.iloc[order].tail(120)
+    predicted = predicted.iloc[order].tail(120)
+    baseline_mae = float(np.mean(np.abs(actual)))
+    mae = float(np.mean(np.abs(actual - predicted)))
+    mae_skill = (baseline_mae - mae) / baseline_mae if baseline_mae > 1e-9 else 0.0
+    correlation = (
+        float(actual.corr(predicted))
+        if len(actual) >= 3 and actual.std() > 1e-9 and predicted.std() > 1e-9
+        else 0.0
+    )
+    return {
+        "mae": mae,
+        "baseline_mae": baseline_mae,
+        "mae_skill": float(mae_skill),
+        "correlation": correlation,
+        # A weak regression retains a small contribution rather than deciding
+        # the next-session sector ranking by itself.
+        "ranking_weight": float(np.clip(0.25 + max(mae_skill, 0.0) * 5.0, 0.25, 1.0)),
+        "samples": int(len(actual)),
+    }
+
+
+def _selection_metrics(
+    train: pd.DataFrame,
+    actual_excess: pd.Series,
+    predicted_excess: pd.Series,
+) -> dict[str, float | int | bool]:
+    """Measure OOF top-versus-bottom sector ranking by date."""
+    rows = pd.DataFrame({
+        "date": train["date"], "sector": train["sector"],
+        "actual": actual_excess, "predicted": predicted_excess,
+    }).dropna()
+    outcomes: list[tuple[float, float]] = []
+    for _, group in rows.groupby("date", sort=True):
+        if len(group) < 6:
+            continue
+        count = min(3, max(1, len(group) // 4))
+        top = float(group.nlargest(count, "predicted")["actual"].mean())
+        bottom = float(group.nsmallest(count, "predicted")["actual"].mean())
+        outcomes.append((top - bottom, top))
+    recent = outcomes[-180:]
+    if not recent:
+        return {"top_bottom_excess": 0.0, "spread_hit_rate": 0.5,
+                "top_positive_rate": 0.5, "samples": 0, "reliable": False}
+    spreads = np.asarray([item[0] for item in recent])
+    tops = np.asarray([item[1] for item in recent])
+    spread_mean = float(np.mean(spreads))
+    hit_rate = float(np.mean(spreads > 0))
+    return {
+        "top_bottom_excess": spread_mean,
+        "spread_hit_rate": hit_rate,
+        "top_positive_rate": float(np.mean(tops > 0)),
+        "samples": int(len(recent)),
+        "reliable": bool(len(recent) >= 90 and spread_mean > 0 and hit_rate >= 0.52),
+    }
+
+
+def _regression_weights(
+    oof_predictions: pd.DataFrame,
+    actual: pd.Series,
+) -> dict[str, float]:
+    """Weight regression components by recent OOF absolute error."""
+    valid = oof_predictions.dropna()
+    if valid.empty:
+        return {name: 1 / len(oof_predictions.columns) for name in oof_predictions}
+    recent = valid.tail(min(2160, len(valid)))
+    target = actual.loc[recent.index]
+    inverse = {
+        name: 1 / max(float(np.mean(np.abs(target - recent[name]))), 1e-8)
+        for name in recent.columns
+    }
+    total = sum(inverse.values())
+    return {name: value / total for name, value in inverse.items()}
+
+
 def _fit_horizon_panel(
     panel: pd.DataFrame,
     closes: dict[str, pd.Series],
@@ -330,6 +416,10 @@ def _fit_horizon_panel(
     )
     oof_abs = pd.Series(index=train.index, dtype=float)
     oof_rel = pd.Series(index=train.index, dtype=float)
+    regressors = _regressors()
+    oof_excess_models = pd.DataFrame(
+        index=train.index, columns=regressors.keys(), dtype=float
+    )
     classifiers = _classifiers()
 
     for train_date_idx, test_date_idx in splitter.split(unique_dates):
@@ -348,6 +438,9 @@ def _fit_horizon_panel(
         )
         relative = _relative_classifier().fit(X_train, y_rel.loc[train_mask])
         oof_rel.loc[train.index[test_mask]] = relative.predict_proba(X_test)[:, 1]
+        for name, model in regressors.items():
+            fitted = clone(model).fit(X_train, y_excess.loc[train_mask])
+            oof_excess_models.loc[train.index[test_mask], name] = fitted.predict(X_test)
 
     current_date = work["date"].max()
     current = work.loc[work["date"].eq(current_date)].copy()
@@ -361,13 +454,22 @@ def _fit_horizon_panel(
     relative = _relative_classifier().fit(X_train, y_rel)
     live_rel = relative.predict_proba(X_current)[:, 1]
 
-    excess_predictions = []
-    for model in _regressors():
+    regression_weights = _regression_weights(oof_excess_models, y_excess)
+    oof_excess = sum(
+        oof_excess_models[name] * regression_weights[name]
+        for name in regression_weights
+    )
+    excess_predictions: dict[str, np.ndarray] = {}
+    for name, model in regressors.items():
         fitted = clone(model).fit(X_train, y_excess)
-        excess_predictions.append(fitted.predict(X_current))
-    live_excess = np.mean(excess_predictions, axis=0)
+        excess_predictions[name] = fitted.predict(X_current)
+    live_excess = sum(
+        excess_predictions[name] * regression_weights[name]
+        for name in regression_weights
+    )
     cap = float(np.quantile(np.abs(y_excess), 0.95))
     live_excess = np.clip(live_excess, -cap, cap)
+    selection_validation = _selection_metrics(train, y_excess, oof_excess)
 
     output: dict[str, dict[str, Any]] = {}
     for position, (_, row) in enumerate(current.iterrows()):
@@ -381,6 +483,11 @@ def _fit_horizon_panel(
         rel_metrics = _sector_metrics(
             y_rel.loc[sector_mask],
             oof_rel.loc[sector_mask],
+            train.loc[sector_mask, "date"],
+        )
+        excess_metrics = _excess_metrics(
+            y_excess.loc[sector_mask],
+            oof_excess.loc[sector_mask],
             train.loc[sector_mask, "date"],
         )
         abs_skill = float(np.clip(float(abs_metrics["edge"]) / 0.05, 0, 1))
@@ -399,6 +506,9 @@ def _fit_horizon_panel(
             "expected_excess": float(live_excess[position]),
             "absolute_validation": abs_metrics,
             "relative_validation": rel_metrics,
+            "excess_validation": excess_metrics,
+            "selection_validation": selection_validation,
+            "regression_weights": regression_weights,
         }
     return output
 
@@ -523,13 +633,19 @@ def _tomorrow_selection(
         relative_score = float(day.get("relative_signal_score", 50))
         signal_strength = float(day.get("signal_strength", 0))
         expected_excess = float(day.get("expected_excess", 0))
+        expected_weight = float(
+            day.get("excess_validation", {}).get("ranking_weight", 1.0)
+        )
         excess_component = float(
             np.clip(50 + expected_excess * 30, 0, 100)
         )
         score = round(
             0.50 * relative_score
             + 0.30 * signal_strength
-            + 0.20 * excess_component,
+            + 0.20 * (
+                expected_weight * excess_component
+                + (1 - expected_weight) * 50
+            ),
             1,
         )
         direction = str(day.get("direction", "震荡"))
@@ -562,6 +678,7 @@ def _tomorrow_selection(
                 "expected_excess": day.get("expected_excess"),
                 "signal_strength": signal_strength,
                 "validation_edge": round(validation_edge, 1),
+                "expected_excess_weight": round(expected_weight, 2),
                 "validated_up": validated_up,
                 "validated_down": validated_down,
             }
@@ -607,6 +724,7 @@ def _tomorrow_selection(
         {},
     )
     source_spread = source_day.get("relative_signal_spread", {})
+    selection_validation = source_day.get("selection_validation", {})
     return {
         "date": ordered[0].get("date") if ordered else None,
         "up": up,
@@ -615,6 +733,7 @@ def _tomorrow_selection(
         "source_spread": source_spread,
         "validated_up_count": sum(item["validated_up"] for item in rows),
         "validated_down_count": sum(item["validated_down"] for item in rows),
+        "selection_validation": selection_validation,
         "method": (
             "只使用第1日模型的横截面分位、证据强度、预期超额收益与"
             "第1日样本外验证；相对排名与正式方向分开显示。"
@@ -837,6 +956,21 @@ def generate_sector_forecast(
                     "expected_excess": round(
                         expected_excess * 100, 2
                     ),
+                    "excess_validation": {
+                        "mae": round(float(result["excess_validation"]["mae"]) * 100, 3),
+                        "baseline_mae": round(float(result["excess_validation"]["baseline_mae"]) * 100, 3),
+                        "mae_skill": round(float(result["excess_validation"]["mae_skill"]) * 100, 2),
+                        "correlation": round(float(result["excess_validation"]["correlation"]), 3),
+                        "ranking_weight": round(float(result["excess_validation"]["ranking_weight"]), 2),
+                        "samples": int(result["excess_validation"]["samples"]),
+                    },
+                    "selection_validation": {
+                        "top_bottom_excess": round(float(result["selection_validation"]["top_bottom_excess"]) * 100, 3),
+                        "spread_hit_rate": round(float(result["selection_validation"]["spread_hit_rate"]) * 100, 1),
+                        "top_positive_rate": round(float(result["selection_validation"]["top_positive_rate"]) * 100, 1),
+                        "samples": int(result["selection_validation"]["samples"]),
+                        "reliable": bool(result["selection_validation"]["reliable"]),
+                    },
                     "confidence": "中" if quality else "低",
                     "signal_strength": signal_strength,
                     "signal_band": signal_band,

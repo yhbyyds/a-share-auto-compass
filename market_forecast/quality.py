@@ -175,6 +175,26 @@ def validate_forecast(
         )
     if sector_block.get("data_through") != meta.get("data_through"):
         result.errors.append("行业数据日期与大盘数据日期不一致")
+    selection = sector_block.get("tomorrow_selection") or {}
+    ranking_validation = selection.get("selection_validation") or {}
+    if ranking_validation:
+        try:
+            ranking_samples = int(ranking_validation.get("samples", 0))
+            ranking_hit_rate = float(ranking_validation["spread_hit_rate"])
+            ranking_edge = float(ranking_validation["top_bottom_excess"])
+        except (KeyError, TypeError, ValueError):
+            result.errors.append("次日行业排序验证字段无效")
+        else:
+            result.metrics["sector_ranking_samples"] = ranking_samples
+            result.metrics["sector_ranking_hit_rate"] = ranking_hit_rate
+            if not 0 <= ranking_hit_rate <= 100:
+                result.errors.append("次日行业排序命中率越界")
+            if ranking_samples < 90:
+                result.warnings.append("次日行业排序样本外样本不足，页面仅保留观察标签")
+            if ranking_validation.get("reliable") and (
+                ranking_edge <= 0 or ranking_hit_rate < 52
+            ):
+                result.errors.append("次日行业排序可靠标记与样本外结果不一致")
     for sector in sectors:
         sector_days = sector.get("days", [])
         if len(sector_days) != 5:

@@ -3,8 +3,11 @@ import pandas as pd
 from market_forecast.sectors import (
     _cross_sectional_signal,
     _direction,
+    _excess_metrics,
     _outlook,
     _recent_history,
+    _regression_weights,
+    _selection_metrics,
     _signal_strength,
     _tomorrow_selection,
 )
@@ -31,6 +34,55 @@ def test_relative_outlook_uses_probability_and_expected_excess():
     assert _outlook(0.57, 0.005) == "相对领先"
     assert _outlook(0.43, -0.005) == "相对落后"
     assert _outlook(0.57, -0.005) == "相对中性"
+
+
+def test_excess_validation_downweights_a_regression_that_misses_baseline():
+    dates = pd.Series(pd.bdate_range("2026-01-01", periods=6))
+    actual = pd.Series([0.01, -0.01, 0.02, -0.02, 0.01, -0.01])
+    good = actual * 0.8
+    poor = -actual * 0.8
+
+    good_metrics = _excess_metrics(actual, good, dates)
+    poor_metrics = _excess_metrics(actual, poor, dates)
+
+    assert good_metrics["mae_skill"] > 0
+    assert good_metrics["ranking_weight"] > poor_metrics["ranking_weight"]
+    assert poor_metrics["ranking_weight"] == 0.25
+
+
+def test_selection_validation_requires_oof_top_bottom_edge():
+    dates = []
+    sectors = []
+    actual = []
+    predicted = []
+    for date in pd.bdate_range("2025-01-01", periods=100):
+        for rank in range(6):
+            dates.append(date)
+            sectors.append(f"s{rank}")
+            predicted.append(float(rank))
+            actual.append((rank - 2.5) / 100)
+    train = pd.DataFrame({"date": dates, "sector": sectors})
+
+    metrics = _selection_metrics(train, pd.Series(actual), pd.Series(predicted))
+
+    assert metrics["samples"] == 100
+    assert metrics["top_bottom_excess"] > 0
+    assert metrics["reliable"] is True
+
+
+def test_regression_weights_favor_the_lower_oof_error_component():
+    actual = pd.Series([0.01, -0.01, 0.02, -0.02])
+    predictions = pd.DataFrame(
+        {
+            "good": [0.009, -0.009, 0.018, -0.018],
+            "poor": [-0.009, 0.009, -0.018, 0.018],
+        }
+    )
+
+    weights = _regression_weights(predictions, actual)
+
+    assert weights["good"] > weights["poor"]
+    assert sum(weights.values()) == 1.0
 
 
 def test_recent_history_is_normalized_and_limited_to_60_days():
