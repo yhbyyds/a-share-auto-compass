@@ -3,11 +3,13 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 
 import pandas as pd
+import pytest
 
 from market_forecast.intraday import (
     _bucket,
     _market_regime,
     _transfer_predictions,
+    collection_window,
     collect_intraday_snapshot,
     micro_theme_training_status,
     settle_intraday_labels,
@@ -52,6 +54,21 @@ def test_snapshot_replaces_same_fixed_bucket(tmp_path, monkeypatch):
 def test_bucket_never_assigns_a_future_collection_time():
     now = datetime(2026, 7, 27, 11, 20, tzinfo=ZoneInfo("Asia/Shanghai"))
     assert _bucket(now) == "11:00"
+
+
+def test_collection_window_only_accepts_short_fixed_time_periods():
+    timezone = ZoneInfo("Asia/Shanghai")
+    assert collection_window(datetime(2026, 7, 27, 9, 36, tzinfo=timezone)) == "09:35"
+    assert collection_window(datetime(2026, 7, 27, 9, 57, tzinfo=timezone)) is None
+    assert collection_window(datetime(2026, 7, 27, 16, 5, tzinfo=timezone)) is None
+
+
+def test_snapshot_rejects_delayed_after_close_capture(tmp_path):
+    with pytest.raises(ValueError, match="fixed intraday collection window"):
+        collect_intraday_snapshot(
+            tmp_path / "snapshots.json",
+            datetime(2026, 7, 27, 16, 5, tzinfo=ZoneInfo("Asia/Shanghai")),
+        )
 
 
 def test_training_status_accepts_unsettled_none_labels(tmp_path):

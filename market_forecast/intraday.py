@@ -30,6 +30,13 @@ MIN_TRAINED_SESSIONS = 60
 MIN_TRAINED_SAMPLES = 240
 CONCEPT_URL = "https://push2.eastmoney.com/api/qt/clist/get"
 QUOTE_URL = "https://qt.gtimg.cn/q=sh000001,sh000300,sz399006"
+COLLECTION_POINTS: tuple[tuple[int, str], ...] = (
+    (575, "09:35"), (600, "10:00"), (630, "10:30"), (660, "11:00"),
+    (810, "13:30"), (840, "14:00"), (870, "14:30"), (890, "14:50"),
+)
+# Hosted scheduled jobs sometimes start well after the requested minute.  A
+# late job must not be recorded as if it were an on-time market observation.
+COLLECTION_GRACE_MINUTES = 20
 
 # This is a coverage taxonomy, not a stock recommendation list.  A theme can
 # be observed immediately, but receives a direction prediction only after it
@@ -56,13 +63,28 @@ MICRO_THEMES: tuple[dict[str, str], ...] = (
 )
 
 
+def _beijing_time(now: datetime) -> datetime:
+    """Normalize supplied timestamps so every collection rule uses Beijing time."""
+    return now.replace(tzinfo=BEIJING) if now.tzinfo is None else now.astimezone(BEIJING)
+
+
+def collection_window(now: datetime) -> str | None:
+    """Return the eligible fixed bucket, or ``None`` outside its short window."""
+    now = _beijing_time(now)
+    if now.weekday() >= 5:
+        return None
+    minute = now.hour * 60 + now.minute
+    for edge, label in COLLECTION_POINTS:
+        if edge <= minute <= edge + COLLECTION_GRACE_MINUTES:
+            return label
+    return None
+
+
 def _bucket(now: datetime) -> str:
     """Use fixed, non-overlapping collection buckets for independent samples."""
+    now = _beijing_time(now)
     minute = now.hour * 60 + now.minute
-    points = ((575, "09:35"), (600, "10:00"), (630, "10:30"),
-              (660, "11:00"), (810, "13:30"), (840, "14:00"),
-              (870, "14:30"), (890, "14:50"))
-    passed = [label for edge, label in points if minute >= edge]
+    passed = [label for edge, label in COLLECTION_POINTS if minute >= edge]
     return passed[-1] if passed else "before_open"
 
 
@@ -131,9 +153,12 @@ def _match_themes(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 
 def collect_intraday_snapshot(path: str | Path = SNAPSHOT_FILE, now: datetime | None = None) -> dict[str, Any]:
-    now = now or datetime.now(BEIJING)
+    now = _beijing_time(now or datetime.now(BEIJING))
+    bucket = collection_window(now)
+    if bucket is None:
+        raise ValueError("timestamp is outside a fixed intraday collection window")
     snapshot = {
-        "timestamp": now.isoformat(), "date": now.date().isoformat(), "bucket": _bucket(now),
+        "timestamp": now.isoformat(), "date": now.date().isoformat(), "bucket": bucket,
         "quotes": _quote_snapshot(), "breadth": fetch_market_breadth(), "themes": _match_themes(_concept_rows()),
         "source": "腾讯指数快照 / 东方财富概念板块快照", "label": None,
     }
