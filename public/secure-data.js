@@ -4,6 +4,7 @@
   const PERSONAL_STORAGE_KEY = "a_share_personal_portfolio_v1";
   const DEVICE_KEY = "a_share_personal_device_key_v1";
   const ENCRYPTED_URL = "/data/forecast.enc.json?v=1.8.0";
+  const PUBLISHED_FORECAST_URL = "https://yhbyyds.github.io/a-share-auto-compass/data/forecast.json?v=1.18.0";
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
 
@@ -25,7 +26,13 @@
 
   async function encryptedPayload() {
     const response = await fetch(ENCRYPTED_URL, { cache: "no-store" });
-    if (!response.ok) throw new Error("加密预测文件读取失败");
+    if (!response.ok) throw new Error("encrypted forecast read failed");
+    return response.json();
+  }
+
+  async function publishedForecast() {
+    const response = await fetch(PUBLISHED_FORECAST_URL, { cache: "no-store" });
+    if (!response.ok) throw new Error("published forecast read failed");
     return response.json();
   }
 
@@ -113,7 +120,11 @@
         PERSONAL_SESSION_KEY,
         encodeBase64Url(rawPersonalKey),
       );
-      return data;
+      try {
+        return await publishedForecast();
+      } catch {
+        return data;
+      }
     } catch {
       sessionStorage.removeItem(STORAGE_KEY);
       sessionStorage.removeItem(PERSONAL_SESSION_KEY);
@@ -125,14 +136,18 @@
     const encodedKey = sessionStorage.getItem(STORAGE_KEY);
     if (!encodedKey) throw new Error("LOGIN_REQUIRED");
     try {
-      const [payload, key] = await Promise.all([
-        encryptedPayload(),
-        importKey(encodedKey),
-      ]);
-      return await decrypt(payload, key);
+      return await publishedForecast();
     } catch {
-      sessionStorage.removeItem(STORAGE_KEY);
-      throw new Error("LOGIN_REQUIRED");
+      try {
+        const [payload, key] = await Promise.all([
+          encryptedPayload(),
+          importKey(encodedKey),
+        ]);
+        return await decrypt(payload, key);
+      } catch {
+        sessionStorage.removeItem(STORAGE_KEY);
+        throw new Error("LOGIN_REQUIRED");
+      }
     }
   }
 

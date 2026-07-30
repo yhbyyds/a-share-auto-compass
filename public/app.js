@@ -1,5 +1,8 @@
 const $ = (selector) => document.querySelector(selector);
-const PUBLIC_FORECAST_URL = "./data/forecast.json?v=1.17.1";
+const isProtectedHost = window.location.hostname.endsWith(".chatgpt.site");
+const PUBLIC_FORECAST_URL = isProtectedHost
+  ? "https://yhbyyds.github.io/a-share-auto-compass/data/forecast.json?v=1.18.0"
+  : "./data/forecast.json?v=1.18.0";
 let renderedSnapshotId = "";
 let forecastPollInFlight = false;
 
@@ -808,8 +811,7 @@ $("#refresh-button").addEventListener("click", async () => {
 });
 
 async function checkForPublishedForecast() {
-  const protectedHost = window.location.hostname.endsWith(".chatgpt.site");
-  if (protectedHost || document.hidden || forecastPollInFlight) return;
+  if (document.hidden || forecastPollInFlight) return;
   forecastPollInFlight = true;
   try {
     const response = await fetch(PUBLIC_FORECAST_URL, { cache: "no-store" });
@@ -828,7 +830,6 @@ async function checkForPublishedForecast() {
 }
 
 function enableForecastPolling() {
-  if (window.location.hostname.endsWith(".chatgpt.site")) return;
   window.setInterval(checkForPublishedForecast, 5 * 60 * 1000);
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden) checkForPublishedForecast();
