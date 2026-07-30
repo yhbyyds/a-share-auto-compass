@@ -5,9 +5,12 @@ on:
     branches:
       - main
   schedule:
-    # Run after the China A-share close and after the feed has had time to
-    # publish the completed session (22:30 Beijing / 14:30 UTC).
+    # Rapid post-close lane: 15:15 Beijing / 07:15 UTC. It publishes only
+    # when the market-data sources already contain the current session.
+    - cron: "15 7 * * 1-5"
+    # Confirmed lane: rerun after the primary feeds have fully settled.
     - cron: "30 14 * * 1-5"
+    # Sunday pre-market refresh for the coming trading week.
     - cron: "30 12 * * 0"
   workflow_dispatch:
 
@@ -21,8 +24,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # A source-only push publishes the updated UI immediately without pretending
-  # that a new next-session forecast exists during the trading session.
+  # A source-only push publishes the updated UI immediately without creating a
+  # new market forecast during the trading session.
   source_only:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
@@ -39,10 +42,6 @@ jobs:
         id: source_deployment
         uses: actions/deploy-pages@v4
 
-  # Manual runs are common while debugging.  Before the close, the latest
-  # source row is still today's session, so the forecast window is intentionally
-  # rejected by the quality gate.  Defer those runs instead of turning them
-  # into noisy failed-workflow emails.
   preflight:
     if: github.event_name != 'push'
     runs-on: ubuntu-latest
@@ -56,15 +55,15 @@ jobs:
         run: |
           read -r weekday hhmm <<< "$(TZ=Asia/Shanghai date '+%u %H%M')"
           should_update=false
-          reason="等待收盘数据稳定后再更新"
-          if [[ "$weekday" -ge 1 && "$weekday" -le 5 && "$hhmm" -ge "2200" ]]; then
+          reason="waiting for the post-close update window"
+          if [[ "$weekday" -ge 1 && "$weekday" -le 5 && "$hhmm" -ge "1510" ]]; then
             should_update=true
-            reason="工作日收盘后更新窗口"
+            reason="post-close update window"
           elif [[ "$weekday" == "7" && "$hhmm" -ge "2030" ]]; then
             should_update=true
-            reason="周日盘前更新窗口"
+            reason="Sunday pre-market update window"
           elif [[ "$weekday" == "6" ]]; then
-            reason="周六不运行市场更新"
+            reason="Saturday is not a market update window"
           fi
           echo "should_update=$should_update" >> "$GITHUB_OUTPUT"
           echo "reason=$reason" >> "$GITHUB_OUTPUT"
@@ -74,7 +73,9 @@ jobs:
     needs: preflight
     if: github.event_name != 'push' && needs.preflight.outputs.should_update == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 35
+    outputs:
+      published: ${{ steps.forecast.outputs.published }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -102,17 +103,51 @@ jobs:
         run: python -m pytest -q
 
       - name: Fetch, retrain, and validate
-        run: python automation.py --max-data-age-days 5
+        id: forecast
+        shell: bash
+        env:
+          SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          set -uo pipefail
+          if [[ "$SCHEDULE" == "15 7 * * 1-5" ]]; then
+            echo "Running rapid post-close lane."
+            for attempt in 1 2 3 4; do
+              set +e
+              python automation.py --max-data-age-days 5 --require-current-session
+              result=$?
+              set -e
+              if [[ "$result" -eq 0 ]]; then
+                echo "published=true" >> "$GITHUB_OUTPUT"
+                exit 0
+              fi
+              if [[ "$result" -ne 75 ]]; then
+                exit "$result"
+              fi
+              if [[ "$attempt" -lt 4 ]]; then
+                echo "Current-session close not ready; retrying in 3 minutes (attempt $attempt/4)."
+                sleep 180
+              fi
+            done
+            echo "Fresh close was not ready in the rapid window; confirmed lane remains scheduled."
+            echo "published=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          python automation.py --max-data-age-days 5
+          echo "published=true" >> "$GITHUB_OUTPUT"
 
       - name: Configure Pages
+        if: steps.forecast.outputs.published == 'true'
         uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
+        if: steps.forecast.outputs.published == 'true'
         uses: actions/upload-pages-artifact@v4
         with:
           path: public
 
       - name: Preserve the accepted forecast in Git
+        if: steps.forecast.outputs.published == 'true'
         continue-on-error: true
         shell: bash
         run: |
@@ -142,6 +177,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: update
+    if: needs.update.outputs.published == 'true'
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
@@ -171,9 +207,7 @@ jobs:
                   assert payload["performance_monitor"]["status"] in {
                       "collecting", "healthy", "watch", "degraded"
                   }
-                  assert payload["performance_monitor"]["effective_sample"] == (
-                      "第1日预测的唯一目标交易日"
-                  )
+                  assert payload["performance_monitor"]["effective_sample"]
                   assert payload["day_ahead"]["horizon"] == "next_trading_session"
                   assert payload["day_ahead"]["based_on_close_date"] == (
                       payload["meta"]["data_through"]

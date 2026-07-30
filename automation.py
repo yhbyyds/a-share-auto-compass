@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import argparse
 from contextlib import contextmanager
-from datetime import datetime
+from datetime import date, datetime
 import json
 import logging
 from logging.handlers import RotatingFileHandler
@@ -25,6 +25,22 @@ ROOT = Path(__file__).resolve().parent
 DEFAULT_OUTPUT = ROOT / "public" / "data" / "forecast.json"
 DEFAULT_STATE_DIR = ROOT / "data" / "automation"
 DEFAULT_PERFORMANCE = ROOT / "data" / "performance_history.json"
+
+
+class UpdateDeferred(RuntimeError):
+    """The post-close fast lane waits for a completed current trading session."""
+
+
+def _require_current_session(forecast: dict[str, Any], today: date) -> None:
+    try:
+        data_through = date.fromisoformat(str(forecast["meta"]["data_through"]))
+    except (KeyError, TypeError, ValueError) as exc:
+        raise UpdateDeferred("current-session data has no valid close date") from exc
+    if data_through != today:
+        raise UpdateDeferred(
+            "current-session data pending: "
+            f"data_through={data_through.isoformat()} expected={today.isoformat()}"
+        )
 
 
 def _read_json(path: Path) -> dict[str, Any] | None:
@@ -187,6 +203,7 @@ def run_update(
     max_data_age_days: int = 5,
     dry_run: bool = False,
     run_build: bool = False,
+    require_current_session: bool = False,
 ) -> tuple[dict[str, Any], QualityResult]:
     logger = _logger(state_dir)
     started = datetime.now(ZoneInfo("Asia/Shanghai"))
@@ -199,6 +216,8 @@ def run_update(
         logger.info("自动更新开始 run_id=%s", run_id)
         try:
             forecast = build_forecast()
+            if require_current_session:
+                _require_current_session(forecast, started.date())
             updated_performance, performance_monitor = (
                 update_performance_history(performance_history, forecast)
             )
@@ -271,6 +290,19 @@ def run_update(
                 len(quality.warnings),
             )
             return forecast, quality
+        except UpdateDeferred as exc:
+            finished = datetime.now(ZoneInfo("Asia/Shanghai"))
+            state = {
+                "run_id": run_id,
+                "status": "deferred",
+                "started_at": started.isoformat(),
+                "finished_at": finished.isoformat(),
+                "output_preserved": output.exists(),
+                "reason": str(exc),
+            }
+            _atomic_json(state_dir / "last_run.json", state)
+            logger.info("Post-close fast lane deferred: %s", exc)
+            raise
         except Exception as exc:
             finished = datetime.now(ZoneInfo("Asia/Shanghai"))
             state = {
@@ -298,6 +330,11 @@ def main() -> None:
     parser.add_argument("--max-data-age-days", type=int, default=5)
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--build", action="store_true")
+    parser.add_argument(
+        "--require-current-session",
+        action="store_true",
+        help="defer rather than publish until data_through matches today",
+    )
     args = parser.parse_args()
     try:
         forecast, quality = run_update(
@@ -307,7 +344,11 @@ def main() -> None:
             max_data_age_days=args.max_data_age_days,
             dry_run=args.dry_run,
             run_build=args.build,
+            require_current_session=args.require_current_session,
         )
+    except UpdateDeferred as exc:
+        print(f"DEFERRED: {exc}", file=sys.stderr)
+        raise SystemExit(75) from exc
     except Exception as exc:
         print(f"FAILED: {exc}", file=sys.stderr)
         raise SystemExit(2) from exc

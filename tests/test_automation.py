@@ -127,3 +127,27 @@ def test_failed_build_restores_previous_output(tmp_path, monkeypatch) -> None:
 
     restored = json.loads(output.read_text(encoding="utf-8"))
     assert restored["meta"]["release"] == "6"
+
+
+def test_current_session_requirement_defers_without_replacing_output(
+    tmp_path, monkeypatch
+) -> None:
+    previous = valid_forecast()
+    output = tmp_path / "forecast.json"
+    output.write_text(json.dumps(previous), encoding="utf-8")
+    stale = valid_forecast()
+    monkeypatch.setattr(automation, "build_forecast", lambda: stale)
+    state_dir = tmp_path / "state"
+
+    with pytest.raises(automation.UpdateDeferred, match="current-session data pending"):
+        automation.run_update(
+            output=output,
+            state_dir=state_dir,
+            performance_path=tmp_path / "performance.json",
+            require_current_session=True,
+        )
+
+    assert json.loads(output.read_text(encoding="utf-8")) == previous
+    state = json.loads((state_dir / "last_run.json").read_text(encoding="utf-8"))
+    assert state["status"] == "deferred"
+    assert state["output_preserved"] is True
