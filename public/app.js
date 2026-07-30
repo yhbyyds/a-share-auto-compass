@@ -1,4 +1,14 @@
 const $ = (selector) => document.querySelector(selector);
+const PUBLIC_FORECAST_URL = "./data/forecast.json?v=1.16.0";
+let renderedSnapshotId = "";
+let forecastPollInFlight = false;
+
+function snapshotId(data) {
+  const meta = data?.meta || {};
+  return [meta.generated_at, meta.data_through, meta.release, meta.version]
+    .filter(Boolean)
+    .join("|");
+}
 const formatSigned = (value, suffix = "%") => `${Number(value) > 0 ? "+" : ""}${value}${suffix}`;
 const impactClass = (impact) => impact === "positive" ? "positive-text" : impact === "negative" ? "negative-text" : "neutral-text";
 const cardClass = (direction) => direction?.includes("偏强") ? "positive" : direction?.includes("偏弱") ? "negative" : "neutral";
@@ -673,6 +683,7 @@ function renderEventRadar(radar, playbook) {
 
 function render(data) {
   const { meta, market, days, validation } = data;
+  renderedSnapshotId = snapshotId(data);
   const automation = meta.automation;
   const automationLabel = automation?.quality_gate?.passed
     ? "自动更新已校验"
@@ -755,10 +766,7 @@ async function loadForecast() {
       throw new Error("需要登录，正在返回登录页");
     }
   }
-  const response = await fetch(
-    "./data/forecast.json?v=1.15.0",
-    { cache: "no-store" },
-  );
+  const response = await fetch(PUBLIC_FORECAST_URL, { cache: "no-store" });
   if (!response.ok) throw new Error("预测文件读取失败");
   const data = await response.json();
   render(data);
@@ -782,6 +790,34 @@ $("#refresh-button").addEventListener("click", async () => {
   }
 });
 
+async function checkForPublishedForecast() {
+  const protectedHost = window.location.hostname.endsWith(".chatgpt.site");
+  if (protectedHost || document.hidden || forecastPollInFlight) return;
+  forecastPollInFlight = true;
+  try {
+    const response = await fetch(PUBLIC_FORECAST_URL, { cache: "no-store" });
+    if (!response.ok) return;
+    const data = await response.json();
+    const nextSnapshotId = snapshotId(data);
+    if (nextSnapshotId && nextSnapshotId !== renderedSnapshotId) {
+      render(data);
+      showToast("\u68c0\u6d4b\u5230\u81ea\u52a8\u66f4\u65b0\uff0c\u5df2\u5207\u6362\u81f3\u6700\u65b0\u9884\u6d4b");
+    }
+  } catch {
+    // Keep the last accepted snapshot on screen; the next poll retries.
+  } finally {
+    forecastPollInFlight = false;
+  }
+}
+
+function enableForecastPolling() {
+  if (window.location.hostname.endsWith(".chatgpt.site")) return;
+  window.setInterval(checkForPublishedForecast, 5 * 60 * 1000);
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) checkForPublishedForecast();
+  });
+}
+
 const logoutButton = $("#logout-button");
 if (
   window.location.hostname.endsWith(".chatgpt.site")
@@ -796,7 +832,9 @@ if (
   });
 }
 
-loadForecast().catch((error) => {
-  $("#data-status").textContent = "数据读取失败";
-  showToast(error.message);
-});
+loadForecast()
+  .then(() => enableForecastPolling())
+  .catch((error) => {
+    $("#data-status").textContent = "\u6570\u636e\u8bfb\u53d6\u5931\u8d25";
+    showToast(error.message);
+  });
