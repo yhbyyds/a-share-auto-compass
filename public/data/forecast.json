@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-07-30T17:41:35.979094+08:00",
+    "generated_at": "2026-07-30T19:30:56.859021+08:00",
     "data_through": "2026-07-30",
     "forecast_window": "2026-07-31 至 2026-08-06",
     "version": "1.13.0",
@@ -31,14 +31,15 @@
       "update_warnings": []
     },
     "automation": {
-      "run_id": "20260730T173948",
+      "run_id": "20260730T192904",
       "status": "passed",
       "quality_gate": {
         "passed": true,
         "errors": [],
         "warnings": [
           "样本外周模型未超过门限，预测已自动降级",
-          "行业数据落后 1 个交易日；当日板块候选已暂停"
+          "行业数据落后 1 个交易日；当日板块候选已暂停",
+          "官方事件采集状态为 partial；已启用缓存容灾"
         ],
         "metrics": {
           "data_through": "2026-07-30",
@@ -51,13 +52,13 @@
           "sector_ranking_samples": 180,
           "sector_ranking_hit_rate": 55.6,
           "breadth_stocks": 5533,
-          "event_collection_status": "live",
+          "event_collection_status": "partial",
           "performance_status": "collecting",
           "live_evaluated_samples": 2,
           "event_count": 3
         }
       },
-      "updated_at": "2026-07-30T17:39:48.192262+08:00",
+      "updated_at": "2026-07-30T19:29:04.768997+08:00",
       "mode": "automatic"
     }
   },
@@ -246,7 +247,7 @@
     "advance_ratio": 31.8,
     "source": "新浪财经全A快照",
     "status": "live",
-    "fetched_at": "2026-07-30T17:40:49.388333+08:00",
+    "fetched_at": "2026-07-30T19:30:00.859897+08:00",
     "failures": [
       "_fetch_breadth_eastmoney: ProxyError"
     ]
@@ -8762,7 +8763,26 @@
       "actual_data_through": "2026-07-29",
       "market_data_through": "2026-07-30",
       "lag_trading_sessions": 1,
-      "message": "行业行情暂至 2026-07-29，比大盘收盘晚 1 个交易日；当日板块候选暂停。"
+      "message": "行业行情暂至 2026-07-29，比大盘收盘晚 1 个交易日；当日板块候选暂停。",
+      "live_overlay": {
+        "status": "unavailable",
+        "reason": "real-time industry basket coverage is incomplete",
+        "covered_sectors": [],
+        "missing_sectors": [
+          "electronics",
+          "computer",
+          "telecom",
+          "power_equipment",
+          "utilities",
+          "defense",
+          "auto",
+          "healthcare",
+          "bank",
+          "nonbank",
+          "nonferrous",
+          "food_beverage"
+        ]
+      }
     }
   },
   "intraday": {
@@ -9783,15 +9803,15 @@
       ]
     },
     "collection": {
-      "status": "live",
-      "fetched_at": "2026-07-30T17:42:29.898743+08:00",
-      "cache_used": false,
+      "status": "partial",
+      "fetched_at": "2026-07-30T19:32:03.399918+08:00",
+      "cache_used": true,
       "event_count": 1,
       "sources": [
         {
           "id": "federal_reserve",
           "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
-          "status": "live",
+          "status": "cached",
           "parsed_events": 8
         },
         {
@@ -9801,7 +9821,9 @@
           "parsed_events": 6
         }
       ],
-      "warnings": []
+      "warnings": [
+        "federal_reserve 抓取失败: ConnectionError"
+      ]
     },
     "method": "事件层不直接修改量价模型概率；它按A股实际反应日聚合风险，官方自动日程与人工核验事件合并去重，标记受影响行业并把高冲击日改为事件置信，等待盘中条件确认。"
   },
