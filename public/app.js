@@ -1,5 +1,5 @@
 const $ = (selector) => document.querySelector(selector);
-const PUBLIC_FORECAST_URL = "./data/forecast.json?v=1.17.0";
+const PUBLIC_FORECAST_URL = "./data/forecast.json?v=1.17.1";
 let renderedSnapshotId = "";
 let forecastPollInFlight = false;
 
@@ -599,7 +599,7 @@ function renderReviewRows(rows, type) {
   }).join("");
 }
 
-function renderPerformanceReview(review, fallbackMonitor) {
+function renderPerformanceReview(review, fallbackMonitor, sectorFreshness = {}) {
   const market = review?.market || {};
   const sectors = review?.sectors || {};
   const marketMonitor = market.monitor || fallbackMonitor || {};
@@ -620,9 +620,15 @@ function renderPerformanceReview(review, fallbackMonitor) {
   const highPriorityText = Number(sectorMonitor.high_priority_samples ?? 0) > 0
     ? `${sectorMonitor.high_priority_accuracy}%`
     : "\u6682\u65e0\u5230\u671f\u9ad8\u4f18\u5148\u7ea7\u6837\u672c";
+  const sectorLastDate = sectorMonitor.last_evaluated_date || "\u2014";
+  const sectorFreshnessNote = sectorFreshness.status === "stale"
+    ? sectorFreshness.message || "\u884c\u4e1a\u6570\u636e\u7b49\u5f85\u540c\u6b65"
+    : sectorFreshness.status === "provisional"
+      ? "\u5f53\u65e5\u5b9e\u65f6\u5feb\u7167\u5f85\u65e5\u7ebf\u590d\u6838"
+      : "";
   const sectorNote = sectorMonitor.evaluated_samples
-    ? `\u5df2\u7ed3\u7b97 ${sectorMonitor.evaluated_samples} \u6761 / ${sectorDayCount} \u4e2a\u4ea4\u6613\u65e5 \u00b7 \u57fa\u7ebf ${sectorMonitor.baseline}% \u00b7 \u9ad8\u4f18\u5148\u7ea7 ${highPriorityText}`
-    : "\u6bcf\u4e2a\u4e00\u7ea7\u884c\u4e1a\u7684\u6b21\u65e5\u9884\u6d4b\u4f1a\u5728\u76ee\u6807\u6536\u76d8\u540e\u9010\u7b14\u6bd4\u5bf9\u3002";
+    ? `\u5df2\u7ed3\u7b97 ${sectorMonitor.evaluated_samples} \u6761 / ${sectorDayCount} \u4e2a\u4ea4\u6613\u65e5 \u00b7 \u6700\u8fd1\u7ed3\u7b97 ${sectorLastDate} \u00b7 \u57fa\u7ebf ${sectorMonitor.baseline}% \u00b7 \u9ad8\u4f18\u5148\u7ea7 ${highPriorityText}${sectorFreshnessNote ? ` \u00b7 ${sectorFreshnessNote}` : ""}`
+    : `\u6bcf\u4e2a\u4e00\u7ea7\u884c\u4e1a\u7684\u6b21\u65e5\u9884\u6d4b\u4f1a\u5728\u76ee\u6807\u6536\u76d8\u540e\u9010\u7b14\u6bd4\u5bf9\u3002${sectorFreshnessNote ? ` ${sectorFreshnessNote}` : ""}`;
   $("#review-market-summary").textContent = marketSummary;
   $("#review-market-note").textContent = marketNote;
   $("#review-sector-summary").textContent = sectorSummary;
@@ -743,7 +749,11 @@ function render(data) {
       <div class="model-numbers"><span>看涨概率</span><strong>${model.probability}%</strong></div>
     </div>`).join("");
   renderHorizonValidation(data.horizon_validation || []);
-  renderPerformanceReview(data.performance_review, monitor);
+  renderPerformanceReview(
+    data.performance_review,
+    monitor,
+    data.sector_forecast?.freshness || {},
+  );
   renderSectorForecast(data.sector_forecast);
   renderWatchlist(data.watchlist || []);
   renderEventRadar(data.event_radar, data.playbook);
