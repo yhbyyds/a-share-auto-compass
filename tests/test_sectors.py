@@ -1,7 +1,12 @@
+from datetime import date
+
 import pandas as pd
 
 from market_forecast.sectors import (
     _cross_sectional_signal,
+    apply_live_sector_close_overlay,
+    LIVE_INDUSTRY_BASKETS,
+    SECTORS,
     _direction,
     _excess_metrics,
     _outlook,
@@ -173,3 +178,67 @@ def test_tomorrow_selection_separates_ranking_from_validated_direction():
     assert result["down"][0]["status"] == "相对落后观察"
     assert result["validated_up_count"] == 1
     assert result["score_spread"] > 0
+
+
+def test_live_sector_overlay_appends_one_current_proxy_row() -> None:
+    index = pd.DatetimeIndex(["2026-07-29"])
+    sector_data = {
+        spec.key: pd.DataFrame(
+            {
+                "open": [100.0],
+                "close": [100.0],
+                "high": [101.0],
+                "low": [99.0],
+                "volume": [1000.0],
+                "amount": [10000.0],
+                "pct": [0.0],
+            },
+            index=index,
+        )
+        for spec in SECTORS
+    }
+    rows = [
+        {"f14": LIVE_INDUSTRY_BASKETS[spec.key][0], "f3": 1.0, "f6": 1_000_000}
+        for spec in SECTORS
+    ]
+
+    result = apply_live_sector_close_overlay(
+        sector_data, date(2026, 7, 30), rows=rows
+    )
+
+    assert result["status"] == "provisional"
+    assert len(result["covered_sectors"]) == len(SECTORS)
+    assert all(
+        frame.index.max().date() == date(2026, 7, 30)
+        and frame.iloc[-1]["close"] == 101.0
+        for frame in sector_data.values()
+    )
+
+
+def test_live_sector_overlay_rejects_partial_basket_coverage() -> None:
+    index = pd.DatetimeIndex(["2026-07-29"])
+    sector_data = {
+        spec.key: pd.DataFrame(
+            {
+                "open": [100.0],
+                "close": [100.0],
+                "high": [101.0],
+                "low": [99.0],
+                "volume": [1000.0],
+                "amount": [10000.0],
+                "pct": [0.0],
+            },
+            index=index,
+        )
+        for spec in SECTORS
+    }
+    rows = [{"f14": LIVE_INDUSTRY_BASKETS["electronics"][0], "f3": 1.0, "f6": 1_000_000}]
+
+    result = apply_live_sector_close_overlay(
+        sector_data, date(2026, 7, 30), rows=rows
+    )
+
+    assert result["status"] == "unavailable"
+    assert "electronics" in result["covered_sectors"]
+    assert len(result["missing_sectors"]) == len(SECTORS) - 1
+    assert all(frame.index.max().date() == date(2026, 7, 29) for frame in sector_data.values())

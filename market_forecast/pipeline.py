@@ -12,7 +12,11 @@ from market_forecast.intraday import (
 )
 from market_forecast.model import generate_forecast
 from market_forecast.official_events import fetch_official_events
-from market_forecast.sectors import fetch_sector_data, generate_sector_forecast
+from market_forecast.sectors import (
+    apply_live_sector_close_overlay,
+    fetch_sector_data,
+    generate_sector_forecast,
+)
 from market_forecast.trading_calendar import (
     calendar_metadata,
     is_trading_session,
@@ -47,7 +51,10 @@ def _trading_session_lag(start: date, end: date) -> int:
     return lag
 
 
-def _apply_sector_freshness_guard(forecast: dict[str, Any]) -> None:
+def _apply_sector_freshness_guard(
+    forecast: dict[str, Any],
+    live_overlay: dict[str, Any] | None = None,
+) -> None:
     sector_block = forecast.get("sector_forecast") or {}
     market_date = date.fromisoformat(forecast["meta"]["data_through"])
     sector_date = _sector_actual_through(forecast)
@@ -60,20 +67,27 @@ def _apply_sector_freshness_guard(forecast: dict[str, Any]) -> None:
             "message": "\u884c\u4e1a\u6536\u76d8\u5e8f\u5217\u7b49\u5f85\u540c\u6b65\uff0c\u5f53\u65e5\u677f\u5757\u5019\u9009\u6682\u505c\u3002",
         }
         return
+
     lag = _trading_session_lag(sector_date, market_date)
-    status = "fresh" if lag == 0 else "stale"
+    overlay = live_overlay or {}
+    is_provisional = lag == 0 and overlay.get("status") == "provisional"
+    status = "provisional" if is_provisional else "fresh" if lag == 0 else "stale"
+    message = (
+        "\u5f53\u65e5\u677f\u5757\u5df2\u4f7f\u7528\u5b9e\u65f6\u884c\u4e1a\u7bee\u5b50\u6536\u76d8\u5feb\u7167\uff0c\u7533\u4e07\u65e5\u7ebf\u6b63\u5728\u540e\u7eed\u590d\u6838\u3002"
+        if is_provisional
+        else "\u884c\u4e1a\u884c\u60c5\u5df2\u66f4\u65b0\u81f3 " + sector_date.isoformat()
+        if lag == 0
+        else "\u884c\u4e1a\u884c\u60c5\u6682\u81f3 " + sector_date.isoformat()
+        + "\uff0c\u6bd4\u5927\u76d8\u6536\u76d8\u665a " + str(lag)
+        + " \u4e2a\u4ea4\u6613\u65e5\uff1b\u5f53\u65e5\u677f\u5757\u5019\u9009\u6682\u505c\u3002"
+    )
     freshness = {
         "status": status,
         "actual_data_through": sector_date.isoformat(),
         "market_data_through": market_date.isoformat(),
         "lag_trading_sessions": lag,
-        "message": (
-            "\u884c\u4e1a\u884c\u60c5\u5df2\u66f4\u65b0\u81f3 " + sector_date.isoformat()
-            if lag == 0
-            else "\u884c\u4e1a\u884c\u60c5\u6682\u81f3 " + sector_date.isoformat()
-            + "\uff0c\u6bd4\u5927\u76d8\u6536\u76d8\u665a " + str(lag)
-            + " \u4e2a\u4ea4\u6613\u65e5\uff1b\u5f53\u65e5\u677f\u5757\u5019\u9009\u6682\u505c\u3002"
-        ),
+        "message": message,
+        "live_overlay": overlay,
     }
     sector_block["actual_data_through"] = sector_date.isoformat()
     sector_block["freshness"] = freshness
@@ -98,12 +112,17 @@ def build_forecast() -> dict[str, Any]:
         fetch_market_breadth(),
         generate_watchlist(data),
     )
+    sector_data = fetch_sector_data()
+    live_sector_overlay = apply_live_sector_close_overlay(
+        sector_data,
+        data["sse"].index.max().date(),
+    )
     forecast["sector_forecast"] = generate_sector_forecast(
         data,
-        fetch_sector_data(),
+        sector_data,
         forecast["days"],
     )
-    _apply_sector_freshness_guard(forecast)
+    _apply_sector_freshness_guard(forecast, live_sector_overlay)
     # Intraday research is evidence-gated and remains in collection mode until
     # independently-labelled fixed-time snapshots are sufficient.
     forecast["intraday"] = build_intraday_brief(

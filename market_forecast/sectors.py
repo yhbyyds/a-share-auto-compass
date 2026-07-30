@@ -23,10 +23,30 @@ from sklearn.preprocessing import StandardScaler
 
 from market_forecast.data import MarketDataError, _session
 from market_forecast.model import _next_weekdays, _rsi, build_features
+from market_forecast.trading_calendar import trading_sessions_after
 
 
 SW_TREND_URL = "https://www.swsresearch.com/institute-sw/api/index_publish/trend/"
+LIVE_INDUSTRY_URL = "https://push2.eastmoney.com/api/qt/clist/get"
 RANDOM_STATE = 20260725
+
+# The real-time endpoint is a lower-level industry-board feed.  These baskets
+# translate it into the twelve first-level research sectors only for the latest
+# post-close row; the historical training sample remains the SW daily history.
+LIVE_INDUSTRY_BASKETS: dict[str, tuple[str, ...]] = {
+    "electronics": ("\u534a\u5bfc\u4f53", "\u6d88\u8d39\u7535\u5b50", "\u5143\u4ef6", "\u5149\u5b66\u5149\u7535\u5b50", "\u7535\u5b50\u5316\u5b66\u54c1", "\u5176\u4ed6\u7535\u5b50"),
+    "computer": ("\u8f6f\u4ef6\u5f00\u53d1", "\u8ba1\u7b97\u673a\u8bbe\u5907", "IT\u670d\u52a1"),
+    "telecom": ("\u901a\u4fe1\u8bbe\u5907", "\u901a\u4fe1\u670d\u52a1", "\u7535\u4fe1\u8fd0\u8425\u5546"),
+    "power_equipment": ("\u7535\u6c60", "\u5149\u4f0f\u8bbe\u5907", "\u98ce\u7535\u8bbe\u5907", "\u7535\u7f51\u8bbe\u5907", "\u7535\u6e90\u8bbe\u5907"),
+    "utilities": ("\u7535\u529b", "\u71c3\u6c14"),
+    "defense": ("\u822a\u5929\u88c5\u5907", "\u822a\u7a7a\u88c5\u5907", "\u5730\u9762\u5175\u88c5", "\u519b\u5de5\u7535\u5b50", "\u822a\u6d77\u88c5\u5907"),
+    "auto": ("\u6c7d\u8f66\u6574\u8f66", "\u6c7d\u8f66\u96f6\u90e8\u4ef6", "\u6c7d\u8f66\u670d\u52a1", "\u4e58\u7528\u8f66", "\u5546\u7528\u8f66"),
+    "healthcare": ("\u5316\u5b66\u5236\u836f", "\u4e2d\u836f", "\u751f\u7269\u5236\u54c1", "\u533b\u7597\u5668\u68b0", "\u533b\u7597\u670d\u52a1"),
+    "bank": ("\u94f6\u884c",),
+    "nonbank": ("\u8bc1\u5238", "\u4fdd\u9669", "\u591a\u5143\u91d1\u878d"),
+    "nonferrous": ("\u5de5\u4e1a\u91d1\u5c5e", "\u8d35\u91d1\u5c5e", "\u80fd\u6e90\u91d1\u5c5e", "\u5c0f\u91d1\u5c5e"),
+    "food_beverage": ("\u767d\u9152", "\u996e\u6599\u4e73\u54c1", "\u98df\u54c1\u52a0\u5de5", "\u8c03\u5473\u53d1\u9175\u54c1", "\u4f11\u95f2\u98df\u54c1"),
+}
 requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 
 
@@ -124,6 +144,152 @@ def fetch_sector_data(
                     raise MarketDataError(f"{spec.name}行业指数缓存已过期 {age} 天")
             output[spec.key] = frame
     return output
+
+
+def _fetch_live_industry_rows() -> list[dict[str, Any]]:
+    """Fetch the post-close industry-board snapshot used for a one-row overlay."""
+    params = {
+        "pn": "1",
+        "pz": "500",
+        "po": "1",
+        "np": "1",
+        "fltt": "2",
+        "invt": "2",
+        "fid": "f3",
+        "fs": "m:90+t:2+f:!50",
+        "fields": "f12,f14,f3,f6",
+    }
+    try:
+        response = _session().get(
+            LIVE_INDUSTRY_URL,
+            params=params,
+            headers={
+                "User-Agent": "Mozilla/5.0 (compatible; AShareCompass/1.2)",
+                "Referer": "https://quote.eastmoney.com/",
+            },
+            timeout=20,
+        )
+        response.raise_for_status()
+        rows = response.json().get("data", {}).get("diff") or []
+    except (requests.RequestException, ValueError, AttributeError):
+        return []
+    return [row for row in rows if isinstance(row, dict)]
+
+
+def _live_industry_proxies(
+    rows: list[dict[str, Any]],
+) -> dict[str, dict[str, Any]]:
+    """Aggregate liquid lower-level boards into reproducible sector proxies."""
+    output: dict[str, dict[str, Any]] = {}
+    for spec in SECTORS:
+        keywords = LIVE_INDUSTRY_BASKETS[spec.key]
+        matches: list[tuple[str, float, float]] = []
+        for row in rows:
+            name = str(row.get("f14") or "").strip()
+            if not name or not any(keyword in name for keyword in keywords):
+                continue
+            try:
+                change = float(row.get("f3"))
+                amount = max(float(row.get("f6") or 0), 0.0)
+            except (TypeError, ValueError):
+                continue
+            if not np.isfinite(change):
+                continue
+            matches.append((name, change, amount))
+        if not matches:
+            continue
+        weights = np.asarray([item[2] for item in matches], dtype=float)
+        if float(weights.sum()) <= 0:
+            weights = np.ones(len(matches), dtype=float)
+        changes = np.asarray([item[1] for item in matches], dtype=float)
+        output[spec.key] = {
+            "change": float(np.average(changes, weights=weights)),
+            "amount": float(weights.sum()),
+            "boards": [item[0] for item in matches],
+        }
+    return output
+
+
+def apply_live_sector_close_overlay(
+    sector_data: dict[str, pd.DataFrame],
+    market_date: date,
+    *,
+    rows: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    """Append a transparent same-day proxy row when SW daily data is one session late.
+
+    The overlay is allowed only for exactly one missing trading session.  It
+    provides current cross-sectional information for the next-day ranking while
+    retaining SW history as the entire model training set.
+    """
+    latest_dates = {
+        spec.key: sector_data[spec.key].index.max().date()
+        for spec in SECTORS
+        if spec.key in sector_data and not sector_data[spec.key].empty
+    }
+    if len(latest_dates) != len(SECTORS):
+        return {
+            "status": "unavailable",
+            "reason": "historical sector coverage is incomplete",
+            "covered_sectors": [],
+        }
+    if min(latest_dates.values()) >= market_date:
+        return {
+            "status": "not_required",
+            "reason": "SW daily sector history already includes the current close",
+            "covered_sectors": [spec.key for spec in SECTORS],
+        }
+    latest_date = min(latest_dates.values())
+    if any(latest != latest_date for latest in latest_dates.values()) or (
+        trading_sessions_after(latest_date, 1)[0].date() != market_date
+    ):
+        return {
+            "status": "unavailable",
+            "reason": "sector history is more than one trading session behind",
+            "covered_sectors": [],
+        }
+
+    proxies = _live_industry_proxies(rows if rows is not None else _fetch_live_industry_rows())
+    missing = [spec.key for spec in SECTORS if spec.key not in proxies]
+    if missing:
+        return {
+            "status": "unavailable",
+            "reason": "real-time industry basket coverage is incomplete",
+            "covered_sectors": [spec.key for spec in SECTORS if spec.key in proxies],
+            "missing_sectors": missing,
+        }
+
+    timestamp = pd.Timestamp(market_date)
+    for spec in SECTORS:
+        frame = sector_data[spec.key].copy()
+        latest = frame.index.max().date()
+        if latest >= market_date:
+            continue
+        previous = frame.iloc[-1]
+        change = float(proxies[spec.key]["change"]) / 100
+        previous_close = float(previous["close"])
+        close = previous_close * (1 + change)
+        amount = float(proxies[spec.key]["amount"])
+        frame.loc[timestamp, ["open", "close", "high", "low", "volume", "amount"]] = [
+            previous_close,
+            close,
+            max(previous_close, close),
+            min(previous_close, close),
+            float(previous.get("volume", 0) or 0),
+            amount if amount > 0 else float(previous.get("amount", 0) or 0),
+        ]
+        frame = frame.sort_index()
+        frame["pct"] = frame["close"].pct_change() * 100
+        sector_data[spec.key] = frame
+
+    return {
+        "status": "provisional",
+        "source": "Eastmoney real-time industry-board baskets",
+        "market_date": market_date.isoformat(),
+        "covered_sectors": [spec.key for spec in SECTORS],
+        "board_count": int(sum(len(item["boards"]) for item in proxies.values())),
+        "reason": "same-day industry-board close snapshot overlaid while SW daily history settles",
+    }
 
 
 def _sector_features(

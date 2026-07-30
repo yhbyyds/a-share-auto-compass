@@ -1,5 +1,5 @@
 const $ = (selector) => document.querySelector(selector);
-const PUBLIC_FORECAST_URL = "./data/forecast.json?v=1.16.0";
+const PUBLIC_FORECAST_URL = "./data/forecast.json?v=1.17.0";
 let renderedSnapshotId = "";
 let forecastPollInFlight = false;
 
@@ -66,11 +66,13 @@ function renderPulse(data) {
     $("#pulse-sector-spread").textContent = spread == null
       ? `${sourceSpread.probability_pp ?? "\u2014"}pp`
       : `${Number(spread).toFixed(1)}\u5206`;
-    $("#pulse-sector-label").textContent = rankingValidation.samples
-      ? `\u6392\u5e8f\u9a8c\u8bc1 ${Number(rankingValidation.spread_hit_rate ?? 0).toFixed(1)}% \u00b7 ${rankingValidation.samples}\u65e5`
-      : sourceSpread.separated === false
-        ? "\u677f\u5757\u533a\u5206\u504f\u5c0f"
-        : `\u5f3a\u5019\u9009 ${selection.validated_up_count ?? "\u2014"} \u00b7 \u5f31\u5019\u9009 ${selection.validated_down_count ?? "\u2014"}`;
+    $("#pulse-sector-label").textContent = sectorFreshness.status === "provisional"
+      ? `\u5b9e\u65f6\u677f\u5757\u5feb\u7167 \u00b7 ${sectorFreshness.message || "\u5f85\u65e5\u7ebf\u590d\u6838"}`
+      : rankingValidation.samples
+        ? `\u6392\u5e8f\u9a8c\u8bc1 ${Number(rankingValidation.spread_hit_rate ?? 0).toFixed(1)}% \u00b7 ${rankingValidation.samples}\u65e5`
+        : sourceSpread.separated === false
+          ? "\u677f\u5757\u533a\u5206\u504f\u5c0f"
+          : `\u5f3a\u5019\u9009 ${selection.validated_up_count ?? "\u2014"} \u00b7 \u5f31\u5019\u9009 ${selection.validated_down_count ?? "\u2014"}`;
   }
   const regime = data.intraday?.selection?.market_regime || {};
   $("#pulse-regime").textContent = regime.label || data.market?.weekly_direction || "—";
@@ -351,7 +353,12 @@ function renderSectorTomorrow(selection, sectors, freshness = {}) {
   $("#sector-tomorrow-summary").textContent = resolved.score_spread == null
     ? "兼容展示 · 等待第1日专用分层"
     : `第1日横截面区分度 ${resolved.score_spread}分 · 优先级按行业相对排名归一化 · 正式偏强 ${resolved.validated_up_count} · 正式偏弱 ${resolved.validated_down_count}${rankEvidence}`;
-  $("#sector-tomorrow-method").textContent = resolved.method || "";
+  const freshnessNote = freshness.status === "provisional"
+    ? `\u5b9e\u65f6\u677f\u5757\u5feb\u7167：${freshness.message || "\u5f85\u65e5\u7ebf\u590d\u6838"}`
+    : "";
+  $("#sector-tomorrow-method").textContent = [resolved.method, freshnessNote]
+    .filter(Boolean)
+    .join(" \u00b7 ");
   document.querySelectorAll(".sector-tomorrow-item").forEach((button) => {
     button.addEventListener("click", () => {
       const select = $("#sector-select");
