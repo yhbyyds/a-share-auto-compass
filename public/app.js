@@ -569,33 +569,41 @@ function renderWatchlist(rows) {
     </article>`).join("");
 }
 
-function reviewOutcome(row) {
-  if (row.status !== "evaluated") return { label: "待结算", tone: "pending" };
+function reviewOutcome(row, type) {
+  if (row.status !== "evaluated") return { label: "\u5f85\u7ed3\u7b97", tone: "pending" };
+  if (type === "sector" && row.selection_side && row.selection_side !== "neutral") {
+    return row.relative_correct
+      ? { label: "\u76f8\u5bf9\u547d\u4e2d", tone: "hit" }
+      : { label: "\u76f8\u5bf9\u672a\u547d\u4e2d", tone: "miss" };
+  }
   return row.correct
-    ? { label: "命中", tone: "hit" }
-    : { label: "未命中", tone: "miss" };
+    ? { label: "\u547d\u4e2d", tone: "hit" }
+    : { label: "\u672a\u547d\u4e2d", tone: "miss" };
 }
 
 function renderReviewRows(rows, type) {
   if (!rows?.length) {
-    return `<p class="selection-empty">暂无已到期记录；下一交易日收盘后会自动生成对照。</p>`;
+    return `<p class="selection-empty">\u6682\u65e0\u5df2\u5230\u671f\u8bb0\u5f55\uff1b\u4e0b\u4e00\u4ea4\u6613\u65e5\u6536\u76d8\u540e\u4f1a\u81ea\u52a8\u751f\u6210\u5bf9\u7167\u3002</p>`;
   }
   return rows.map((row) => {
-    const outcome = reviewOutcome(row);
+    const outcome = reviewOutcome(row, type);
     const title = type === "sector"
-      ? `${row.sector_name || row.sector_key || "行业"} · 优先级 ${row.priority_score ?? "—"}`
-      : `大盘第${row.horizon || 1}日 · ${row.direction || "—"}`;
+      ? `${row.sector_name || row.sector_key || "\u884c\u4e1a"} \u00b7 \u4f18\u5148\u7ea7 ${row.priority_score ?? "\u2014"}`
+      : `\u5927\u76d8\u7b2c${row.horizon || 1}\u65e5 \u00b7 ${row.direction || "\u2014"}`;
     const dash = "\u2014";
     const separator = "\u00b7";
     const settledSide = Number(row.up_probability ?? 50) >= 50
       ? "\u4e8c\u5143\u7ed3\u7b97\uff1a\u770b\u6da8"
       : "\u4e8c\u5143\u7ed3\u7b97\uff1a\u770b\u8dcc";
-    const prediction = `\u9884\u6d4b ${row.direction || dash} ${separator} ${settledSide} ${separator} \u4e0a\u6da8 ${row.up_probability ?? dash}% ${separator} \u9884\u671f ${formatSigned(row.expected_return ?? 0)}`;
+    const sectorSide = type === "sector" && row.selection_side && row.selection_side !== "neutral"
+      ? `\u76f8\u5bf9${row.selection_side === "up" ? "\u9886\u5148" : "\u843d\u540e"}`
+      : settledSide;
+    const prediction = `\u9884\u6d4b ${row.direction || dash} ${separator} ${sectorSide} ${separator} \u4e0a\u6da8 ${row.up_probability ?? dash}% ${separator} \u9884\u671f ${formatSigned(row.expected_return ?? 0)}`;
     const actual = row.status === "evaluated"
-      ? `实盘 ${formatSigned(row.actual_return ?? 0)} · ${row.actual_up ? "上涨" : "下跌"}`
-      : `目标 ${row.target_date || "—"} 收盘后结算`;
+      ? `\u5b9e\u76d8 ${formatSigned(row.actual_return ?? 0)} \u00b7 ${row.actual_up ? "\u4e0a\u6da8" : "\u4e0b\u8dcc"}${type === "sector" && row.actual_excess_return != null ? ` \u00b7 \u76f8\u5bf9\u57fa\u51c6 ${formatSigned(row.actual_excess_return)}` : ""}`
+      : `\u76ee\u6807 ${row.target_date || "\u2014"} \u6536\u76d8\u540e\u7ed3\u7b97`;
     return `<div class="review-row">
-      <time>${row.target_date?.slice(5) || "—"}</time>
+      <time>${row.target_date?.slice(5) || "\u2014"}</time>
       <div><strong>${title}</strong><p>${prediction}</p><small>${actual}</small></div>
       <span class="review-outcome ${outcome.tone}">${outcome.label}</span>
     </div>`;
@@ -611,27 +619,29 @@ function renderPerformanceReview(review, fallbackMonitor, sectorFreshness = {}) 
   const marketSummary = marketMonitor.evaluated_samples
     ? `\u547d\u4e2d ${marketMonitor.accuracy}%${marketMonitor.evaluated_samples < 60 ? sampleWarning : ""}`
     : "\u5b9e\u76d8\u6837\u672c\u79ef\u7d2f\u4e2d";
-  const sectorSummary = sectorMonitor.evaluated_samples
-    ? `\u547d\u4e2d ${sectorMonitor.accuracy}%${sectorMonitor.evaluated_samples < 60 ? sampleWarning : ""}`
-    : "\u884c\u4e1a\u6837\u672c\u79ef\u7d2f\u4e2d";
+  const selectedSamples = Number(sectorMonitor.selection_evaluated_samples ?? 0);
+  const sectorSummary = selectedSamples
+    ? `\u76f8\u5bf9\u547d\u4e2d ${sectorMonitor.selection_accuracy}%${selectedSamples < 60 ? sampleWarning : ""}`
+    : "\u884c\u4e1a\u5019\u9009\u6837\u672c\u79ef\u7d2f\u4e2d";
   const marketEdge = Number(marketMonitor.edge_pp ?? 0);
   const marketEdgeText = `${marketEdge >= 0 ? "+" : ""}${marketEdge.toFixed(1)}pp`;
   const marketNote = marketMonitor.evaluated_samples
-    ? `已结算 ${marketMonitor.evaluated_samples} · 基线 ${marketMonitor.baseline}% · 优势 ${marketEdgeText}`
-    : marketMonitor.reason || "下一交易日收盘后自动结算第1日预测。";
-  const sectorDayCount = sectorMonitor.evaluated_days ?? 0;
+    ? `\u5df2\u7ed3\u7b97 ${marketMonitor.evaluated_samples} \u00b7 \u57fa\u7ebf ${marketMonitor.baseline}% \u00b7 \u4f18\u52bf ${marketEdgeText}`
+    : marketMonitor.reason || "\u4e0b\u4e00\u4ea4\u6613\u65e5\u6536\u76d8\u540e\u81ea\u52a8\u7ed3\u7b97\u7b2c1\u65e5\u9884\u6d4b\u3002";
   const highPriorityText = Number(sectorMonitor.high_priority_samples ?? 0) > 0
     ? `${sectorMonitor.high_priority_accuracy}%`
     : "\u6682\u65e0\u5230\u671f\u9ad8\u4f18\u5148\u7ea7\u6837\u672c";
-  const sectorLastDate = sectorMonitor.last_evaluated_date || "\u2014";
   const sectorFreshnessNote = sectorFreshness.status === "stale"
     ? sectorFreshness.message || "\u884c\u4e1a\u6570\u636e\u7b49\u5f85\u540c\u6b65"
     : sectorFreshness.status === "provisional"
       ? "\u5f53\u65e5\u5b9e\u65f6\u5feb\u7167\u5f85\u65e5\u7ebf\u590d\u6838"
       : "";
-  const sectorNote = sectorMonitor.evaluated_samples
-    ? `\u5df2\u7ed3\u7b97 ${sectorMonitor.evaluated_samples} \u6761 / ${sectorDayCount} \u4e2a\u4ea4\u6613\u65e5 \u00b7 \u6700\u8fd1\u7ed3\u7b97 ${sectorLastDate} \u00b7 \u57fa\u7ebf ${sectorMonitor.baseline}% \u00b7 \u9ad8\u4f18\u5148\u7ea7 ${highPriorityText}${sectorFreshnessNote ? ` \u00b7 ${sectorFreshnessNote}` : ""}`
-    : `\u6bcf\u4e2a\u4e00\u7ea7\u884c\u4e1a\u7684\u6b21\u65e5\u9884\u6d4b\u4f1a\u5728\u76ee\u6807\u6536\u76d8\u540e\u9010\u7b14\u6bd4\u5bf9\u3002${sectorFreshnessNote ? ` ${sectorFreshnessNote}` : ""}`;
+  const selectionInterval = selectedSamples
+    ? ` \u00b7 95%\u533a\u95f4 ${sectorMonitor.selection_accuracy_ci_low}%\u2013${sectorMonitor.selection_accuracy_ci_high}%`
+    : "";
+  const sectorNote = selectedSamples
+    ? `\u76f8\u5bf9\u5019\u9009\u5df2\u7ed3\u7b97 ${selectedSamples} \u6761 / ${sectorMonitor.selection_evaluated_days ?? 0}\u4e2a\u4ea4\u6613\u65e5 \u00b7 \u6700\u8fd1\u7ed3\u7b97 ${sectorMonitor.selection_last_evaluated_date || "\u2014"} \u00b7 \u57fa\u7ebf ${sectorMonitor.selection_baseline}% \u00b7 \u9ad8\u4f18\u5148\u7ea7 ${highPriorityText}${selectionInterval}${sectorFreshnessNote ? ` \u00b7 ${sectorFreshnessNote}` : ""}`
+    : `\u884c\u4e1a\u5019\u9009\u6309\u76f8\u5bf9\u6caa\u6df1300\u5f3a\u5f31\u5728\u76ee\u6807\u6536\u76d8\u540e\u9010\u7b14\u6bd4\u5bf9\u3002${sectorFreshnessNote ? ` ${sectorFreshnessNote}` : ""}`;
   $("#review-market-summary").textContent = marketSummary;
   $("#review-market-note").textContent = marketNote;
   $("#review-sector-summary").textContent = sectorSummary;
@@ -740,10 +750,16 @@ function render(data) {
   $("#benchmark-dd").textContent = `${validation.benchmark_max_drawdown}%`;
   $("#sample-context").textContent = `${validation.samples} 个样本外观察 · 市场参与率 ${validation.active_days}%`;
   const monitor = data.performance_monitor || {};
-  $("#model-health").textContent = monitor.label || "实盘样本积累中";
+  const liveReady = Boolean(monitor.reliability_ready);
+  const intervalText = monitor.accuracy_ci_low == null
+    ? ""
+    : ` \u00b7 95%\u533a\u95f4 ${monitor.accuracy_ci_low}%\u2013${monitor.accuracy_ci_high}%`;
+  $("#model-health").textContent = liveReady
+    ? (monitor.label || "\u6a21\u578b\u8fd1\u671f\u6709\u6548")
+    : `\u5b9e\u76d8\u6837\u672c\u79ef\u7d2f\u4e2d\uff08${monitor.evaluated_samples || 0}/${monitor.minimum_reliability_samples || 60}\uff09`;
   $("#model-health-context").textContent = monitor.accuracy == null
-    ? monitor.reason || "等待预测到期后自动核对实际涨跌。"
-    : `实盘 ${monitor.evaluated_samples} 次 · 近${monitor.recent_window}次命中 ${monitor.accuracy}% · 基线 ${monitor.baseline}% · ${monitor.reason}`;
+    ? monitor.reason || "\u7b49\u5f85\u9884\u6d4b\u5230\u671f\u540e\u81ea\u52a8\u6838\u5bf9\u5b9e\u9645\u6da8\u8dcc\u3002"
+    : `\u5df2\u7ed3\u7b97 ${monitor.evaluated_samples} \u6b21 \u00b7 \u547d\u4e2d ${monitor.accuracy}% \u00b7 \u57fa\u7ebf ${monitor.baseline}%${intervalText} \u00b7 ${monitor.reason}`;
 
   $("#model-list").innerHTML = data.models.map((model) => `
     <div class="model-item">

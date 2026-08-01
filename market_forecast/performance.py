@@ -12,6 +12,22 @@ HISTORY_VERSION = 3
 MINIMUM_LIVE_DAYS = 60
 
 
+def _wilson_interval(successes: int, samples: int) -> tuple[float | None, float | None]:
+    """Return a conservative 95% binomial interval in percentage points."""
+    if samples <= 0:
+        return None, None
+    z = 1.96
+    proportion = successes / samples
+    denominator = 1 + z * z / samples
+    centre = (proportion + z * z / (2 * samples)) / denominator
+    margin = z * np.sqrt(
+        proportion * (1 - proportion) / samples + z * z / (4 * samples * samples)
+    ) / denominator
+    return round(max(0.0, centre - margin) * 100, 1), round(
+        min(1.0, centre + margin) * 100, 1
+    )
+
+
 def _metrics(rows: list[dict[str, Any]], window: int = 60) -> dict[str, Any]:
     recent = sorted(rows, key=lambda row: row["target_date"])[-window:]
     if not recent:
@@ -22,6 +38,10 @@ def _metrics(rows: list[dict[str, Any]], window: int = 60) -> dict[str, Any]:
             "baseline": None,
             "edge_pp": None,
             "brier": None,
+            "accuracy_ci_low": None,
+            "accuracy_ci_high": None,
+            "accuracy_ci_low": None,
+            "accuracy_ci_high": None,
             "last_date": None,
         }
     actual_up = np.array([bool(row["actual_up"]) for row in recent])
@@ -33,6 +53,7 @@ def _metrics(rows: list[dict[str, Any]], window: int = 60) -> dict[str, Any]:
     up_rate = float(actual_up.mean())
     baseline = max(up_rate, 1 - up_rate)
     brier = float(np.mean((probabilities - actual_up.astype(float)) ** 2))
+    ci_low, ci_high = _wilson_interval(int(correct.sum()), len(recent))
     return {
         "samples": len(rows),
         "window": len(recent),
@@ -40,6 +61,8 @@ def _metrics(rows: list[dict[str, Any]], window: int = 60) -> dict[str, Any]:
         "baseline": round(baseline * 100, 1),
         "edge_pp": round((accuracy - baseline) * 100, 1),
         "brier": round(brier, 3),
+        "accuracy_ci_low": ci_low,
+        "accuracy_ci_high": ci_high,
         "last_date": recent[-1]["target_date"],
     }
 
@@ -74,6 +97,8 @@ def _monitor(records: list[dict[str, Any]]) -> dict[str, Any]:
             "degraded": False,
             "effective_sample": "第1日预测的唯一目标交易日",
             "all_evaluated_predictions": len(evaluated_all),
+            "reliability_ready": False,
+            "minimum_reliability_samples": MINIMUM_LIVE_DAYS,
             "horizon_metrics": horizon_metrics,
             "reason": "版本9按第1日唯一目标日统计，至少积累60日后判断有效性。",
         }
@@ -118,10 +143,14 @@ def _monitor(records: list[dict[str, Any]]) -> dict[str, Any]:
         "baseline": primary["baseline"],
         "edge_pp": primary["edge_pp"],
         "brier": primary["brier"],
+        "accuracy_ci_low": primary["accuracy_ci_low"],
+        "accuracy_ci_high": primary["accuracy_ci_high"],
         "last_evaluated_date": primary["last_date"],
         "degraded": status == "degraded",
         "effective_sample": "第1日预测的唯一目标交易日",
         "all_evaluated_predictions": len(evaluated_all),
+        "reliability_ready": primary["samples"] >= MINIMUM_LIVE_DAYS,
+        "minimum_reliability_samples": MINIMUM_LIVE_DAYS,
         "horizon_metrics": horizon_metrics,
         "reason": reason,
     }
@@ -143,13 +172,64 @@ def _sector_levels(forecast: dict[str, Any]) -> dict[str, dict[str, float]]:
     return output
 
 
+def _sector_benchmark_levels(forecast: dict[str, Any]) -> dict[str, dict[str, float]]:
+    """Extract the benchmark level stored beside each normalized sector series."""
+    output: dict[str, dict[str, float]] = {}
+    for sector in (forecast.get("sector_forecast") or {}).get("sectors", []):
+        if sector.get("is_composite"):
+            continue
+        levels: dict[str, float] = {}
+        for item in sector.get("history", []):
+            try:
+                levels[str(item["date"])] = float(item["benchmark"])
+            except (KeyError, TypeError, ValueError):
+                continue
+        output[str(sector.get("key", ""))] = levels
+    return output
+
+
 def _sector_monitor(records: list[dict[str, Any]]) -> dict[str, Any]:
     evaluated = [row for row in records if row.get("status") == "evaluated"]
     metrics = _metrics(evaluated, window=120)
-    high_priority = [
-        row for row in evaluated if float(row.get("priority_score") or 0) >= 75
+    selected = [
+        row
+        for row in evaluated
+        if row.get("selection_side") in {"up", "down"}
+        and row.get("relative_correct") is not None
     ]
-    priority_metrics = _metrics(high_priority, window=120)
+    high_priority = [
+        row for row in selected if float(row.get("priority_score") or 0) >= 75
+    ]
+
+    def selection_metrics(rows: list[dict[str, Any]]) -> dict[str, Any]:
+        recent = sorted(rows, key=lambda row: row["target_date"])[-120:]
+        if not recent:
+            return {
+                "samples": 0, "window": 0, "accuracy": None,
+                "baseline": None, "edge_pp": None, "brier": None,
+                "accuracy_ci_low": None, "accuracy_ci_high": None,
+                "last_date": None,
+            }
+        correct = np.array([bool(row["relative_correct"]) for row in recent])
+        wins = np.array([bool(row["actual_relative_win"]) for row in recent])
+        probabilities = np.array(
+            [float(row.get("relative_probability", 50)) / 100 for row in recent]
+        )
+        accuracy = float(correct.mean())
+        baseline = max(float(wins.mean()), 1 - float(wins.mean()))
+        ci_low, ci_high = _wilson_interval(int(correct.sum()), len(recent))
+        return {
+            "samples": len(rows), "window": len(recent),
+            "accuracy": round(accuracy * 100, 1),
+            "baseline": round(baseline * 100, 1),
+            "edge_pp": round((accuracy - baseline) * 100, 1),
+            "brier": round(float(np.mean((probabilities - wins.astype(float)) ** 2)), 3),
+            "accuracy_ci_low": ci_low, "accuracy_ci_high": ci_high,
+            "last_date": recent[-1]["target_date"],
+        }
+
+    selection = selection_metrics(selected)
+    priority_metrics = selection_metrics(high_priority)
     return {
         "evaluated_samples": len(evaluated),
         "evaluated_days": len({str(row.get("target_date", "")) for row in evaluated}),
@@ -161,6 +241,16 @@ def _sector_monitor(records: list[dict[str, Any]]) -> dict[str, Any]:
         "last_evaluated_date": metrics["last_date"],
         "high_priority_accuracy": priority_metrics["accuracy"],
         "high_priority_samples": len(high_priority),
+        "selection_evaluated_samples": selection["samples"],
+        "selection_evaluated_days": len({str(row.get("target_date", "")) for row in selected}),
+        "selection_accuracy": selection["accuracy"],
+        "selection_baseline": selection["baseline"],
+        "selection_edge_pp": selection["edge_pp"],
+        "selection_brier": selection["brier"],
+        "selection_accuracy_ci_low": selection["accuracy_ci_low"],
+        "selection_accuracy_ci_high": selection["accuracy_ci_high"],
+        "selection_last_evaluated_date": selection["last_date"],
+        "selection_reliability_ready": selection["samples"] >= MINIMUM_LIVE_DAYS,
         "status": "ready" if evaluated else "collecting",
     }
 
@@ -169,7 +259,8 @@ def _review_rows(records: list[dict[str, Any]], limit: int = 18) -> list[dict[st
     fields = (
         "base_date", "target_date", "horizon", "sector_key", "sector_name",
         "direction", "up_probability", "expected_return", "priority_score",
-        "status", "actual_return", "actual_up", "correct",
+        "selection_side", "status", "actual_return", "actual_up", "correct",
+        "actual_excess_return", "relative_correct",
     )
     return [
         {key: row.get(key) for key in fields}
@@ -215,6 +306,7 @@ def update_performance_history(
         )
 
     actual_sector_levels = _sector_levels(forecast)
+    actual_benchmark_levels = _sector_benchmark_levels(forecast)
     for row in sector_records:
         if row.get("status") != "pending":
             continue
@@ -226,6 +318,22 @@ def update_performance_history(
         actual_return = target_level / float(row["base_level"]) - 1
         actual_up = actual_return > 0
         predicted_up = float(row["up_probability"]) >= 50
+        target_benchmark = actual_benchmark_levels.get(
+            str(row.get("sector_key", "")), {}
+        ).get(str(row.get("target_date", "")))
+        base_benchmark = row.get("base_benchmark_level")
+        actual_benchmark_return = None
+        actual_excess_return = None
+        actual_relative_win = None
+        relative_correct = None
+        if target_benchmark is not None and base_benchmark:
+            actual_benchmark_return = target_benchmark / float(base_benchmark) - 1
+            actual_excess_return = actual_return - actual_benchmark_return
+            actual_relative_win = actual_excess_return > 0
+            if row.get("selection_side") == "up":
+                relative_correct = actual_relative_win
+            elif row.get("selection_side") == "down":
+                relative_correct = not actual_relative_win
         row.update(
             {
                 "status": "evaluated",
@@ -233,6 +341,16 @@ def update_performance_history(
                 "actual_return": round(actual_return * 100, 3),
                 "actual_up": actual_up,
                 "correct": predicted_up == actual_up,
+                "actual_benchmark_return": (
+                    round(actual_benchmark_return * 100, 3)
+                    if actual_benchmark_return is not None else None
+                ),
+                "actual_excess_return": (
+                    round(actual_excess_return * 100, 3)
+                    if actual_excess_return is not None else None
+                ),
+                "actual_relative_win": actual_relative_win,
+                "relative_correct": relative_correct,
                 "evaluated_at": forecast["meta"]["generated_at"],
             }
         )
@@ -263,10 +381,51 @@ def update_performance_history(
     selection = (forecast.get("sector_forecast") or {}).get(
         "tomorrow_selection", {}
     )
-    priority_by_key = {
-        str(row.get("key")): row.get("priority_score")
-        for row in [*(selection.get("up") or []), *(selection.get("down") or [])]
+    selected_rows = [
+        *[(row, "up") for row in (selection.get("up") or [])],
+        *[(row, "down") for row in (selection.get("down") or [])],
+    ]
+    selection_by_key = {
+        str(row.get("key")): {
+            "priority_score": row.get("priority_score"),
+            "selection_side": side,
+        }
+        for row, side in selected_rows
     }
+    sector_days_by_key = {
+        str(sector.get("key")): (sector.get("days") or [{}])[0]
+        for sector in (forecast.get("sector_forecast") or {}).get("sectors", [])
+        if not sector.get("is_composite") and sector.get("days")
+    }
+    sector_base_levels = {
+        str(sector.get("key")): {
+            "level": float((sector.get("history") or [{}])[-1].get("sector")),
+            "benchmark": float((sector.get("history") or [{}])[-1].get("benchmark")),
+        }
+        for sector in (forecast.get("sector_forecast") or {}).get("sectors", [])
+        if not sector.get("is_composite") and sector.get("history")
+    }
+    for key, details in selection_by_key.items():
+        raw_probability = float(
+            sector_days_by_key.get(key, {}).get("outperform_probability", 50)
+        )
+        details["relative_probability"] = (
+            raw_probability if details["selection_side"] == "up" else 100 - raw_probability
+        )
+
+    # Backfill still-pending records from the active base date.  This lets a
+    # schema upgrade preserve an already-published candidate until it settles.
+    for row in sector_records:
+        if row.get("status") != "pending" or row.get("base_date") != base_date:
+            continue
+        key = str(row.get("sector_key", ""))
+        details = selection_by_key.get(key, {})
+        row["selection_side"] = details.get("selection_side", "neutral")
+        row["relative_probability"] = details.get("relative_probability", 50.0)
+        if details.get("priority_score") is not None:
+            row["priority_score"] = details["priority_score"]
+        if row.get("base_benchmark_level") is None and key in sector_base_levels:
+            row["base_benchmark_level"] = sector_base_levels[key]["benchmark"]
     sector_freshness = (forecast.get("sector_forecast") or {}).get("freshness") or {}
     sector_updates_allowed = sector_freshness.get("status") != "stale"
     for sector in (forecast.get("sector_forecast") or {}).get("sectors", []):
@@ -280,6 +439,7 @@ def update_performance_history(
         day = sector["days"][0]
         try:
             base_level = float(history_rows[-1]["sector"])
+            base_benchmark_level = float(history_rows[-1]["benchmark"])
             record_id = (
                 f"{base_date}:{day['date']}:sector:{sector['key']}:h1"
             )
@@ -300,7 +460,12 @@ def update_performance_history(
                 "direction": day.get("direction", "震荡"),
                 "up_probability": float(day.get("up_probability", 50)),
                 "expected_return": float(day.get("expected_return", 0)),
-                "priority_score": priority_by_key.get(sector["key"]),
+                "priority_score": selection_by_key.get(sector["key"], {}).get("priority_score"),
+                "selection_side": selection_by_key.get(sector["key"], {}).get("selection_side", "neutral"),
+                "relative_probability": selection_by_key.get(
+                    sector["key"], {}
+                ).get("relative_probability", 50.0),
+                "base_benchmark_level": base_benchmark_level,
                 "status": "pending",
             }
         )

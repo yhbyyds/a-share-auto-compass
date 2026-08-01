@@ -282,7 +282,7 @@
       "status": "pending"
     }
   ],
-  "updated_at": "2026-08-01T12:31:28.601896+08:00",
+  "updated_at": "2026-08-01T13:03:28.584976+08:00",
   "monitor": {
     "status": "collecting",
     "label": "实盘样本积累中",
@@ -293,10 +293,14 @@
     "baseline": 66.7,
     "edge_pp": 33.3,
     "brier": 0.214,
+    "accuracy_ci_low": 43.8,
+    "accuracy_ci_high": 100.0,
     "last_evaluated_date": "2026-07-31",
     "degraded": false,
     "effective_sample": "第1日预测的唯一目标交易日",
     "all_evaluated_predictions": 8,
+    "reliability_ready": false,
+    "minimum_reliability_samples": 60,
     "horizon_metrics": {
       "1": {
         "samples": 3,
@@ -305,6 +309,8 @@
         "baseline": 66.7,
         "edge_pp": 33.3,
         "brier": 0.214,
+        "accuracy_ci_low": 43.8,
+        "accuracy_ci_high": 100.0,
         "last_date": "2026-07-31"
       },
       "2": {
@@ -314,6 +320,8 @@
         "baseline": 50.0,
         "edge_pp": 0.0,
         "brier": 0.244,
+        "accuracy_ci_low": 9.5,
+        "accuracy_ci_high": 90.5,
         "last_date": "2026-07-31"
       },
       "3": {
@@ -323,6 +331,8 @@
         "baseline": 100.0,
         "edge_pp": -100.0,
         "brier": 0.257,
+        "accuracy_ci_low": 0.0,
+        "accuracy_ci_high": 79.3,
         "last_date": "2026-07-29"
       },
       "4": {
@@ -332,6 +342,8 @@
         "baseline": 100.0,
         "edge_pp": -100.0,
         "brier": 0.25,
+        "accuracy_ci_low": 0.0,
+        "accuracy_ci_high": 79.3,
         "last_date": "2026-07-30"
       },
       "5": {
@@ -341,6 +353,8 @@
         "baseline": 100.0,
         "edge_pp": 0.0,
         "brier": 0.184,
+        "accuracy_ci_low": 20.7,
+        "accuracy_ci_high": 100.0,
         "last_date": "2026-07-31"
       }
     },
@@ -600,7 +614,10 @@
       "up_probability": 55.3,
       "expected_return": 0.42,
       "priority_score": null,
-      "status": "pending"
+      "status": "pending",
+      "selection_side": "neutral",
+      "relative_probability": 50.0,
+      "base_benchmark_level": 94.18
     },
     {
       "id": "2026-07-31:2026-08-03:sector:bank:h1",
@@ -615,7 +632,10 @@
       "up_probability": 53.2,
       "expected_return": 0.5,
       "priority_score": null,
-      "status": "pending"
+      "status": "pending",
+      "selection_side": "neutral",
+      "relative_probability": 50.0,
+      "base_benchmark_level": 94.18
     },
     {
       "id": "2026-07-31:2026-08-03:sector:computer:h1",
@@ -630,7 +650,10 @@
       "up_probability": 55.6,
       "expected_return": 0.4,
       "priority_score": null,
-      "status": "pending"
+      "status": "pending",
+      "selection_side": "neutral",
+      "relative_probability": 50.0,
+      "base_benchmark_level": 94.18
     },
     {
       "id": "2026-07-31:2026-08-03:sector:defense:h1",
@@ -645,7 +668,10 @@
       "up_probability": 54.8,
       "expected_return": 0.4,
       "priority_score": null,
-      "status": "pending"
+      "status": "pending",
+      "selection_side": "neutral",
+      "relative_probability": 50.0,
+      "base_benchmark_level": 94.18
     },
     {
       "id": "2026-07-31:2026-08-03:sector:electronics:h1",
@@ -660,7 +686,10 @@
       "up_probability": 55.1,
       "expected_return": 0.5,
       "priority_score": 79.2,
-      "status": "pending"
+      "status": "pending",
+      "selection_side": "up",
+      "relative_probability": 52.8,
+      "base_benchmark_level": 94.18
     },
     {
       "id": "2026-07-31:2026-08-03:sector:food_beverage:h1",
@@ -675,7 +704,10 @@
       "up_probability": 52.8,
       "expected_return": 0.52,
       "priority_score": null,
-      "status": "pending"
+      "status": "pending",
+      "selection_side": "neutral",
+      "relative_probability": 50.0,
+      "base_benchmark_level": 94.18
     },
     {
       "id": "2026-07-31:2026-08-03:sector:healthcare:h1",
@@ -690,7 +722,10 @@
       "up_probability": 52.1,
       "expected_return": 0.42,
       "priority_score": 4.2,
-      "status": "pending"
+      "status": "pending",
+      "selection_side": "down",
+      "relative_probability": 45.2,
+      "base_benchmark_level": 94.18
     },
     {
       "id": "2026-07-31:2026-08-03:sector:nonbank:h1",
@@ -705,7 +740,10 @@
       "up_probability": 56.7,
       "expected_return": 0.5,
       "priority_score": 87.5,
-      "status": "pending"
+      "status": "pending",
+      "selection_side": "up",
+      "relative_probability": 55.0,
+      "base_benchmark_level": 94.18
     },
     {
       "id": "2026-07-31:2026-08-03:sector:nonferrous:h1",
@@ -720,7 +758,10 @@
       "up_probability": 52.3,
       "expected_return": 0.47,
       "priority_score": 20.8,
-      "status": "pending"
+      "status": "pending",
+      "selection_side": "down",
+      "relative_probability": 43.3,
+      "base_benchmark_level": 94.18
     },
     {
       "id": "2026-07-31:2026-08-03:sector:power_equipment:h1",
@@ -735,7 +776,10 @@
       "up_probability": 52.6,
       "expected_return": 0.43,
       "priority_score": 12.5,
-      "status": "pending"
+      "status": "pending",
+      "selection_side": "down",
+      "relative_probability": 47.7,
+      "base_benchmark_level": 94.18
     },
     {
       "id": "2026-07-31:2026-08-03:sector:telecom:h1",
@@ -750,7 +794,10 @@
       "up_probability": 56.3,
       "expected_return": 0.51,
       "priority_score": 95.8,
-      "status": "pending"
+      "status": "pending",
+      "selection_side": "up",
+      "relative_probability": 52.8,
+      "base_benchmark_level": 94.18
     },
     {
       "id": "2026-07-31:2026-08-03:sector:utilities:h1",
@@ -765,7 +812,10 @@
       "up_probability": 53.1,
       "expected_return": 0.5,
       "priority_score": null,
-      "status": "pending"
+      "status": "pending",
+      "selection_side": "neutral",
+      "relative_probability": 50.0,
+      "base_benchmark_level": 94.18
     }
   ],
   "sector_monitor": {
@@ -779,6 +829,16 @@
     "last_evaluated_date": "2026-07-27",
     "high_priority_accuracy": null,
     "high_priority_samples": 0,
+    "selection_evaluated_samples": 0,
+    "selection_evaluated_days": 0,
+    "selection_accuracy": null,
+    "selection_baseline": null,
+    "selection_edge_pp": null,
+    "selection_brier": null,
+    "selection_accuracy_ci_low": null,
+    "selection_accuracy_ci_high": null,
+    "selection_last_evaluated_date": null,
+    "selection_reliability_ready": false,
     "status": "ready"
   }
 }

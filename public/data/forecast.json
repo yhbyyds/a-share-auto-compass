@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-08-01T12:30:08.630579+08:00",
+    "generated_at": "2026-08-01T13:01:50.112633+08:00",
     "data_through": "2026-07-31",
     "forecast_window": "2026-08-03 至 2026-08-07",
     "version": "1.13.0",
@@ -31,7 +31,7 @@
       "update_warnings": []
     },
     "automation": {
-      "run_id": "20260801T122819",
+      "run_id": "20260801T125941",
       "status": "passed",
       "quality_gate": {
         "passed": true,
@@ -56,7 +56,7 @@
           "event_count": 0
         }
       },
-      "updated_at": "2026-08-01T12:28:19.662929+08:00",
+      "updated_at": "2026-08-01T12:59:41.879645+08:00",
       "mode": "automatic"
     }
   },
@@ -241,7 +241,7 @@
     "advance_ratio": 84.7,
     "source": "新浪财经全A快照",
     "status": "live",
-    "fetched_at": "2026-08-01T12:29:20.929804+08:00",
+    "fetched_at": "2026-08-01T13:00:50.148993+08:00",
     "failures": [
       "_fetch_breadth_eastmoney: ProxyError"
     ]
@@ -9696,7 +9696,7 @@
     },
     "collection": {
       "status": "live",
-      "fetched_at": "2026-08-01T12:31:25.468468+08:00",
+      "fetched_at": "2026-08-01T13:03:25.242470+08:00",
       "cache_used": false,
       "event_count": 0,
       "sources": [
@@ -9755,10 +9755,14 @@
     "baseline": 66.7,
     "edge_pp": 33.3,
     "brier": 0.214,
+    "accuracy_ci_low": 43.8,
+    "accuracy_ci_high": 100.0,
     "last_evaluated_date": "2026-07-31",
     "degraded": false,
     "effective_sample": "第1日预测的唯一目标交易日",
     "all_evaluated_predictions": 8,
+    "reliability_ready": false,
+    "minimum_reliability_samples": 60,
     "horizon_metrics": {
       "1": {
         "samples": 3,
@@ -9767,6 +9771,8 @@
         "baseline": 66.7,
         "edge_pp": 33.3,
         "brier": 0.214,
+        "accuracy_ci_low": 43.8,
+        "accuracy_ci_high": 100.0,
         "last_date": "2026-07-31"
       },
       "2": {
@@ -9776,6 +9782,8 @@
         "baseline": 50.0,
         "edge_pp": 0.0,
         "brier": 0.244,
+        "accuracy_ci_low": 9.5,
+        "accuracy_ci_high": 90.5,
         "last_date": "2026-07-31"
       },
       "3": {
@@ -9785,6 +9793,8 @@
         "baseline": 100.0,
         "edge_pp": -100.0,
         "brier": 0.257,
+        "accuracy_ci_low": 0.0,
+        "accuracy_ci_high": 79.3,
         "last_date": "2026-07-29"
       },
       "4": {
@@ -9794,6 +9804,8 @@
         "baseline": 100.0,
         "edge_pp": -100.0,
         "brier": 0.25,
+        "accuracy_ci_low": 0.0,
+        "accuracy_ci_high": 79.3,
         "last_date": "2026-07-30"
       },
       "5": {
@@ -9803,6 +9815,8 @@
         "baseline": 100.0,
         "edge_pp": 0.0,
         "brier": 0.184,
+        "accuracy_ci_low": 20.7,
+        "accuracy_ci_high": 100.0,
         "last_date": "2026-07-31"
       }
     },
@@ -9820,10 +9834,14 @@
         "baseline": 66.7,
         "edge_pp": 33.3,
         "brier": 0.214,
+        "accuracy_ci_low": 43.8,
+        "accuracy_ci_high": 100.0,
         "last_evaluated_date": "2026-07-31",
         "degraded": false,
         "effective_sample": "第1日预测的唯一目标交易日",
         "all_evaluated_predictions": 8,
+        "reliability_ready": false,
+        "minimum_reliability_samples": 60,
         "horizon_metrics": {
           "1": {
             "samples": 3,
@@ -9832,6 +9850,8 @@
             "baseline": 66.7,
             "edge_pp": 33.3,
             "brier": 0.214,
+            "accuracy_ci_low": 43.8,
+            "accuracy_ci_high": 100.0,
             "last_date": "2026-07-31"
           },
           "2": {
@@ -9841,6 +9861,8 @@
             "baseline": 50.0,
             "edge_pp": 0.0,
             "brier": 0.244,
+            "accuracy_ci_low": 9.5,
+            "accuracy_ci_high": 90.5,
             "last_date": "2026-07-31"
           },
           "3": {
@@ -9850,6 +9872,8 @@
             "baseline": 100.0,
             "edge_pp": -100.0,
             "brier": 0.257,
+            "accuracy_ci_low": 0.0,
+            "accuracy_ci_high": 79.3,
             "last_date": "2026-07-29"
           },
           "4": {
@@ -9859,6 +9883,8 @@
             "baseline": 100.0,
             "edge_pp": -100.0,
             "brier": 0.25,
+            "accuracy_ci_low": 0.0,
+            "accuracy_ci_high": 79.3,
             "last_date": "2026-07-30"
           },
           "5": {
@@ -9868,6 +9894,8 @@
             "baseline": 100.0,
             "edge_pp": 0.0,
             "brier": 0.184,
+            "accuracy_ci_low": 20.7,
+            "accuracy_ci_high": 100.0,
             "last_date": "2026-07-31"
           }
         },
@@ -9884,10 +9912,13 @@
           "up_probability": 49.9,
           "expected_return": -0.02,
           "priority_score": null,
+          "selection_side": null,
           "status": "pending",
           "actual_return": null,
           "actual_up": null,
-          "correct": null
+          "correct": null,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-31",
@@ -9899,10 +9930,13 @@
           "up_probability": 51.6,
           "expected_return": 0.12,
           "priority_score": null,
+          "selection_side": null,
           "status": "pending",
           "actual_return": null,
           "actual_up": null,
-          "correct": null
+          "correct": null,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-30",
@@ -9914,10 +9948,13 @@
           "up_probability": 52.3,
           "expected_return": 0.12,
           "priority_score": null,
+          "selection_side": null,
           "status": "pending",
           "actual_return": null,
           "actual_up": null,
-          "correct": null
+          "correct": null,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-31",
@@ -9929,10 +9966,13 @@
           "up_probability": 51.0,
           "expected_return": -0.01,
           "priority_score": null,
+          "selection_side": null,
           "status": "pending",
           "actual_return": null,
           "actual_up": null,
-          "correct": null
+          "correct": null,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-30",
@@ -9944,10 +9984,13 @@
           "up_probability": 51.5,
           "expected_return": 0.13,
           "priority_score": null,
+          "selection_side": null,
           "status": "pending",
           "actual_return": null,
           "actual_up": null,
-          "correct": null
+          "correct": null,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-29",
@@ -9959,10 +10002,13 @@
           "up_probability": 50.7,
           "expected_return": 0.13,
           "priority_score": null,
+          "selection_side": null,
           "status": "pending",
           "actual_return": null,
           "actual_up": null,
-          "correct": null
+          "correct": null,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-31",
@@ -9974,10 +10020,13 @@
           "up_probability": 50.9,
           "expected_return": 0.03,
           "priority_score": null,
+          "selection_side": null,
           "status": "pending",
           "actual_return": null,
           "actual_up": null,
-          "correct": null
+          "correct": null,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-30",
@@ -9989,10 +10038,13 @@
           "up_probability": 51.5,
           "expected_return": 0.27,
           "priority_score": null,
+          "selection_side": null,
           "status": "pending",
           "actual_return": null,
           "actual_up": null,
-          "correct": null
+          "correct": null,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-29",
@@ -10004,10 +10056,13 @@
           "up_probability": 51.4,
           "expected_return": 0.13,
           "priority_score": null,
+          "selection_side": null,
           "status": "pending",
           "actual_return": null,
           "actual_up": null,
-          "correct": null
+          "correct": null,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-31",
@@ -10019,10 +10074,13 @@
           "up_probability": 54.4,
           "expected_return": 0.33,
           "priority_score": null,
+          "selection_side": null,
           "status": "pending",
           "actual_return": null,
           "actual_up": null,
-          "correct": null
+          "correct": null,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-30",
@@ -10034,10 +10092,13 @@
           "up_probability": 51.1,
           "expected_return": 0.11,
           "priority_score": null,
+          "selection_side": null,
           "status": "pending",
           "actual_return": null,
           "actual_up": null,
-          "correct": null
+          "correct": null,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-29",
@@ -10049,10 +10110,13 @@
           "up_probability": 50.6,
           "expected_return": 0.02,
           "priority_score": null,
+          "selection_side": null,
           "status": "pending",
           "actual_return": null,
           "actual_up": null,
-          "correct": null
+          "correct": null,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-30",
@@ -10064,10 +10128,13 @@
           "up_probability": 50.5,
           "expected_return": 0.05,
           "priority_score": null,
+          "selection_side": null,
           "status": "evaluated",
           "actual_return": 0.725,
           "actual_up": true,
-          "correct": true
+          "correct": true,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-29",
@@ -10079,10 +10146,13 @@
           "up_probability": 51.2,
           "expected_return": 0.17,
           "priority_score": null,
+          "selection_side": null,
           "status": "evaluated",
           "actual_return": 0.099,
           "actual_up": true,
-          "correct": true
+          "correct": true,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-24",
@@ -10094,10 +10164,13 @@
           "up_probability": 57.1,
           "expected_return": 0.04,
           "priority_score": null,
+          "selection_side": null,
           "status": "evaluated",
           "actual_return": 0.473,
           "actual_up": true,
-          "correct": true
+          "correct": true,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-29",
@@ -10109,10 +10182,13 @@
           "up_probability": 48.3,
           "expected_return": -0.03,
           "priority_score": null,
+          "selection_side": null,
           "status": "evaluated",
           "actual_return": -0.621,
           "actual_up": false,
-          "correct": true
+          "correct": true,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-24",
@@ -10124,10 +10200,13 @@
           "up_probability": 50.0,
           "expected_return": -0.14,
           "priority_score": null,
+          "selection_side": null,
           "status": "evaluated",
           "actual_return": -0.249,
           "actual_up": false,
-          "correct": false
+          "correct": false,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-24",
@@ -10139,10 +10218,13 @@
           "up_probability": 49.3,
           "expected_return": -0.1,
           "priority_score": null,
+          "selection_side": null,
           "status": "evaluated",
           "actual_return": 0.374,
           "actual_up": true,
-          "correct": false
+          "correct": false,
+          "actual_excess_return": null,
+          "relative_correct": null
         }
       ]
     },
@@ -10158,6 +10240,16 @@
         "last_evaluated_date": "2026-07-27",
         "high_priority_accuracy": null,
         "high_priority_samples": 0,
+        "selection_evaluated_samples": 0,
+        "selection_evaluated_days": 0,
+        "selection_accuracy": null,
+        "selection_baseline": null,
+        "selection_edge_pp": null,
+        "selection_brier": null,
+        "selection_accuracy_ci_low": null,
+        "selection_accuracy_ci_high": null,
+        "selection_last_evaluated_date": null,
+        "selection_reliability_ready": false,
         "status": "ready"
       },
       "rows": [
@@ -10171,10 +10263,13 @@
           "up_probability": 53.1,
           "expected_return": 0.5,
           "priority_score": null,
+          "selection_side": "neutral",
           "status": "pending",
           "actual_return": null,
           "actual_up": null,
-          "correct": null
+          "correct": null,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-31",
@@ -10186,10 +10281,13 @@
           "up_probability": 56.3,
           "expected_return": 0.51,
           "priority_score": 95.8,
+          "selection_side": "up",
           "status": "pending",
           "actual_return": null,
           "actual_up": null,
-          "correct": null
+          "correct": null,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-31",
@@ -10201,10 +10299,13 @@
           "up_probability": 52.6,
           "expected_return": 0.43,
           "priority_score": 12.5,
+          "selection_side": "down",
           "status": "pending",
           "actual_return": null,
           "actual_up": null,
-          "correct": null
+          "correct": null,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-31",
@@ -10216,10 +10317,13 @@
           "up_probability": 52.3,
           "expected_return": 0.47,
           "priority_score": 20.8,
+          "selection_side": "down",
           "status": "pending",
           "actual_return": null,
           "actual_up": null,
-          "correct": null
+          "correct": null,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-31",
@@ -10231,10 +10335,13 @@
           "up_probability": 56.7,
           "expected_return": 0.5,
           "priority_score": 87.5,
+          "selection_side": "up",
           "status": "pending",
           "actual_return": null,
           "actual_up": null,
-          "correct": null
+          "correct": null,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-31",
@@ -10246,10 +10353,13 @@
           "up_probability": 52.1,
           "expected_return": 0.42,
           "priority_score": 4.2,
+          "selection_side": "down",
           "status": "pending",
           "actual_return": null,
           "actual_up": null,
-          "correct": null
+          "correct": null,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-31",
@@ -10261,10 +10371,13 @@
           "up_probability": 52.8,
           "expected_return": 0.52,
           "priority_score": null,
+          "selection_side": "neutral",
           "status": "pending",
           "actual_return": null,
           "actual_up": null,
-          "correct": null
+          "correct": null,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-31",
@@ -10276,10 +10389,13 @@
           "up_probability": 55.1,
           "expected_return": 0.5,
           "priority_score": 79.2,
+          "selection_side": "up",
           "status": "pending",
           "actual_return": null,
           "actual_up": null,
-          "correct": null
+          "correct": null,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-31",
@@ -10291,10 +10407,13 @@
           "up_probability": 54.8,
           "expected_return": 0.4,
           "priority_score": null,
+          "selection_side": "neutral",
           "status": "pending",
           "actual_return": null,
           "actual_up": null,
-          "correct": null
+          "correct": null,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-31",
@@ -10306,10 +10425,13 @@
           "up_probability": 55.6,
           "expected_return": 0.4,
           "priority_score": null,
+          "selection_side": "neutral",
           "status": "pending",
           "actual_return": null,
           "actual_up": null,
-          "correct": null
+          "correct": null,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-31",
@@ -10321,10 +10443,13 @@
           "up_probability": 53.2,
           "expected_return": 0.5,
           "priority_score": null,
+          "selection_side": "neutral",
           "status": "pending",
           "actual_return": null,
           "actual_up": null,
-          "correct": null
+          "correct": null,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-31",
@@ -10336,10 +10461,13 @@
           "up_probability": 55.3,
           "expected_return": 0.42,
           "priority_score": null,
+          "selection_side": "neutral",
           "status": "pending",
           "actual_return": null,
           "actual_up": null,
-          "correct": null
+          "correct": null,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-24",
@@ -10351,10 +10479,13 @@
           "up_probability": 51.3,
           "expected_return": 0.13,
           "priority_score": null,
+          "selection_side": null,
           "status": "evaluated",
           "actual_return": 0.611,
           "actual_up": true,
-          "correct": true
+          "correct": true,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-24",
@@ -10366,10 +10497,13 @@
           "up_probability": 52.6,
           "expected_return": 0.28,
           "priority_score": null,
+          "selection_side": null,
           "status": "evaluated",
           "actual_return": 2.846,
           "actual_up": true,
-          "correct": true
+          "correct": true,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-24",
@@ -10381,10 +10515,13 @@
           "up_probability": 50.5,
           "expected_return": 0.23,
           "priority_score": null,
+          "selection_side": null,
           "status": "evaluated",
           "actual_return": 3.557,
           "actual_up": true,
-          "correct": true
+          "correct": true,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-24",
@@ -10396,10 +10533,13 @@
           "up_probability": 50.7,
           "expected_return": 0.21,
           "priority_score": null,
+          "selection_side": null,
           "status": "evaluated",
           "actual_return": 2.378,
           "actual_up": true,
-          "correct": true
+          "correct": true,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-24",
@@ -10411,10 +10551,13 @@
           "up_probability": 49.7,
           "expected_return": 0.15,
           "priority_score": null,
+          "selection_side": null,
           "status": "evaluated",
           "actual_return": 0.136,
           "actual_up": true,
-          "correct": false
+          "correct": false,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-24",
@@ -10426,10 +10569,13 @@
           "up_probability": 50.5,
           "expected_return": 0.17,
           "priority_score": null,
+          "selection_side": null,
           "status": "evaluated",
           "actual_return": 2.488,
           "actual_up": true,
-          "correct": true
+          "correct": true,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-24",
@@ -10441,10 +10587,13 @@
           "up_probability": 50.3,
           "expected_return": 0.21,
           "priority_score": null,
+          "selection_side": null,
           "status": "evaluated",
           "actual_return": 0.021,
           "actual_up": true,
-          "correct": true
+          "correct": true,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-24",
@@ -10456,10 +10605,13 @@
           "up_probability": 53.1,
           "expected_return": 0.3,
           "priority_score": null,
+          "selection_side": null,
           "status": "evaluated",
           "actual_return": 2.552,
           "actual_up": true,
-          "correct": true
+          "correct": true,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-24",
@@ -10471,10 +10623,13 @@
           "up_probability": 50.4,
           "expected_return": 0.21,
           "priority_score": null,
+          "selection_side": null,
           "status": "evaluated",
           "actual_return": 2.528,
           "actual_up": true,
-          "correct": true
+          "correct": true,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-24",
@@ -10486,10 +10641,13 @@
           "up_probability": 51.5,
           "expected_return": 0.18,
           "priority_score": null,
+          "selection_side": null,
           "status": "evaluated",
           "actual_return": 2.725,
           "actual_up": true,
-          "correct": true
+          "correct": true,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-24",
@@ -10501,10 +10659,13 @@
           "up_probability": 50.1,
           "expected_return": 0.19,
           "priority_score": null,
+          "selection_side": null,
           "status": "evaluated",
           "actual_return": 0.031,
           "actual_up": true,
-          "correct": true
+          "correct": true,
+          "actual_excess_return": null,
+          "relative_correct": null
         },
         {
           "base_date": "2026-07-24",
@@ -10516,10 +10677,13 @@
           "up_probability": 50.8,
           "expected_return": 0.19,
           "priority_score": null,
+          "selection_side": null,
           "status": "evaluated",
           "actual_return": 2.242,
           "actual_up": true,
-          "correct": true
+          "correct": true,
+          "actual_excess_return": null,
+          "relative_correct": null
         }
       ]
     }
