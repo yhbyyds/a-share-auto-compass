@@ -298,6 +298,66 @@ def _cross_calibrate(
     return calibrated.dropna()
 
 
+def _ensemble_metrics(
+    actual: pd.Series,
+    probability: pd.Series,
+) -> dict[str, float]:
+    """Metrics used to choose a stable ensemble construction.
+
+    The weights are estimated from the same walk-forward predictions, so a
+    weighted variant is only adopted when it has a material probability-error
+    benefit or a clear balanced-direction benefit.  This keeps a noisy recent
+    model score from silently replacing the simpler equal-weight benchmark.
+    """
+    values = probability.reindex(actual.index)
+    try:
+        auc = float(roc_auc_score(actual, values))
+    except ValueError:
+        auc = 0.5
+    return {
+        "accuracy": float(accuracy_score(actual, values >= 0.5)),
+        "balanced_accuracy": float(
+            balanced_accuracy_score(actual, values >= 0.5)
+        ),
+        "brier": float(brier_score_loss(actual, values)),
+        "auc": auc,
+    }
+
+
+def _select_ensemble(
+    predictions: pd.DataFrame,
+    actual: pd.Series,
+    weights: dict[str, float],
+) -> tuple[pd.Series, str, dict[str, dict[str, float]]]:
+    """Pick equal or score-weighted ensemble with a conservative OOF gate."""
+    equal = predictions.mean(axis=1)
+    aligned_weights = pd.Series(weights, dtype=float).reindex(predictions.columns)
+    aligned_weights = aligned_weights.fillna(0.0)
+    aligned_weights /= aligned_weights.sum()
+    weighted = predictions.mul(aligned_weights, axis=1).sum(axis=1)
+    equal_metrics = _ensemble_metrics(actual, equal)
+    weighted_metrics = _ensemble_metrics(actual, weighted)
+
+    brier_gain = equal_metrics["brier"] - weighted_metrics["brier"]
+    balanced_gain = (
+        weighted_metrics["balanced_accuracy"]
+        - equal_metrics["balanced_accuracy"]
+    )
+    # Either a non-trivial Brier improvement without directional regression,
+    # or a meaningful balanced-accuracy improvement with essentially unchanged
+    # probability error, is needed to use learned model weights.
+    choose_weighted = (
+        brier_gain >= 0.0002 and balanced_gain >= -0.005
+    ) or (
+        balanced_gain >= 0.005 and brier_gain >= -0.0001
+    )
+    return (
+        weighted if choose_weighted else equal,
+        "score_weighted" if choose_weighted else "equal_weighted",
+        {"equal_weighted": equal_metrics, "score_weighted": weighted_metrics},
+    )
+
+
 def _nearest_analogs(
     X: pd.DataFrame, target: pd.Series, neighbors: int = 80
 ) -> np.ndarray:
@@ -351,22 +411,38 @@ def fit_horizon(
 
     calibrated_oof = _cross_calibrate(oof, actual_raw_oof)
     actual_oof = binary.loc[calibrated_oof.index]
-    raw_ensemble_oof = oof.loc[calibrated_oof.index].mean(axis=1)
-    calibrated_ensemble_oof = calibrated_oof.mean(axis=1)
-    raw_brier = float(brier_score_loss(actual_oof, raw_ensemble_oof))
-    calibrated_brier = float(
-        brier_score_loss(actual_oof, calibrated_ensemble_oof)
+    raw_oof = oof.loc[calibrated_oof.index]
+    raw_ensemble_oof, raw_ensemble_method, raw_candidates = _select_ensemble(
+        raw_oof,
+        actual_oof,
+        weights,
     )
+    calibrated_ensemble_oof, calibrated_ensemble_method, calibrated_candidates = (
+        _select_ensemble(
+            calibrated_oof,
+            actual_oof,
+            weights,
+        )
+    )
+    raw_brier = float(brier_score_loss(actual_oof, raw_ensemble_oof))
+    calibrated_brier = float(brier_score_loss(actual_oof, calibrated_ensemble_oof))
     calibration_applied = calibrated_brier < raw_brier - 0.001
     if calibration_applied:
         model_probs = calibrated_model_probs
         ensemble_oof = calibrated_ensemble_oof
+        ensemble_method = calibrated_ensemble_method
+        live_candidate_metrics = calibrated_candidates
     else:
         model_probs = raw_model_probs
         ensemble_oof = raw_ensemble_oof
-    raw_probability = sum(
-        model_probs[name] * weights[name] for name in weights
-    )
+        ensemble_method = raw_ensemble_method
+        live_candidate_metrics = raw_candidates
+    if ensemble_method == "score_weighted":
+        raw_probability = sum(
+            model_probs[name] * weights[name] for name in weights
+        )
+    else:
+        raw_probability = float(np.mean(list(model_probs.values())))
     ensemble_accuracy = float(accuracy_score(actual_oof, ensemble_oof >= 0.5))
     baseline_accuracy = float(max(actual_oof.mean(), 1 - actual_oof.mean()))
     # Directional accuracy must beat the majority-class baseline, not merely
@@ -417,6 +493,8 @@ def fit_horizon(
         "calibrated_brier": calibrated_brier,
         "calibration_applied": calibration_applied,
         "auc": auc,
+        "ensemble_method": ensemble_method,
+        "ensemble_candidates": live_candidate_metrics,
         "model_weight_scores": accuracies,
         "live_model_spread": live_model_spread,
         "agreement_factor": agreement_factor,
@@ -774,6 +852,9 @@ def generate_forecast(
                 "calibration_applied": day_diagnostics[horizon - 1][
                     "calibration_applied"
                 ],
+                "ensemble_method": day_diagnostics[horizon - 1][
+                    "ensemble_method"
+                ],
                 "high_conf_accuracy": (
                     round(
                         day_diagnostics[horizon - 1]["high_conf_accuracy"] * 100,
@@ -807,6 +888,7 @@ def generate_forecast(
             "calibration_applied": weekly_diagnostics[
                 "calibration_applied"
             ],
+            "ensemble_method": weekly_diagnostics["ensemble_method"],
             "samples": weekly_diagnostics["oof_count"],
             "strategy_annual_return": round(h1_backtest["annual_return"] * 100, 1),
             "strategy_max_drawdown": round(h1_backtest["max_drawdown"] * 100, 1),

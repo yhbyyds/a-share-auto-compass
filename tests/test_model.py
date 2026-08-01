@@ -6,6 +6,7 @@ from market_forecast.model import (
     _evidence_score,
     _next_weekdays,
     _rsi,
+    _select_ensemble,
     build_features,
 )
 
@@ -107,4 +108,25 @@ def test_evidence_score_rewards_validated_edge_and_agreement():
     assert strong_score["score"] > weak_score["score"]
     assert strong_score["label"] in {"中等", "较高"}
     assert weak_score["label"] == "较低"
+
+
+def test_ensemble_uses_score_weights_only_for_oof_quality_gain():
+    predictions = pd.DataFrame(
+        {
+            "skilled": [0.9, 0.8, 0.1, 0.2],
+            "neutral": [0.5, 0.5, 0.5, 0.5],
+        }
+    )
+    actual = pd.Series([1, 1, 0, 0])
+    _, method, candidates = _select_ensemble(
+        predictions,
+        actual,
+        {"skilled": 0.9, "neutral": 0.1},
+    )
+
+    assert method == "score_weighted"
+    assert (
+        candidates["score_weighted"]["brier"]
+        < candidates["equal_weighted"]["brier"]
+    )
 

@@ -1,11 +1,11 @@
 {
   "meta": {
-    "generated_at": "2026-08-01T13:01:50.112633+08:00",
+    "generated_at": "2026-08-01T20:01:28.849043+08:00",
     "data_through": "2026-07-31",
     "forecast_window": "2026-08-03 至 2026-08-07",
-    "version": "1.13.0",
+    "version": "1.14.0",
     "data_source": "腾讯证券主源 / 东方财富备用",
-    "release": "17",
+    "release": "18",
     "model_research": {
       "open_source_references": [
         "Microsoft Qlib",
@@ -31,7 +31,7 @@
       "update_warnings": []
     },
     "automation": {
-      "run_id": "20260801T125941",
+      "run_id": "20260801T195931",
       "status": "passed",
       "quality_gate": {
         "passed": true,
@@ -56,7 +56,7 @@
           "event_count": 0
         }
       },
-      "updated_at": "2026-08-01T12:59:41.879645+08:00",
+      "updated_at": "2026-08-01T19:59:31.418777+08:00",
       "mode": "automatic"
     }
   },
@@ -88,14 +88,14 @@
       "path_close": 3844.82,
       "confidence": "低",
       "model_spread": 2.0,
-      "validation_accuracy": 60.8,
-      "validation_edge": 8.3,
-      "evidence_score": 66.2,
+      "validation_accuracy": 60.0,
+      "validation_edge": 7.5,
+      "evidence_score": 66.5,
       "evidence_label": "中等",
       "evidence_reasons": [
-        "近期相对基线 +8.3pp",
-        "AUC 0.547",
-        "Brier 0.252",
+        "近期相对基线 +7.5pp",
+        "AUC 0.549",
+        "Brier 0.251",
         "模型分歧 2.0pp"
       ],
       "event_risk": "低",
@@ -163,13 +163,13 @@
       "path_close": 3850.26,
       "confidence": "低",
       "model_spread": 2.1,
-      "validation_accuracy": 51.7,
-      "validation_edge": -0.8,
-      "evidence_score": 17.0,
+      "validation_accuracy": 52.5,
+      "validation_edge": 0.0,
+      "evidence_score": 16.7,
       "evidence_label": "较低",
       "evidence_reasons": [
-        "近期相对基线 -0.8pp",
-        "AUC 0.521",
+        "近期相对基线 +0.0pp",
+        "AUC 0.520",
         "Brier 0.250",
         "模型分歧 2.1pp"
       ],
@@ -181,7 +181,7 @@
       "date": "2026-08-07",
       "weekday": "五",
       "direction": "震荡",
-      "up_probability": 49.9,
+      "up_probability": 49.6,
       "expected_return": -0.02,
       "low_return": -0.71,
       "high_return": 0.67,
@@ -241,7 +241,7 @@
     "advance_ratio": 84.7,
     "source": "新浪财经全A快照",
     "status": "live",
-    "fetched_at": "2026-08-01T13:00:50.148993+08:00",
+    "fetched_at": "2026-08-01T20:00:38.114383+08:00",
     "failures": [
       "_fetch_breadth_eastmoney: ProxyError"
     ]
@@ -267,17 +267,18 @@
     {
       "horizon": 1,
       "label": "第1个交易日",
-      "accuracy": 53.5,
-      "recent_accuracy": 60.8,
+      "accuracy": 54.0,
+      "recent_accuracy": 60.0,
       "baseline": 52.5,
       "full_baseline": 54.4,
-      "auc": 0.547,
-      "brier": 0.252,
-      "raw_brier": 0.252,
+      "auc": 0.549,
+      "brier": 0.251,
+      "raw_brier": 0.251,
       "calibrated_brier": 0.252,
       "calibration_applied": false,
-      "high_conf_accuracy": 55.3,
-      "high_conf_coverage": 40.5
+      "ensemble_method": "score_weighted",
+      "high_conf_accuracy": 55.1,
+      "high_conf_coverage": 40.6
     },
     {
       "horizon": 2,
@@ -291,6 +292,7 @@
       "raw_brier": 0.254,
       "calibrated_brier": 0.252,
       "calibration_applied": true,
+      "ensemble_method": "equal_weighted",
       "high_conf_accuracy": 45.5,
       "high_conf_coverage": 6.9
     },
@@ -303,26 +305,28 @@
       "full_baseline": 54.1,
       "auc": 0.527,
       "brier": 0.25,
-      "raw_brier": 0.254,
+      "raw_brier": 0.253,
       "calibrated_brier": 0.25,
       "calibration_applied": true,
+      "ensemble_method": "equal_weighted",
       "high_conf_accuracy": 0.0,
       "high_conf_coverage": 0.1
     },
     {
       "horizon": 4,
       "label": "第4个交易日",
-      "accuracy": 50.1,
-      "recent_accuracy": 51.7,
+      "accuracy": 50.9,
+      "recent_accuracy": 52.5,
       "baseline": 52.5,
       "full_baseline": 54.1,
-      "auc": 0.521,
+      "auc": 0.52,
       "brier": 0.25,
-      "raw_brier": 0.253,
+      "raw_brier": 0.252,
       "calibrated_brier": 0.25,
       "calibration_applied": true,
-      "high_conf_accuracy": 41.2,
-      "high_conf_coverage": 2.2
+      "ensemble_method": "score_weighted",
+      "high_conf_accuracy": 30.8,
+      "high_conf_coverage": 1.6
     },
     {
       "horizon": 5,
@@ -336,39 +340,41 @@
       "raw_brier": 0.249,
       "calibrated_brier": 0.249,
       "calibration_applied": false,
+      "ensemble_method": "equal_weighted",
       "high_conf_accuracy": 52.7,
       "high_conf_coverage": 21.4
     }
   ],
   "validation": {
-    "daily_direction_accuracy": 53.5,
-    "weekly_direction_accuracy": 50.1,
+    "daily_direction_accuracy": 54.0,
+    "weekly_direction_accuracy": 51.3,
     "baseline_accuracy": 55.3,
-    "auc": 0.525,
-    "brier": 0.269,
+    "auc": 0.53,
+    "brier": 0.268,
     "raw_brier": 0.271,
-    "calibrated_brier": 0.269,
+    "calibrated_brier": 0.268,
     "calibration_applied": true,
+    "ensemble_method": "score_weighted",
     "samples": 790,
-    "strategy_annual_return": 19.4,
+    "strategy_annual_return": 19.5,
     "strategy_max_drawdown": -9.2,
     "benchmark_annual_return": 11.5,
     "benchmark_max_drawdown": -14.7,
-    "active_days": 70.5,
+    "active_days": 70.4,
     "reliability": {
-      "score": 15.1,
+      "score": 16.4,
       "label": "较低",
       "components": {
         "recent_edge": 0.0,
-        "auc": 0.31493258270781227,
+        "auc": 0.3770503197108699,
         "brier": 0.0,
         "high_confidence": 0.0,
         "agreement": 0.8823100475335207
       },
       "reasons": [
         "近期相对基线 -2.5pp",
-        "AUC 0.525",
-        "Brier 0.269",
+        "AUC 0.530",
+        "Brier 0.268",
         "模型分歧 1.4pp"
       ]
     },
@@ -9696,7 +9702,7 @@
     },
     "collection": {
       "status": "live",
-      "fetched_at": "2026-08-01T13:03:25.242470+08:00",
+      "fetched_at": "2026-08-01T20:02:48.200329+08:00",
       "cache_used": false,
       "event_count": 0,
       "sources": [
@@ -9728,14 +9734,14 @@
     "path_close": 3844.82,
     "confidence": "低",
     "model_spread": 2.0,
-    "validation_accuracy": 60.8,
-    "validation_edge": 8.3,
-    "evidence_score": 66.2,
+    "validation_accuracy": 60.0,
+    "validation_edge": 7.5,
+    "evidence_score": 66.5,
     "evidence_label": "中等",
     "evidence_reasons": [
-      "近期相对基线 +8.3pp",
-      "AUC 0.547",
-      "Brier 0.252",
+      "近期相对基线 +7.5pp",
+      "AUC 0.549",
+      "Brier 0.251",
       "模型分歧 2.0pp"
     ],
     "event_risk": "低",
@@ -10424,7 +10430,7 @@
           "direction": "震荡",
           "up_probability": 55.6,
           "expected_return": 0.4,
-          "priority_score": null,
+          "priority_score": 79.2,
           "selection_side": "neutral",
           "status": "pending",
           "actual_return": null,

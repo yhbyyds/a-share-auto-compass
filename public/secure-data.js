@@ -4,7 +4,7 @@
   const PERSONAL_STORAGE_KEY = "a_share_personal_portfolio_v1";
   const DEVICE_KEY = "a_share_personal_device_key_v1";
   const ENCRYPTED_URL = "/data/forecast.enc.json?v=1.8.0";
-  const PUBLISHED_FORECAST_URL = "https://yhbyyds.github.io/a-share-auto-compass/data/forecast.json?v=1.18.0";
+  const PUBLISHED_FORECAST_URL = "https://yhbyyds.github.io/a-share-auto-compass/data/forecast.json?v=1.19.0";
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
 

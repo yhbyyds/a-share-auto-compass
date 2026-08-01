@@ -1,8 +1,8 @@
 const $ = (selector) => document.querySelector(selector);
 const isProtectedHost = window.location.hostname.endsWith(".chatgpt.site");
 const PUBLIC_FORECAST_URL = isProtectedHost
-  ? "https://yhbyyds.github.io/a-share-auto-compass/data/forecast.json?v=1.18.0"
-  : "./data/forecast.json?v=1.18.0";
+  ? "https://yhbyyds.github.io/a-share-auto-compass/data/forecast.json?v=1.19.0"
+  : "./data/forecast.json?v=1.19.0";
 let renderedSnapshotId = "";
 let forecastPollInFlight = false;
 
@@ -256,6 +256,7 @@ function renderHorizonValidation(rows) {
           <div><span>高置信命中率</span><strong>${highConfidence}</strong></div>
           <div><span>高置信覆盖</span><strong>${row.high_conf_coverage}%</strong></div>
           <div><span>AUC / Brier</span><strong>${row.auc} / ${row.brier}</strong></div>
+          <div><span>集成方式</span><strong>${row.ensemble_method === "score_weighted" ? "验证加权" : "等权基线"}</strong></div>
         </div>
       </article>`;
   }).join("");

@@ -282,7 +282,7 @@
       "status": "pending"
     }
   ],
-  "updated_at": "2026-08-01T13:03:28.584976+08:00",
+  "updated_at": "2026-08-01T20:02:50.337264+08:00",
   "monitor": {
     "status": "collecting",
     "label": "实盘样本积累中",
@@ -649,7 +649,7 @@
       "direction": "震荡",
       "up_probability": 55.6,
       "expected_return": 0.4,
-      "priority_score": null,
+      "priority_score": 79.2,
       "status": "pending",
       "selection_side": "neutral",
       "relative_probability": 50.0,
