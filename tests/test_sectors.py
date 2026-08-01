@@ -1,6 +1,9 @@
 from datetime import date
 
 import pandas as pd
+import requests
+
+import market_forecast.sectors as sectors_module
 
 from market_forecast.sectors import (
     _cross_sectional_signal,
@@ -242,3 +245,75 @@ def test_live_sector_overlay_rejects_partial_basket_coverage() -> None:
     assert "electronics" in result["covered_sectors"]
     assert len(result["missing_sectors"]) == len(SECTORS) - 1
     assert all(frame.index.max().date() == date(2026, 7, 29) for frame in sector_data.values())
+
+
+def test_live_industry_fetch_uses_secondary_endpoint(monkeypatch) -> None:
+    expected = [{"f14": "bank", "f3": 1.2, "f6": 10_000}]
+
+    class Response:
+        def raise_for_status(self):
+            return None
+
+        def json(self):
+            return {"data": {"diff": expected}}
+
+    class Session:
+        def __init__(self):
+            self.calls = 0
+
+        def get(self, *args, **kwargs):
+            self.calls += 1
+            if self.calls == 1:
+                raise requests.ConnectionError("primary endpoint unavailable")
+            return Response()
+
+    session = Session()
+    monkeypatch.setattr(sectors_module, "_session", lambda: session)
+
+    rows = sectors_module._fetch_live_industry_rows()
+
+    assert rows == expected
+    assert session.calls == 2
+
+
+def test_live_sector_overlay_falls_back_to_finalized_etfs(monkeypatch) -> None:
+    index = pd.DatetimeIndex(["2026-07-30"])
+    sector_data = {
+        spec.key: pd.DataFrame(
+            {
+                "open": [100.0],
+                "close": [100.0],
+                "high": [101.0],
+                "low": [99.0],
+                "volume": [1000.0],
+                "amount": [10000.0],
+                "pct": [0.0],
+            },
+            index=index,
+        )
+        for spec in SECTORS
+    }
+    etf_proxies = {
+        spec.key: {
+            "change": 1.0,
+            "amount": 1_000_000.0,
+            "boards": [f"{spec.key}-ETF"],
+        }
+        for spec in SECTORS
+    }
+    monkeypatch.setattr(sectors_module, "_fetch_live_industry_rows", lambda: [])
+    monkeypatch.setattr(
+        sectors_module,
+        "_fetch_live_sector_etf_proxies",
+        lambda market_date: etf_proxies,
+    )
+
+    result = apply_live_sector_close_overlay(sector_data, date(2026, 7, 31))
+
+    assert result["status"] == "provisional"
+    assert "Tencent finalized sector ETF closes" in result["source"]
+    assert all(
+        frame.index.max().date() == date(2026, 7, 31)
+        and frame.iloc[-1]["close"] == 101.0
+        for frame in sector_data.values()
+    )

@@ -72,8 +72,13 @@ def _apply_sector_freshness_guard(
     overlay = live_overlay or {}
     is_provisional = lag == 0 and overlay.get("status") == "provisional"
     status = "provisional" if is_provisional else "fresh" if lag == 0 else "stale"
+    provisional_message = (
+        "\u5f53\u65e5\u677f\u5757\u5df2\u4f7f\u7528\u884c\u4e1a ETF \u6536\u76d8\u4ee3\u7406\u503c\uff0c\u7533\u4e07\u65e5\u7ebf\u6b63\u5728\u540e\u7eed\u590d\u6838\u3002"
+        if "ETF" in str(overlay.get("source", ""))
+        else "\u5f53\u65e5\u677f\u5757\u5df2\u4f7f\u7528\u5b9e\u65f6\u884c\u4e1a\u7bee\u5b50\u6536\u76d8\u5feb\u7167\uff0c\u7533\u4e07\u65e5\u7ebf\u6b63\u5728\u540e\u7eed\u590d\u6838\u3002"
+    )
     message = (
-        "\u5f53\u65e5\u677f\u5757\u5df2\u4f7f\u7528\u5b9e\u65f6\u884c\u4e1a\u7bee\u5b50\u6536\u76d8\u5feb\u7167\uff0c\u7533\u4e07\u65e5\u7ebf\u6b63\u5728\u540e\u7eed\u590d\u6838\u3002"
+        provisional_message
         if is_provisional
         else "\u884c\u4e1a\u884c\u60c5\u5df2\u66f4\u65b0\u81f3 " + sector_date.isoformat()
         if lag == 0

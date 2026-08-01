@@ -49,6 +49,7 @@ SINA_SPOT_URL = (
     "Market_Center.getHQNodeData"
 )
 TENCENT_KLINE_URL = "https://web.ifzq.gtimg.cn/appstock/app/kline/kline"
+TENCENT_QUOTE_URL = "https://qt.gtimg.cn/q="
 
 
 class MarketDataError(RuntimeError):
@@ -155,6 +156,121 @@ def _fetch_one_tencent(spec: IndexSpec) -> pd.DataFrame:
     return frame.set_index("date").sort_index()
 
 
+def _parse_tencent_quotes(payload: str) -> dict[str, list[str]]:
+    """Parse the compact Tencent spot payload without depending on its names."""
+    quotes: dict[str, list[str]] = {}
+    for statement in payload.replace("\r", "\n").split(";"):
+        if '="' not in statement:
+            continue
+        prefix, raw = statement.strip().split('="', 1)
+        symbol = prefix.rsplit("v_", 1)[-1]
+        fields = raw.rstrip('"\n').split("~")
+        if symbol and len(fields) >= 38:
+            quotes[symbol] = fields
+    return quotes
+
+
+def apply_tencent_close_overlay(
+    data: dict[str, pd.DataFrame],
+    specs: Iterable[IndexSpec] = INDEXES,
+    *,
+    payload: str | None = None,
+    now: datetime | None = None,
+) -> dict:
+    """Append a finalized same-session index close when daily K-lines lag.
+
+    Tencent's daily K-line endpoint may settle later than its quote endpoint.
+    Only a quote stamped at/after 15:00, or from an earlier calendar day, is
+    accepted.  This keeps intraday prices out of the next-session model while
+    allowing the post-close lane to train immediately.
+    """
+    domestic = [spec for spec in specs if spec.domestic and spec.key in data]
+    if not domestic:
+        return {"status": "not_required", "updated_keys": []}
+    if payload is None:
+        symbols = ",".join(spec.tencent for spec in domestic)
+        try:
+            response = _session().get(
+                f"{TENCENT_QUOTE_URL}{symbols}",
+                headers={"User-Agent": "Mozilla/5.0"},
+                timeout=20,
+            )
+            response.raise_for_status()
+            payload = response.content.decode("gbk", errors="replace")
+        except requests.RequestException as exc:
+            return {
+                "status": "unavailable",
+                "updated_keys": [],
+                "reason": f"Tencent quote endpoint: {type(exc).__name__}",
+            }
+
+    quotes = _parse_tencent_quotes(payload)
+    current = now or datetime.now(ZoneInfo("Asia/Shanghai"))
+    updated: list[str] = []
+    quote_dates: list[str] = []
+    for spec in domestic:
+        fields = quotes.get(spec.tencent)
+        frame = data[spec.key]
+        if not fields or frame.empty:
+            continue
+        try:
+            stamp = datetime.strptime(fields[30], "%Y%m%d%H%M%S").replace(
+                tzinfo=ZoneInfo("Asia/Shanghai")
+            )
+            close = float(fields[3])
+            previous_close = float(fields[4])
+            open_price = float(fields[5])
+            high = float(fields[33])
+            low = float(fields[34])
+            volume = float(fields[36])
+            quoted_amount = float(fields[37]) * 10_000
+        except (TypeError, ValueError, IndexError):
+            continue
+        if stamp.date() == current.date() and stamp.hour < 15:
+            continue
+        quote_date = pd.Timestamp(stamp.date())
+        if quote_date <= frame.index.max() or min(
+            close, previous_close, open_price, high, low
+        ) <= 0:
+            continue
+        amount = quoted_amount if quoted_amount > 0 else volume * close
+        frame.loc[
+            quote_date,
+            [
+                "open",
+                "close",
+                "high",
+                "low",
+                "volume",
+                "amount",
+                "amplitude",
+                "pct",
+                "change",
+                "turnover",
+            ],
+        ] = [
+            open_price,
+            close,
+            high,
+            low,
+            volume,
+            amount,
+            (high - low) / previous_close * 100,
+            (close / previous_close - 1) * 100,
+            close - previous_close,
+            np.nan,
+        ]
+        data[spec.key] = frame.sort_index()
+        updated.append(spec.key)
+        quote_dates.append(stamp.date().isoformat())
+    return {
+        "status": "applied" if updated else "not_required",
+        "updated_keys": updated,
+        "quote_date": max(quote_dates) if quote_dates else None,
+        "source": "Tencent finalized index quotes",
+    }
+
+
 def fetch_market_data(
     cache_dir: str | Path = "data/cache",
     specs: Iterable[IndexSpec] = INDEXES,
@@ -180,6 +296,9 @@ def fetch_market_data(
                 if age > 7:
                     raise MarketDataError(f"{spec.name}缓存已过期 {age} 天")
         output[spec.key] = frame
+    overlay = apply_tencent_close_overlay(output, specs)
+    for key in overlay.get("updated_keys", []):
+        output[key].to_csv(cache_path / f"{key}.csv", encoding="utf-8")
     return output
 
 

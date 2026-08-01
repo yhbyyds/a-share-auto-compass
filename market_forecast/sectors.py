@@ -21,13 +21,22 @@ from sklearn.model_selection import TimeSeriesSplit
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
-from market_forecast.data import MarketDataError, _session
+from market_forecast.data import (
+    MarketDataError,
+    TENCENT_QUOTE_URL,
+    _parse_tencent_quotes,
+    _session,
+)
 from market_forecast.model import _next_weekdays, _rsi, build_features
 from market_forecast.trading_calendar import trading_sessions_after
 
 
 SW_TREND_URL = "https://www.swsresearch.com/institute-sw/api/index_publish/trend/"
 LIVE_INDUSTRY_URL = "https://push2.eastmoney.com/api/qt/clist/get"
+LIVE_INDUSTRY_URLS = (
+    LIVE_INDUSTRY_URL,
+    "https://push2his.eastmoney.com/api/qt/clist/get",
+)
 RANDOM_STATE = 20260725
 
 # The real-time endpoint is a lower-level industry-board feed.  These baskets
@@ -46,6 +55,23 @@ LIVE_INDUSTRY_BASKETS: dict[str, tuple[str, ...]] = {
     "nonbank": ("\u8bc1\u5238", "\u4fdd\u9669", "\u591a\u5143\u91d1\u878d"),
     "nonferrous": ("\u5de5\u4e1a\u91d1\u5c5e", "\u8d35\u91d1\u5c5e", "\u80fd\u6e90\u91d1\u5c5e", "\u5c0f\u91d1\u5c5e"),
     "food_beverage": ("\u767d\u9152", "\u996e\u6599\u4e73\u54c1", "\u98df\u54c1\u52a0\u5de5", "\u8c03\u5473\u53d1\u9175\u54c1", "\u4f11\u95f2\u98df\u54c1"),
+}
+# Liquid sector ETFs provide an independent same-close fallback when the
+# industry-board list endpoint is temporarily blocked.  They are used only for
+# the latest provisional row; all historical fitting continues to use SW data.
+LIVE_SECTOR_ETFS: dict[str, tuple[str, ...]] = {
+    "electronics": ("sz159997", "sh512760", "sh512480"),
+    "computer": ("sh512720", "sh516510"),
+    "telecom": ("sh515880",),
+    "power_equipment": ("sh516160",),
+    "utilities": ("sz159611",),
+    "defense": ("sh512660",),
+    "auto": ("sh516110",),
+    "healthcare": ("sh512170", "sh512010"),
+    "bank": ("sh512800",),
+    "nonbank": ("sh512880",),
+    "nonferrous": ("sh512400", "sh516780"),
+    "food_beverage": ("sh515170", "sh512690"),
 }
 requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 
@@ -159,21 +185,26 @@ def _fetch_live_industry_rows() -> list[dict[str, Any]]:
         "fs": "m:90+t:2+f:!50",
         "fields": "f12,f14,f3,f6",
     }
-    try:
-        response = _session().get(
-            LIVE_INDUSTRY_URL,
-            params=params,
-            headers={
-                "User-Agent": "Mozilla/5.0 (compatible; AShareCompass/1.2)",
-                "Referer": "https://quote.eastmoney.com/",
-            },
-            timeout=20,
-        )
-        response.raise_for_status()
-        rows = response.json().get("data", {}).get("diff") or []
-    except (requests.RequestException, ValueError, AttributeError):
-        return []
-    return [row for row in rows if isinstance(row, dict)]
+    session = _session()
+    for url in LIVE_INDUSTRY_URLS:
+        try:
+            response = session.get(
+                url,
+                params=params,
+                headers={
+                    "User-Agent": "Mozilla/5.0 (compatible; AShareCompass/1.2)",
+                    "Referer": "https://quote.eastmoney.com/",
+                },
+                timeout=20,
+            )
+            response.raise_for_status()
+            rows = response.json().get("data", {}).get("diff") or []
+        except (requests.RequestException, ValueError, AttributeError):
+            continue
+        valid_rows = [row for row in rows if isinstance(row, dict)]
+        if valid_rows:
+            return valid_rows
+    return []
 
 
 def _live_industry_proxies(
@@ -204,6 +235,55 @@ def _live_industry_proxies(
         changes = np.asarray([item[1] for item in matches], dtype=float)
         output[spec.key] = {
             "change": float(np.average(changes, weights=weights)),
+            "amount": float(weights.sum()),
+            "boards": [item[0] for item in matches],
+        }
+    return output
+
+
+def _fetch_live_sector_etf_proxies(market_date: date) -> dict[str, dict[str, Any]]:
+    """Build same-close sector proxies from liquid exchange-traded funds."""
+    symbols = sorted({symbol for values in LIVE_SECTOR_ETFS.values() for symbol in values})
+    try:
+        response = _session().get(
+            f"{TENCENT_QUOTE_URL}{','.join(symbols)}",
+            headers={"User-Agent": "Mozilla/5.0"},
+            timeout=20,
+        )
+        response.raise_for_status()
+        payload = response.content.decode("gbk", errors="replace")
+    except requests.RequestException:
+        return {}
+    quotes = _parse_tencent_quotes(payload)
+    output: dict[str, dict[str, Any]] = {}
+    for key, sector_symbols in LIVE_SECTOR_ETFS.items():
+        matches: list[tuple[str, float, float]] = []
+        for symbol in sector_symbols:
+            fields = quotes.get(symbol)
+            if not fields:
+                continue
+            try:
+                stamp = pd.Timestamp(fields[30])
+                change = float(fields[32])
+                amount = max(float(fields[37]) * 10_000, 0.0)
+                name = str(fields[1] or symbol)
+            except (TypeError, ValueError, IndexError):
+                continue
+            if stamp.date() != market_date or stamp.hour < 15 or not np.isfinite(change):
+                continue
+            matches.append((name, change, amount))
+        if not matches:
+            continue
+        weights = np.asarray([item[2] for item in matches], dtype=float)
+        if float(weights.sum()) <= 0:
+            weights = np.ones(len(matches), dtype=float)
+        output[key] = {
+            "change": float(
+                np.average(
+                    np.asarray([item[1] for item in matches], dtype=float),
+                    weights=weights,
+                )
+            ),
             "amount": float(weights.sum()),
             "boards": [item[0] for item in matches],
         }
@@ -249,7 +329,15 @@ def apply_live_sector_close_overlay(
             "covered_sectors": [],
         }
 
-    proxies = _live_industry_proxies(rows if rows is not None else _fetch_live_industry_rows())
+    supplied_rows = rows is not None
+    proxies = _live_industry_proxies(rows if supplied_rows else _fetch_live_industry_rows())
+    sources = ["Eastmoney industry-board baskets"] if proxies else []
+    if not supplied_rows and len(proxies) < len(SECTORS):
+        etf_proxies = _fetch_live_sector_etf_proxies(market_date)
+        for key, value in etf_proxies.items():
+            proxies.setdefault(key, value)
+        if etf_proxies:
+            sources.append("Tencent finalized sector ETF closes")
     missing = [spec.key for spec in SECTORS if spec.key not in proxies]
     if missing:
         return {
@@ -284,11 +372,11 @@ def apply_live_sector_close_overlay(
 
     return {
         "status": "provisional",
-        "source": "Eastmoney real-time industry-board baskets",
+        "source": " + ".join(sources),
         "market_date": market_date.isoformat(),
         "covered_sectors": [spec.key for spec in SECTORS],
         "board_count": int(sum(len(item["boards"]) for item in proxies.values())),
-        "reason": "same-day industry-board close snapshot overlaid while SW daily history settles",
+        "reason": "same-day sector close proxies overlaid while SW daily history settles",
     }
 
 
