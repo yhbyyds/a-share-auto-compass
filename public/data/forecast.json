@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-08-07T16:23:31.249498+08:00",
+    "generated_at": "2026-08-07T23:27:29.124243+08:00",
     "data_through": "2026-08-07",
     "forecast_window": "2026-08-10 至 2026-08-14",
     "version": "1.14.0",
@@ -31,7 +31,7 @@
       "update_warnings": []
     },
     "automation": {
-      "run_id": "20260807T162111",
+      "run_id": "20260807T232454",
       "status": "passed",
       "quality_gate": {
         "passed": true,
@@ -56,7 +56,7 @@
           "event_count": 0
         }
       },
-      "updated_at": "2026-08-07T16:21:11.059392+08:00",
+      "updated_at": "2026-08-07T23:24:54.456502+08:00",
       "mode": "automatic"
     }
   },
@@ -66,10 +66,10 @@
     "last_change": 1.02,
     "weekly_direction": "震荡",
     "weekly_up_probability": 50.6,
-    "weekly_expected_return": -0.11,
+    "weekly_expected_return": -0.08,
     "weekly_range": [
       -1.19,
-      0.94
+      0.86
     ],
     "risk_level": "较高",
     "breadth_guard": "healthy",
@@ -82,21 +82,21 @@
       "weekday": "一",
       "direction": "震荡",
       "up_probability": 50.9,
-      "expected_return": -0.0,
-      "low_return": -0.71,
-      "high_return": 0.43,
-      "path_close": 3939.93,
+      "expected_return": 0.01,
+      "low_return": -0.69,
+      "high_return": 0.42,
+      "path_close": 3940.43,
       "confidence": "低",
-      "model_spread": 2.5,
+      "model_spread": 2.1,
       "validation_accuracy": 56.7,
       "validation_edge": 2.5,
-      "evidence_score": 48.1,
+      "evidence_score": 48.4,
       "evidence_label": "较低",
       "evidence_reasons": [
         "近期相对基线 +2.5pp",
         "AUC 0.551",
         "Brier 0.250",
-        "模型分歧 2.5pp"
+        "模型分歧 2.1pp"
       ],
       "event_risk": "低",
       "event_count": 0,
@@ -106,22 +106,22 @@
       "date": "2026-08-11",
       "weekday": "二",
       "direction": "震荡",
-      "up_probability": 51.1,
-      "expected_return": 0.05,
-      "low_return": -0.54,
-      "high_return": 0.71,
-      "path_close": 3941.86,
+      "up_probability": 51.0,
+      "expected_return": 0.01,
+      "low_return": -0.58,
+      "high_return": 0.64,
+      "path_close": 3940.93,
       "confidence": "低",
-      "model_spread": 0.3,
+      "model_spread": 0.4,
       "validation_accuracy": 54.2,
       "validation_edge": 0.0,
-      "evidence_score": 17.6,
+      "evidence_score": 17.5,
       "evidence_label": "较低",
       "evidence_reasons": [
         "近期相对基线 +0.0pp",
         "AUC 0.518",
         "Brier 0.250",
-        "模型分歧 0.3pp"
+        "模型分歧 0.4pp"
       ],
       "event_risk": "低",
       "event_count": 0,
@@ -131,22 +131,22 @@
       "date": "2026-08-12",
       "weekday": "三",
       "direction": "震荡",
-      "up_probability": 50.4,
-      "expected_return": -0.11,
-      "low_return": -0.6,
-      "high_return": 0.5,
-      "path_close": 3937.45,
+      "up_probability": 50.7,
+      "expected_return": -0.05,
+      "low_return": -0.62,
+      "high_return": 0.49,
+      "path_close": 3938.92,
       "confidence": "低",
-      "model_spread": 2.2,
+      "model_spread": 1.2,
       "validation_accuracy": 52.5,
       "validation_edge": -1.7,
-      "evidence_score": 19.8,
+      "evidence_score": 20.6,
       "evidence_label": "较低",
       "evidence_reasons": [
         "近期相对基线 -1.7pp",
         "AUC 0.533",
         "Brier 0.250",
-        "模型分歧 2.2pp"
+        "模型分歧 1.2pp"
       ],
       "event_risk": "低",
       "event_count": 0,
@@ -156,22 +156,22 @@
       "date": "2026-08-13",
       "weekday": "四",
       "direction": "震荡",
-      "up_probability": 50.6,
-      "expected_return": -0.06,
+      "up_probability": 50.8,
+      "expected_return": -0.05,
       "low_return": -0.57,
-      "high_return": 0.65,
-      "path_close": 3935.25,
+      "high_return": 0.61,
+      "path_close": 3936.99,
       "confidence": "低",
-      "model_spread": 1.0,
+      "model_spread": 0.8,
       "validation_accuracy": 51.7,
       "validation_edge": -2.5,
-      "evidence_score": 18.0,
+      "evidence_score": 18.1,
       "evidence_label": "较低",
       "evidence_reasons": [
         "近期相对基线 -2.5pp",
         "AUC 0.522",
         "Brier 0.250",
-        "模型分歧 1.0pp"
+        "模型分歧 0.8pp"
       ],
       "event_risk": "低",
       "event_count": 0,
@@ -181,22 +181,22 @@
       "date": "2026-08-14",
       "weekday": "五",
       "direction": "震荡",
-      "up_probability": 52.1,
-      "expected_return": 0.01,
+      "up_probability": 51.2,
+      "expected_return": -0.0,
       "low_return": -0.53,
-      "high_return": 0.51,
-      "path_close": 3935.7,
+      "high_return": 0.55,
+      "path_close": 3936.92,
       "confidence": "低",
-      "model_spread": 3.5,
+      "model_spread": 4.9,
       "validation_accuracy": 54.2,
       "validation_edge": 0.0,
-      "evidence_score": 33.2,
+      "evidence_score": 32.1,
       "evidence_label": "较低",
       "evidence_reasons": [
         "近期相对基线 +0.0pp",
         "AUC 0.537",
         "Brier 0.249",
-        "模型分歧 3.5pp"
+        "模型分歧 4.9pp"
       ],
       "event_risk": "低",
       "event_count": 0,
@@ -241,7 +241,7 @@
     "advance_ratio": 51.2,
     "source": "新浪财经全A快照",
     "status": "live",
-    "fetched_at": "2026-08-07T16:22:23.500933+08:00",
+    "fetched_at": "2026-08-07T23:26:19.117658+08:00",
     "failures": [
       "_fetch_breadth_eastmoney: RetryError"
     ]
@@ -249,7 +249,7 @@
   "models": [
     {
       "name": "逻辑回归",
-      "probability": 50.8,
+      "probability": 50.7,
       "weight": 49.5
     },
     {
@@ -369,7 +369,7 @@
         "auc": 0.4533221437666393,
         "brier": 0.0,
         "high_confidence": 0.0,
-        "agreement": 0.9568911636015133
+        "agreement": 0.9564068305439343
       },
       "reasons": [
         "近期相对基线 +0.0pp",
@@ -858,16 +858,16 @@
           "key": "telecom",
           "name": "通信",
           "date": "2026-08-10",
-          "score": 70.0,
+          "score": 70.1,
           "direction": "震荡",
           "relative_signal": "相对偏强",
-          "up_probability": 52.6,
+          "up_probability": 52.4,
           "expected_return": 0.27,
-          "expected_excess": 0.27,
+          "expected_excess": 0.26,
           "directional_win_rate": 58.3,
           "directional_baseline": 51.7,
           "relative_win_rate": 52.5,
-          "signal_strength": 30.0,
+          "signal_strength": 29.6,
           "validation_edge": 6.6,
           "validation_component": 83.0,
           "expected_excess_weight": 0.27,
@@ -881,16 +881,16 @@
           "key": "computer",
           "name": "计算机",
           "date": "2026-08-10",
-          "score": 66.2,
+          "score": 65.2,
           "direction": "震荡",
           "relative_signal": "相对偏强",
-          "up_probability": 51.6,
+          "up_probability": 51.4,
           "expected_return": 0.14,
-          "expected_excess": 0.14,
+          "expected_excess": 0.13,
           "directional_win_rate": 64.2,
           "directional_baseline": 50.8,
           "relative_win_rate": 51.7,
-          "signal_strength": 23.5,
+          "signal_strength": 22.9,
           "validation_edge": 13.4,
           "validation_component": 100.0,
           "expected_excess_weight": 0.32,
@@ -904,16 +904,16 @@
           "key": "auto",
           "name": "汽车",
           "date": "2026-08-10",
-          "score": 59.7,
+          "score": 59.6,
           "direction": "震荡",
           "relative_signal": "相对中性",
-          "up_probability": 52.0,
+          "up_probability": 51.9,
           "expected_return": 0.11,
-          "expected_excess": 0.11,
+          "expected_excess": 0.1,
           "directional_win_rate": 60.0,
           "directional_baseline": 53.3,
           "relative_win_rate": 56.7,
-          "signal_strength": 23.8,
+          "signal_strength": 23.4,
           "validation_edge": 6.7,
           "validation_component": 83.5,
           "expected_excess_weight": 0.28,
@@ -929,12 +929,12 @@
           "key": "bank",
           "name": "银行",
           "date": "2026-08-10",
-          "score": 23.0,
+          "score": 23.2,
           "direction": "震荡",
           "relative_signal": "相对中性",
           "up_probability": 50.2,
           "expected_return": 0.03,
-          "expected_excess": 0.03,
+          "expected_excess": 0.02,
           "directional_win_rate": 46.7,
           "directional_baseline": 52.5,
           "relative_win_rate": 53.3,
@@ -952,12 +952,12 @@
           "key": "food_beverage",
           "name": "食品饮料",
           "date": "2026-08-10",
-          "score": 26.7,
+          "score": 27.0,
           "direction": "震荡",
           "relative_signal": "相对中性",
           "up_probability": 50.4,
           "expected_return": 0.04,
-          "expected_excess": 0.04,
+          "expected_excess": 0.03,
           "directional_win_rate": 49.2,
           "directional_baseline": 56.7,
           "relative_win_rate": 59.2,
@@ -975,16 +975,16 @@
           "key": "defense",
           "name": "国防军工",
           "date": "2026-08-10",
-          "score": 34.1,
+          "score": 35.0,
           "direction": "震荡",
           "relative_signal": "相对中性",
-          "up_probability": 48.7,
+          "up_probability": 48.6,
           "expected_return": 0.01,
-          "expected_excess": 0.01,
+          "expected_excess": 0.0,
           "directional_win_rate": 61.7,
           "directional_baseline": 52.5,
           "relative_win_rate": 48.3,
-          "signal_strength": 18.8,
+          "signal_strength": 19.1,
           "validation_edge": 9.2,
           "validation_component": 96.0,
           "expected_excess_weight": 0.25,
@@ -995,9 +995,9 @@
           "status": "相对落后观察"
         }
       ],
-      "score_spread": 47.0,
+      "score_spread": 46.9,
       "source_spread": {
-        "probability_pp": 3.9,
+        "probability_pp": 3.8,
         "expected_excess_pp": 0.27,
         "separated": true
       },
@@ -1024,10 +1024,10 @@
             "date": "2026-08-10",
             "weekday": "一",
             "direction": "震荡",
-            "up_probability": 52.6,
-            "outperform_probability": 51.2,
+            "up_probability": 52.4,
+            "outperform_probability": 51.7,
             "expected_return": 0.27,
-            "expected_excess": 0.27,
+            "expected_excess": 0.26,
             "directional_win_rate": 58.3,
             "directional_baseline": 51.7,
             "relative_win_rate": 52.5,
@@ -1047,11 +1047,11 @@
               "reliable": true
             },
             "confidence": "中",
-            "signal_strength": 30.0,
+            "signal_strength": 29.6,
             "signal_band": "弱",
-            "relative_signal_score": 93.8,
+            "relative_signal_score": 94.4,
             "relative_signal_spread": {
-              "probability_pp": 3.9,
+              "probability_pp": 3.8,
               "expected_excess_pp": 0.27,
               "separated": true
             },
@@ -1065,10 +1065,10 @@
             "date": "2026-08-11",
             "weekday": "二",
             "direction": "震荡",
-            "up_probability": 46.9,
-            "outperform_probability": 50.9,
-            "expected_return": 0.1,
-            "expected_excess": 0.05,
+            "up_probability": 44.4,
+            "outperform_probability": 51.0,
+            "expected_return": 0.09,
+            "expected_excess": 0.08,
             "directional_win_rate": 57.5,
             "directional_baseline": 51.7,
             "relative_win_rate": 52.5,
@@ -1088,12 +1088,12 @@
               "reliable": false
             },
             "confidence": "中",
-            "signal_strength": 26.5,
+            "signal_strength": 32.9,
             "signal_band": "弱",
-            "relative_signal_score": 17.5,
+            "relative_signal_score": 15.8,
             "relative_signal_spread": {
-              "probability_pp": 5.3,
-              "expected_excess_pp": 0.1,
+              "probability_pp": 5.4,
+              "expected_excess_pp": 0.13,
               "separated": true
             },
             "relative_signal": "相对中性",
@@ -1106,9 +1106,9 @@
             "date": "2026-08-12",
             "weekday": "三",
             "direction": "震荡",
-            "up_probability": 46.2,
-            "outperform_probability": 51.8,
-            "expected_return": 0.14,
+            "up_probability": 47.2,
+            "outperform_probability": 51.9,
+            "expected_return": 0.2,
             "expected_excess": 0.25,
             "directional_win_rate": 52.5,
             "directional_baseline": 51.7,
@@ -1129,11 +1129,11 @@
               "reliable": false
             },
             "confidence": "低",
-            "signal_strength": 8.6,
+            "signal_strength": 8.1,
             "signal_band": "弱",
-            "relative_signal_score": 73.8,
+            "relative_signal_score": 70.0,
             "relative_signal_spread": {
-              "probability_pp": 6.7,
+              "probability_pp": 5.3,
               "expected_excess_pp": 0.28,
               "separated": true
             },
@@ -1147,10 +1147,10 @@
             "date": "2026-08-13",
             "weekday": "四",
             "direction": "震荡",
-            "up_probability": 52.0,
+            "up_probability": 51.8,
             "outperform_probability": 54.8,
             "expected_return": 0.19,
-            "expected_excess": 0.25,
+            "expected_excess": 0.24,
             "directional_win_rate": 53.3,
             "directional_baseline": 51.7,
             "relative_win_rate": 50.8,
@@ -1170,7 +1170,7 @@
               "reliable": true
             },
             "confidence": "低",
-            "signal_strength": 8.0,
+            "signal_strength": 7.8,
             "signal_band": "弱",
             "relative_signal_score": 98.8,
             "relative_signal_spread": {
@@ -1188,10 +1188,10 @@
             "date": "2026-08-14",
             "weekday": "五",
             "direction": "震荡",
-            "up_probability": 48.2,
-            "outperform_probability": 51.5,
-            "expected_return": 0.27,
-            "expected_excess": 0.26,
+            "up_probability": 48.0,
+            "outperform_probability": 50.7,
+            "expected_return": 0.23,
+            "expected_excess": 0.23,
             "directional_win_rate": 53.3,
             "directional_baseline": 51.7,
             "relative_win_rate": 51.7,
@@ -1211,12 +1211,12 @@
               "reliable": true
             },
             "confidence": "中",
-            "signal_strength": 18.1,
+            "signal_strength": 17.5,
             "signal_band": "弱",
-            "relative_signal_score": 65.0,
+            "relative_signal_score": 61.3,
             "relative_signal_spread": {
-              "probability_pp": 3.2,
-              "expected_excess_pp": 0.32,
+              "probability_pp": 3.4,
+              "expected_excess_pp": 0.33,
               "separated": true
             },
             "relative_signal": "相对中性",
@@ -1604,11 +1604,474 @@
           "relative_baseline": 51.7,
           "samples": 120
         },
-        "weekly_expected_return": 0.97,
-        "weekly_expected_excess": 1.08,
+        "weekly_expected_return": 0.98,
+        "weekly_expected_excess": 1.06,
         "outperform_probability": 52.0,
         "weekly_outlook": "相对中性",
         "rank": 1
+      },
+      {
+        "key": "technology",
+        "name": "科技综合",
+        "code": "电子+计算机+通信",
+        "group": "科技",
+        "is_composite": true,
+        "days": [
+          {
+            "date": "2026-08-10",
+            "weekday": "一",
+            "direction": "震荡",
+            "up_probability": 50.8,
+            "outperform_probability": 51.8,
+            "expected_return": 0.18,
+            "expected_excess": 0.17,
+            "confidence": "中",
+            "signal_strength": 25.0,
+            "signal_band": "弱",
+            "event_risk": "低",
+            "event_count": 0,
+            "event_titles": []
+          },
+          {
+            "date": "2026-08-11",
+            "weekday": "二",
+            "direction": "震荡",
+            "up_probability": 47.2,
+            "outperform_probability": 51.1,
+            "expected_return": 0.14,
+            "expected_excess": 0.13,
+            "confidence": "低",
+            "signal_strength": 14.3,
+            "signal_band": "弱",
+            "event_risk": "低",
+            "event_count": 0,
+            "event_titles": []
+          },
+          {
+            "date": "2026-08-12",
+            "weekday": "三",
+            "direction": "震荡",
+            "up_probability": 46.9,
+            "outperform_probability": 50.8,
+            "expected_return": 0.1,
+            "expected_excess": 0.15,
+            "confidence": "低",
+            "signal_strength": 12.9,
+            "signal_band": "弱",
+            "event_risk": "低",
+            "event_count": 0,
+            "event_titles": []
+          },
+          {
+            "date": "2026-08-13",
+            "weekday": "四",
+            "direction": "震荡",
+            "up_probability": 50.7,
+            "outperform_probability": 53.1,
+            "expected_return": 0.09,
+            "expected_excess": 0.14,
+            "confidence": "中",
+            "signal_strength": 8.8,
+            "signal_band": "弱",
+            "event_risk": "低",
+            "event_count": 0,
+            "event_titles": []
+          },
+          {
+            "date": "2026-08-14",
+            "weekday": "五",
+            "direction": "震荡",
+            "up_probability": 48.1,
+            "outperform_probability": 50.1,
+            "expected_return": 0.16,
+            "expected_excess": 0.16,
+            "confidence": "中",
+            "signal_strength": 18.3,
+            "signal_band": "弱",
+            "event_risk": "低",
+            "event_count": 0,
+            "event_titles": []
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-05-15",
+            "sector": 100.0,
+            "benchmark": 100.0,
+            "relative": 100.0
+          },
+          {
+            "date": "2026-05-18",
+            "sector": 101.17,
+            "benchmark": 99.46,
+            "relative": 101.71
+          },
+          {
+            "date": "2026-05-19",
+            "sector": 102.43,
+            "benchmark": 99.86,
+            "relative": 102.57
+          },
+          {
+            "date": "2026-05-20",
+            "sector": 102.67,
+            "benchmark": 99.82,
+            "relative": 102.86
+          },
+          {
+            "date": "2026-05-21",
+            "sector": 98.33,
+            "benchmark": 98.43,
+            "relative": 99.9
+          },
+          {
+            "date": "2026-05-22",
+            "sector": 101.54,
+            "benchmark": 99.7,
+            "relative": 101.85
+          },
+          {
+            "date": "2026-05-25",
+            "sector": 104.71,
+            "benchmark": 101.28,
+            "relative": 103.39
+          },
+          {
+            "date": "2026-05-26",
+            "sector": 103.66,
+            "benchmark": 101.82,
+            "relative": 101.81
+          },
+          {
+            "date": "2026-05-27",
+            "sector": 101.87,
+            "benchmark": 101.0,
+            "relative": 100.86
+          },
+          {
+            "date": "2026-05-28",
+            "sector": 104.1,
+            "benchmark": 101.12,
+            "relative": 102.94
+          },
+          {
+            "date": "2026-05-29",
+            "sector": 100.76,
+            "benchmark": 100.67,
+            "relative": 100.09
+          },
+          {
+            "date": "2026-06-01",
+            "sector": 98.75,
+            "benchmark": 99.68,
+            "relative": 99.06
+          },
+          {
+            "date": "2026-06-02",
+            "sector": 101.33,
+            "benchmark": 101.13,
+            "relative": 100.2
+          },
+          {
+            "date": "2026-06-03",
+            "sector": 103.56,
+            "benchmark": 101.63,
+            "relative": 101.9
+          },
+          {
+            "date": "2026-06-04",
+            "sector": 103.85,
+            "benchmark": 100.93,
+            "relative": 102.89
+          },
+          {
+            "date": "2026-06-05",
+            "sector": 101.22,
+            "benchmark": 99.12,
+            "relative": 102.12
+          },
+          {
+            "date": "2026-06-08",
+            "sector": 97.71,
+            "benchmark": 97.0,
+            "relative": 100.73
+          },
+          {
+            "date": "2026-06-09",
+            "sector": 101.74,
+            "benchmark": 98.81,
+            "relative": 102.97
+          },
+          {
+            "date": "2026-06-10",
+            "sector": 99.42,
+            "benchmark": 97.72,
+            "relative": 101.75
+          },
+          {
+            "date": "2026-06-11",
+            "sector": 97.95,
+            "benchmark": 97.18,
+            "relative": 100.8
+          },
+          {
+            "date": "2026-06-12",
+            "sector": 97.56,
+            "benchmark": 98.31,
+            "relative": 99.24
+          },
+          {
+            "date": "2026-06-15",
+            "sector": 102.93,
+            "benchmark": 100.66,
+            "relative": 102.25
+          },
+          {
+            "date": "2026-06-16",
+            "sector": 104.85,
+            "benchmark": 100.51,
+            "relative": 104.32
+          },
+          {
+            "date": "2026-06-17",
+            "sector": 107.25,
+            "benchmark": 101.48,
+            "relative": 105.69
+          },
+          {
+            "date": "2026-06-18",
+            "sector": 110.1,
+            "benchmark": 101.69,
+            "relative": 108.27
+          },
+          {
+            "date": "2026-06-22",
+            "sector": 112.11,
+            "benchmark": 104.12,
+            "relative": 107.68
+          },
+          {
+            "date": "2026-06-23",
+            "sector": 109.19,
+            "benchmark": 101.23,
+            "relative": 107.87
+          },
+          {
+            "date": "2026-06-24",
+            "sector": 111.19,
+            "benchmark": 101.72,
+            "relative": 109.31
+          },
+          {
+            "date": "2026-06-25",
+            "sector": 113.72,
+            "benchmark": 103.3,
+            "relative": 110.08
+          },
+          {
+            "date": "2026-06-26",
+            "sector": 108.98,
+            "benchmark": 100.18,
+            "relative": 108.79
+          },
+          {
+            "date": "2026-06-29",
+            "sector": 108.58,
+            "benchmark": 101.39,
+            "relative": 107.1
+          },
+          {
+            "date": "2026-06-30",
+            "sector": 113.22,
+            "benchmark": 102.47,
+            "relative": 110.49
+          },
+          {
+            "date": "2026-07-01",
+            "sector": 111.35,
+            "benchmark": 102.05,
+            "relative": 109.11
+          },
+          {
+            "date": "2026-07-02",
+            "sector": 104.6,
+            "benchmark": 99.03,
+            "relative": 105.63
+          },
+          {
+            "date": "2026-07-03",
+            "sector": 104.23,
+            "benchmark": 99.64,
+            "relative": 104.6
+          },
+          {
+            "date": "2026-07-06",
+            "sector": 102.28,
+            "benchmark": 99.64,
+            "relative": 102.65
+          },
+          {
+            "date": "2026-07-07",
+            "sector": 101.3,
+            "benchmark": 98.61,
+            "relative": 102.73
+          },
+          {
+            "date": "2026-07-08",
+            "sector": 101.47,
+            "benchmark": 97.86,
+            "relative": 103.69
+          },
+          {
+            "date": "2026-07-09",
+            "sector": 106.91,
+            "benchmark": 100.34,
+            "relative": 106.55
+          },
+          {
+            "date": "2026-07-10",
+            "sector": 103.77,
+            "benchmark": 98.38,
+            "relative": 105.48
+          },
+          {
+            "date": "2026-07-13",
+            "sector": 99.22,
+            "benchmark": 96.62,
+            "relative": 102.7
+          },
+          {
+            "date": "2026-07-14",
+            "sector": 101.69,
+            "benchmark": 98.7,
+            "relative": 103.02
+          },
+          {
+            "date": "2026-07-15",
+            "sector": 99.18,
+            "benchmark": 98.5,
+            "relative": 100.69
+          },
+          {
+            "date": "2026-07-16",
+            "sector": 96.58,
+            "benchmark": 96.68,
+            "relative": 99.89
+          },
+          {
+            "date": "2026-07-17",
+            "sector": 88.85,
+            "benchmark": 93.2,
+            "relative": 95.34
+          },
+          {
+            "date": "2026-07-20",
+            "sector": 87.73,
+            "benchmark": 94.62,
+            "relative": 92.72
+          },
+          {
+            "date": "2026-07-21",
+            "sector": 94.13,
+            "benchmark": 97.52,
+            "relative": 96.52
+          },
+          {
+            "date": "2026-07-22",
+            "sector": 92.04,
+            "benchmark": 97.07,
+            "relative": 94.82
+          },
+          {
+            "date": "2026-07-23",
+            "sector": 90.86,
+            "benchmark": 97.29,
+            "relative": 93.39
+          },
+          {
+            "date": "2026-07-24",
+            "sector": 88.65,
+            "benchmark": 95.67,
+            "relative": 92.66
+          },
+          {
+            "date": "2026-07-27",
+            "sector": 91.04,
+            "benchmark": 96.77,
+            "relative": 94.09
+          },
+          {
+            "date": "2026-07-28",
+            "sector": 85.24,
+            "benchmark": 94.03,
+            "relative": 90.65
+          },
+          {
+            "date": "2026-07-29",
+            "sector": 85.23,
+            "benchmark": 94.66,
+            "relative": 90.04
+          },
+          {
+            "date": "2026-07-30",
+            "sector": 80.67,
+            "benchmark": 93.62,
+            "relative": 86.17
+          },
+          {
+            "date": "2026-07-31",
+            "sector": 84.25,
+            "benchmark": 94.42,
+            "relative": 89.23
+          },
+          {
+            "date": "2026-08-03",
+            "sector": 83.29,
+            "benchmark": 93.49,
+            "relative": 89.09
+          },
+          {
+            "date": "2026-08-04",
+            "sector": 88.23,
+            "benchmark": 94.68,
+            "relative": 93.19
+          },
+          {
+            "date": "2026-08-05",
+            "sector": 90.19,
+            "benchmark": 95.85,
+            "relative": 94.09
+          },
+          {
+            "date": "2026-08-06",
+            "sector": 90.94,
+            "benchmark": 95.71,
+            "relative": 95.02
+          },
+          {
+            "date": "2026-08-07",
+            "sector": 92.35,
+            "benchmark": 96.6,
+            "relative": 95.6
+          }
+        ],
+        "drivers": [
+          "由申万电子、计算机、通信三个一级行业等权合成",
+          "用于判断科技主线，不代表任一只科技股"
+        ],
+        "invalidation": "若三大子行业中两个以上跌破20日均线，科技综合信号失效。",
+        "validation": {
+          "is_proxy": true,
+          "accuracy": 60.8,
+          "baseline": 51.7,
+          "relative_accuracy": 50.0,
+          "samples": 120
+        },
+        "weekly_expected_return": 0.67,
+        "weekly_expected_excess": 0.75,
+        "outperform_probability": 51.4,
+        "weekly_outlook": "相对中性",
+        "rank": 2
       },
       {
         "key": "electronics",
@@ -1621,10 +2084,10 @@
             "date": "2026-08-10",
             "weekday": "一",
             "direction": "震荡",
-            "up_probability": 48.8,
-            "outperform_probability": 51.4,
+            "up_probability": 48.6,
+            "outperform_probability": 51.7,
             "expected_return": 0.13,
-            "expected_excess": 0.13,
+            "expected_excess": 0.12,
             "directional_win_rate": 60.0,
             "directional_baseline": 52.5,
             "relative_win_rate": 45.8,
@@ -1644,11 +2107,11 @@
               "reliable": true
             },
             "confidence": "中",
-            "signal_strength": 22.2,
+            "signal_strength": 22.6,
             "signal_band": "弱",
-            "relative_signal_score": 50.8,
+            "relative_signal_score": 48.3,
             "relative_signal_spread": {
-              "probability_pp": 3.9,
+              "probability_pp": 3.8,
               "expected_excess_pp": 0.27,
               "separated": true
             },
@@ -1662,10 +2125,10 @@
             "date": "2026-08-11",
             "weekday": "二",
             "direction": "震荡",
-            "up_probability": 49.2,
-            "outperform_probability": 51.1,
-            "expected_return": 0.2,
-            "expected_excess": 0.15,
+            "up_probability": 48.1,
+            "outperform_probability": 51.2,
+            "expected_return": 0.19,
+            "expected_excess": 0.18,
             "directional_win_rate": 53.3,
             "directional_baseline": 52.5,
             "relative_win_rate": 45.0,
@@ -1685,12 +2148,12 @@
               "reliable": false
             },
             "confidence": "低",
-            "signal_strength": 5.3,
+            "signal_strength": 6.7,
             "signal_band": "弱",
-            "relative_signal_score": 57.1,
+            "relative_signal_score": 52.5,
             "relative_signal_spread": {
-              "probability_pp": 5.3,
-              "expected_excess_pp": 0.1,
+              "probability_pp": 5.4,
+              "expected_excess_pp": 0.13,
               "separated": true
             },
             "relative_signal": "相对中性",
@@ -1703,11 +2166,11 @@
             "date": "2026-08-12",
             "weekday": "三",
             "direction": "震荡",
-            "up_probability": 45.2,
-            "outperform_probability": 51.5,
-            "expected_return": -0.01,
+            "up_probability": 47.1,
+            "outperform_probability": 51.6,
+            "expected_return": 0.05,
             "expected_excess": 0.1,
-            "directional_win_rate": 53.3,
+            "directional_win_rate": 52.5,
             "directional_baseline": 52.5,
             "relative_win_rate": 44.2,
             "excess_validation": {
@@ -1726,11 +2189,11 @@
               "reliable": false
             },
             "confidence": "低",
-            "signal_strength": 7.9,
+            "signal_strength": 4.7,
             "signal_band": "弱",
-            "relative_signal_score": 53.3,
+            "relative_signal_score": 55.0,
             "relative_signal_spread": {
-              "probability_pp": 6.7,
+              "probability_pp": 5.3,
               "expected_excess_pp": 0.28,
               "separated": true
             },
@@ -1744,10 +2207,10 @@
             "date": "2026-08-13",
             "weekday": "四",
             "direction": "震荡",
-            "up_probability": 50.2,
+            "up_probability": 49.9,
             "outperform_probability": 54.9,
             "expected_return": 0.01,
-            "expected_excess": 0.07,
+            "expected_excess": 0.06,
             "directional_win_rate": 55.0,
             "directional_baseline": 52.5,
             "relative_win_rate": 48.3,
@@ -1767,9 +2230,9 @@
               "reliable": true
             },
             "confidence": "中",
-            "signal_strength": 8.3,
+            "signal_strength": 8.1,
             "signal_band": "弱",
-            "relative_signal_score": 32.9,
+            "relative_signal_score": 30.8,
             "relative_signal_spread": {
               "probability_pp": 2.0,
               "expected_excess_pp": 0.19,
@@ -1785,10 +2248,10 @@
             "date": "2026-08-14",
             "weekday": "五",
             "direction": "震荡",
-            "up_probability": 49.6,
-            "outperform_probability": 52.3,
-            "expected_return": 0.26,
-            "expected_excess": 0.25,
+            "up_probability": 49.3,
+            "outperform_probability": 51.5,
+            "expected_return": 0.22,
+            "expected_excess": 0.22,
             "directional_win_rate": 55.0,
             "directional_baseline": 52.5,
             "relative_win_rate": 45.0,
@@ -1808,12 +2271,12 @@
               "reliable": true
             },
             "confidence": "中",
-            "signal_strength": 16.3,
+            "signal_strength": 15.8,
             "signal_band": "弱",
             "relative_signal_score": 92.9,
             "relative_signal_spread": {
-              "probability_pp": 3.2,
-              "expected_excess_pp": 0.32,
+              "probability_pp": 3.4,
+              "expected_excess_pp": 0.33,
               "separated": true
             },
             "relative_signal": "相对偏强",
@@ -2195,478 +2658,15 @@
           "is_proxy": false,
           "accuracy": 60.0,
           "baseline": 52.5,
-          "auc": 0.615,
+          "auc": 0.616,
           "brier": 0.24,
           "relative_accuracy": 45.8,
           "relative_baseline": 56.7,
           "samples": 120
         },
-        "weekly_expected_return": 0.59,
-        "weekly_expected_excess": 0.7,
+        "weekly_expected_return": 0.6,
+        "weekly_expected_excess": 0.68,
         "outperform_probability": 52.2,
-        "weekly_outlook": "相对中性",
-        "rank": 2
-      },
-      {
-        "key": "technology",
-        "name": "科技综合",
-        "code": "电子+计算机+通信",
-        "group": "科技",
-        "is_composite": true,
-        "days": [
-          {
-            "date": "2026-08-10",
-            "weekday": "一",
-            "direction": "震荡",
-            "up_probability": 51.0,
-            "outperform_probability": 51.4,
-            "expected_return": 0.18,
-            "expected_excess": 0.18,
-            "confidence": "中",
-            "signal_strength": 25.2,
-            "signal_band": "弱",
-            "event_risk": "低",
-            "event_count": 0,
-            "event_titles": []
-          },
-          {
-            "date": "2026-08-11",
-            "weekday": "二",
-            "direction": "震荡",
-            "up_probability": 48.7,
-            "outperform_probability": 51.0,
-            "expected_return": 0.14,
-            "expected_excess": 0.09,
-            "confidence": "低",
-            "signal_strength": 11.3,
-            "signal_band": "弱",
-            "event_risk": "低",
-            "event_count": 0,
-            "event_titles": []
-          },
-          {
-            "date": "2026-08-12",
-            "weekday": "三",
-            "direction": "震荡",
-            "up_probability": 45.2,
-            "outperform_probability": 50.7,
-            "expected_return": 0.04,
-            "expected_excess": 0.15,
-            "confidence": "低",
-            "signal_strength": 16.0,
-            "signal_band": "弱",
-            "event_risk": "低",
-            "event_count": 0,
-            "event_titles": []
-          },
-          {
-            "date": "2026-08-13",
-            "weekday": "四",
-            "direction": "震荡",
-            "up_probability": 51.0,
-            "outperform_probability": 53.1,
-            "expected_return": 0.09,
-            "expected_excess": 0.15,
-            "confidence": "中",
-            "signal_strength": 9.3,
-            "signal_band": "弱",
-            "event_risk": "低",
-            "event_count": 0,
-            "event_titles": []
-          },
-          {
-            "date": "2026-08-14",
-            "weekday": "五",
-            "direction": "震荡",
-            "up_probability": 48.4,
-            "outperform_probability": 51.2,
-            "expected_return": 0.2,
-            "expected_excess": 0.19,
-            "confidence": "中",
-            "signal_strength": 18.8,
-            "signal_band": "弱",
-            "event_risk": "低",
-            "event_count": 0,
-            "event_titles": []
-          }
-        ],
-        "history": [
-          {
-            "date": "2026-05-15",
-            "sector": 100.0,
-            "benchmark": 100.0,
-            "relative": 100.0
-          },
-          {
-            "date": "2026-05-18",
-            "sector": 101.17,
-            "benchmark": 99.46,
-            "relative": 101.71
-          },
-          {
-            "date": "2026-05-19",
-            "sector": 102.43,
-            "benchmark": 99.86,
-            "relative": 102.57
-          },
-          {
-            "date": "2026-05-20",
-            "sector": 102.67,
-            "benchmark": 99.82,
-            "relative": 102.86
-          },
-          {
-            "date": "2026-05-21",
-            "sector": 98.33,
-            "benchmark": 98.43,
-            "relative": 99.9
-          },
-          {
-            "date": "2026-05-22",
-            "sector": 101.54,
-            "benchmark": 99.7,
-            "relative": 101.85
-          },
-          {
-            "date": "2026-05-25",
-            "sector": 104.71,
-            "benchmark": 101.28,
-            "relative": 103.39
-          },
-          {
-            "date": "2026-05-26",
-            "sector": 103.66,
-            "benchmark": 101.82,
-            "relative": 101.81
-          },
-          {
-            "date": "2026-05-27",
-            "sector": 101.87,
-            "benchmark": 101.0,
-            "relative": 100.86
-          },
-          {
-            "date": "2026-05-28",
-            "sector": 104.1,
-            "benchmark": 101.12,
-            "relative": 102.94
-          },
-          {
-            "date": "2026-05-29",
-            "sector": 100.76,
-            "benchmark": 100.67,
-            "relative": 100.09
-          },
-          {
-            "date": "2026-06-01",
-            "sector": 98.75,
-            "benchmark": 99.68,
-            "relative": 99.06
-          },
-          {
-            "date": "2026-06-02",
-            "sector": 101.33,
-            "benchmark": 101.13,
-            "relative": 100.2
-          },
-          {
-            "date": "2026-06-03",
-            "sector": 103.56,
-            "benchmark": 101.63,
-            "relative": 101.9
-          },
-          {
-            "date": "2026-06-04",
-            "sector": 103.85,
-            "benchmark": 100.93,
-            "relative": 102.89
-          },
-          {
-            "date": "2026-06-05",
-            "sector": 101.22,
-            "benchmark": 99.12,
-            "relative": 102.12
-          },
-          {
-            "date": "2026-06-08",
-            "sector": 97.71,
-            "benchmark": 97.0,
-            "relative": 100.73
-          },
-          {
-            "date": "2026-06-09",
-            "sector": 101.74,
-            "benchmark": 98.81,
-            "relative": 102.97
-          },
-          {
-            "date": "2026-06-10",
-            "sector": 99.42,
-            "benchmark": 97.72,
-            "relative": 101.75
-          },
-          {
-            "date": "2026-06-11",
-            "sector": 97.95,
-            "benchmark": 97.18,
-            "relative": 100.8
-          },
-          {
-            "date": "2026-06-12",
-            "sector": 97.56,
-            "benchmark": 98.31,
-            "relative": 99.24
-          },
-          {
-            "date": "2026-06-15",
-            "sector": 102.93,
-            "benchmark": 100.66,
-            "relative": 102.25
-          },
-          {
-            "date": "2026-06-16",
-            "sector": 104.85,
-            "benchmark": 100.51,
-            "relative": 104.32
-          },
-          {
-            "date": "2026-06-17",
-            "sector": 107.25,
-            "benchmark": 101.48,
-            "relative": 105.69
-          },
-          {
-            "date": "2026-06-18",
-            "sector": 110.1,
-            "benchmark": 101.69,
-            "relative": 108.27
-          },
-          {
-            "date": "2026-06-22",
-            "sector": 112.11,
-            "benchmark": 104.12,
-            "relative": 107.68
-          },
-          {
-            "date": "2026-06-23",
-            "sector": 109.19,
-            "benchmark": 101.23,
-            "relative": 107.87
-          },
-          {
-            "date": "2026-06-24",
-            "sector": 111.19,
-            "benchmark": 101.72,
-            "relative": 109.31
-          },
-          {
-            "date": "2026-06-25",
-            "sector": 113.72,
-            "benchmark": 103.3,
-            "relative": 110.08
-          },
-          {
-            "date": "2026-06-26",
-            "sector": 108.98,
-            "benchmark": 100.18,
-            "relative": 108.79
-          },
-          {
-            "date": "2026-06-29",
-            "sector": 108.58,
-            "benchmark": 101.39,
-            "relative": 107.1
-          },
-          {
-            "date": "2026-06-30",
-            "sector": 113.22,
-            "benchmark": 102.47,
-            "relative": 110.49
-          },
-          {
-            "date": "2026-07-01",
-            "sector": 111.35,
-            "benchmark": 102.05,
-            "relative": 109.11
-          },
-          {
-            "date": "2026-07-02",
-            "sector": 104.6,
-            "benchmark": 99.03,
-            "relative": 105.63
-          },
-          {
-            "date": "2026-07-03",
-            "sector": 104.23,
-            "benchmark": 99.64,
-            "relative": 104.6
-          },
-          {
-            "date": "2026-07-06",
-            "sector": 102.28,
-            "benchmark": 99.64,
-            "relative": 102.65
-          },
-          {
-            "date": "2026-07-07",
-            "sector": 101.3,
-            "benchmark": 98.61,
-            "relative": 102.73
-          },
-          {
-            "date": "2026-07-08",
-            "sector": 101.47,
-            "benchmark": 97.86,
-            "relative": 103.69
-          },
-          {
-            "date": "2026-07-09",
-            "sector": 106.91,
-            "benchmark": 100.34,
-            "relative": 106.55
-          },
-          {
-            "date": "2026-07-10",
-            "sector": 103.77,
-            "benchmark": 98.38,
-            "relative": 105.48
-          },
-          {
-            "date": "2026-07-13",
-            "sector": 99.22,
-            "benchmark": 96.62,
-            "relative": 102.7
-          },
-          {
-            "date": "2026-07-14",
-            "sector": 101.69,
-            "benchmark": 98.7,
-            "relative": 103.02
-          },
-          {
-            "date": "2026-07-15",
-            "sector": 99.18,
-            "benchmark": 98.5,
-            "relative": 100.69
-          },
-          {
-            "date": "2026-07-16",
-            "sector": 96.58,
-            "benchmark": 96.68,
-            "relative": 99.89
-          },
-          {
-            "date": "2026-07-17",
-            "sector": 88.85,
-            "benchmark": 93.2,
-            "relative": 95.34
-          },
-          {
-            "date": "2026-07-20",
-            "sector": 87.73,
-            "benchmark": 94.62,
-            "relative": 92.72
-          },
-          {
-            "date": "2026-07-21",
-            "sector": 94.13,
-            "benchmark": 97.52,
-            "relative": 96.52
-          },
-          {
-            "date": "2026-07-22",
-            "sector": 92.04,
-            "benchmark": 97.07,
-            "relative": 94.82
-          },
-          {
-            "date": "2026-07-23",
-            "sector": 90.86,
-            "benchmark": 97.29,
-            "relative": 93.39
-          },
-          {
-            "date": "2026-07-24",
-            "sector": 88.65,
-            "benchmark": 95.67,
-            "relative": 92.66
-          },
-          {
-            "date": "2026-07-27",
-            "sector": 91.04,
-            "benchmark": 96.77,
-            "relative": 94.09
-          },
-          {
-            "date": "2026-07-28",
-            "sector": 85.24,
-            "benchmark": 94.03,
-            "relative": 90.65
-          },
-          {
-            "date": "2026-07-29",
-            "sector": 85.23,
-            "benchmark": 94.66,
-            "relative": 90.04
-          },
-          {
-            "date": "2026-07-30",
-            "sector": 80.67,
-            "benchmark": 93.62,
-            "relative": 86.17
-          },
-          {
-            "date": "2026-07-31",
-            "sector": 84.25,
-            "benchmark": 94.42,
-            "relative": 89.23
-          },
-          {
-            "date": "2026-08-03",
-            "sector": 83.29,
-            "benchmark": 93.49,
-            "relative": 89.09
-          },
-          {
-            "date": "2026-08-04",
-            "sector": 88.23,
-            "benchmark": 94.68,
-            "relative": 93.19
-          },
-          {
-            "date": "2026-08-05",
-            "sector": 90.19,
-            "benchmark": 95.85,
-            "relative": 94.09
-          },
-          {
-            "date": "2026-08-06",
-            "sector": 90.94,
-            "benchmark": 95.71,
-            "relative": 95.02
-          },
-          {
-            "date": "2026-08-07",
-            "sector": 92.35,
-            "benchmark": 96.6,
-            "relative": 95.6
-          }
-        ],
-        "drivers": [
-          "由申万电子、计算机、通信三个一级行业等权合成",
-          "用于判断科技主线，不代表任一只科技股"
-        ],
-        "invalidation": "若三大子行业中两个以上跌破20日均线，科技综合信号失效。",
-        "validation": {
-          "is_proxy": true,
-          "accuracy": 60.8,
-          "baseline": 51.7,
-          "relative_accuracy": 50.0,
-          "samples": 120
-        },
-        "weekly_expected_return": 0.65,
-        "weekly_expected_excess": 0.76,
-        "outperform_probability": 51.5,
         "weekly_outlook": "相对中性",
         "rank": 3
       },
@@ -2681,10 +2681,10 @@
             "date": "2026-08-10",
             "weekday": "一",
             "direction": "震荡",
-            "up_probability": 51.0,
-            "outperform_probability": 51.7,
+            "up_probability": 50.8,
+            "outperform_probability": 52.0,
             "expected_return": 0.11,
-            "expected_excess": 0.11,
+            "expected_excess": 0.1,
             "directional_win_rate": 55.8,
             "directional_baseline": 53.3,
             "relative_win_rate": 51.7,
@@ -2704,11 +2704,11 @@
               "reliable": true
             },
             "confidence": "中",
-            "signal_strength": 13.3,
+            "signal_strength": 12.9,
             "signal_band": "弱",
             "relative_signal_score": 67.1,
             "relative_signal_spread": {
-              "probability_pp": 3.9,
+              "probability_pp": 3.8,
               "expected_excess_pp": 0.27,
               "separated": true
             },
@@ -2722,10 +2722,10 @@
             "date": "2026-08-11",
             "weekday": "二",
             "direction": "震荡",
-            "up_probability": 50.5,
-            "outperform_probability": 51.2,
-            "expected_return": 0.19,
-            "expected_excess": 0.14,
+            "up_probability": 49.6,
+            "outperform_probability": 51.3,
+            "expected_return": 0.21,
+            "expected_excess": 0.2,
             "directional_win_rate": 44.2,
             "directional_baseline": 53.3,
             "relative_win_rate": 46.7,
@@ -2745,12 +2745,12 @@
               "reliable": false
             },
             "confidence": "低",
-            "signal_strength": 3.5,
+            "signal_strength": 3.7,
             "signal_band": "弱",
-            "relative_signal_score": 77.9,
+            "relative_signal_score": 81.0,
             "relative_signal_spread": {
-              "probability_pp": 5.3,
-              "expected_excess_pp": 0.1,
+              "probability_pp": 5.4,
+              "expected_excess_pp": 0.13,
               "separated": true
             },
             "relative_signal": "相对中性",
@@ -2763,9 +2763,9 @@
             "date": "2026-08-12",
             "weekday": "三",
             "direction": "震荡",
-            "up_probability": 47.4,
-            "outperform_probability": 48.6,
-            "expected_return": -0.06,
+            "up_probability": 48.3,
+            "outperform_probability": 48.7,
+            "expected_return": -0.0,
             "expected_excess": 0.05,
             "directional_win_rate": 48.3,
             "directional_baseline": 53.3,
@@ -2786,11 +2786,11 @@
               "reliable": false
             },
             "confidence": "低",
-            "signal_strength": 4.5,
+            "signal_strength": 2.5,
             "signal_band": "弱",
-            "relative_signal_score": 52.9,
+            "relative_signal_score": 54.2,
             "relative_signal_spread": {
-              "probability_pp": 6.7,
+              "probability_pp": 5.3,
               "expected_excess_pp": 0.28,
               "separated": true
             },
@@ -2804,10 +2804,10 @@
             "date": "2026-08-13",
             "weekday": "四",
             "direction": "震荡",
-            "up_probability": 50.6,
+            "up_probability": 50.5,
             "outperform_probability": 50.6,
-            "expected_return": 0.09,
-            "expected_excess": 0.15,
+            "expected_return": 0.08,
+            "expected_excess": 0.13,
             "directional_win_rate": 46.7,
             "directional_baseline": 53.3,
             "relative_win_rate": 50.8,
@@ -2827,9 +2827,9 @@
               "reliable": true
             },
             "confidence": "低",
-            "signal_strength": 2.2,
+            "signal_strength": 1.9,
             "signal_band": "弱",
-            "relative_signal_score": 72.9,
+            "relative_signal_score": 75.0,
             "relative_signal_spread": {
               "probability_pp": 2.0,
               "expected_excess_pp": 0.19,
@@ -2845,10 +2845,10 @@
             "date": "2026-08-14",
             "weekday": "五",
             "direction": "震荡",
-            "up_probability": 48.6,
-            "outperform_probability": 49.8,
-            "expected_return": 0.1,
-            "expected_excess": 0.09,
+            "up_probability": 48.3,
+            "outperform_probability": 49.0,
+            "expected_return": 0.06,
+            "expected_excess": 0.06,
             "directional_win_rate": 55.8,
             "directional_baseline": 53.3,
             "relative_win_rate": 48.3,
@@ -2868,12 +2868,12 @@
               "reliable": true
             },
             "confidence": "中",
-            "signal_strength": 14.3,
+            "signal_strength": 13.8,
             "signal_band": "弱",
             "relative_signal_score": 56.7,
             "relative_signal_spread": {
-              "probability_pp": 3.2,
-              "expected_excess_pp": 0.32,
+              "probability_pp": 3.4,
+              "expected_excess_pp": 0.33,
               "separated": true
             },
             "relative_signal": "相对中性",
@@ -3261,9 +3261,9 @@
           "relative_baseline": 54.2,
           "samples": 120
         },
-        "weekly_expected_return": 0.43,
+        "weekly_expected_return": 0.46,
         "weekly_expected_excess": 0.54,
-        "outperform_probability": 50.4,
+        "outperform_probability": 50.3,
         "weekly_outlook": "相对中性",
         "rank": 4
       },
@@ -3278,10 +3278,10 @@
             "date": "2026-08-10",
             "weekday": "一",
             "direction": "震荡",
-            "up_probability": 52.0,
-            "outperform_probability": 50.7,
+            "up_probability": 51.9,
+            "outperform_probability": 50.8,
             "expected_return": 0.11,
-            "expected_excess": 0.11,
+            "expected_excess": 0.1,
             "directional_win_rate": 60.0,
             "directional_baseline": 53.3,
             "relative_win_rate": 56.7,
@@ -3301,11 +3301,11 @@
               "reliable": true
             },
             "confidence": "中",
-            "signal_strength": 23.8,
+            "signal_strength": 23.4,
             "signal_band": "弱",
             "relative_signal_score": 74.6,
             "relative_signal_spread": {
-              "probability_pp": 3.9,
+              "probability_pp": 3.8,
               "expected_excess_pp": 0.27,
               "separated": true
             },
@@ -3319,10 +3319,10 @@
             "date": "2026-08-11",
             "weekday": "二",
             "direction": "震荡",
-            "up_probability": 50.5,
-            "outperform_probability": 50.4,
-            "expected_return": 0.19,
-            "expected_excess": 0.14,
+            "up_probability": 49.7,
+            "outperform_probability": 50.7,
+            "expected_return": 0.2,
+            "expected_excess": 0.19,
             "directional_win_rate": 50.8,
             "directional_baseline": 53.3,
             "relative_win_rate": 64.2,
@@ -3342,12 +3342,12 @@
               "reliable": false
             },
             "confidence": "低",
-            "signal_strength": 3.6,
+            "signal_strength": 3.5,
             "signal_band": "弱",
-            "relative_signal_score": 71.7,
+            "relative_signal_score": 80.2,
             "relative_signal_spread": {
-              "probability_pp": 5.3,
-              "expected_excess_pp": 0.1,
+              "probability_pp": 5.4,
+              "expected_excess_pp": 0.13,
               "separated": true
             },
             "relative_signal": "相对中性",
@@ -3360,9 +3360,9 @@
             "date": "2026-08-12",
             "weekday": "三",
             "direction": "震荡",
-            "up_probability": 48.4,
-            "outperform_probability": 48.6,
-            "expected_return": 0.01,
+            "up_probability": 49.3,
+            "outperform_probability": 48.7,
+            "expected_return": 0.07,
             "expected_excess": 0.12,
             "directional_win_rate": 49.2,
             "directional_baseline": 53.3,
@@ -3383,11 +3383,11 @@
               "reliable": false
             },
             "confidence": "低",
-            "signal_strength": 2.3,
+            "signal_strength": 2.0,
             "signal_band": "弱",
-            "relative_signal_score": 86.2,
+            "relative_signal_score": 89.2,
             "relative_signal_spread": {
-              "probability_pp": 6.7,
+              "probability_pp": 5.3,
               "expected_excess_pp": 0.28,
               "separated": true
             },
@@ -3401,10 +3401,10 @@
             "date": "2026-08-13",
             "weekday": "四",
             "direction": "震荡",
-            "up_probability": 50.6,
+            "up_probability": 50.5,
             "outperform_probability": 49.4,
             "expected_return": 0.08,
-            "expected_excess": 0.14,
+            "expected_excess": 0.13,
             "directional_win_rate": 52.5,
             "directional_baseline": 53.3,
             "relative_win_rate": 53.3,
@@ -3424,9 +3424,9 @@
               "reliable": true
             },
             "confidence": "低",
-            "signal_strength": 2.1,
+            "signal_strength": 1.8,
             "signal_band": "弱",
-            "relative_signal_score": 63.3,
+            "relative_signal_score": 68.8,
             "relative_signal_spread": {
               "probability_pp": 2.0,
               "expected_excess_pp": 0.19,
@@ -3442,10 +3442,10 @@
             "date": "2026-08-14",
             "weekday": "五",
             "direction": "震荡",
-            "up_probability": 49.2,
-            "outperform_probability": 50.0,
-            "expected_return": 0.03,
-            "expected_excess": 0.02,
+            "up_probability": 49.1,
+            "outperform_probability": 49.2,
+            "expected_return": -0.01,
+            "expected_excess": -0.01,
             "directional_win_rate": 50.8,
             "directional_baseline": 53.3,
             "relative_win_rate": 55.8,
@@ -3467,10 +3467,10 @@
             "confidence": "低",
             "signal_strength": 1.5,
             "signal_band": "弱",
-            "relative_signal_score": 68.8,
+            "relative_signal_score": 70.0,
             "relative_signal_spread": {
-              "probability_pp": 3.2,
-              "expected_excess_pp": 0.32,
+              "probability_pp": 3.4,
+              "expected_excess_pp": 0.33,
               "separated": true
             },
             "relative_signal": "相对中性",
@@ -3858,7 +3858,7 @@
           "relative_baseline": 57.5,
           "samples": 120
         },
-        "weekly_expected_return": 0.42,
+        "weekly_expected_return": 0.45,
         "weekly_expected_excess": 0.53,
         "outperform_probability": 49.8,
         "weekly_outlook": "相对中性",
@@ -3875,10 +3875,10 @@
             "date": "2026-08-10",
             "weekday": "一",
             "direction": "震荡",
-            "up_probability": 50.4,
-            "outperform_probability": 53.1,
+            "up_probability": 50.3,
+            "outperform_probability": 53.8,
             "expected_return": 0.1,
-            "expected_excess": 0.1,
+            "expected_excess": 0.09,
             "directional_win_rate": 50.8,
             "directional_baseline": 51.7,
             "relative_win_rate": 54.2,
@@ -3898,11 +3898,11 @@
               "reliable": true
             },
             "confidence": "低",
-            "signal_strength": 2.0,
+            "signal_strength": 1.9,
             "signal_band": "弱",
-            "relative_signal_score": 57.7,
+            "relative_signal_score": 55.8,
             "relative_signal_spread": {
-              "probability_pp": 3.9,
+              "probability_pp": 3.8,
               "expected_excess_pp": 0.27,
               "separated": true
             },
@@ -3916,10 +3916,10 @@
             "date": "2026-08-11",
             "weekday": "二",
             "direction": "震荡",
-            "up_probability": 52.2,
-            "outperform_probability": 51.4,
-            "expected_return": 0.2,
-            "expected_excess": 0.15,
+            "up_probability": 49.8,
+            "outperform_probability": 51.6,
+            "expected_return": 0.22,
+            "expected_excess": 0.21,
             "directional_win_rate": 56.7,
             "directional_baseline": 51.7,
             "relative_win_rate": 49.2,
@@ -3939,12 +3939,12 @@
               "reliable": false
             },
             "confidence": "中",
-            "signal_strength": 27.3,
+            "signal_strength": 22.2,
             "signal_band": "弱",
-            "relative_signal_score": 97.1,
+            "relative_signal_score": 98.8,
             "relative_signal_spread": {
-              "probability_pp": 5.3,
-              "expected_excess_pp": 0.1,
+              "probability_pp": 5.4,
+              "expected_excess_pp": 0.13,
               "separated": true
             },
             "relative_signal": "相对偏强",
@@ -3957,9 +3957,9 @@
             "date": "2026-08-12",
             "weekday": "三",
             "direction": "偏弱",
-            "up_probability": 41.7,
-            "outperform_probability": 47.1,
-            "expected_return": -0.1,
+            "up_probability": 44.0,
+            "outperform_probability": 47.4,
+            "expected_return": -0.04,
             "expected_excess": 0.01,
             "directional_win_rate": 58.3,
             "directional_baseline": 51.7,
@@ -3980,11 +3980,11 @@
               "reliable": false
             },
             "confidence": "中",
-            "signal_strength": 40.9,
+            "signal_strength": 33.0,
             "signal_band": "弱",
-            "relative_signal_score": 11.7,
+            "relative_signal_score": 12.3,
             "relative_signal_spread": {
-              "probability_pp": 6.7,
+              "probability_pp": 5.3,
               "expected_excess_pp": 0.28,
               "separated": true
             },
@@ -3998,10 +3998,10 @@
             "date": "2026-08-13",
             "weekday": "四",
             "direction": "震荡",
-            "up_probability": 50.3,
+            "up_probability": 50.2,
             "outperform_probability": 52.0,
             "expected_return": 0.04,
-            "expected_excess": 0.1,
+            "expected_excess": 0.09,
             "directional_win_rate": 50.0,
             "directional_baseline": 51.7,
             "relative_win_rate": 53.3,
@@ -4021,7 +4021,7 @@
               "reliable": true
             },
             "confidence": "低",
-            "signal_strength": 1.1,
+            "signal_strength": 0.9,
             "signal_band": "弱",
             "relative_signal_score": 44.2,
             "relative_signal_spread": {
@@ -4039,10 +4039,10 @@
             "date": "2026-08-14",
             "weekday": "五",
             "direction": "震荡",
-            "up_probability": 49.1,
-            "outperform_probability": 49.1,
-            "expected_return": 0.12,
-            "expected_excess": 0.11,
+            "up_probability": 48.7,
+            "outperform_probability": 46.8,
+            "expected_return": 0.08,
+            "expected_excess": 0.08,
             "directional_win_rate": 55.8,
             "directional_baseline": 51.7,
             "relative_win_rate": 58.3,
@@ -4062,12 +4062,12 @@
               "reliable": true
             },
             "confidence": "中",
-            "signal_strength": 18.5,
+            "signal_strength": 18.3,
             "signal_band": "弱",
-            "relative_signal_score": 66.3,
+            "relative_signal_score": 57.5,
             "relative_signal_spread": {
-              "probability_pp": 3.2,
-              "expected_excess_pp": 0.32,
+              "probability_pp": 3.4,
+              "expected_excess_pp": 0.33,
               "separated": true
             },
             "relative_signal": "相对中性",
@@ -4449,15 +4449,15 @@
           "is_proxy": false,
           "accuracy": 50.8,
           "baseline": 51.7,
-          "auc": 0.578,
+          "auc": 0.577,
           "brier": 0.249,
           "relative_accuracy": 54.2,
           "relative_baseline": 50.8,
           "samples": 120
         },
-        "weekly_expected_return": 0.36,
-        "weekly_expected_excess": 0.47,
-        "outperform_probability": 50.5,
+        "weekly_expected_return": 0.4,
+        "weekly_expected_excess": 0.48,
+        "outperform_probability": 50.3,
         "weekly_outlook": "相对中性",
         "rank": 6
       },
@@ -4472,10 +4472,10 @@
             "date": "2026-08-10",
             "weekday": "一",
             "direction": "震荡",
-            "up_probability": 51.6,
-            "outperform_probability": 51.5,
+            "up_probability": 51.4,
+            "outperform_probability": 51.9,
             "expected_return": 0.14,
-            "expected_excess": 0.14,
+            "expected_excess": 0.13,
             "directional_win_rate": 64.2,
             "directional_baseline": 50.8,
             "relative_win_rate": 51.7,
@@ -4495,11 +4495,11 @@
               "reliable": true
             },
             "confidence": "中",
-            "signal_strength": 23.5,
+            "signal_strength": 22.9,
             "signal_band": "弱",
-            "relative_signal_score": 83.5,
+            "relative_signal_score": 81.7,
             "relative_signal_spread": {
-              "probability_pp": 3.9,
+              "probability_pp": 3.8,
               "expected_excess_pp": 0.27,
               "separated": true
             },
@@ -4513,10 +4513,10 @@
             "date": "2026-08-11",
             "weekday": "二",
             "direction": "震荡",
-            "up_probability": 50.1,
-            "outperform_probability": 51.0,
-            "expected_return": 0.13,
-            "expected_excess": 0.08,
+            "up_probability": 49.2,
+            "outperform_probability": 51.1,
+            "expected_return": 0.15,
+            "expected_excess": 0.14,
             "directional_win_rate": 50.8,
             "directional_baseline": 50.8,
             "relative_win_rate": 50.8,
@@ -4536,12 +4536,12 @@
               "reliable": false
             },
             "confidence": "低",
-            "signal_strength": 2.1,
+            "signal_strength": 3.3,
             "signal_band": "弱",
             "relative_signal_score": 45.2,
             "relative_signal_spread": {
-              "probability_pp": 5.3,
-              "expected_excess_pp": 0.1,
+              "probability_pp": 5.4,
+              "expected_excess_pp": 0.13,
               "separated": true
             },
             "relative_signal": "相对中性",
@@ -4554,10 +4554,10 @@
             "date": "2026-08-12",
             "weekday": "三",
             "direction": "震荡",
-            "up_probability": 44.1,
-            "outperform_probability": 48.9,
-            "expected_return": -0.01,
-            "expected_excess": 0.1,
+            "up_probability": 46.5,
+            "outperform_probability": 49.0,
+            "expected_return": 0.04,
+            "expected_excess": 0.09,
             "directional_win_rate": 56.7,
             "directional_baseline": 50.8,
             "relative_win_rate": 48.3,
@@ -4577,11 +4577,11 @@
               "reliable": false
             },
             "confidence": "中",
-            "signal_strength": 31.6,
+            "signal_strength": 26.0,
             "signal_band": "弱",
-            "relative_signal_score": 47.7,
+            "relative_signal_score": 46.0,
             "relative_signal_spread": {
-              "probability_pp": 6.7,
+              "probability_pp": 5.3,
               "expected_excess_pp": 0.28,
               "separated": true
             },
@@ -4595,10 +4595,10 @@
             "date": "2026-08-13",
             "weekday": "四",
             "direction": "震荡",
-            "up_probability": 50.7,
+            "up_probability": 50.4,
             "outperform_probability": 49.5,
             "expected_return": 0.07,
-            "expected_excess": 0.13,
+            "expected_excess": 0.12,
             "directional_win_rate": 53.3,
             "directional_baseline": 50.8,
             "relative_win_rate": 45.0,
@@ -4618,9 +4618,9 @@
               "reliable": true
             },
             "confidence": "中",
-            "signal_strength": 11.5,
+            "signal_strength": 10.6,
             "signal_band": "弱",
-            "relative_signal_score": 65.4,
+            "relative_signal_score": 57.5,
             "relative_signal_spread": {
               "probability_pp": 2.0,
               "expected_excess_pp": 0.19,
@@ -4636,10 +4636,10 @@
             "date": "2026-08-14",
             "weekday": "五",
             "direction": "震荡",
-            "up_probability": 47.3,
-            "outperform_probability": 49.7,
-            "expected_return": 0.06,
-            "expected_excess": 0.05,
+            "up_probability": 46.9,
+            "outperform_probability": 48.2,
+            "expected_return": 0.02,
+            "expected_excess": 0.02,
             "directional_win_rate": 55.0,
             "directional_baseline": 50.8,
             "relative_win_rate": 53.3,
@@ -4659,12 +4659,12 @@
               "reliable": true
             },
             "confidence": "中",
-            "signal_strength": 21.9,
+            "signal_strength": 21.6,
             "signal_band": "弱",
-            "relative_signal_score": 34.6,
+            "relative_signal_score": 30.8,
             "relative_signal_spread": {
-              "probability_pp": 3.2,
-              "expected_excess_pp": 0.32,
+              "probability_pp": 3.4,
+              "expected_excess_pp": 0.33,
               "separated": true
             },
             "relative_signal": "相对中性",
@@ -5052,9 +5052,9 @@
           "relative_baseline": 50.8,
           "samples": 120
         },
-        "weekly_expected_return": 0.39,
+        "weekly_expected_return": 0.42,
         "weekly_expected_excess": 0.5,
-        "outperform_probability": 50.1,
+        "outperform_probability": 49.9,
         "weekly_outlook": "相对中性",
         "rank": 7
       },
@@ -5070,9 +5070,9 @@
             "weekday": "一",
             "direction": "震荡",
             "up_probability": 50.4,
-            "outperform_probability": 49.1,
+            "outperform_probability": 49.2,
             "expected_return": 0.04,
-            "expected_excess": 0.04,
+            "expected_excess": 0.03,
             "directional_win_rate": 49.2,
             "directional_baseline": 56.7,
             "relative_win_rate": 59.2,
@@ -5094,9 +5094,9 @@
             "confidence": "低",
             "signal_strength": 1.3,
             "signal_band": "弱",
-            "relative_signal_score": 37.7,
+            "relative_signal_score": 38.3,
             "relative_signal_spread": {
-              "probability_pp": 3.9,
+              "probability_pp": 3.8,
               "expected_excess_pp": 0.27,
               "separated": true
             },
@@ -5110,10 +5110,10 @@
             "date": "2026-08-11",
             "weekday": "二",
             "direction": "震荡",
-            "up_probability": 50.5,
-            "outperform_probability": 50.0,
-            "expected_return": 0.17,
-            "expected_excess": 0.12,
+            "up_probability": 49.6,
+            "outperform_probability": 50.1,
+            "expected_return": 0.18,
+            "expected_excess": 0.17,
             "directional_win_rate": 48.3,
             "directional_baseline": 56.7,
             "relative_win_rate": 58.3,
@@ -5133,12 +5133,12 @@
               "reliable": false
             },
             "confidence": "低",
-            "signal_strength": 3.1,
+            "signal_strength": 3.3,
             "signal_band": "弱",
-            "relative_signal_score": 62.9,
+            "relative_signal_score": 61.0,
             "relative_signal_spread": {
-              "probability_pp": 5.3,
-              "expected_excess_pp": 0.1,
+              "probability_pp": 5.4,
+              "expected_excess_pp": 0.13,
               "separated": true
             },
             "relative_signal": "相对中性",
@@ -5151,10 +5151,10 @@
             "date": "2026-08-12",
             "weekday": "三",
             "direction": "震荡",
-            "up_probability": 48.3,
+            "up_probability": 49.1,
             "outperform_probability": 48.7,
-            "expected_return": 0.01,
-            "expected_excess": 0.12,
+            "expected_return": 0.06,
+            "expected_excess": 0.11,
             "directional_win_rate": 45.8,
             "directional_baseline": 56.7,
             "relative_win_rate": 53.3,
@@ -5174,11 +5174,11 @@
               "reliable": false
             },
             "confidence": "低",
-            "signal_strength": 2.4,
+            "signal_strength": 2.1,
             "signal_band": "弱",
-            "relative_signal_score": 85.0,
+            "relative_signal_score": 82.1,
             "relative_signal_spread": {
-              "probability_pp": 6.7,
+              "probability_pp": 5.3,
               "expected_excess_pp": 0.28,
               "separated": true
             },
@@ -5192,10 +5192,10 @@
             "date": "2026-08-13",
             "weekday": "四",
             "direction": "震荡",
-            "up_probability": 50.4,
+            "up_probability": 50.3,
             "outperform_probability": 50.3,
-            "expected_return": 0.07,
-            "expected_excess": 0.13,
+            "expected_return": 0.06,
+            "expected_excess": 0.11,
             "directional_win_rate": 42.5,
             "directional_baseline": 56.7,
             "relative_win_rate": 55.8,
@@ -5215,9 +5215,9 @@
               "reliable": true
             },
             "confidence": "低",
-            "signal_strength": 1.5,
+            "signal_strength": 1.3,
             "signal_band": "弱",
-            "relative_signal_score": 52.9,
+            "relative_signal_score": 51.2,
             "relative_signal_spread": {
               "probability_pp": 2.0,
               "expected_excess_pp": 0.19,
@@ -5233,10 +5233,10 @@
             "date": "2026-08-14",
             "weekday": "五",
             "direction": "震荡",
-            "up_probability": 48.6,
-            "outperform_probability": 49.2,
-            "expected_return": 0.0,
-            "expected_excess": -0.01,
+            "up_probability": 48.5,
+            "outperform_probability": 48.4,
+            "expected_return": -0.04,
+            "expected_excess": -0.04,
             "directional_win_rate": 44.2,
             "directional_baseline": 56.7,
             "relative_win_rate": 55.8,
@@ -5256,12 +5256,12 @@
               "reliable": true
             },
             "confidence": "低",
-            "signal_strength": 2.0,
+            "signal_strength": 2.7,
             "signal_band": "弱",
-            "relative_signal_score": 37.7,
+            "relative_signal_score": 40.8,
             "relative_signal_spread": {
-              "probability_pp": 3.2,
-              "expected_excess_pp": 0.32,
+              "probability_pp": 3.4,
+              "expected_excess_pp": 0.33,
               "separated": true
             },
             "relative_signal": "相对中性",
@@ -5649,9 +5649,9 @@
           "relative_baseline": 58.3,
           "samples": 120
         },
-        "weekly_expected_return": 0.29,
-        "weekly_expected_excess": 0.4,
-        "outperform_probability": 49.5,
+        "weekly_expected_return": 0.3,
+        "weekly_expected_excess": 0.38,
+        "outperform_probability": 49.3,
         "weekly_outlook": "相对中性",
         "rank": 8
       },
@@ -5666,10 +5666,10 @@
             "date": "2026-08-10",
             "weekday": "一",
             "direction": "震荡",
-            "up_probability": 51.4,
-            "outperform_probability": 54.2,
+            "up_probability": 51.3,
+            "outperform_probability": 54.4,
             "expected_return": 0.05,
-            "expected_excess": 0.05,
+            "expected_excess": 0.04,
             "directional_win_rate": 60.0,
             "directional_baseline": 55.8,
             "relative_win_rate": 57.5,
@@ -5689,11 +5689,11 @@
               "reliable": true
             },
             "confidence": "中",
-            "signal_strength": 18.0,
+            "signal_strength": 17.5,
             "signal_band": "弱",
             "relative_signal_score": 63.3,
             "relative_signal_spread": {
-              "probability_pp": 3.9,
+              "probability_pp": 3.8,
               "expected_excess_pp": 0.27,
               "separated": true
             },
@@ -5707,10 +5707,10 @@
             "date": "2026-08-11",
             "weekday": "二",
             "direction": "震荡",
-            "up_probability": 50.4,
-            "outperform_probability": 52.9,
-            "expected_return": 0.15,
-            "expected_excess": 0.1,
+            "up_probability": 49.5,
+            "outperform_probability": 53.3,
+            "expected_return": 0.16,
+            "expected_excess": 0.15,
             "directional_win_rate": 47.5,
             "directional_baseline": 55.8,
             "relative_win_rate": 60.0,
@@ -5730,12 +5730,12 @@
               "reliable": false
             },
             "confidence": "低",
-            "signal_strength": 2.7,
+            "signal_strength": 3.1,
             "signal_band": "弱",
             "relative_signal_score": 62.7,
             "relative_signal_spread": {
-              "probability_pp": 5.3,
-              "expected_excess_pp": 0.1,
+              "probability_pp": 5.4,
+              "expected_excess_pp": 0.13,
               "separated": true
             },
             "relative_signal": "相对中性",
@@ -5748,9 +5748,9 @@
             "date": "2026-08-12",
             "weekday": "三",
             "direction": "震荡",
-            "up_probability": 46.6,
-            "outperform_probability": 48.9,
-            "expected_return": -0.14,
+            "up_probability": 47.4,
+            "outperform_probability": 49.0,
+            "expected_return": -0.08,
             "expected_excess": -0.03,
             "directional_win_rate": 54.2,
             "directional_baseline": 55.8,
@@ -5771,11 +5771,11 @@
               "reliable": false
             },
             "confidence": "低",
-            "signal_strength": 6.7,
+            "signal_strength": 4.8,
             "signal_band": "弱",
-            "relative_signal_score": 37.7,
+            "relative_signal_score": 34.0,
             "relative_signal_spread": {
-              "probability_pp": 6.7,
+              "probability_pp": 5.3,
               "expected_excess_pp": 0.28,
               "separated": true
             },
@@ -5789,10 +5789,10 @@
             "date": "2026-08-13",
             "weekday": "四",
             "direction": "震荡",
-            "up_probability": 50.9,
+            "up_probability": 50.7,
             "outperform_probability": 50.7,
             "expected_return": 0.03,
-            "expected_excess": 0.09,
+            "expected_excess": 0.08,
             "directional_win_rate": 40.0,
             "directional_baseline": 55.8,
             "relative_win_rate": 54.2,
@@ -5812,7 +5812,7 @@
               "reliable": true
             },
             "confidence": "低",
-            "signal_strength": 1.7,
+            "signal_strength": 1.4,
             "signal_band": "弱",
             "relative_signal_score": 64.0,
             "relative_signal_spread": {
@@ -5830,10 +5830,10 @@
             "date": "2026-08-14",
             "weekday": "五",
             "direction": "震荡",
-            "up_probability": 49.0,
-            "outperform_probability": 50.3,
-            "expected_return": 0.01,
-            "expected_excess": -0.0,
+            "up_probability": 48.9,
+            "outperform_probability": 48.8,
+            "expected_return": -0.03,
+            "expected_excess": -0.03,
             "directional_win_rate": 53.3,
             "directional_baseline": 55.8,
             "relative_win_rate": 56.7,
@@ -5853,12 +5853,12 @@
               "reliable": true
             },
             "confidence": "低",
-            "signal_strength": 1.5,
+            "signal_strength": 2.0,
             "signal_band": "弱",
-            "relative_signal_score": 57.3,
+            "relative_signal_score": 57.9,
             "relative_signal_spread": {
-              "probability_pp": 3.2,
-              "expected_excess_pp": 0.32,
+              "probability_pp": 3.4,
+              "expected_excess_pp": 0.33,
               "separated": true
             },
             "relative_signal": "相对中性",
@@ -6240,15 +6240,15 @@
           "is_proxy": false,
           "accuracy": 60.0,
           "baseline": 55.8,
-          "auc": 0.602,
+          "auc": 0.603,
           "brier": 0.246,
           "relative_accuracy": 57.5,
           "relative_baseline": 54.2,
           "samples": 120
         },
-        "weekly_expected_return": 0.1,
+        "weekly_expected_return": 0.13,
         "weekly_expected_excess": 0.21,
-        "outperform_probability": 51.4,
+        "outperform_probability": 51.2,
         "weekly_outlook": "相对中性",
         "rank": 9
       },
@@ -6263,10 +6263,10 @@
             "date": "2026-08-10",
             "weekday": "一",
             "direction": "震荡",
-            "up_probability": 48.7,
-            "outperform_probability": 50.9,
+            "up_probability": 48.6,
+            "outperform_probability": 51.0,
             "expected_return": 0.01,
-            "expected_excess": 0.01,
+            "expected_excess": 0.0,
             "directional_win_rate": 61.7,
             "directional_baseline": 52.5,
             "relative_win_rate": 48.3,
@@ -6286,11 +6286,11 @@
               "reliable": true
             },
             "confidence": "中",
-            "signal_strength": 18.8,
+            "signal_strength": 19.1,
             "signal_band": "弱",
-            "relative_signal_score": 16.7,
+            "relative_signal_score": 18.5,
             "relative_signal_spread": {
-              "probability_pp": 3.9,
+              "probability_pp": 3.8,
               "expected_excess_pp": 0.27,
               "separated": true
             },
@@ -6304,10 +6304,10 @@
             "date": "2026-08-11",
             "weekday": "二",
             "direction": "震荡",
-            "up_probability": 50.4,
-            "outperform_probability": 50.5,
-            "expected_return": 0.12,
-            "expected_excess": 0.07,
+            "up_probability": 49.5,
+            "outperform_probability": 50.6,
+            "expected_return": 0.14,
+            "expected_excess": 0.13,
             "directional_win_rate": 47.5,
             "directional_baseline": 52.5,
             "relative_win_rate": 50.8,
@@ -6327,12 +6327,12 @@
               "reliable": false
             },
             "confidence": "低",
-            "signal_strength": 2.3,
+            "signal_strength": 2.8,
             "signal_band": "弱",
-            "relative_signal_score": 43.5,
+            "relative_signal_score": 44.0,
             "relative_signal_spread": {
-              "probability_pp": 5.3,
-              "expected_excess_pp": 0.1,
+              "probability_pp": 5.4,
+              "expected_excess_pp": 0.13,
               "separated": true
             },
             "relative_signal": "相对中性",
@@ -6345,9 +6345,9 @@
             "date": "2026-08-12",
             "weekday": "三",
             "direction": "震荡",
-            "up_probability": 47.8,
-            "outperform_probability": 47.3,
-            "expected_return": -0.09,
+            "up_probability": 48.6,
+            "outperform_probability": 47.4,
+            "expected_return": -0.03,
             "expected_excess": 0.02,
             "directional_win_rate": 52.5,
             "directional_baseline": 52.5,
@@ -6368,11 +6368,11 @@
               "reliable": false
             },
             "confidence": "低",
-            "signal_strength": 4.4,
+            "signal_strength": 2.4,
             "signal_band": "弱",
-            "relative_signal_score": 46.2,
+            "relative_signal_score": 45.6,
             "relative_signal_spread": {
-              "probability_pp": 6.7,
+              "probability_pp": 5.3,
               "expected_excess_pp": 0.28,
               "separated": true
             },
@@ -6386,11 +6386,11 @@
             "date": "2026-08-13",
             "weekday": "四",
             "direction": "震荡",
-            "up_probability": 50.6,
+            "up_probability": 50.5,
             "outperform_probability": 50.5,
             "expected_return": -0.0,
-            "expected_excess": 0.06,
-            "directional_win_rate": 49.2,
+            "expected_excess": 0.05,
+            "directional_win_rate": 48.3,
             "directional_baseline": 52.5,
             "relative_win_rate": 50.0,
             "excess_validation": {
@@ -6409,9 +6409,9 @@
               "reliable": true
             },
             "confidence": "低",
-            "signal_strength": 0.9,
+            "signal_strength": 0.6,
             "signal_band": "弱",
-            "relative_signal_score": 38.3,
+            "relative_signal_score": 42.1,
             "relative_signal_spread": {
               "probability_pp": 2.0,
               "expected_excess_pp": 0.19,
@@ -6427,10 +6427,10 @@
             "date": "2026-08-14",
             "weekday": "五",
             "direction": "震荡",
-            "up_probability": 50.5,
-            "outperform_probability": 49.8,
-            "expected_return": 0.17,
-            "expected_excess": 0.16,
+            "up_probability": 50.3,
+            "outperform_probability": 48.8,
+            "expected_return": 0.13,
+            "expected_excess": 0.13,
             "directional_win_rate": 53.3,
             "directional_baseline": 52.5,
             "relative_win_rate": 55.8,
@@ -6450,12 +6450,12 @@
               "reliable": true
             },
             "confidence": "低",
-            "signal_strength": 4.5,
+            "signal_strength": 3.6,
             "signal_band": "弱",
             "relative_signal_score": 87.7,
             "relative_signal_spread": {
-              "probability_pp": 3.2,
-              "expected_excess_pp": 0.32,
+              "probability_pp": 3.4,
+              "expected_excess_pp": 0.33,
               "separated": true
             },
             "relative_signal": "相对中性",
@@ -6843,9 +6843,9 @@
           "relative_baseline": 55.0,
           "samples": 120
         },
-        "weekly_expected_return": 0.21,
-        "weekly_expected_excess": 0.32,
-        "outperform_probability": 49.8,
+        "weekly_expected_return": 0.25,
+        "weekly_expected_excess": 0.33,
+        "outperform_probability": 49.7,
         "weekly_outlook": "相对中性",
         "rank": 10
       },
@@ -6860,10 +6860,10 @@
             "date": "2026-08-10",
             "weekday": "一",
             "direction": "震荡",
-            "up_probability": 51.6,
-            "outperform_probability": 49.0,
+            "up_probability": 51.5,
+            "outperform_probability": 49.2,
             "expected_return": 0.05,
-            "expected_excess": 0.05,
+            "expected_excess": 0.04,
             "directional_win_rate": 57.5,
             "directional_baseline": 55.0,
             "relative_win_rate": 53.3,
@@ -6883,11 +6883,11 @@
               "reliable": true
             },
             "confidence": "中",
-            "signal_strength": 13.2,
+            "signal_strength": 13.1,
             "signal_band": "弱",
-            "relative_signal_score": 55.8,
+            "relative_signal_score": 58.3,
             "relative_signal_spread": {
-              "probability_pp": 3.9,
+              "probability_pp": 3.8,
               "expected_excess_pp": 0.27,
               "separated": true
             },
@@ -6901,10 +6901,10 @@
             "date": "2026-08-11",
             "weekday": "二",
             "direction": "震荡",
-            "up_probability": 50.6,
-            "outperform_probability": 50.1,
-            "expected_return": 0.12,
-            "expected_excess": 0.07,
+            "up_probability": 49.7,
+            "outperform_probability": 50.2,
+            "expected_return": 0.13,
+            "expected_excess": 0.12,
             "directional_win_rate": 54.2,
             "directional_baseline": 55.0,
             "relative_win_rate": 45.0,
@@ -6924,12 +6924,12 @@
               "reliable": false
             },
             "confidence": "低",
-            "signal_strength": 2.5,
+            "signal_strength": 2.4,
             "signal_band": "弱",
-            "relative_signal_score": 57.3,
+            "relative_signal_score": 53.1,
             "relative_signal_spread": {
-              "probability_pp": 5.3,
-              "expected_excess_pp": 0.1,
+              "probability_pp": 5.4,
+              "expected_excess_pp": 0.13,
               "separated": true
             },
             "relative_signal": "相对中性",
@@ -6942,9 +6942,9 @@
             "date": "2026-08-12",
             "weekday": "三",
             "direction": "震荡",
-            "up_probability": 45.6,
-            "outperform_probability": 48.0,
-            "expected_return": -0.05,
+            "up_probability": 48.0,
+            "outperform_probability": 48.1,
+            "expected_return": 0.01,
             "expected_excess": 0.06,
             "directional_win_rate": 61.7,
             "directional_baseline": 55.0,
@@ -6965,11 +6965,11 @@
               "reliable": false
             },
             "confidence": "中",
-            "signal_strength": 28.4,
+            "signal_strength": 20.8,
             "signal_band": "弱",
-            "relative_signal_score": 38.7,
+            "relative_signal_score": 46.2,
             "relative_signal_spread": {
-              "probability_pp": 6.7,
+              "probability_pp": 5.3,
               "expected_excess_pp": 0.28,
               "separated": true
             },
@@ -6983,10 +6983,10 @@
             "date": "2026-08-13",
             "weekday": "四",
             "direction": "震荡",
-            "up_probability": 50.9,
+            "up_probability": 50.7,
             "outperform_probability": 49.7,
-            "expected_return": 0.06,
-            "expected_excess": 0.12,
+            "expected_return": 0.05,
+            "expected_excess": 0.1,
             "directional_win_rate": 54.2,
             "directional_baseline": 55.0,
             "relative_win_rate": 49.2,
@@ -7006,7 +7006,7 @@
               "reliable": true
             },
             "confidence": "低",
-            "signal_strength": 2.1,
+            "signal_strength": 1.8,
             "signal_band": "弱",
             "relative_signal_score": 65.6,
             "relative_signal_spread": {
@@ -7024,10 +7024,10 @@
             "date": "2026-08-14",
             "weekday": "五",
             "direction": "震荡",
-            "up_probability": 49.0,
-            "outperform_probability": 49.5,
-            "expected_return": -0.03,
-            "expected_excess": -0.04,
+            "up_probability": 48.9,
+            "outperform_probability": 48.5,
+            "expected_return": -0.07,
+            "expected_excess": -0.07,
             "directional_win_rate": 50.0,
             "directional_baseline": 55.0,
             "relative_win_rate": 51.7,
@@ -7047,12 +7047,12 @@
               "reliable": true
             },
             "confidence": "低",
-            "signal_strength": 1.8,
+            "signal_strength": 2.6,
             "signal_band": "弱",
-            "relative_signal_score": 44.4,
+            "relative_signal_score": 48.1,
             "relative_signal_spread": {
-              "probability_pp": 3.2,
-              "expected_excess_pp": 0.32,
+              "probability_pp": 3.4,
+              "expected_excess_pp": 0.33,
               "separated": true
             },
             "relative_signal": "相对中性",
@@ -7441,9 +7441,9 @@
           "relative_baseline": 50.8,
           "samples": 120
         },
-        "weekly_expected_return": 0.15,
-        "weekly_expected_excess": 0.26,
-        "outperform_probability": 49.3,
+        "weekly_expected_return": 0.17,
+        "weekly_expected_excess": 0.25,
+        "outperform_probability": 49.1,
         "weekly_outlook": "相对中性",
         "rank": 11
       },
@@ -7459,9 +7459,9 @@
             "weekday": "一",
             "direction": "震荡",
             "up_probability": 50.2,
-            "outperform_probability": 49.0,
+            "outperform_probability": 49.2,
             "expected_return": 0.03,
-            "expected_excess": 0.03,
+            "expected_excess": 0.02,
             "directional_win_rate": 46.7,
             "directional_baseline": 52.5,
             "relative_win_rate": 53.3,
@@ -7483,9 +7483,9 @@
             "confidence": "低",
             "signal_strength": 0.7,
             "signal_band": "弱",
-            "relative_signal_score": 26.9,
+            "relative_signal_score": 27.5,
             "relative_signal_spread": {
-              "probability_pp": 3.9,
+              "probability_pp": 3.8,
               "expected_excess_pp": 0.27,
               "separated": true
             },
@@ -7499,10 +7499,10 @@
             "date": "2026-08-11",
             "weekday": "二",
             "direction": "震荡",
-            "up_probability": 50.1,
-            "outperform_probability": 49.1,
-            "expected_return": 0.13,
-            "expected_excess": 0.08,
+            "up_probability": 49.2,
+            "outperform_probability": 49.4,
+            "expected_return": 0.15,
+            "expected_excess": 0.14,
             "directional_win_rate": 50.8,
             "directional_baseline": 52.5,
             "relative_win_rate": 53.3,
@@ -7522,12 +7522,12 @@
               "reliable": false
             },
             "confidence": "低",
-            "signal_strength": 2.1,
+            "signal_strength": 3.3,
             "signal_band": "弱",
             "relative_signal_score": 36.5,
             "relative_signal_spread": {
-              "probability_pp": 5.3,
-              "expected_excess_pp": 0.1,
+              "probability_pp": 5.4,
+              "expected_excess_pp": 0.13,
               "separated": true
             },
             "relative_signal": "相对中性",
@@ -7540,9 +7540,9 @@
             "date": "2026-08-12",
             "weekday": "三",
             "direction": "震荡",
-            "up_probability": 48.2,
-            "outperform_probability": 48.8,
-            "expected_return": -0.03,
+            "up_probability": 49.0,
+            "outperform_probability": 48.7,
+            "expected_return": 0.03,
             "expected_excess": 0.08,
             "directional_win_rate": 51.7,
             "directional_baseline": 52.5,
@@ -7563,11 +7563,11 @@
               "reliable": false
             },
             "confidence": "低",
-            "signal_strength": 2.9,
+            "signal_strength": 1.8,
             "signal_band": "弱",
-            "relative_signal_score": 70.8,
+            "relative_signal_score": 68.3,
             "relative_signal_spread": {
-              "probability_pp": 6.7,
+              "probability_pp": 5.3,
               "expected_excess_pp": 0.28,
               "separated": true
             },
@@ -7581,10 +7581,10 @@
             "date": "2026-08-13",
             "weekday": "四",
             "direction": "震荡",
-            "up_probability": 50.1,
+            "up_probability": 50.0,
             "outperform_probability": 48.7,
-            "expected_return": 0.07,
-            "expected_excess": 0.13,
+            "expected_return": 0.06,
+            "expected_excess": 0.11,
             "directional_win_rate": 51.7,
             "directional_baseline": 52.5,
             "relative_win_rate": 54.2,
@@ -7604,9 +7604,9 @@
               "reliable": true
             },
             "confidence": "低",
-            "signal_strength": 1.1,
+            "signal_strength": 1.0,
             "signal_band": "弱",
-            "relative_signal_score": 35.4,
+            "relative_signal_score": 37.5,
             "relative_signal_spread": {
               "probability_pp": 2.0,
               "expected_excess_pp": 0.19,
@@ -7622,10 +7622,10 @@
             "date": "2026-08-14",
             "weekday": "五",
             "direction": "震荡",
-            "up_probability": 48.2,
-            "outperform_probability": 49.0,
-            "expected_return": -0.05,
-            "expected_excess": -0.06,
+            "up_probability": 48.1,
+            "outperform_probability": 48.0,
+            "expected_return": -0.09,
+            "expected_excess": -0.09,
             "directional_win_rate": 49.2,
             "directional_baseline": 52.5,
             "relative_win_rate": 51.7,
@@ -7645,12 +7645,12 @@
               "reliable": true
             },
             "confidence": "低",
-            "signal_strength": 3.2,
+            "signal_strength": 4.0,
             "signal_band": "弱",
-            "relative_signal_score": 17.5,
+            "relative_signal_score": 22.3,
             "relative_signal_spread": {
-              "probability_pp": 3.2,
-              "expected_excess_pp": 0.32,
+              "probability_pp": 3.4,
+              "expected_excess_pp": 0.33,
               "separated": true
             },
             "relative_signal": "相对中性",
@@ -8032,15 +8032,15 @@
           "is_proxy": false,
           "accuracy": 46.7,
           "baseline": 52.5,
-          "auc": 0.47,
+          "auc": 0.469,
           "brier": 0.259,
           "relative_accuracy": 53.3,
           "relative_baseline": 50.8,
           "samples": 120
         },
-        "weekly_expected_return": 0.15,
+        "weekly_expected_return": 0.18,
         "weekly_expected_excess": 0.26,
-        "outperform_probability": 48.9,
+        "outperform_probability": 48.8,
         "weekly_outlook": "相对中性",
         "rank": 12
       },
@@ -8056,9 +8056,9 @@
             "weekday": "一",
             "direction": "震荡",
             "up_probability": 49.7,
-            "outperform_probability": 51.0,
+            "outperform_probability": 51.1,
             "expected_return": -0.0,
-            "expected_excess": -0.0,
+            "expected_excess": -0.01,
             "directional_win_rate": 65.0,
             "directional_baseline": 56.7,
             "relative_win_rate": 60.8,
@@ -8078,16 +8078,16 @@
               "reliable": true
             },
             "confidence": "中",
-            "signal_strength": 15.9,
+            "signal_strength": 16.0,
             "signal_band": "弱",
             "relative_signal_score": 22.1,
             "relative_signal_spread": {
-              "probability_pp": 3.9,
+              "probability_pp": 3.8,
               "expected_excess_pp": 0.27,
               "separated": true
             },
-            "relative_signal": "相对中性",
-            "relative_signal_reason": "概率/预期超额收益横截面分歧不足，保留中性",
+            "relative_signal": "相对偏弱",
+            "relative_signal_reason": "模型横截面分位数较低，且预期超额收益为负",
             "event_risk": "低",
             "event_count": 0,
             "event_titles": []
@@ -8096,10 +8096,10 @@
             "date": "2026-08-11",
             "weekday": "二",
             "direction": "震荡",
-            "up_probability": 49.8,
-            "outperform_probability": 50.1,
-            "expected_return": 0.1,
-            "expected_excess": 0.05,
+            "up_probability": 47.9,
+            "outperform_probability": 50.3,
+            "expected_return": 0.11,
+            "expected_excess": 0.1,
             "directional_win_rate": 60.0,
             "directional_baseline": 56.7,
             "relative_win_rate": 62.5,
@@ -8119,12 +8119,12 @@
               "reliable": false
             },
             "confidence": "中",
-            "signal_strength": 13.4,
+            "signal_strength": 19.1,
             "signal_band": "弱",
-            "relative_signal_score": 20.6,
+            "relative_signal_score": 19.2,
             "relative_signal_spread": {
-              "probability_pp": 5.3,
-              "expected_excess_pp": 0.1,
+              "probability_pp": 5.4,
+              "expected_excess_pp": 0.13,
               "separated": true
             },
             "relative_signal": "相对中性",
@@ -8137,10 +8137,10 @@
             "date": "2026-08-12",
             "weekday": "三",
             "direction": "震荡",
-            "up_probability": 47.1,
-            "outperform_probability": 48.6,
-            "expected_return": -0.07,
-            "expected_excess": 0.04,
+            "up_probability": 48.2,
+            "outperform_probability": 48.7,
+            "expected_return": -0.02,
+            "expected_excess": 0.03,
             "directional_win_rate": 57.5,
             "directional_baseline": 56.7,
             "relative_win_rate": 60.0,
@@ -8160,11 +8160,11 @@
               "reliable": false
             },
             "confidence": "低",
-            "signal_strength": 6.3,
+            "signal_strength": 4.0,
             "signal_band": "弱",
-            "relative_signal_score": 45.8,
+            "relative_signal_score": 47.1,
             "relative_signal_spread": {
-              "probability_pp": 6.7,
+              "probability_pp": 5.3,
               "expected_excess_pp": 0.28,
               "separated": true
             },
@@ -8178,11 +8178,11 @@
             "date": "2026-08-13",
             "weekday": "四",
             "direction": "震荡",
-            "up_probability": 50.0,
+            "up_probability": 49.8,
             "outperform_probability": 49.2,
-            "expected_return": 0.02,
-            "expected_excess": 0.08,
-            "directional_win_rate": 55.8,
+            "expected_return": 0.01,
+            "expected_excess": 0.06,
+            "directional_win_rate": 56.7,
             "directional_baseline": 56.7,
             "relative_win_rate": 66.7,
             "excess_validation": {
@@ -8201,9 +8201,9 @@
               "reliable": true
             },
             "confidence": "低",
-            "signal_strength": 0.3,
+            "signal_strength": 0.4,
             "signal_band": "弱",
-            "relative_signal_score": 16.2,
+            "relative_signal_score": 14.6,
             "relative_signal_spread": {
               "probability_pp": 2.0,
               "expected_excess_pp": 0.19,
@@ -8219,10 +8219,10 @@
             "date": "2026-08-14",
             "weekday": "五",
             "direction": "震荡",
-            "up_probability": 48.2,
-            "outperform_probability": 49.4,
-            "expected_return": -0.05,
-            "expected_excess": -0.06,
+            "up_probability": 48.1,
+            "outperform_probability": 48.6,
+            "expected_return": -0.1,
+            "expected_excess": -0.1,
             "directional_win_rate": 55.0,
             "directional_baseline": 56.7,
             "relative_win_rate": 58.3,
@@ -8242,12 +8242,12 @@
               "reliable": true
             },
             "confidence": "低",
-            "signal_strength": 3.3,
+            "signal_strength": 4.1,
             "signal_band": "弱",
-            "relative_signal_score": 21.2,
+            "relative_signal_score": 24.0,
             "relative_signal_spread": {
-              "probability_pp": 3.2,
-              "expected_excess_pp": 0.32,
+              "probability_pp": 3.4,
+              "expected_excess_pp": 0.33,
               "separated": true
             },
             "relative_signal": "相对中性",
@@ -8629,15 +8629,15 @@
           "is_proxy": false,
           "accuracy": 65.0,
           "baseline": 56.7,
-          "auc": 0.67,
+          "auc": 0.671,
           "brier": 0.234,
           "relative_accuracy": 60.8,
           "relative_baseline": 62.5,
           "samples": 120
         },
         "weekly_expected_return": -0.0,
-        "weekly_expected_excess": 0.11,
-        "outperform_probability": 49.7,
+        "weekly_expected_excess": 0.08,
+        "outperform_probability": 49.6,
         "weekly_outlook": "相对中性",
         "rank": 13
       }
@@ -8874,13 +8874,13 @@
         "amount": 279262763534.0,
         "provisional_direction": "明日临时偏强",
         "day_ahead_direction": "明日临时偏强",
-        "provisional_score": 27.2,
+        "provisional_score": 25.9,
         "provisional_expected_return": 0.43,
         "provisional_confidence": "低",
         "selection_bucket": "候选偏强",
         "raw_up_candidate": true,
         "relative_strength": 5.34,
-        "selection_reason": "迁移分 27.2 · 概念快照 +6.93% · 父行业期望 +0.13% · 相对沪深300 +5.34pp",
+        "selection_reason": "迁移分 25.9 · 概念快照 +6.93% · 父行业期望 +0.13% · 相对沪深300 +5.34pp",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -8894,13 +8894,13 @@
         "amount": 41328247787.0,
         "provisional_direction": "明日临时偏强",
         "day_ahead_direction": "明日临时偏强",
-        "provisional_score": 27.2,
+        "provisional_score": 25.9,
         "provisional_expected_return": 0.43,
         "provisional_confidence": "低",
         "selection_bucket": "候选偏强",
         "raw_up_candidate": true,
         "relative_strength": 4.4,
-        "selection_reason": "迁移分 27.2 · 概念快照 +5.99% · 父行业期望 +0.13% · 相对沪深300 +4.40pp",
+        "selection_reason": "迁移分 25.9 · 概念快照 +5.99% · 父行业期望 +0.13% · 相对沪深300 +4.40pp",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -8914,13 +8914,13 @@
         "amount": 292288386366.0,
         "provisional_direction": "明日临时偏强",
         "day_ahead_direction": "明日临时偏强",
-        "provisional_score": 51.9,
+        "provisional_score": 50.6,
         "provisional_expected_return": 0.53,
         "provisional_confidence": "低",
         "selection_bucket": "候选偏强",
         "raw_up_candidate": true,
         "relative_strength": 3.42,
-        "selection_reason": "迁移分 51.9 · 概念快照 +5.01% · 父行业期望 +0.27% · 相对沪深300 +3.42pp",
+        "selection_reason": "迁移分 50.6 · 概念快照 +5.01% · 父行业期望 +0.27% · 相对沪深300 +3.42pp",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -8934,13 +8934,13 @@
         "amount": 180680860601.0,
         "provisional_direction": "明日临时偏强",
         "day_ahead_direction": "明日临时偏强",
-        "provisional_score": 27.2,
+        "provisional_score": 25.9,
         "provisional_expected_return": 0.38,
         "provisional_confidence": "低",
         "selection_bucket": "候选偏强",
         "raw_up_candidate": true,
         "relative_strength": 2.67,
-        "selection_reason": "迁移分 27.2 · 概念快照 +4.26% · 父行业期望 +0.13% · 相对沪深300 +2.67pp",
+        "selection_reason": "迁移分 25.9 · 概念快照 +4.26% · 父行业期望 +0.13% · 相对沪深300 +2.67pp",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -8954,13 +8954,13 @@
         "amount": 181883290432.0,
         "provisional_direction": "明日临时偏强",
         "day_ahead_direction": "明日临时偏强",
-        "provisional_score": 41.5,
+        "provisional_score": 40.2,
         "provisional_expected_return": 0.36,
         "provisional_confidence": "低",
         "selection_bucket": "候选偏强",
         "raw_up_candidate": true,
         "relative_strength": 2.58,
-        "selection_reason": "迁移分 41.5 · 概念快照 +4.17% · 父行业期望 +0.11% · 相对沪深300 +2.58pp",
+        "selection_reason": "迁移分 40.2 · 概念快照 +4.17% · 父行业期望 +0.11% · 相对沪深300 +2.58pp",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -8974,13 +8974,13 @@
         "amount": 47494215895.0,
         "provisional_direction": "明日临时偏强",
         "day_ahead_direction": "明日临时偏强",
-        "provisional_score": 37.6,
+        "provisional_score": 36.9,
         "provisional_expected_return": 0.32,
         "provisional_confidence": "低",
         "selection_bucket": "候选偏强",
         "raw_up_candidate": true,
         "relative_strength": 2.11,
-        "selection_reason": "迁移分 37.6 · 概念快照 +3.70% · 父行业期望 +0.10% · 相对沪深300 +2.11pp",
+        "selection_reason": "迁移分 36.9 · 概念快照 +3.70% · 父行业期望 +0.10% · 相对沪深300 +2.11pp",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -8994,13 +8994,13 @@
         "amount": 54449726712.0,
         "provisional_direction": "明日临时偏强",
         "day_ahead_direction": "明日临时偏强",
-        "provisional_score": 26.6,
+        "provisional_score": 25.9,
         "provisional_expected_return": 0.23,
         "provisional_confidence": "低",
         "selection_bucket": "候选偏强",
         "raw_up_candidate": true,
         "relative_strength": 1.55,
-        "selection_reason": "迁移分 26.6 · 概念快照 +3.14% · 父行业期望 +0.01% · 相对沪深300 +1.55pp",
+        "selection_reason": "迁移分 25.9 · 概念快照 +3.14% · 父行业期望 +0.01% · 相对沪深300 +1.55pp",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -9014,13 +9014,13 @@
         "amount": 182965820292.0,
         "provisional_direction": "明日临时偏强",
         "day_ahead_direction": "明日临时偏强",
-        "provisional_score": 48.0,
+        "provisional_score": 47.3,
         "provisional_expected_return": 0.28,
         "provisional_confidence": "低",
         "selection_bucket": "候选偏强",
         "raw_up_candidate": true,
         "relative_strength": 1.35,
-        "selection_reason": "迁移分 48.0 · 概念快照 +2.94% · 父行业期望 +0.11% · 相对沪深300 +1.35pp",
+        "selection_reason": "迁移分 47.3 · 概念快照 +2.94% · 父行业期望 +0.11% · 相对沪深300 +1.35pp",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -9034,13 +9034,13 @@
         "amount": 155342631033.0,
         "provisional_direction": "明日临时偏强",
         "day_ahead_direction": "明日临时偏强",
-        "provisional_score": 26.6,
+        "provisional_score": 25.9,
         "provisional_expected_return": 0.21,
         "provisional_confidence": "低",
         "selection_bucket": "候选偏强",
         "raw_up_candidate": true,
         "relative_strength": 1.28,
-        "selection_reason": "迁移分 26.6 · 概念快照 +2.87% · 父行业期望 +0.01% · 相对沪深300 +1.28pp",
+        "selection_reason": "迁移分 25.9 · 概念快照 +2.87% · 父行业期望 +0.01% · 相对沪深300 +1.28pp",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -9054,13 +9054,13 @@
         "amount": 312167120596.0,
         "provisional_direction": "明日临时偏强",
         "day_ahead_direction": "明日临时偏强",
-        "provisional_score": 45.4,
+        "provisional_score": 44.1,
         "provisional_expected_return": 0.26,
         "provisional_confidence": "低",
         "selection_bucket": "候选偏强",
         "raw_up_candidate": true,
         "relative_strength": 0.79,
-        "selection_reason": "迁移分 45.4 · 概念快照 +2.38% · 父行业期望 +0.14% · 相对沪深300 +0.79pp",
+        "selection_reason": "迁移分 44.1 · 概念快照 +2.38% · 父行业期望 +0.14% · 相对沪深300 +0.79pp",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -9074,13 +9074,13 @@
         "amount": 390560969051.0,
         "provisional_direction": "明日临时偏强",
         "day_ahead_direction": "明日临时偏强",
-        "provisional_score": 45.4,
+        "provisional_score": 44.1,
         "provisional_expected_return": 0.24,
         "provisional_confidence": "低",
         "selection_bucket": "候选偏强",
         "raw_up_candidate": true,
         "relative_strength": 0.55,
-        "selection_reason": "迁移分 45.4 · 概念快照 +2.14% · 父行业期望 +0.14% · 相对沪深300 +0.55pp",
+        "selection_reason": "迁移分 44.1 · 概念快照 +2.14% · 父行业期望 +0.14% · 相对沪深300 +0.55pp",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -9094,13 +9094,13 @@
         "amount": 174264263908.0,
         "provisional_direction": "明日临时偏强",
         "day_ahead_direction": "明日临时偏强",
-        "provisional_score": 37.0,
+        "provisional_score": 35.6,
         "provisional_expected_return": 0.19,
         "provisional_confidence": "低",
         "selection_bucket": "中性",
         "raw_up_candidate": true,
         "relative_strength": 0.15,
-        "selection_reason": "迁移分 37.0 · 概念快照 +1.74% · 父行业期望 +0.11% · 相对沪深300 +0.15pp",
+        "selection_reason": "迁移分 35.6 · 概念快照 +1.74% · 父行业期望 +0.11% · 相对沪深300 +0.15pp",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -9114,13 +9114,13 @@
         "amount": 68402910302.0,
         "provisional_direction": "明日临时偏强",
         "day_ahead_direction": "明日临时偏强",
-        "provisional_score": 30.8,
+        "provisional_score": 29.5,
         "provisional_expected_return": 0.17,
         "provisional_confidence": "低",
         "selection_bucket": "中性",
         "raw_up_candidate": true,
         "relative_strength": -0.2,
-        "selection_reason": "迁移分 30.8 · 概念快照 +1.39% · 父行业期望 +0.11% · 相对沪深300 -0.20pp",
+        "selection_reason": "迁移分 29.5 · 概念快照 +1.39% · 父行业期望 +0.11% · 相对沪深300 -0.20pp",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -9134,13 +9134,13 @@
         "amount": 80875982355.0,
         "provisional_direction": "明日临时偏强",
         "day_ahead_direction": "明日临时偏强",
-        "provisional_score": 28.0,
+        "provisional_score": 27.3,
         "provisional_expected_return": 0.11,
         "provisional_confidence": "低",
         "selection_bucket": "中性",
         "raw_up_candidate": true,
         "relative_strength": -0.51,
-        "selection_reason": "迁移分 28.0 · 概念快照 +1.08% · 父行业期望 +0.05% · 相对沪深300 -0.51pp",
+        "selection_reason": "迁移分 27.3 · 概念快照 +1.08% · 父行业期望 +0.05% · 相对沪深300 -0.51pp",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -9154,13 +9154,13 @@
         "amount": 16400026522.0,
         "provisional_direction": "明日临时偏强",
         "day_ahead_direction": "明日临时偏强",
-        "provisional_score": 22.8,
+        "provisional_score": 22.2,
         "provisional_expected_return": 0.08,
         "provisional_confidence": "低",
         "selection_bucket": "中性",
         "raw_up_candidate": true,
         "relative_strength": -0.88,
-        "selection_reason": "迁移分 22.8 · 概念快照 +0.71% · 父行业期望 +0.05% · 相对沪深300 -0.88pp",
+        "selection_reason": "迁移分 22.2 · 概念快照 +0.71% · 父行业期望 +0.05% · 相对沪深300 -0.88pp",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -9174,13 +9174,13 @@
         "amount": 61169172278.0,
         "provisional_direction": "明日临时偏强",
         "day_ahead_direction": "明日临时偏强",
-        "provisional_score": 17.7,
+        "provisional_score": 17.0,
         "provisional_expected_return": 0.07,
         "provisional_confidence": "低",
         "selection_bucket": "中性",
         "raw_up_candidate": true,
         "relative_strength": -1.1,
-        "selection_reason": "迁移分 17.7 · 概念快照 +0.49% · 父行业期望 +0.05% · 相对沪深300 -1.10pp",
+        "selection_reason": "迁移分 17.0 · 概念快照 +0.49% · 父行业期望 +0.05% · 相对沪深300 -1.10pp",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -9194,13 +9194,13 @@
         "amount": 59250018027.0,
         "provisional_direction": "明日临时偏强",
         "day_ahead_direction": "明日临时偏强",
-        "provisional_score": 14.4,
+        "provisional_score": 13.8,
         "provisional_expected_return": 0.05,
         "provisional_confidence": "低",
         "selection_bucket": "中性",
         "raw_up_candidate": false,
         "relative_strength": -1.36,
-        "selection_reason": "迁移分 14.4 · 概念快照 +0.23% · 父行业期望 +0.05% · 相对沪深300 -1.36pp",
+        "selection_reason": "迁移分 13.8 · 概念快照 +0.23% · 父行业期望 +0.05% · 相对沪深300 -1.36pp",
         "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
         "prediction_horizon": "next_trading_session",
         "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -9217,13 +9217,13 @@
           "amount": 292288386366.0,
           "provisional_direction": "明日临时偏强",
           "day_ahead_direction": "明日临时偏强",
-          "provisional_score": 51.9,
+          "provisional_score": 50.6,
           "provisional_expected_return": 0.53,
           "provisional_confidence": "低",
           "selection_bucket": "候选偏强",
           "raw_up_candidate": true,
           "relative_strength": 3.42,
-          "selection_reason": "迁移分 51.9 · 概念快照 +5.01% · 父行业期望 +0.27% · 相对沪深300 +3.42pp",
+          "selection_reason": "迁移分 50.6 · 概念快照 +5.01% · 父行业期望 +0.27% · 相对沪深300 +3.42pp",
           "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
           "prediction_horizon": "next_trading_session",
           "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -9237,13 +9237,13 @@
           "amount": 182965820292.0,
           "provisional_direction": "明日临时偏强",
           "day_ahead_direction": "明日临时偏强",
-          "provisional_score": 48.0,
+          "provisional_score": 47.3,
           "provisional_expected_return": 0.28,
           "provisional_confidence": "低",
           "selection_bucket": "候选偏强",
           "raw_up_candidate": true,
           "relative_strength": 1.35,
-          "selection_reason": "迁移分 48.0 · 概念快照 +2.94% · 父行业期望 +0.11% · 相对沪深300 +1.35pp",
+          "selection_reason": "迁移分 47.3 · 概念快照 +2.94% · 父行业期望 +0.11% · 相对沪深300 +1.35pp",
           "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
           "prediction_horizon": "next_trading_session",
           "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -9257,13 +9257,13 @@
           "amount": 312167120596.0,
           "provisional_direction": "明日临时偏强",
           "day_ahead_direction": "明日临时偏强",
-          "provisional_score": 45.4,
+          "provisional_score": 44.1,
           "provisional_expected_return": 0.26,
           "provisional_confidence": "低",
           "selection_bucket": "候选偏强",
           "raw_up_candidate": true,
           "relative_strength": 0.79,
-          "selection_reason": "迁移分 45.4 · 概念快照 +2.38% · 父行业期望 +0.14% · 相对沪深300 +0.79pp",
+          "selection_reason": "迁移分 44.1 · 概念快照 +2.38% · 父行业期望 +0.14% · 相对沪深300 +0.79pp",
           "prediction_stage": "一级行业次日先验 + 当日概念快照迁移",
           "prediction_horizon": "next_trading_session",
           "prediction_note": "这是今天信息对下一交易日的临时倾向；独立细分样本未达门槛。"
@@ -9518,7 +9518,7 @@
     },
     "collection": {
       "status": "live",
-      "fetched_at": "2026-08-07T16:25:24.149963+08:00",
+      "fetched_at": "2026-08-07T23:35:02.948896+08:00",
       "cache_used": false,
       "event_count": 0,
       "sources": [
@@ -9544,21 +9544,21 @@
     "weekday": "一",
     "direction": "震荡",
     "up_probability": 50.9,
-    "expected_return": -0.0,
-    "low_return": -0.71,
-    "high_return": 0.43,
-    "path_close": 3939.93,
+    "expected_return": 0.01,
+    "low_return": -0.69,
+    "high_return": 0.42,
+    "path_close": 3940.43,
     "confidence": "低",
-    "model_spread": 2.5,
+    "model_spread": 2.1,
     "validation_accuracy": 56.7,
     "validation_edge": 2.5,
-    "evidence_score": 48.1,
+    "evidence_score": 48.4,
     "evidence_label": "较低",
     "evidence_reasons": [
       "近期相对基线 +2.5pp",
       "AUC 0.551",
       "Brier 0.250",
-      "模型分歧 2.5pp"
+      "模型分歧 2.1pp"
     ],
     "event_risk": "低",
     "event_count": 0,
