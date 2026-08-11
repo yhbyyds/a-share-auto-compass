@@ -777,7 +777,7 @@
       "status": "pending"
     }
   ],
-  "updated_at": "2026-08-11T16:19:52.324284+08:00",
+  "updated_at": "2026-08-11T23:33:13.537620+08:00",
   "monitor": {
     "status": "collecting",
     "label": "实盘样本积累中",
@@ -2404,7 +2404,7 @@
       "direction": "震荡",
       "up_probability": 53.3,
       "expected_return": 0.04,
-      "priority_score": 79.2,
+      "priority_score": 87.5,
       "selection_side": "up",
       "relative_probability": 49.1,
       "base_benchmark_level": 96.1,
@@ -2514,7 +2514,7 @@
       "expected_return": -0.04,
       "priority_score": 12.5,
       "selection_side": "down",
-      "relative_probability": 51.1,
+      "relative_probability": 51.5,
       "base_benchmark_level": 96.1,
       "status": "pending"
     },
@@ -2566,7 +2566,7 @@
       "direction": "震荡",
       "up_probability": 52.3,
       "expected_return": 0.07,
-      "priority_score": 87.5,
+      "priority_score": 79.2,
       "selection_side": "up",
       "relative_probability": 49.8,
       "base_benchmark_level": 96.1,
