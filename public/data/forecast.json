@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-08-14T16:39:57.763416+08:00",
+    "generated_at": "2026-08-14T23:24:25.048569+08:00",
     "data_through": "2026-08-14",
     "forecast_window": "2026-08-17 至 2026-08-21",
     "version": "1.14.0",
@@ -31,7 +31,7 @@
       "update_warnings": []
     },
     "automation": {
-      "run_id": "20260814T163729",
+      "run_id": "20260814T232152",
       "status": "passed",
       "quality_gate": {
         "passed": true,
@@ -56,7 +56,7 @@
           "event_count": 0
         }
       },
-      "updated_at": "2026-08-14T16:37:29.525453+08:00",
+      "updated_at": "2026-08-14T23:21:52.678032+08:00",
       "mode": "automatic"
     }
   },
@@ -241,7 +241,7 @@
     "advance_ratio": 43.0,
     "source": "新浪财经全A快照",
     "status": "live",
-    "fetched_at": "2026-08-14T16:38:49.393791+08:00",
+    "fetched_at": "2026-08-14T23:23:17.486398+08:00",
     "failures": [
       "_fetch_breadth_eastmoney: RetryError"
     ]
@@ -367,7 +367,7 @@
       "components": {
         "recent_edge": 0.8333333333333326,
         "auc": 0.3645170618854818,
-        "brier": 0.044406484931755474,
+        "brier": 0.044406484931756404,
         "high_confidence": 0.0,
         "agreement": 0.8879886314214432
       },
@@ -1198,7 +1198,7 @@
               "reliable": false
             },
             "confidence": "低",
-            "signal_strength": 3.9,
+            "signal_strength": 3.8,
             "signal_band": "弱",
             "relative_signal_score": 55.4,
             "relative_signal_spread": {
@@ -1243,7 +1243,7 @@
             "signal_band": "弱",
             "relative_signal_score": 51.5,
             "relative_signal_spread": {
-              "probability_pp": 2.0,
+              "probability_pp": 2.3,
               "expected_excess_pp": 0.21,
               "separated": false
             },
@@ -1795,7 +1795,7 @@
               "reliable": false
             },
             "confidence": "低",
-            "signal_strength": 4.8,
+            "signal_strength": 4.7,
             "signal_band": "弱",
             "relative_signal_score": 68.8,
             "relative_signal_spread": {
@@ -1813,7 +1813,7 @@
             "date": "2026-08-20",
             "weekday": "四",
             "direction": "震荡",
-            "up_probability": 50.8,
+            "up_probability": 50.7,
             "outperform_probability": 51.3,
             "expected_return": 0.17,
             "expected_excess": 0.15,
@@ -1836,11 +1836,11 @@
               "reliable": false
             },
             "confidence": "中",
-            "signal_strength": 22.1,
+            "signal_strength": 21.9,
             "signal_band": "弱",
-            "relative_signal_score": 80.6,
+            "relative_signal_score": 75.0,
             "relative_signal_spread": {
-              "probability_pp": 2.0,
+              "probability_pp": 2.3,
               "expected_excess_pp": 0.21,
               "separated": false
             },
@@ -2264,7 +2264,7 @@
           "is_proxy": false,
           "accuracy": 59.2,
           "baseline": 51.7,
-          "auc": 0.614,
+          "auc": 0.615,
           "brier": 0.24,
           "relative_accuracy": 51.7,
           "relative_baseline": 55.0,
@@ -2317,12 +2317,12 @@
             "date": "2026-08-19",
             "weekday": "三",
             "direction": "震荡",
-            "up_probability": 48.3,
+            "up_probability": 48.4,
             "outperform_probability": 52.1,
             "expected_return": 0.03,
             "expected_excess": 0.06,
             "confidence": "低",
-            "signal_strength": 7.5,
+            "signal_strength": 7.4,
             "signal_band": "弱",
             "event_risk": "低",
             "event_count": 0,
@@ -2337,7 +2337,7 @@
             "expected_return": 0.1,
             "expected_excess": 0.08,
             "confidence": "低",
-            "signal_strength": 9.5,
+            "signal_strength": 9.4,
             "signal_band": "弱",
             "event_risk": "低",
             "event_count": 0,
@@ -2832,7 +2832,7 @@
             "date": "2026-08-19",
             "weekday": "三",
             "direction": "震荡",
-            "up_probability": 51.0,
+            "up_probability": 51.1,
             "outperform_probability": 49.6,
             "expected_return": 0.04,
             "expected_excess": 0.07,
@@ -2855,7 +2855,7 @@
               "reliable": false
             },
             "confidence": "中",
-            "signal_strength": 19.0,
+            "signal_strength": 19.2,
             "signal_band": "弱",
             "relative_signal_score": 84.2,
             "relative_signal_spread": {
@@ -2896,11 +2896,11 @@
               "reliable": false
             },
             "confidence": "低",
-            "signal_strength": 3.8,
+            "signal_strength": 3.9,
             "signal_band": "弱",
             "relative_signal_score": 90.4,
             "relative_signal_spread": {
-              "probability_pp": 2.0,
+              "probability_pp": 2.3,
               "expected_excess_pp": 0.21,
               "separated": false
             },
@@ -3495,9 +3495,9 @@
             "confidence": "低",
             "signal_strength": 1.8,
             "signal_band": "弱",
-            "relative_signal_score": 53.8,
+            "relative_signal_score": 55.6,
             "relative_signal_spread": {
-              "probability_pp": 2.0,
+              "probability_pp": 2.3,
               "expected_excess_pp": 0.21,
               "separated": false
             },
@@ -4030,7 +4030,7 @@
             "outperform_probability": 49.5,
             "expected_return": -0.01,
             "expected_excess": 0.02,
-            "directional_win_rate": 52.5,
+            "directional_win_rate": 51.7,
             "directional_baseline": 53.3,
             "relative_win_rate": 49.2,
             "excess_validation": {
@@ -4094,7 +4094,7 @@
             "signal_band": "弱",
             "relative_signal_score": 69.4,
             "relative_signal_spread": {
-              "probability_pp": 2.0,
+              "probability_pp": 2.3,
               "expected_excess_pp": 0.21,
               "separated": false
             },
@@ -4668,7 +4668,7 @@
             "outperform_probability": 49.5,
             "expected_return": 0.05,
             "expected_excess": 0.03,
-            "directional_win_rate": 40.0,
+            "directional_win_rate": 40.8,
             "directional_baseline": 55.0,
             "relative_win_rate": 56.7,
             "excess_validation": {
@@ -4689,9 +4689,9 @@
             "confidence": "低",
             "signal_strength": 1.8,
             "signal_band": "弱",
-            "relative_signal_score": 58.1,
+            "relative_signal_score": 60.0,
             "relative_signal_spread": {
-              "probability_pp": 2.0,
+              "probability_pp": 2.3,
               "expected_excess_pp": 0.21,
               "separated": false
             },
@@ -5115,7 +5115,7 @@
           "is_proxy": false,
           "accuracy": 55.8,
           "baseline": 55.0,
-          "auc": 0.581,
+          "auc": 0.58,
           "brier": 0.249,
           "relative_accuracy": 61.7,
           "relative_baseline": 53.3,
@@ -5224,7 +5224,7 @@
             "outperform_probability": 49.0,
             "expected_return": 0.01,
             "expected_excess": 0.04,
-            "directional_win_rate": 51.7,
+            "directional_win_rate": 50.8,
             "directional_baseline": 54.2,
             "relative_win_rate": 60.8,
             "excess_validation": {
@@ -5284,11 +5284,11 @@
               "reliable": false
             },
             "confidence": "低",
-            "signal_strength": 1.9,
+            "signal_strength": 2.0,
             "signal_band": "弱",
             "relative_signal_score": 71.9,
             "relative_signal_spread": {
-              "probability_pp": 2.0,
+              "probability_pp": 2.3,
               "expected_excess_pp": 0.21,
               "separated": false
             },
@@ -5306,7 +5306,7 @@
             "outperform_probability": 49.4,
             "expected_return": 0.11,
             "expected_excess": 0.1,
-            "directional_win_rate": 51.7,
+            "directional_win_rate": 52.5,
             "directional_baseline": 54.2,
             "relative_win_rate": 55.0,
             "excess_validation": {
@@ -5817,7 +5817,7 @@
             "date": "2026-08-19",
             "weekday": "三",
             "direction": "震荡",
-            "up_probability": 48.1,
+            "up_probability": 48.2,
             "outperform_probability": 49.5,
             "expected_return": -0.04,
             "expected_excess": -0.01,
@@ -5883,9 +5883,9 @@
             "confidence": "低",
             "signal_strength": 2.8,
             "signal_band": "弱",
-            "relative_signal_score": 44.8,
+            "relative_signal_score": 46.7,
             "relative_signal_spread": {
-              "probability_pp": 2.0,
+              "probability_pp": 2.3,
               "expected_excess_pp": 0.21,
               "separated": false
             },
@@ -6455,7 +6455,7 @@
             "date": "2026-08-20",
             "weekday": "四",
             "direction": "震荡",
-            "up_probability": 50.6,
+            "up_probability": 50.5,
             "outperform_probability": 48.7,
             "expected_return": 0.03,
             "expected_excess": 0.01,
@@ -6482,7 +6482,7 @@
             "signal_band": "弱",
             "relative_signal_score": 34.2,
             "relative_signal_spread": {
-              "probability_pp": 2.0,
+              "probability_pp": 2.3,
               "expected_excess_pp": 0.21,
               "separated": false
             },
@@ -7052,11 +7052,11 @@
             "date": "2026-08-20",
             "weekday": "四",
             "direction": "震荡",
-            "up_probability": 51.6,
+            "up_probability": 51.9,
             "outperform_probability": 49.4,
             "expected_return": 0.02,
             "expected_excess": 0.0,
-            "directional_win_rate": 56.7,
+            "directional_win_rate": 57.5,
             "directional_baseline": 55.0,
             "relative_win_rate": 46.7,
             "excess_validation": {
@@ -7075,11 +7075,11 @@
               "reliable": false
             },
             "confidence": "中",
-            "signal_strength": 10.0,
+            "signal_strength": 13.4,
             "signal_band": "弱",
             "relative_signal_score": 61.7,
             "relative_signal_spread": {
-              "probability_pp": 2.0,
+              "probability_pp": 2.3,
               "expected_excess_pp": 0.21,
               "separated": false
             },
@@ -7504,7 +7504,7 @@
           "is_proxy": false,
           "accuracy": 55.8,
           "baseline": 55.0,
-          "auc": 0.581,
+          "auc": 0.582,
           "brier": 0.244,
           "relative_accuracy": 55.8,
           "relative_baseline": 50.0,
@@ -7609,11 +7609,11 @@
             "date": "2026-08-19",
             "weekday": "三",
             "direction": "震荡",
-            "up_probability": 49.0,
+            "up_probability": 48.7,
             "outperform_probability": 48.6,
             "expected_return": -0.09,
             "expected_excess": -0.06,
-            "directional_win_rate": 51.7,
+            "directional_win_rate": 52.5,
             "directional_baseline": 51.7,
             "relative_win_rate": 43.3,
             "excess_validation": {
@@ -7632,7 +7632,7 @@
               "reliable": false
             },
             "confidence": "低",
-            "signal_strength": 2.7,
+            "signal_strength": 4.3,
             "signal_band": "弱",
             "relative_signal_score": 17.7,
             "relative_signal_spread": {
@@ -7677,7 +7677,7 @@
             "signal_band": "弱",
             "relative_signal_score": 17.5,
             "relative_signal_spread": {
-              "probability_pp": 2.0,
+              "probability_pp": 2.3,
               "expected_excess_pp": 0.21,
               "separated": false
             },
@@ -8101,7 +8101,7 @@
           "is_proxy": false,
           "accuracy": 44.2,
           "baseline": 51.7,
-          "auc": 0.472,
+          "auc": 0.47,
           "brier": 0.258,
           "relative_accuracy": 48.3,
           "relative_baseline": 50.0,
@@ -8274,7 +8274,7 @@
             "signal_band": "弱",
             "relative_signal_score": 16.2,
             "relative_signal_spread": {
-              "probability_pp": 2.0,
+              "probability_pp": 2.3,
               "expected_excess_pp": 0.21,
               "separated": false
             },
@@ -9588,7 +9588,7 @@
     },
     "collection": {
       "status": "live",
-      "fetched_at": "2026-08-14T16:41:54.294325+08:00",
+      "fetched_at": "2026-08-14T23:31:42.445771+08:00",
       "cache_used": false,
       "event_count": 0,
       "sources": [
