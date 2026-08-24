@@ -1542,7 +1542,7 @@
       "status": "pending"
     }
   ],
-  "updated_at": "2026-08-24T16:08:14.114861+08:00",
+  "updated_at": "2026-08-24T23:14:34.832379+08:00",
   "monitor": {
     "status": "collecting",
     "label": "实盘样本积累中",
@@ -6105,7 +6105,7 @@
       "expected_return": -0.23,
       "priority_score": 12.5,
       "selection_side": "down",
-      "relative_probability": 50.6,
+      "relative_probability": 51.3,
       "base_benchmark_level": 94.2,
       "status": "pending"
     },
@@ -6121,9 +6121,9 @@
       "direction": "震荡",
       "up_probability": 51.7,
       "expected_return": -0.12,
-      "priority_score": null,
-      "selection_side": "neutral",
-      "relative_probability": 50.0,
+      "priority_score": 79.2,
+      "selection_side": "up",
+      "relative_probability": 49.1,
       "base_benchmark_level": 94.2,
       "status": "pending"
     },
@@ -6140,8 +6140,8 @@
       "up_probability": 52.5,
       "expected_return": -0.12,
       "priority_score": 79.2,
-      "selection_side": "up",
-      "relative_probability": 48.9,
+      "selection_side": "neutral",
+      "relative_probability": 50.0,
       "base_benchmark_level": 94.2,
       "status": "pending"
     },
@@ -6159,7 +6159,7 @@
       "expected_return": 0.06,
       "priority_score": 95.8,
       "selection_side": "up",
-      "relative_probability": 50.3,
+      "relative_probability": 49.9,
       "base_benchmark_level": 94.2,
       "status": "pending"
     },
@@ -6177,7 +6177,7 @@
       "expected_return": -0.23,
       "priority_score": 4.2,
       "selection_side": "down",
-      "relative_probability": 52.0,
+      "relative_probability": 52.2,
       "base_benchmark_level": 94.2,
       "status": "pending"
     },
@@ -6193,9 +6193,9 @@
       "direction": "震荡",
       "up_probability": 50.8,
       "expected_return": -0.15,
-      "priority_score": null,
-      "selection_side": "neutral",
-      "relative_probability": 50.0,
+      "priority_score": 20.8,
+      "selection_side": "down",
+      "relative_probability": 52.2,
       "base_benchmark_level": 94.2,
       "status": "pending"
     },
@@ -6212,8 +6212,8 @@
       "up_probability": 49.2,
       "expected_return": -0.24,
       "priority_score": 20.8,
-      "selection_side": "down",
-      "relative_probability": 51.2,
+      "selection_side": "neutral",
+      "relative_probability": 50.0,
       "base_benchmark_level": 94.2,
       "status": "pending"
     },
@@ -6267,7 +6267,7 @@
       "expected_return": 0.16,
       "priority_score": 87.5,
       "selection_side": "up",
-      "relative_probability": 52.1,
+      "relative_probability": 51.0,
       "base_benchmark_level": 94.2,
       "status": "pending"
     },
