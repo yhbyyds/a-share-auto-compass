@@ -1269,7 +1269,12 @@
       "direction": "震荡",
       "up_probability": 50.7,
       "expected_return": -0.03,
-      "status": "pending"
+      "status": "evaluated",
+      "actual_close": 3889.44,
+      "actual_return": -2.528,
+      "actual_up": false,
+      "correct": false,
+      "evaluated_at": "2026-08-25T15:59:30.544146+08:00"
     },
     {
       "id": "2026-08-19:2026-08-20:h1",
@@ -1332,7 +1337,12 @@
       "direction": "震荡",
       "up_probability": 51.4,
       "expected_return": -0.04,
-      "status": "pending"
+      "status": "evaluated",
+      "actual_close": 3889.44,
+      "actual_return": -0.128,
+      "actual_up": false,
+      "correct": false,
+      "evaluated_at": "2026-08-25T15:59:30.544146+08:00"
     },
     {
       "id": "2026-08-19:2026-08-26:h5",
@@ -1390,7 +1400,12 @@
       "direction": "震荡",
       "up_probability": 50.8,
       "expected_return": -0.15,
-      "status": "pending"
+      "status": "evaluated",
+      "actual_close": 3889.44,
+      "actual_return": -0.366,
+      "actual_up": false,
+      "correct": false,
+      "evaluated_at": "2026-08-25T15:59:30.544146+08:00"
     },
     {
       "id": "2026-08-20:2026-08-26:h4",
@@ -1443,7 +1458,12 @@
       "direction": "震荡",
       "up_probability": 50.9,
       "expected_return": -0.1,
-      "status": "pending"
+      "status": "evaluated",
+      "actual_close": 3889.44,
+      "actual_return": -0.404,
+      "actual_up": false,
+      "correct": false,
+      "evaluated_at": "2026-08-25T15:59:30.544146+08:00"
     },
     {
       "id": "2026-08-21:2026-08-26:h3",
@@ -1491,7 +1511,12 @@
       "direction": "震荡",
       "up_probability": 51.7,
       "expected_return": -0.07,
-      "status": "pending"
+      "status": "evaluated",
+      "actual_close": 3889.44,
+      "actual_return": 0.191,
+      "actual_up": true,
+      "correct": true,
+      "evaluated_at": "2026-08-25T15:59:30.544146+08:00"
     },
     {
       "id": "2026-08-24:2026-08-26:h2",
@@ -1540,85 +1565,145 @@
       "up_probability": 51.5,
       "expected_return": 0.03,
       "status": "pending"
+    },
+    {
+      "id": "2026-08-25:2026-08-26:h1",
+      "generated_at": "2026-08-25T15:59:30.544146+08:00",
+      "base_date": "2026-08-25",
+      "base_close": 3889.44,
+      "target_date": "2026-08-26",
+      "horizon": 1,
+      "direction": "震荡",
+      "up_probability": 50.9,
+      "expected_return": -0.07,
+      "status": "pending"
+    },
+    {
+      "id": "2026-08-25:2026-08-27:h2",
+      "generated_at": "2026-08-25T15:59:30.544146+08:00",
+      "base_date": "2026-08-25",
+      "base_close": 3889.44,
+      "target_date": "2026-08-27",
+      "horizon": 2,
+      "direction": "震荡",
+      "up_probability": 51.3,
+      "expected_return": 0.03,
+      "status": "pending"
+    },
+    {
+      "id": "2026-08-25:2026-08-28:h3",
+      "generated_at": "2026-08-25T15:59:30.544146+08:00",
+      "base_date": "2026-08-25",
+      "base_close": 3889.44,
+      "target_date": "2026-08-28",
+      "horizon": 3,
+      "direction": "震荡",
+      "up_probability": 51.3,
+      "expected_return": -0.0,
+      "status": "pending"
+    },
+    {
+      "id": "2026-08-25:2026-08-31:h4",
+      "generated_at": "2026-08-25T15:59:30.544146+08:00",
+      "base_date": "2026-08-25",
+      "base_close": 3889.44,
+      "target_date": "2026-08-31",
+      "horizon": 4,
+      "direction": "震荡",
+      "up_probability": 51.8,
+      "expected_return": 0.03,
+      "status": "pending"
+    },
+    {
+      "id": "2026-08-25:2026-09-01:h5",
+      "generated_at": "2026-08-25T15:59:30.544146+08:00",
+      "base_date": "2026-08-25",
+      "base_close": 3889.44,
+      "target_date": "2026-09-01",
+      "horizon": 5,
+      "direction": "震荡",
+      "up_probability": 51.0,
+      "expected_return": 0.06,
+      "status": "pending"
     }
   ],
-  "updated_at": "2026-08-24T23:14:34.832379+08:00",
+  "updated_at": "2026-08-25T16:00:57.977944+08:00",
   "monitor": {
     "status": "collecting",
     "label": "实盘样本积累中",
-    "evaluated_samples": 18,
+    "evaluated_samples": 19,
     "pending_samples": 1,
-    "recent_window": 18,
-    "accuracy": 77.8,
-    "baseline": 66.7,
-    "edge_pp": 11.1,
+    "recent_window": 19,
+    "accuracy": 78.9,
+    "baseline": 68.4,
+    "edge_pp": 10.5,
     "brier": 0.24,
-    "accuracy_ci_low": 54.8,
-    "accuracy_ci_high": 91.0,
-    "last_evaluated_date": "2026-08-24",
+    "accuracy_ci_low": 56.7,
+    "accuracy_ci_high": 91.5,
+    "last_evaluated_date": "2026-08-25",
     "degraded": false,
     "effective_sample": "第1日预测的唯一目标交易日",
-    "all_evaluated_predictions": 80,
+    "all_evaluated_predictions": 85,
     "reliability_ready": false,
     "minimum_reliability_samples": 60,
     "horizon_metrics": {
       "1": {
-        "samples": 18,
-        "window": 18,
-        "accuracy": 77.8,
-        "baseline": 66.7,
-        "edge_pp": 11.1,
+        "samples": 19,
+        "window": 19,
+        "accuracy": 78.9,
+        "baseline": 68.4,
+        "edge_pp": 10.5,
         "brier": 0.24,
-        "accuracy_ci_low": 54.8,
-        "accuracy_ci_high": 91.0,
-        "last_date": "2026-08-24"
+        "accuracy_ci_low": 56.7,
+        "accuracy_ci_high": 91.5,
+        "last_date": "2026-08-25"
       },
       "2": {
+        "samples": 18,
+        "window": 18,
+        "accuracy": 44.4,
+        "baseline": 55.6,
+        "edge_pp": -11.1,
+        "brier": 0.25,
+        "accuracy_ci_low": 24.6,
+        "accuracy_ci_high": 66.3,
+        "last_date": "2026-08-25"
+      },
+      "3": {
         "samples": 17,
         "window": 17,
         "accuracy": 47.1,
         "baseline": 52.9,
         "edge_pp": -5.9,
-        "brier": 0.249,
+        "brier": 0.25,
         "accuracy_ci_low": 26.2,
         "accuracy_ci_high": 69.0,
-        "last_date": "2026-08-24"
-      },
-      "3": {
-        "samples": 16,
-        "window": 16,
-        "accuracy": 50.0,
-        "baseline": 56.2,
-        "edge_pp": -6.2,
-        "brier": 0.25,
-        "accuracy_ci_low": 28.0,
-        "accuracy_ci_high": 72.0,
-        "last_date": "2026-08-24"
+        "last_date": "2026-08-25"
       },
       "4": {
-        "samples": 15,
-        "window": 15,
-        "accuracy": 46.7,
-        "baseline": 53.3,
-        "edge_pp": -6.7,
-        "brier": 0.25,
-        "accuracy_ci_low": 24.8,
-        "accuracy_ci_high": 69.9,
-        "last_date": "2026-08-24"
+        "samples": 16,
+        "window": 16,
+        "accuracy": 43.8,
+        "baseline": 56.2,
+        "edge_pp": -12.5,
+        "brier": 0.251,
+        "accuracy_ci_low": 23.1,
+        "accuracy_ci_high": 66.8,
+        "last_date": "2026-08-25"
       },
       "5": {
-        "samples": 14,
-        "window": 14,
-        "accuracy": 71.4,
-        "baseline": 64.3,
-        "edge_pp": 7.1,
-        "brier": 0.239,
-        "accuracy_ci_low": 45.4,
-        "accuracy_ci_high": 88.3,
-        "last_date": "2026-08-24"
+        "samples": 15,
+        "window": 15,
+        "accuracy": 66.7,
+        "baseline": 60.0,
+        "edge_pp": 6.7,
+        "brier": 0.24,
+        "accuracy_ci_low": 41.7,
+        "accuracy_ci_high": 84.8,
+        "last_date": "2026-08-25"
       }
     },
-    "reason": "第1日预测已实现 18 个唯一目标日，达到60日后启用有效性判定。"
+    "reason": "第1日预测已实现 19 个唯一目标日，达到60日后启用有效性判定。"
   },
   "sector_predictions": [
     {
