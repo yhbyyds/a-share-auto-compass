@@ -2430,6 +2430,182 @@
       ],
       "source": "腾讯指数快照 / 东方财富概念板块快照",
       "label": null
+    },
+    {
+      "timestamp": "2026-09-01T14:43:46.210776+08:00",
+      "date": "2026-09-01",
+      "bucket": "14:30",
+      "quotes": {
+        "sse": {
+          "price": 3982.83,
+          "change": -0.09
+        },
+        "csi300": {
+          "price": 4616.13,
+          "change": -0.19
+        },
+        "chinext": {
+          "price": 3402.02,
+          "change": -1.07
+        }
+      },
+      "breadth": {
+        "stocks": 5160,
+        "advancers": 3104,
+        "decliners": 1925,
+        "flat": 131,
+        "limit_up_proxy": 101,
+        "limit_down_proxy": 3,
+        "median_change": 0.57,
+        "turnover_yi": 18253.0,
+        "advance_ratio": 60.2,
+        "source": "新浪财经全A快照",
+        "status": "live",
+        "fetched_at": "2026-09-01T14:44:32.274820+08:00",
+        "failures": [
+          "_fetch_breadth_eastmoney: MarketDataError"
+        ]
+      },
+      "themes": [
+        {
+          "key": "chip_equipment",
+          "name": "半导体设备",
+          "parent": "electronics",
+          "board": "光刻机",
+          "change": -3.02,
+          "amount": 41937570563.0
+        },
+        {
+          "key": "memory",
+          "name": "存储芯片",
+          "parent": "electronics",
+          "board": "存储芯片",
+          "change": -2.73,
+          "amount": 180615553608.0
+        },
+        {
+          "key": "cpo_optical",
+          "name": "CPO与光模块",
+          "parent": "telecom",
+          "board": "CPO概念",
+          "change": -2.54,
+          "amount": 191314051450.0
+        },
+        {
+          "key": "ai_compute",
+          "name": "AI算力",
+          "parent": "computer",
+          "board": "人工智能",
+          "change": 1.11,
+          "amount": 330855167722.0
+        },
+        {
+          "key": "robotics",
+          "name": "人形机器人",
+          "parent": "computer",
+          "board": "机器人概念",
+          "change": -0.14,
+          "amount": 257778972933.0
+        },
+        {
+          "key": "data_center_power",
+          "name": "数据中心电源",
+          "parent": "power_equipment",
+          "board": "液冷服务器",
+          "change": -1.19,
+          "amount": 159466830414.0
+        },
+        {
+          "key": "grid",
+          "name": "智能电网",
+          "parent": "power_equipment",
+          "board": "智能电网",
+          "change": 0.27,
+          "amount": 54990135631.0
+        },
+        {
+          "key": "energy_storage",
+          "name": "储能",
+          "parent": "power_equipment",
+          "board": "储能概念",
+          "change": 0.02,
+          "amount": 166016759930.0
+        },
+        {
+          "key": "thermal_power",
+          "name": "火电",
+          "parent": "utilities",
+          "board": "绿色电力",
+          "change": 0.95,
+          "amount": 48691592940.0
+        },
+        {
+          "key": "power_reform",
+          "name": "电力改革",
+          "parent": "utilities",
+          "board": "虚拟电厂",
+          "change": 0.89,
+          "amount": 15473361490.0
+        },
+        {
+          "key": "innovative_drug",
+          "name": "创新药",
+          "parent": "healthcare",
+          "board": "创新药",
+          "change": 0.82,
+          "amount": 53863704439.0
+        },
+        {
+          "key": "medical_service",
+          "name": "医疗服务",
+          "parent": "healthcare",
+          "board": "医疗器械概念",
+          "change": 0.55,
+          "amount": 80616542804.0
+        },
+        {
+          "key": "military_electronics",
+          "name": "军工电子",
+          "parent": "defense",
+          "board": "卫星互联网",
+          "change": -0.48,
+          "amount": 57158800262.0
+        },
+        {
+          "key": "commercial_aerospace",
+          "name": "商业航天",
+          "parent": "defense",
+          "board": "商业航天",
+          "change": -0.54,
+          "amount": 131952213487.0
+        },
+        {
+          "key": "copper",
+          "name": "铜",
+          "parent": "nonferrous",
+          "board": "铜缆高速连接",
+          "change": -1.8,
+          "amount": 33855990783.0
+        },
+        {
+          "key": "consumer_electronics",
+          "name": "消费电子",
+          "parent": "electronics",
+          "board": "消费电子概念",
+          "change": -0.93,
+          "amount": 150231289193.0
+        },
+        {
+          "key": "automotive_parts",
+          "name": "汽车零部件",
+          "parent": "auto",
+          "board": "智能驾驶",
+          "change": 0.45,
+          "amount": 150022845047.0
+        }
+      ],
+      "source": "腾讯指数快照 / 东方财富概念板块快照",
+      "label": null
     }
   ]
 }
