@@ -4992,7 +4992,12 @@
       "direction": "震荡",
       "up_probability": 51.8,
       "expected_return": 0.07,
-      "status": "pending"
+      "status": "evaluated",
+      "actual_close": 3660.79,
+      "actual_return": 1.46,
+      "actual_up": true,
+      "correct": true,
+      "evaluated_at": "2026-11-10T23:36:27.931821+08:00"
     },
     {
       "id": "2026-11-03:2026-11-10:h5",
@@ -5004,7 +5009,12 @@
       "direction": "震荡",
       "up_probability": 50.4,
       "expected_return": 0.01,
-      "status": "pending"
+      "status": "evaluated",
+      "actual_close": 3663.72,
+      "actual_return": 1.542,
+      "actual_up": true,
+      "correct": true,
+      "evaluated_at": "2026-11-10T23:36:27.931821+08:00"
     },
     {
       "id": "2026-11-04:2026-11-05:h1",
@@ -5050,7 +5060,12 @@
       "direction": "震荡",
       "up_probability": 51.5,
       "expected_return": -0.07,
-      "status": "pending"
+      "status": "evaluated",
+      "actual_close": 3660.79,
+      "actual_return": -0.689,
+      "actual_up": false,
+      "correct": false,
+      "evaluated_at": "2026-11-10T23:36:27.931821+08:00"
     },
     {
       "id": "2026-11-04:2026-11-10:h4",
@@ -5062,7 +5077,12 @@
       "direction": "震荡",
       "up_probability": 52.4,
       "expected_return": 0.05,
-      "status": "pending"
+      "status": "evaluated",
+      "actual_close": 3663.72,
+      "actual_return": -0.609,
+      "actual_up": false,
+      "correct": false,
+      "evaluated_at": "2026-11-10T23:36:27.931821+08:00"
     },
     {
       "id": "2026-11-04:2026-11-11:h5",
@@ -5103,7 +5123,12 @@
       "direction": "震荡",
       "up_probability": 51.0,
       "expected_return": 0.05,
-      "status": "pending"
+      "status": "evaluated",
+      "actual_close": 3660.79,
+      "actual_return": -0.789,
+      "actual_up": false,
+      "correct": false,
+      "evaluated_at": "2026-11-10T23:36:27.931821+08:00"
     },
     {
       "id": "2026-11-05:2026-11-10:h3",
@@ -5115,7 +5140,12 @@
       "direction": "震荡",
       "up_probability": 51.6,
       "expected_return": 0.02,
-      "status": "pending"
+      "status": "evaluated",
+      "actual_close": 3663.72,
+      "actual_return": -0.71,
+      "actual_up": false,
+      "correct": false,
+      "evaluated_at": "2026-11-10T23:36:27.931821+08:00"
     },
     {
       "id": "2026-11-05:2026-11-11:h4",
@@ -5151,7 +5181,12 @@
       "direction": "震荡",
       "up_probability": 51.2,
       "expected_return": 0.03,
-      "status": "pending"
+      "status": "evaluated",
+      "actual_close": 3660.79,
+      "actual_return": 0.318,
+      "actual_up": true,
+      "correct": true,
+      "evaluated_at": "2026-11-10T23:36:27.931821+08:00"
     },
     {
       "id": "2026-11-06:2026-11-10:h2",
@@ -5163,7 +5198,12 @@
       "direction": "震荡",
       "up_probability": 51.0,
       "expected_return": -0.01,
-      "status": "pending"
+      "status": "evaluated",
+      "actual_close": 3663.72,
+      "actual_return": 0.398,
+      "actual_up": true,
+      "correct": true,
+      "evaluated_at": "2026-11-10T23:36:27.931821+08:00"
     },
     {
       "id": "2026-11-06:2026-11-11:h3",
@@ -5200,41 +5240,101 @@
       "up_probability": 52.8,
       "expected_return": 0.06,
       "status": "pending"
+    },
+    {
+      "id": "2026-11-10:2026-11-11:h1",
+      "generated_at": "2026-11-10T23:36:27.931821+08:00",
+      "base_date": "2026-11-10",
+      "base_close": 3663.72,
+      "target_date": "2026-11-11",
+      "horizon": 1,
+      "direction": "震荡",
+      "up_probability": 51.2,
+      "expected_return": 0.01,
+      "status": "pending"
+    },
+    {
+      "id": "2026-11-10:2026-11-12:h2",
+      "generated_at": "2026-11-10T23:36:27.931821+08:00",
+      "base_date": "2026-11-10",
+      "base_close": 3663.72,
+      "target_date": "2026-11-12",
+      "horizon": 2,
+      "direction": "震荡",
+      "up_probability": 51.1,
+      "expected_return": -0.13,
+      "status": "pending"
+    },
+    {
+      "id": "2026-11-10:2026-11-13:h3",
+      "generated_at": "2026-11-10T23:36:27.931821+08:00",
+      "base_date": "2026-11-10",
+      "base_close": 3663.72,
+      "target_date": "2026-11-13",
+      "horizon": 3,
+      "direction": "震荡",
+      "up_probability": 51.0,
+      "expected_return": -0.15,
+      "status": "pending"
+    },
+    {
+      "id": "2026-11-10:2026-11-16:h4",
+      "generated_at": "2026-11-10T23:36:27.931821+08:00",
+      "base_date": "2026-11-10",
+      "base_close": 3663.72,
+      "target_date": "2026-11-16",
+      "horizon": 4,
+      "direction": "震荡",
+      "up_probability": 51.0,
+      "expected_return": 0.06,
+      "status": "pending"
+    },
+    {
+      "id": "2026-11-10:2026-11-17:h5",
+      "generated_at": "2026-11-10T23:36:27.931821+08:00",
+      "base_date": "2026-11-10",
+      "base_close": 3663.72,
+      "target_date": "2026-11-17",
+      "horizon": 5,
+      "direction": "震荡",
+      "up_probability": 51.3,
+      "expected_return": -0.07,
+      "status": "pending"
     }
   ],
-  "updated_at": "2026-11-06T23:03:27.782443+08:00",
+  "updated_at": "2026-11-10T23:43:18.494070+08:00",
   "monitor": {
     "status": "healthy",
     "label": "模型近期有效",
-    "evaluated_samples": 61,
+    "evaluated_samples": 62,
     "pending_samples": 1,
     "recent_window": 60,
     "accuracy": 61.7,
-    "baseline": 56.7,
-    "edge_pp": 5.0,
+    "baseline": 58.3,
+    "edge_pp": 3.3,
     "brier": 0.247,
     "accuracy_ci_low": 49.0,
     "accuracy_ci_high": 72.9,
-    "last_evaluated_date": "2026-11-06",
+    "last_evaluated_date": "2026-11-09",
     "degraded": false,
     "effective_sample": "第1日预测的唯一目标交易日",
-    "all_evaluated_predictions": 296,
+    "all_evaluated_predictions": 304,
     "reliability_ready": true,
     "minimum_reliability_samples": 60,
     "horizon_metrics": {
       "1": {
-        "samples": 61,
+        "samples": 62,
         "window": 60,
         "accuracy": 61.7,
-        "baseline": 56.7,
-        "edge_pp": 5.0,
+        "baseline": 58.3,
+        "edge_pp": 3.3,
         "brier": 0.247,
         "accuracy_ci_low": 49.0,
         "accuracy_ci_high": 72.9,
-        "last_date": "2026-11-06"
+        "last_date": "2026-11-09"
       },
       "2": {
-        "samples": 60,
+        "samples": 62,
         "window": 60,
         "accuracy": 41.7,
         "baseline": 58.3,
@@ -5242,43 +5342,43 @@
         "brier": 0.252,
         "accuracy_ci_low": 30.1,
         "accuracy_ci_high": 54.3,
-        "last_date": "2026-11-06"
+        "last_date": "2026-11-10"
       },
       "3": {
-        "samples": 59,
-        "window": 59,
-        "accuracy": 37.3,
-        "baseline": 61.0,
-        "edge_pp": -23.7,
-        "brier": 0.253,
-        "accuracy_ci_low": 26.1,
-        "accuracy_ci_high": 50.0,
-        "last_date": "2026-11-06"
+        "samples": 61,
+        "window": 60,
+        "accuracy": 36.7,
+        "baseline": 63.3,
+        "edge_pp": -26.7,
+        "brier": 0.254,
+        "accuracy_ci_low": 25.6,
+        "accuracy_ci_high": 49.3,
+        "last_date": "2026-11-10"
       },
       "4": {
-        "samples": 58,
-        "window": 58,
-        "accuracy": 37.9,
-        "baseline": 62.1,
-        "edge_pp": -24.1,
+        "samples": 60,
+        "window": 60,
+        "accuracy": 38.3,
+        "baseline": 61.7,
+        "edge_pp": -23.3,
         "brier": 0.253,
-        "accuracy_ci_low": 26.6,
-        "accuracy_ci_high": 50.8,
-        "last_date": "2026-11-05"
+        "accuracy_ci_low": 27.1,
+        "accuracy_ci_high": 51.0,
+        "last_date": "2026-11-10"
       },
       "5": {
-        "samples": 58,
-        "window": 58,
-        "accuracy": 55.2,
-        "baseline": 58.6,
-        "edge_pp": -3.4,
+        "samples": 59,
+        "window": 59,
+        "accuracy": 55.9,
+        "baseline": 57.6,
+        "edge_pp": -1.7,
         "brier": 0.25,
-        "accuracy_ci_low": 42.5,
-        "accuracy_ci_high": 67.3,
-        "last_date": "2026-11-06"
+        "accuracy_ci_low": 43.3,
+        "accuracy_ci_high": 67.8,
+        "last_date": "2026-11-10"
       }
     },
-    "reason": "近60个第1日目标命中率相对基线 +5.0pp，Brier 0.247。"
+    "reason": "近60个第1日目标命中率相对基线 +3.3pp，Brier 0.247。"
   },
   "sector_predictions": [
     {
